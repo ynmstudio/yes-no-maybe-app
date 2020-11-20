@@ -11,6 +11,7 @@ Other authentication/storage/hosting providers could be added at a later stage.
 ### Angular
 
 - `cd frontend && npm i`
+- `npm start`
 
 ### Hasura
 
@@ -34,7 +35,7 @@ Other authentication/storage/hosting providers could be added at a later stage.
 
 ### Hasura
 
-Important: always run via `hasura console --admin-secret myadminsecretkey` to keep track of changes!
+Important: always run via `hasura console --admin-secret myadminsecretkey` inside folder `database` to keep track of changes!
 
 #### Migration
 
