@@ -11,8 +11,23 @@ module.exports = {
       mono: ["IBM Plex Mono", "SFMono-Regular"],
       display: ["IBM Plex Sans"],
       body: ["IBM Plex Sans"],
+      condensed: ["IBM Plex Sans Condensed"],
     },
     fontSize: {
+      xs: [
+        "12px",
+        {
+          letterSpacing: "-0.09px",
+          lineHeight: "20px",
+        },
+      ],
+      sm: [
+        "14px",
+        {
+          letterSpacing: "-0.11px",
+          lineHeight: "20px",
+        },
+      ],
       base: [
         "16px",
         {
@@ -28,6 +43,7 @@ module.exports = {
         },
       ],
     },
+
     // container: {
     //   center: true,
     //   padding: {
@@ -38,11 +54,16 @@ module.exports = {
     //     "2xl": "6rem",
     //   },
     // },
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        login: "2fr 3fr 2fr",
+      },
+    },
   },
   variants: {
     extend: {},
   },
+
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),

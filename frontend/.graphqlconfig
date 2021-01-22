@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "hasura": {
+      "schemaPath": "http://localhost:8080/v1/graphql",
+      "extensions": {
+        "endpoints": {
+          "dev": {
+            "url": "http://localhost:8080/v1/graphql"
+          },
+          "prod": {
+            "url": ""
+          }
+        }
+      }
+    }
+  }
+}

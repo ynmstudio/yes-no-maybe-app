@@ -1,0 +1,4354 @@
+# source: http://localhost:8080/v1/graphql
+# timestamp: Fri Jan 22 2021 14:35:34 GMT+0100 (Central European Standard Time)
+
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""
+columns and relationships of "applications"
+"""
+type applications {
+  created_at: timestamptz!
+
+  """An object relationship"""
+  edition: editions!
+  edition_id: Int!
+  id: uuid!
+  name: String!
+
+  """An array relationship"""
+  ratings(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): [ratings!]!
+
+  """An aggregated array relationship"""
+  ratings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): ratings_aggregate!
+  updated_at: timestamptz!
+
+  """An array relationship"""
+  works(
+    """distinct select on columns"""
+    distinct_on: [works_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_order_by!]
+
+    """filter the rows returned"""
+    where: works_bool_exp
+  ): [works!]!
+
+  """An aggregated array relationship"""
+  works_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_order_by!]
+
+    """filter the rows returned"""
+    where: works_bool_exp
+  ): works_aggregate!
+}
+
+"""
+aggregated selection of "applications"
+"""
+type applications_aggregate {
+  aggregate: applications_aggregate_fields
+  nodes: [applications!]!
+}
+
+"""
+aggregate fields of "applications"
+"""
+type applications_aggregate_fields {
+  avg: applications_avg_fields
+  count(columns: [applications_select_column!], distinct: Boolean): Int
+  max: applications_max_fields
+  min: applications_min_fields
+  stddev: applications_stddev_fields
+  stddev_pop: applications_stddev_pop_fields
+  stddev_samp: applications_stddev_samp_fields
+  sum: applications_sum_fields
+  var_pop: applications_var_pop_fields
+  var_samp: applications_var_samp_fields
+  variance: applications_variance_fields
+}
+
+"""
+order by aggregate values of table "applications"
+"""
+input applications_aggregate_order_by {
+  avg: applications_avg_order_by
+  count: order_by
+  max: applications_max_order_by
+  min: applications_min_order_by
+  stddev: applications_stddev_order_by
+  stddev_pop: applications_stddev_pop_order_by
+  stddev_samp: applications_stddev_samp_order_by
+  sum: applications_sum_order_by
+  var_pop: applications_var_pop_order_by
+  var_samp: applications_var_samp_order_by
+  variance: applications_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "applications"
+"""
+input applications_arr_rel_insert_input {
+  data: [applications_insert_input!]!
+  on_conflict: applications_on_conflict
+}
+
+"""aggregate avg on columns"""
+type applications_avg_fields {
+  edition_id: Float
+}
+
+"""
+order by avg() on columns of table "applications"
+"""
+input applications_avg_order_by {
+  edition_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "applications". All fields are combined with a logical 'AND'.
+"""
+input applications_bool_exp {
+  _and: [applications_bool_exp]
+  _not: applications_bool_exp
+  _or: [applications_bool_exp]
+  created_at: timestamptz_comparison_exp
+  edition: editions_bool_exp
+  edition_id: Int_comparison_exp
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  ratings: ratings_bool_exp
+  updated_at: timestamptz_comparison_exp
+  works: works_bool_exp
+}
+
+"""
+unique or primary key constraints on table "applications"
+"""
+enum applications_constraint {
+  """unique or primary key constraint"""
+  applications_pkey
+}
+
+"""
+input type for incrementing integer column in table "applications"
+"""
+input applications_inc_input {
+  edition_id: Int
+}
+
+"""
+input type for inserting data into table "applications"
+"""
+input applications_insert_input {
+  created_at: timestamptz
+  edition: editions_obj_rel_insert_input
+  edition_id: Int
+  id: uuid
+  name: String
+  ratings: ratings_arr_rel_insert_input
+  updated_at: timestamptz
+  works: works_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type applications_max_fields {
+  created_at: timestamptz
+  edition_id: Int
+  id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "applications"
+"""
+input applications_max_order_by {
+  created_at: order_by
+  edition_id: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type applications_min_fields {
+  created_at: timestamptz
+  edition_id: Int
+  id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "applications"
+"""
+input applications_min_order_by {
+  created_at: order_by
+  edition_id: order_by
+  id: order_by
+  name: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "applications"
+"""
+type applications_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [applications!]!
+}
+
+"""
+input type for inserting object relation for remote table "applications"
+"""
+input applications_obj_rel_insert_input {
+  data: applications_insert_input!
+  on_conflict: applications_on_conflict
+}
+
+"""
+on conflict condition type for table "applications"
+"""
+input applications_on_conflict {
+  constraint: applications_constraint!
+  update_columns: [applications_update_column!]!
+  where: applications_bool_exp
+}
+
+"""
+ordering options when selecting data from "applications"
+"""
+input applications_order_by {
+  created_at: order_by
+  edition: editions_order_by
+  edition_id: order_by
+  id: order_by
+  name: order_by
+  ratings_aggregate: ratings_aggregate_order_by
+  updated_at: order_by
+  works_aggregate: works_aggregate_order_by
+}
+
+"""
+primary key columns input for table: "applications"
+"""
+input applications_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "applications"
+"""
+enum applications_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  edition_id
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "applications"
+"""
+input applications_set_input {
+  created_at: timestamptz
+  edition_id: Int
+  id: uuid
+  name: String
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type applications_stddev_fields {
+  edition_id: Float
+}
+
+"""
+order by stddev() on columns of table "applications"
+"""
+input applications_stddev_order_by {
+  edition_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type applications_stddev_pop_fields {
+  edition_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "applications"
+"""
+input applications_stddev_pop_order_by {
+  edition_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type applications_stddev_samp_fields {
+  edition_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "applications"
+"""
+input applications_stddev_samp_order_by {
+  edition_id: order_by
+}
+
+"""aggregate sum on columns"""
+type applications_sum_fields {
+  edition_id: Int
+}
+
+"""
+order by sum() on columns of table "applications"
+"""
+input applications_sum_order_by {
+  edition_id: order_by
+}
+
+"""
+update columns of table "applications"
+"""
+enum applications_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  edition_id
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  updated_at
+}
+
+"""aggregate var_pop on columns"""
+type applications_var_pop_fields {
+  edition_id: Float
+}
+
+"""
+order by var_pop() on columns of table "applications"
+"""
+input applications_var_pop_order_by {
+  edition_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type applications_var_samp_fields {
+  edition_id: Float
+}
+
+"""
+order by var_samp() on columns of table "applications"
+"""
+input applications_var_samp_order_by {
+  edition_id: order_by
+}
+
+"""aggregate variance on columns"""
+type applications_variance_fields {
+  edition_id: Float
+}
+
+"""
+order by variance() on columns of table "applications"
+"""
+input applications_variance_order_by {
+  edition_id: order_by
+}
+
+"""
+expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+scalar date
+
+"""
+expression to compare columns of type date. All fields are combined with logical 'AND'.
+"""
+input date_comparison_exp {
+  _eq: date
+  _gt: date
+  _gte: date
+  _in: [date!]
+  _is_null: Boolean
+  _lt: date
+  _lte: date
+  _neq: date
+  _nin: [date!]
+}
+
+"""
+columns and relationships of "editions"
+"""
+type editions {
+  application_end: timestamptz!
+  application_start: timestamptz!
+
+  """An array relationship"""
+  applications(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): [applications!]!
+
+  """An aggregated array relationship"""
+  applications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): applications_aggregate!
+  created_at: timestamptz!
+  current: Boolean
+  id: Int!
+  name: String!
+
+  """An array relationship"""
+  rating_rounds(
+    """distinct select on columns"""
+    distinct_on: [rating_rounds_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rating_rounds_order_by!]
+
+    """filter the rows returned"""
+    where: rating_rounds_bool_exp
+  ): [rating_rounds!]!
+
+  """An aggregated array relationship"""
+  rating_rounds_aggregate(
+    """distinct select on columns"""
+    distinct_on: [rating_rounds_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rating_rounds_order_by!]
+
+    """filter the rows returned"""
+    where: rating_rounds_bool_exp
+  ): rating_rounds_aggregate!
+}
+
+"""
+aggregated selection of "editions"
+"""
+type editions_aggregate {
+  aggregate: editions_aggregate_fields
+  nodes: [editions!]!
+}
+
+"""
+aggregate fields of "editions"
+"""
+type editions_aggregate_fields {
+  avg: editions_avg_fields
+  count(columns: [editions_select_column!], distinct: Boolean): Int
+  max: editions_max_fields
+  min: editions_min_fields
+  stddev: editions_stddev_fields
+  stddev_pop: editions_stddev_pop_fields
+  stddev_samp: editions_stddev_samp_fields
+  sum: editions_sum_fields
+  var_pop: editions_var_pop_fields
+  var_samp: editions_var_samp_fields
+  variance: editions_variance_fields
+}
+
+"""
+order by aggregate values of table "editions"
+"""
+input editions_aggregate_order_by {
+  avg: editions_avg_order_by
+  count: order_by
+  max: editions_max_order_by
+  min: editions_min_order_by
+  stddev: editions_stddev_order_by
+  stddev_pop: editions_stddev_pop_order_by
+  stddev_samp: editions_stddev_samp_order_by
+  sum: editions_sum_order_by
+  var_pop: editions_var_pop_order_by
+  var_samp: editions_var_samp_order_by
+  variance: editions_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "editions"
+"""
+input editions_arr_rel_insert_input {
+  data: [editions_insert_input!]!
+  on_conflict: editions_on_conflict
+}
+
+"""aggregate avg on columns"""
+type editions_avg_fields {
+  id: Float
+}
+
+"""
+order by avg() on columns of table "editions"
+"""
+input editions_avg_order_by {
+  id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "editions". All fields are combined with a logical 'AND'.
+"""
+input editions_bool_exp {
+  _and: [editions_bool_exp]
+  _not: editions_bool_exp
+  _or: [editions_bool_exp]
+  application_end: timestamptz_comparison_exp
+  application_start: timestamptz_comparison_exp
+  applications: applications_bool_exp
+  created_at: timestamptz_comparison_exp
+  current: Boolean_comparison_exp
+  id: Int_comparison_exp
+  name: String_comparison_exp
+  rating_rounds: rating_rounds_bool_exp
+}
+
+"""
+unique or primary key constraints on table "editions"
+"""
+enum editions_constraint {
+  """unique or primary key constraint"""
+  editions_current_key
+
+  """unique or primary key constraint"""
+  editions_name_key
+
+  """unique or primary key constraint"""
+  editions_pkey
+}
+
+"""
+input type for incrementing integer column in table "editions"
+"""
+input editions_inc_input {
+  id: Int
+}
+
+"""
+input type for inserting data into table "editions"
+"""
+input editions_insert_input {
+  application_end: timestamptz
+  application_start: timestamptz
+  applications: applications_arr_rel_insert_input
+  created_at: timestamptz
+  current: Boolean
+  id: Int
+  name: String
+  rating_rounds: rating_rounds_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type editions_max_fields {
+  application_end: timestamptz
+  application_start: timestamptz
+  created_at: timestamptz
+  id: Int
+  name: String
+}
+
+"""
+order by max() on columns of table "editions"
+"""
+input editions_max_order_by {
+  application_end: order_by
+  application_start: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+}
+
+"""aggregate min on columns"""
+type editions_min_fields {
+  application_end: timestamptz
+  application_start: timestamptz
+  created_at: timestamptz
+  id: Int
+  name: String
+}
+
+"""
+order by min() on columns of table "editions"
+"""
+input editions_min_order_by {
+  application_end: order_by
+  application_start: order_by
+  created_at: order_by
+  id: order_by
+  name: order_by
+}
+
+"""
+response of any mutation on the table "editions"
+"""
+type editions_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [editions!]!
+}
+
+"""
+input type for inserting object relation for remote table "editions"
+"""
+input editions_obj_rel_insert_input {
+  data: editions_insert_input!
+  on_conflict: editions_on_conflict
+}
+
+"""
+on conflict condition type for table "editions"
+"""
+input editions_on_conflict {
+  constraint: editions_constraint!
+  update_columns: [editions_update_column!]!
+  where: editions_bool_exp
+}
+
+"""
+ordering options when selecting data from "editions"
+"""
+input editions_order_by {
+  application_end: order_by
+  application_start: order_by
+  applications_aggregate: applications_aggregate_order_by
+  created_at: order_by
+  current: order_by
+  id: order_by
+  name: order_by
+  rating_rounds_aggregate: rating_rounds_aggregate_order_by
+}
+
+"""
+primary key columns input for table: "editions"
+"""
+input editions_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "editions"
+"""
+enum editions_select_column {
+  """column name"""
+  application_end
+
+  """column name"""
+  application_start
+
+  """column name"""
+  created_at
+
+  """column name"""
+  current
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""
+input type for updating data in table "editions"
+"""
+input editions_set_input {
+  application_end: timestamptz
+  application_start: timestamptz
+  created_at: timestamptz
+  current: Boolean
+  id: Int
+  name: String
+}
+
+"""aggregate stddev on columns"""
+type editions_stddev_fields {
+  id: Float
+}
+
+"""
+order by stddev() on columns of table "editions"
+"""
+input editions_stddev_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type editions_stddev_pop_fields {
+  id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "editions"
+"""
+input editions_stddev_pop_order_by {
+  id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type editions_stddev_samp_fields {
+  id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "editions"
+"""
+input editions_stddev_samp_order_by {
+  id: order_by
+}
+
+"""aggregate sum on columns"""
+type editions_sum_fields {
+  id: Int
+}
+
+"""
+order by sum() on columns of table "editions"
+"""
+input editions_sum_order_by {
+  id: order_by
+}
+
+"""
+update columns of table "editions"
+"""
+enum editions_update_column {
+  """column name"""
+  application_end
+
+  """column name"""
+  application_start
+
+  """column name"""
+  created_at
+
+  """column name"""
+  current
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+}
+
+"""aggregate var_pop on columns"""
+type editions_var_pop_fields {
+  id: Float
+}
+
+"""
+order by var_pop() on columns of table "editions"
+"""
+input editions_var_pop_order_by {
+  id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type editions_var_samp_fields {
+  id: Float
+}
+
+"""
+order by var_samp() on columns of table "editions"
+"""
+input editions_var_samp_order_by {
+  id: order_by
+}
+
+"""aggregate variance on columns"""
+type editions_variance_fields {
+  id: Float
+}
+
+"""
+order by variance() on columns of table "editions"
+"""
+input editions_variance_order_by {
+  id: order_by
+}
+
+"""
+expression to compare columns of type Int. All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "applications"
+  """
+  delete_applications(
+    """filter the rows which have to be deleted"""
+    where: applications_bool_exp!
+  ): applications_mutation_response
+
+  """
+  delete single row from the table: "applications"
+  """
+  delete_applications_by_pk(id: uuid!): applications
+
+  """
+  delete data from the table: "editions"
+  """
+  delete_editions(
+    """filter the rows which have to be deleted"""
+    where: editions_bool_exp!
+  ): editions_mutation_response
+
+  """
+  delete single row from the table: "editions"
+  """
+  delete_editions_by_pk(id: Int!): editions
+
+  """
+  delete data from the table: "rating_rounds"
+  """
+  delete_rating_rounds(
+    """filter the rows which have to be deleted"""
+    where: rating_rounds_bool_exp!
+  ): rating_rounds_mutation_response
+
+  """
+  delete single row from the table: "rating_rounds"
+  """
+  delete_rating_rounds_by_pk(id: Int!): rating_rounds
+
+  """
+  delete data from the table: "ratings"
+  """
+  delete_ratings(
+    """filter the rows which have to be deleted"""
+    where: ratings_bool_exp!
+  ): ratings_mutation_response
+
+  """
+  delete single row from the table: "ratings"
+  """
+  delete_ratings_by_pk(id: uuid!): ratings
+
+  """
+  delete data from the table: "users"
+  """
+  delete_users(
+    """filter the rows which have to be deleted"""
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  """
+  delete single row from the table: "users"
+  """
+  delete_users_by_pk(id: uuid!): users
+
+  """
+  delete data from the table: "works"
+  """
+  delete_works(
+    """filter the rows which have to be deleted"""
+    where: works_bool_exp!
+  ): works_mutation_response
+
+  """
+  delete single row from the table: "works"
+  """
+  delete_works_by_pk(id: uuid!): works
+
+  """
+  delete data from the table: "works_files"
+  """
+  delete_works_files(
+    """filter the rows which have to be deleted"""
+    where: works_files_bool_exp!
+  ): works_files_mutation_response
+
+  """
+  delete single row from the table: "works_files"
+  """
+  delete_works_files_by_pk(id: uuid!): works_files
+
+  """
+  delete data from the table: "works_specifications"
+  """
+  delete_works_specifications(
+    """filter the rows which have to be deleted"""
+    where: works_specifications_bool_exp!
+  ): works_specifications_mutation_response
+
+  """
+  delete single row from the table: "works_specifications"
+  """
+  delete_works_specifications_by_pk(id: uuid!): works_specifications
+
+  """
+  insert data into the table: "applications"
+  """
+  insert_applications(
+    """the rows to be inserted"""
+    objects: [applications_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: applications_on_conflict
+  ): applications_mutation_response
+
+  """
+  insert a single row into the table: "applications"
+  """
+  insert_applications_one(
+    """the row to be inserted"""
+    object: applications_insert_input!
+
+    """on conflict condition"""
+    on_conflict: applications_on_conflict
+  ): applications
+
+  """
+  insert data into the table: "editions"
+  """
+  insert_editions(
+    """the rows to be inserted"""
+    objects: [editions_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: editions_on_conflict
+  ): editions_mutation_response
+
+  """
+  insert a single row into the table: "editions"
+  """
+  insert_editions_one(
+    """the row to be inserted"""
+    object: editions_insert_input!
+
+    """on conflict condition"""
+    on_conflict: editions_on_conflict
+  ): editions
+
+  """
+  insert data into the table: "rating_rounds"
+  """
+  insert_rating_rounds(
+    """the rows to be inserted"""
+    objects: [rating_rounds_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: rating_rounds_on_conflict
+  ): rating_rounds_mutation_response
+
+  """
+  insert a single row into the table: "rating_rounds"
+  """
+  insert_rating_rounds_one(
+    """the row to be inserted"""
+    object: rating_rounds_insert_input!
+
+    """on conflict condition"""
+    on_conflict: rating_rounds_on_conflict
+  ): rating_rounds
+
+  """
+  insert data into the table: "ratings"
+  """
+  insert_ratings(
+    """the rows to be inserted"""
+    objects: [ratings_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: ratings_on_conflict
+  ): ratings_mutation_response
+
+  """
+  insert a single row into the table: "ratings"
+  """
+  insert_ratings_one(
+    """the row to be inserted"""
+    object: ratings_insert_input!
+
+    """on conflict condition"""
+    on_conflict: ratings_on_conflict
+  ): ratings
+
+  """
+  insert data into the table: "users"
+  """
+  insert_users(
+    """the rows to be inserted"""
+    objects: [users_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: users_on_conflict
+  ): users_mutation_response
+
+  """
+  insert a single row into the table: "users"
+  """
+  insert_users_one(
+    """the row to be inserted"""
+    object: users_insert_input!
+
+    """on conflict condition"""
+    on_conflict: users_on_conflict
+  ): users
+
+  """
+  insert data into the table: "works"
+  """
+  insert_works(
+    """the rows to be inserted"""
+    objects: [works_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: works_on_conflict
+  ): works_mutation_response
+
+  """
+  insert data into the table: "works_files"
+  """
+  insert_works_files(
+    """the rows to be inserted"""
+    objects: [works_files_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: works_files_on_conflict
+  ): works_files_mutation_response
+
+  """
+  insert a single row into the table: "works_files"
+  """
+  insert_works_files_one(
+    """the row to be inserted"""
+    object: works_files_insert_input!
+
+    """on conflict condition"""
+    on_conflict: works_files_on_conflict
+  ): works_files
+
+  """
+  insert a single row into the table: "works"
+  """
+  insert_works_one(
+    """the row to be inserted"""
+    object: works_insert_input!
+
+    """on conflict condition"""
+    on_conflict: works_on_conflict
+  ): works
+
+  """
+  insert data into the table: "works_specifications"
+  """
+  insert_works_specifications(
+    """the rows to be inserted"""
+    objects: [works_specifications_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: works_specifications_on_conflict
+  ): works_specifications_mutation_response
+
+  """
+  insert a single row into the table: "works_specifications"
+  """
+  insert_works_specifications_one(
+    """the row to be inserted"""
+    object: works_specifications_insert_input!
+
+    """on conflict condition"""
+    on_conflict: works_specifications_on_conflict
+  ): works_specifications
+
+  """
+  update data of the table: "applications"
+  """
+  update_applications(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: applications_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: applications_set_input
+
+    """filter the rows which have to be updated"""
+    where: applications_bool_exp!
+  ): applications_mutation_response
+
+  """
+  update single row of the table: "applications"
+  """
+  update_applications_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: applications_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: applications_set_input
+    pk_columns: applications_pk_columns_input!
+  ): applications
+
+  """
+  update data of the table: "editions"
+  """
+  update_editions(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: editions_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: editions_set_input
+
+    """filter the rows which have to be updated"""
+    where: editions_bool_exp!
+  ): editions_mutation_response
+
+  """
+  update single row of the table: "editions"
+  """
+  update_editions_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: editions_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: editions_set_input
+    pk_columns: editions_pk_columns_input!
+  ): editions
+
+  """
+  update data of the table: "rating_rounds"
+  """
+  update_rating_rounds(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: rating_rounds_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: rating_rounds_set_input
+
+    """filter the rows which have to be updated"""
+    where: rating_rounds_bool_exp!
+  ): rating_rounds_mutation_response
+
+  """
+  update single row of the table: "rating_rounds"
+  """
+  update_rating_rounds_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: rating_rounds_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: rating_rounds_set_input
+    pk_columns: rating_rounds_pk_columns_input!
+  ): rating_rounds
+
+  """
+  update data of the table: "ratings"
+  """
+  update_ratings(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: ratings_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: ratings_set_input
+
+    """filter the rows which have to be updated"""
+    where: ratings_bool_exp!
+  ): ratings_mutation_response
+
+  """
+  update single row of the table: "ratings"
+  """
+  update_ratings_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: ratings_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: ratings_set_input
+    pk_columns: ratings_pk_columns_input!
+  ): ratings
+
+  """
+  update data of the table: "users"
+  """
+  update_users(
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_set_input
+
+    """filter the rows which have to be updated"""
+    where: users_bool_exp!
+  ): users_mutation_response
+
+  """
+  update single row of the table: "users"
+  """
+  update_users_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_set_input
+    pk_columns: users_pk_columns_input!
+  ): users
+
+  """
+  update data of the table: "works"
+  """
+  update_works(
+    """sets the columns of the filtered rows to the given values"""
+    _set: works_set_input
+
+    """filter the rows which have to be updated"""
+    where: works_bool_exp!
+  ): works_mutation_response
+
+  """
+  update single row of the table: "works"
+  """
+  update_works_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: works_set_input
+    pk_columns: works_pk_columns_input!
+  ): works
+
+  """
+  update data of the table: "works_files"
+  """
+  update_works_files(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: works_files_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: works_files_set_input
+
+    """filter the rows which have to be updated"""
+    where: works_files_bool_exp!
+  ): works_files_mutation_response
+
+  """
+  update single row of the table: "works_files"
+  """
+  update_works_files_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: works_files_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: works_files_set_input
+    pk_columns: works_files_pk_columns_input!
+  ): works_files
+
+  """
+  update data of the table: "works_specifications"
+  """
+  update_works_specifications(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: works_specifications_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: works_specifications_set_input
+
+    """filter the rows which have to be updated"""
+    where: works_specifications_bool_exp!
+  ): works_specifications_mutation_response
+
+  """
+  update single row of the table: "works_specifications"
+  """
+  update_works_specifications_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: works_specifications_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: works_specifications_set_input
+    pk_columns: works_specifications_pk_columns_input!
+  ): works_specifications
+}
+
+"""column ordering options"""
+enum order_by {
+  """in the ascending order, nulls last"""
+  asc
+
+  """in the ascending order, nulls first"""
+  asc_nulls_first
+
+  """in the ascending order, nulls last"""
+  asc_nulls_last
+
+  """in the descending order, nulls first"""
+  desc
+
+  """in the descending order, nulls first"""
+  desc_nulls_first
+
+  """in the descending order, nulls last"""
+  desc_nulls_last
+}
+
+"""query root"""
+type query_root {
+  """
+  fetch data from the table: "applications"
+  """
+  applications(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): [applications!]!
+
+  """
+  fetch aggregated fields from the table: "applications"
+  """
+  applications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): applications_aggregate!
+
+  """fetch data from the table: "applications" using primary key columns"""
+  applications_by_pk(id: uuid!): applications
+
+  """
+  fetch data from the table: "editions"
+  """
+  editions(
+    """distinct select on columns"""
+    distinct_on: [editions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [editions_order_by!]
+
+    """filter the rows returned"""
+    where: editions_bool_exp
+  ): [editions!]!
+
+  """
+  fetch aggregated fields from the table: "editions"
+  """
+  editions_aggregate(
+    """distinct select on columns"""
+    distinct_on: [editions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [editions_order_by!]
+
+    """filter the rows returned"""
+    where: editions_bool_exp
+  ): editions_aggregate!
+
+  """fetch data from the table: "editions" using primary key columns"""
+  editions_by_pk(id: Int!): editions
+
+  """
+  fetch data from the table: "rating_rounds"
+  """
+  rating_rounds(
+    """distinct select on columns"""
+    distinct_on: [rating_rounds_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rating_rounds_order_by!]
+
+    """filter the rows returned"""
+    where: rating_rounds_bool_exp
+  ): [rating_rounds!]!
+
+  """
+  fetch aggregated fields from the table: "rating_rounds"
+  """
+  rating_rounds_aggregate(
+    """distinct select on columns"""
+    distinct_on: [rating_rounds_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rating_rounds_order_by!]
+
+    """filter the rows returned"""
+    where: rating_rounds_bool_exp
+  ): rating_rounds_aggregate!
+
+  """fetch data from the table: "rating_rounds" using primary key columns"""
+  rating_rounds_by_pk(id: Int!): rating_rounds
+
+  """
+  fetch data from the table: "ratings"
+  """
+  ratings(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): [ratings!]!
+
+  """
+  fetch aggregated fields from the table: "ratings"
+  """
+  ratings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): ratings_aggregate!
+
+  """fetch data from the table: "ratings" using primary key columns"""
+  ratings_by_pk(id: uuid!): ratings
+
+  """
+  fetch data from the table: "users"
+  """
+  users(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch aggregated fields from the table: "users"
+  """
+  users_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+
+  """fetch data from the table: "users" using primary key columns"""
+  users_by_pk(id: uuid!): users
+
+  """
+  fetch data from the table: "works"
+  """
+  works(
+    """distinct select on columns"""
+    distinct_on: [works_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_order_by!]
+
+    """filter the rows returned"""
+    where: works_bool_exp
+  ): [works!]!
+
+  """
+  fetch aggregated fields from the table: "works"
+  """
+  works_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_order_by!]
+
+    """filter the rows returned"""
+    where: works_bool_exp
+  ): works_aggregate!
+
+  """fetch data from the table: "works" using primary key columns"""
+  works_by_pk(id: uuid!): works
+
+  """
+  fetch data from the table: "works_files"
+  """
+  works_files(
+    """distinct select on columns"""
+    distinct_on: [works_files_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_files_order_by!]
+
+    """filter the rows returned"""
+    where: works_files_bool_exp
+  ): [works_files!]!
+
+  """
+  fetch aggregated fields from the table: "works_files"
+  """
+  works_files_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_files_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_files_order_by!]
+
+    """filter the rows returned"""
+    where: works_files_bool_exp
+  ): works_files_aggregate!
+
+  """fetch data from the table: "works_files" using primary key columns"""
+  works_files_by_pk(id: uuid!): works_files
+
+  """
+  fetch data from the table: "works_specifications"
+  """
+  works_specifications(
+    """distinct select on columns"""
+    distinct_on: [works_specifications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_specifications_order_by!]
+
+    """filter the rows returned"""
+    where: works_specifications_bool_exp
+  ): [works_specifications!]!
+
+  """
+  fetch aggregated fields from the table: "works_specifications"
+  """
+  works_specifications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_specifications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_specifications_order_by!]
+
+    """filter the rows returned"""
+    where: works_specifications_bool_exp
+  ): works_specifications_aggregate!
+
+  """
+  fetch data from the table: "works_specifications" using primary key columns
+  """
+  works_specifications_by_pk(id: uuid!): works_specifications
+}
+
+"""
+columns and relationships of "rating_rounds"
+"""
+type rating_rounds {
+  created_at: timestamptz
+
+  """An object relationship"""
+  edition: editions!
+  edition_id: Int!
+  end_at: timestamptz!
+  goal: Int!
+  id: Int!
+
+  """An object relationship"""
+  next_round: rating_rounds
+
+  """An object relationship"""
+  prev_round: rating_rounds
+  prev_round_id: Int
+  start_at: timestamptz!
+  updated_at: timestamptz
+}
+
+"""
+aggregated selection of "rating_rounds"
+"""
+type rating_rounds_aggregate {
+  aggregate: rating_rounds_aggregate_fields
+  nodes: [rating_rounds!]!
+}
+
+"""
+aggregate fields of "rating_rounds"
+"""
+type rating_rounds_aggregate_fields {
+  avg: rating_rounds_avg_fields
+  count(columns: [rating_rounds_select_column!], distinct: Boolean): Int
+  max: rating_rounds_max_fields
+  min: rating_rounds_min_fields
+  stddev: rating_rounds_stddev_fields
+  stddev_pop: rating_rounds_stddev_pop_fields
+  stddev_samp: rating_rounds_stddev_samp_fields
+  sum: rating_rounds_sum_fields
+  var_pop: rating_rounds_var_pop_fields
+  var_samp: rating_rounds_var_samp_fields
+  variance: rating_rounds_variance_fields
+}
+
+"""
+order by aggregate values of table "rating_rounds"
+"""
+input rating_rounds_aggregate_order_by {
+  avg: rating_rounds_avg_order_by
+  count: order_by
+  max: rating_rounds_max_order_by
+  min: rating_rounds_min_order_by
+  stddev: rating_rounds_stddev_order_by
+  stddev_pop: rating_rounds_stddev_pop_order_by
+  stddev_samp: rating_rounds_stddev_samp_order_by
+  sum: rating_rounds_sum_order_by
+  var_pop: rating_rounds_var_pop_order_by
+  var_samp: rating_rounds_var_samp_order_by
+  variance: rating_rounds_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "rating_rounds"
+"""
+input rating_rounds_arr_rel_insert_input {
+  data: [rating_rounds_insert_input!]!
+  on_conflict: rating_rounds_on_conflict
+}
+
+"""aggregate avg on columns"""
+type rating_rounds_avg_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by avg() on columns of table "rating_rounds"
+"""
+input rating_rounds_avg_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "rating_rounds". All fields are combined with a logical 'AND'.
+"""
+input rating_rounds_bool_exp {
+  _and: [rating_rounds_bool_exp]
+  _not: rating_rounds_bool_exp
+  _or: [rating_rounds_bool_exp]
+  created_at: timestamptz_comparison_exp
+  edition: editions_bool_exp
+  edition_id: Int_comparison_exp
+  end_at: timestamptz_comparison_exp
+  goal: Int_comparison_exp
+  id: Int_comparison_exp
+  next_round: rating_rounds_bool_exp
+  prev_round: rating_rounds_bool_exp
+  prev_round_id: Int_comparison_exp
+  start_at: timestamptz_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "rating_rounds"
+"""
+enum rating_rounds_constraint {
+  """unique or primary key constraint"""
+  rating_rounds_pkey
+
+  """unique or primary key constraint"""
+  rating_rounds_prev_round_id_key
+}
+
+"""
+input type for incrementing integer column in table "rating_rounds"
+"""
+input rating_rounds_inc_input {
+  edition_id: Int
+  goal: Int
+  id: Int
+  prev_round_id: Int
+}
+
+"""
+input type for inserting data into table "rating_rounds"
+"""
+input rating_rounds_insert_input {
+  created_at: timestamptz
+  edition: editions_obj_rel_insert_input
+  edition_id: Int
+  end_at: timestamptz
+  goal: Int
+  id: Int
+  next_round: rating_rounds_obj_rel_insert_input
+  prev_round: rating_rounds_obj_rel_insert_input
+  prev_round_id: Int
+  start_at: timestamptz
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type rating_rounds_max_fields {
+  created_at: timestamptz
+  edition_id: Int
+  end_at: timestamptz
+  goal: Int
+  id: Int
+  prev_round_id: Int
+  start_at: timestamptz
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "rating_rounds"
+"""
+input rating_rounds_max_order_by {
+  created_at: order_by
+  edition_id: order_by
+  end_at: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+  start_at: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type rating_rounds_min_fields {
+  created_at: timestamptz
+  edition_id: Int
+  end_at: timestamptz
+  goal: Int
+  id: Int
+  prev_round_id: Int
+  start_at: timestamptz
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "rating_rounds"
+"""
+input rating_rounds_min_order_by {
+  created_at: order_by
+  edition_id: order_by
+  end_at: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+  start_at: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "rating_rounds"
+"""
+type rating_rounds_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [rating_rounds!]!
+}
+
+"""
+input type for inserting object relation for remote table "rating_rounds"
+"""
+input rating_rounds_obj_rel_insert_input {
+  data: rating_rounds_insert_input!
+  on_conflict: rating_rounds_on_conflict
+}
+
+"""
+on conflict condition type for table "rating_rounds"
+"""
+input rating_rounds_on_conflict {
+  constraint: rating_rounds_constraint!
+  update_columns: [rating_rounds_update_column!]!
+  where: rating_rounds_bool_exp
+}
+
+"""
+ordering options when selecting data from "rating_rounds"
+"""
+input rating_rounds_order_by {
+  created_at: order_by
+  edition: editions_order_by
+  edition_id: order_by
+  end_at: order_by
+  goal: order_by
+  id: order_by
+  next_round: rating_rounds_order_by
+  prev_round: rating_rounds_order_by
+  prev_round_id: order_by
+  start_at: order_by
+  updated_at: order_by
+}
+
+"""
+primary key columns input for table: "rating_rounds"
+"""
+input rating_rounds_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "rating_rounds"
+"""
+enum rating_rounds_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  edition_id
+
+  """column name"""
+  end_at
+
+  """column name"""
+  goal
+
+  """column name"""
+  id
+
+  """column name"""
+  prev_round_id
+
+  """column name"""
+  start_at
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "rating_rounds"
+"""
+input rating_rounds_set_input {
+  created_at: timestamptz
+  edition_id: Int
+  end_at: timestamptz
+  goal: Int
+  id: Int
+  prev_round_id: Int
+  start_at: timestamptz
+  updated_at: timestamptz
+}
+
+"""aggregate stddev on columns"""
+type rating_rounds_stddev_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by stddev() on columns of table "rating_rounds"
+"""
+input rating_rounds_stddev_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type rating_rounds_stddev_pop_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "rating_rounds"
+"""
+input rating_rounds_stddev_pop_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type rating_rounds_stddev_samp_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "rating_rounds"
+"""
+input rating_rounds_stddev_samp_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""aggregate sum on columns"""
+type rating_rounds_sum_fields {
+  edition_id: Int
+  goal: Int
+  id: Int
+  prev_round_id: Int
+}
+
+"""
+order by sum() on columns of table "rating_rounds"
+"""
+input rating_rounds_sum_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""
+update columns of table "rating_rounds"
+"""
+enum rating_rounds_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  edition_id
+
+  """column name"""
+  end_at
+
+  """column name"""
+  goal
+
+  """column name"""
+  id
+
+  """column name"""
+  prev_round_id
+
+  """column name"""
+  start_at
+
+  """column name"""
+  updated_at
+}
+
+"""aggregate var_pop on columns"""
+type rating_rounds_var_pop_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by var_pop() on columns of table "rating_rounds"
+"""
+input rating_rounds_var_pop_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type rating_rounds_var_samp_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by var_samp() on columns of table "rating_rounds"
+"""
+input rating_rounds_var_samp_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""aggregate variance on columns"""
+type rating_rounds_variance_fields {
+  edition_id: Float
+  goal: Float
+  id: Float
+  prev_round_id: Float
+}
+
+"""
+order by variance() on columns of table "rating_rounds"
+"""
+input rating_rounds_variance_order_by {
+  edition_id: order_by
+  goal: order_by
+  id: order_by
+  prev_round_id: order_by
+}
+
+"""
+columns and relationships of "ratings"
+"""
+type ratings {
+  application_id: uuid!
+  created_at: timestamptz!
+  created_by: uuid!
+  id: uuid!
+  round_id: Int!
+  updated_at: timestamptz!
+  value: Int!
+}
+
+"""
+aggregated selection of "ratings"
+"""
+type ratings_aggregate {
+  aggregate: ratings_aggregate_fields
+  nodes: [ratings!]!
+}
+
+"""
+aggregate fields of "ratings"
+"""
+type ratings_aggregate_fields {
+  avg: ratings_avg_fields
+  count(columns: [ratings_select_column!], distinct: Boolean): Int
+  max: ratings_max_fields
+  min: ratings_min_fields
+  stddev: ratings_stddev_fields
+  stddev_pop: ratings_stddev_pop_fields
+  stddev_samp: ratings_stddev_samp_fields
+  sum: ratings_sum_fields
+  var_pop: ratings_var_pop_fields
+  var_samp: ratings_var_samp_fields
+  variance: ratings_variance_fields
+}
+
+"""
+order by aggregate values of table "ratings"
+"""
+input ratings_aggregate_order_by {
+  avg: ratings_avg_order_by
+  count: order_by
+  max: ratings_max_order_by
+  min: ratings_min_order_by
+  stddev: ratings_stddev_order_by
+  stddev_pop: ratings_stddev_pop_order_by
+  stddev_samp: ratings_stddev_samp_order_by
+  sum: ratings_sum_order_by
+  var_pop: ratings_var_pop_order_by
+  var_samp: ratings_var_samp_order_by
+  variance: ratings_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "ratings"
+"""
+input ratings_arr_rel_insert_input {
+  data: [ratings_insert_input!]!
+  on_conflict: ratings_on_conflict
+}
+
+"""aggregate avg on columns"""
+type ratings_avg_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by avg() on columns of table "ratings"
+"""
+input ratings_avg_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "ratings". All fields are combined with a logical 'AND'.
+"""
+input ratings_bool_exp {
+  _and: [ratings_bool_exp]
+  _not: ratings_bool_exp
+  _or: [ratings_bool_exp]
+  application_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  created_by: uuid_comparison_exp
+  id: uuid_comparison_exp
+  round_id: Int_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  value: Int_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "ratings"
+"""
+enum ratings_constraint {
+  """unique or primary key constraint"""
+  ratings_pkey
+
+  """unique or primary key constraint"""
+  ratings_round_id_application_id_created_by_key
+}
+
+"""
+input type for incrementing integer column in table "ratings"
+"""
+input ratings_inc_input {
+  round_id: Int
+  value: Int
+}
+
+"""
+input type for inserting data into table "ratings"
+"""
+input ratings_insert_input {
+  application_id: uuid
+  created_at: timestamptz
+  created_by: uuid
+  id: uuid
+  round_id: Int
+  updated_at: timestamptz
+  value: Int
+}
+
+"""aggregate max on columns"""
+type ratings_max_fields {
+  application_id: uuid
+  created_at: timestamptz
+  created_by: uuid
+  id: uuid
+  round_id: Int
+  updated_at: timestamptz
+  value: Int
+}
+
+"""
+order by max() on columns of table "ratings"
+"""
+input ratings_max_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  round_id: order_by
+  updated_at: order_by
+  value: order_by
+}
+
+"""aggregate min on columns"""
+type ratings_min_fields {
+  application_id: uuid
+  created_at: timestamptz
+  created_by: uuid
+  id: uuid
+  round_id: Int
+  updated_at: timestamptz
+  value: Int
+}
+
+"""
+order by min() on columns of table "ratings"
+"""
+input ratings_min_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  round_id: order_by
+  updated_at: order_by
+  value: order_by
+}
+
+"""
+response of any mutation on the table "ratings"
+"""
+type ratings_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [ratings!]!
+}
+
+"""
+input type for inserting object relation for remote table "ratings"
+"""
+input ratings_obj_rel_insert_input {
+  data: ratings_insert_input!
+  on_conflict: ratings_on_conflict
+}
+
+"""
+on conflict condition type for table "ratings"
+"""
+input ratings_on_conflict {
+  constraint: ratings_constraint!
+  update_columns: [ratings_update_column!]!
+  where: ratings_bool_exp
+}
+
+"""
+ordering options when selecting data from "ratings"
+"""
+input ratings_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  round_id: order_by
+  updated_at: order_by
+  value: order_by
+}
+
+"""
+primary key columns input for table: "ratings"
+"""
+input ratings_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "ratings"
+"""
+enum ratings_select_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by
+
+  """column name"""
+  id
+
+  """column name"""
+  round_id
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "ratings"
+"""
+input ratings_set_input {
+  application_id: uuid
+  created_at: timestamptz
+  created_by: uuid
+  id: uuid
+  round_id: Int
+  updated_at: timestamptz
+  value: Int
+}
+
+"""aggregate stddev on columns"""
+type ratings_stddev_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by stddev() on columns of table "ratings"
+"""
+input ratings_stddev_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type ratings_stddev_pop_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by stddev_pop() on columns of table "ratings"
+"""
+input ratings_stddev_pop_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type ratings_stddev_samp_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by stddev_samp() on columns of table "ratings"
+"""
+input ratings_stddev_samp_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""aggregate sum on columns"""
+type ratings_sum_fields {
+  round_id: Int
+  value: Int
+}
+
+"""
+order by sum() on columns of table "ratings"
+"""
+input ratings_sum_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""
+update columns of table "ratings"
+"""
+enum ratings_update_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by
+
+  """column name"""
+  id
+
+  """column name"""
+  round_id
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  value
+}
+
+"""aggregate var_pop on columns"""
+type ratings_var_pop_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by var_pop() on columns of table "ratings"
+"""
+input ratings_var_pop_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""aggregate var_samp on columns"""
+type ratings_var_samp_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by var_samp() on columns of table "ratings"
+"""
+input ratings_var_samp_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""aggregate variance on columns"""
+type ratings_variance_fields {
+  round_id: Float
+  value: Float
+}
+
+"""
+order by variance() on columns of table "ratings"
+"""
+input ratings_variance_order_by {
+  round_id: order_by
+  value: order_by
+}
+
+"""
+expression to compare columns of type String. All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _nlike: String
+  _nsimilar: String
+  _similar: String
+}
+
+"""subscription root"""
+type subscription_root {
+  """
+  fetch data from the table: "applications"
+  """
+  applications(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): [applications!]!
+
+  """
+  fetch aggregated fields from the table: "applications"
+  """
+  applications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): applications_aggregate!
+
+  """fetch data from the table: "applications" using primary key columns"""
+  applications_by_pk(id: uuid!): applications
+
+  """
+  fetch data from the table: "editions"
+  """
+  editions(
+    """distinct select on columns"""
+    distinct_on: [editions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [editions_order_by!]
+
+    """filter the rows returned"""
+    where: editions_bool_exp
+  ): [editions!]!
+
+  """
+  fetch aggregated fields from the table: "editions"
+  """
+  editions_aggregate(
+    """distinct select on columns"""
+    distinct_on: [editions_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [editions_order_by!]
+
+    """filter the rows returned"""
+    where: editions_bool_exp
+  ): editions_aggregate!
+
+  """fetch data from the table: "editions" using primary key columns"""
+  editions_by_pk(id: Int!): editions
+
+  """
+  fetch data from the table: "rating_rounds"
+  """
+  rating_rounds(
+    """distinct select on columns"""
+    distinct_on: [rating_rounds_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rating_rounds_order_by!]
+
+    """filter the rows returned"""
+    where: rating_rounds_bool_exp
+  ): [rating_rounds!]!
+
+  """
+  fetch aggregated fields from the table: "rating_rounds"
+  """
+  rating_rounds_aggregate(
+    """distinct select on columns"""
+    distinct_on: [rating_rounds_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [rating_rounds_order_by!]
+
+    """filter the rows returned"""
+    where: rating_rounds_bool_exp
+  ): rating_rounds_aggregate!
+
+  """fetch data from the table: "rating_rounds" using primary key columns"""
+  rating_rounds_by_pk(id: Int!): rating_rounds
+
+  """
+  fetch data from the table: "ratings"
+  """
+  ratings(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): [ratings!]!
+
+  """
+  fetch aggregated fields from the table: "ratings"
+  """
+  ratings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): ratings_aggregate!
+
+  """fetch data from the table: "ratings" using primary key columns"""
+  ratings_by_pk(id: uuid!): ratings
+
+  """
+  fetch data from the table: "users"
+  """
+  users(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): [users!]!
+
+  """
+  fetch aggregated fields from the table: "users"
+  """
+  users_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_order_by!]
+
+    """filter the rows returned"""
+    where: users_bool_exp
+  ): users_aggregate!
+
+  """fetch data from the table: "users" using primary key columns"""
+  users_by_pk(id: uuid!): users
+
+  """
+  fetch data from the table: "works"
+  """
+  works(
+    """distinct select on columns"""
+    distinct_on: [works_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_order_by!]
+
+    """filter the rows returned"""
+    where: works_bool_exp
+  ): [works!]!
+
+  """
+  fetch aggregated fields from the table: "works"
+  """
+  works_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_order_by!]
+
+    """filter the rows returned"""
+    where: works_bool_exp
+  ): works_aggregate!
+
+  """fetch data from the table: "works" using primary key columns"""
+  works_by_pk(id: uuid!): works
+
+  """
+  fetch data from the table: "works_files"
+  """
+  works_files(
+    """distinct select on columns"""
+    distinct_on: [works_files_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_files_order_by!]
+
+    """filter the rows returned"""
+    where: works_files_bool_exp
+  ): [works_files!]!
+
+  """
+  fetch aggregated fields from the table: "works_files"
+  """
+  works_files_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_files_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_files_order_by!]
+
+    """filter the rows returned"""
+    where: works_files_bool_exp
+  ): works_files_aggregate!
+
+  """fetch data from the table: "works_files" using primary key columns"""
+  works_files_by_pk(id: uuid!): works_files
+
+  """
+  fetch data from the table: "works_specifications"
+  """
+  works_specifications(
+    """distinct select on columns"""
+    distinct_on: [works_specifications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_specifications_order_by!]
+
+    """filter the rows returned"""
+    where: works_specifications_bool_exp
+  ): [works_specifications!]!
+
+  """
+  fetch aggregated fields from the table: "works_specifications"
+  """
+  works_specifications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_specifications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_specifications_order_by!]
+
+    """filter the rows returned"""
+    where: works_specifications_bool_exp
+  ): works_specifications_aggregate!
+
+  """
+  fetch data from the table: "works_specifications" using primary key columns
+  """
+  works_specifications_by_pk(id: uuid!): works_specifications
+}
+
+scalar timestamptz
+
+"""
+expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+columns and relationships of "users"
+"""
+type users {
+  id: uuid!
+  name: String!
+  type: String!
+}
+
+"""
+aggregated selection of "users"
+"""
+type users_aggregate {
+  aggregate: users_aggregate_fields
+  nodes: [users!]!
+}
+
+"""
+aggregate fields of "users"
+"""
+type users_aggregate_fields {
+  count(columns: [users_select_column!], distinct: Boolean): Int
+  max: users_max_fields
+  min: users_min_fields
+}
+
+"""
+order by aggregate values of table "users"
+"""
+input users_aggregate_order_by {
+  count: order_by
+  max: users_max_order_by
+  min: users_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "users"
+"""
+input users_arr_rel_insert_input {
+  data: [users_insert_input!]!
+  on_conflict: users_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+"""
+input users_bool_exp {
+  _and: [users_bool_exp]
+  _not: users_bool_exp
+  _or: [users_bool_exp]
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  type: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "users"
+"""
+enum users_constraint {
+  """unique or primary key constraint"""
+  users_pkey
+}
+
+"""
+input type for inserting data into table "users"
+"""
+input users_insert_input {
+  id: uuid
+  name: String
+  type: String
+}
+
+"""aggregate max on columns"""
+type users_max_fields {
+  id: uuid
+  name: String
+  type: String
+}
+
+"""
+order by max() on columns of table "users"
+"""
+input users_max_order_by {
+  id: order_by
+  name: order_by
+  type: order_by
+}
+
+"""aggregate min on columns"""
+type users_min_fields {
+  id: uuid
+  name: String
+  type: String
+}
+
+"""
+order by min() on columns of table "users"
+"""
+input users_min_order_by {
+  id: order_by
+  name: order_by
+  type: order_by
+}
+
+"""
+response of any mutation on the table "users"
+"""
+type users_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [users!]!
+}
+
+"""
+input type for inserting object relation for remote table "users"
+"""
+input users_obj_rel_insert_input {
+  data: users_insert_input!
+  on_conflict: users_on_conflict
+}
+
+"""
+on conflict condition type for table "users"
+"""
+input users_on_conflict {
+  constraint: users_constraint!
+  update_columns: [users_update_column!]!
+  where: users_bool_exp
+}
+
+"""
+ordering options when selecting data from "users"
+"""
+input users_order_by {
+  id: order_by
+  name: order_by
+  type: order_by
+}
+
+"""
+primary key columns input for table: "users"
+"""
+input users_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "users"
+"""
+enum users_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  type
+}
+
+"""
+input type for updating data in table "users"
+"""
+input users_set_input {
+  id: uuid
+  name: String
+  type: String
+}
+
+"""
+update columns of table "users"
+"""
+enum users_update_column {
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  type
+}
+
+scalar uuid
+
+"""
+expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+
+"""
+columns and relationships of "works"
+"""
+type works {
+  application_id: uuid!
+  created_at: timestamptz!
+
+  """An array relationship"""
+  files(
+    """distinct select on columns"""
+    distinct_on: [works_files_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_files_order_by!]
+
+    """filter the rows returned"""
+    where: works_files_bool_exp
+  ): [works_files!]!
+
+  """An aggregated array relationship"""
+  files_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_files_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_files_order_by!]
+
+    """filter the rows returned"""
+    where: works_files_bool_exp
+  ): works_files_aggregate!
+  id: uuid!
+
+  """An array relationship"""
+  specifications(
+    """distinct select on columns"""
+    distinct_on: [works_specifications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_specifications_order_by!]
+
+    """filter the rows returned"""
+    where: works_specifications_bool_exp
+  ): [works_specifications!]!
+
+  """An aggregated array relationship"""
+  specifications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [works_specifications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [works_specifications_order_by!]
+
+    """filter the rows returned"""
+    where: works_specifications_bool_exp
+  ): works_specifications_aggregate!
+  type: String!
+  updated_at: timestamptz!
+}
+
+"""
+aggregated selection of "works"
+"""
+type works_aggregate {
+  aggregate: works_aggregate_fields
+  nodes: [works!]!
+}
+
+"""
+aggregate fields of "works"
+"""
+type works_aggregate_fields {
+  count(columns: [works_select_column!], distinct: Boolean): Int
+  max: works_max_fields
+  min: works_min_fields
+}
+
+"""
+order by aggregate values of table "works"
+"""
+input works_aggregate_order_by {
+  count: order_by
+  max: works_max_order_by
+  min: works_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "works"
+"""
+input works_arr_rel_insert_input {
+  data: [works_insert_input!]!
+  on_conflict: works_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "works". All fields are combined with a logical 'AND'.
+"""
+input works_bool_exp {
+  _and: [works_bool_exp]
+  _not: works_bool_exp
+  _or: [works_bool_exp]
+  application_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  files: works_files_bool_exp
+  id: uuid_comparison_exp
+  specifications: works_specifications_bool_exp
+  type: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "works"
+"""
+enum works_constraint {
+  """unique or primary key constraint"""
+  works_pkey
+}
+
+"""
+columns and relationships of "works_files"
+"""
+type works_files {
+  created_at: timestamptz!
+  id: uuid!
+  key: String!
+  mimetype: String!
+  order: Int!
+  originalname: String!
+  work_id: uuid!
+}
+
+"""
+aggregated selection of "works_files"
+"""
+type works_files_aggregate {
+  aggregate: works_files_aggregate_fields
+  nodes: [works_files!]!
+}
+
+"""
+aggregate fields of "works_files"
+"""
+type works_files_aggregate_fields {
+  avg: works_files_avg_fields
+  count(columns: [works_files_select_column!], distinct: Boolean): Int
+  max: works_files_max_fields
+  min: works_files_min_fields
+  stddev: works_files_stddev_fields
+  stddev_pop: works_files_stddev_pop_fields
+  stddev_samp: works_files_stddev_samp_fields
+  sum: works_files_sum_fields
+  var_pop: works_files_var_pop_fields
+  var_samp: works_files_var_samp_fields
+  variance: works_files_variance_fields
+}
+
+"""
+order by aggregate values of table "works_files"
+"""
+input works_files_aggregate_order_by {
+  avg: works_files_avg_order_by
+  count: order_by
+  max: works_files_max_order_by
+  min: works_files_min_order_by
+  stddev: works_files_stddev_order_by
+  stddev_pop: works_files_stddev_pop_order_by
+  stddev_samp: works_files_stddev_samp_order_by
+  sum: works_files_sum_order_by
+  var_pop: works_files_var_pop_order_by
+  var_samp: works_files_var_samp_order_by
+  variance: works_files_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "works_files"
+"""
+input works_files_arr_rel_insert_input {
+  data: [works_files_insert_input!]!
+  on_conflict: works_files_on_conflict
+}
+
+"""aggregate avg on columns"""
+type works_files_avg_fields {
+  order: Float
+}
+
+"""
+order by avg() on columns of table "works_files"
+"""
+input works_files_avg_order_by {
+  order: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "works_files". All fields are combined with a logical 'AND'.
+"""
+input works_files_bool_exp {
+  _and: [works_files_bool_exp]
+  _not: works_files_bool_exp
+  _or: [works_files_bool_exp]
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  key: String_comparison_exp
+  mimetype: String_comparison_exp
+  order: Int_comparison_exp
+  originalname: String_comparison_exp
+  work_id: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "works_files"
+"""
+enum works_files_constraint {
+  """unique or primary key constraint"""
+  works_files_pkey
+}
+
+"""
+input type for incrementing integer column in table "works_files"
+"""
+input works_files_inc_input {
+  order: Int
+}
+
+"""
+input type for inserting data into table "works_files"
+"""
+input works_files_insert_input {
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  order: Int
+  originalname: String
+  work_id: uuid
+}
+
+"""aggregate max on columns"""
+type works_files_max_fields {
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  order: Int
+  originalname: String
+  work_id: uuid
+}
+
+"""
+order by max() on columns of table "works_files"
+"""
+input works_files_max_order_by {
+  created_at: order_by
+  id: order_by
+  key: order_by
+  mimetype: order_by
+  order: order_by
+  originalname: order_by
+  work_id: order_by
+}
+
+"""aggregate min on columns"""
+type works_files_min_fields {
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  order: Int
+  originalname: String
+  work_id: uuid
+}
+
+"""
+order by min() on columns of table "works_files"
+"""
+input works_files_min_order_by {
+  created_at: order_by
+  id: order_by
+  key: order_by
+  mimetype: order_by
+  order: order_by
+  originalname: order_by
+  work_id: order_by
+}
+
+"""
+response of any mutation on the table "works_files"
+"""
+type works_files_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [works_files!]!
+}
+
+"""
+input type for inserting object relation for remote table "works_files"
+"""
+input works_files_obj_rel_insert_input {
+  data: works_files_insert_input!
+  on_conflict: works_files_on_conflict
+}
+
+"""
+on conflict condition type for table "works_files"
+"""
+input works_files_on_conflict {
+  constraint: works_files_constraint!
+  update_columns: [works_files_update_column!]!
+  where: works_files_bool_exp
+}
+
+"""
+ordering options when selecting data from "works_files"
+"""
+input works_files_order_by {
+  created_at: order_by
+  id: order_by
+  key: order_by
+  mimetype: order_by
+  order: order_by
+  originalname: order_by
+  work_id: order_by
+}
+
+"""
+primary key columns input for table: "works_files"
+"""
+input works_files_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "works_files"
+"""
+enum works_files_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  key
+
+  """column name"""
+  mimetype
+
+  """column name"""
+  order
+
+  """column name"""
+  originalname
+
+  """column name"""
+  work_id
+}
+
+"""
+input type for updating data in table "works_files"
+"""
+input works_files_set_input {
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  order: Int
+  originalname: String
+  work_id: uuid
+}
+
+"""aggregate stddev on columns"""
+type works_files_stddev_fields {
+  order: Float
+}
+
+"""
+order by stddev() on columns of table "works_files"
+"""
+input works_files_stddev_order_by {
+  order: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type works_files_stddev_pop_fields {
+  order: Float
+}
+
+"""
+order by stddev_pop() on columns of table "works_files"
+"""
+input works_files_stddev_pop_order_by {
+  order: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type works_files_stddev_samp_fields {
+  order: Float
+}
+
+"""
+order by stddev_samp() on columns of table "works_files"
+"""
+input works_files_stddev_samp_order_by {
+  order: order_by
+}
+
+"""aggregate sum on columns"""
+type works_files_sum_fields {
+  order: Int
+}
+
+"""
+order by sum() on columns of table "works_files"
+"""
+input works_files_sum_order_by {
+  order: order_by
+}
+
+"""
+update columns of table "works_files"
+"""
+enum works_files_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  key
+
+  """column name"""
+  mimetype
+
+  """column name"""
+  order
+
+  """column name"""
+  originalname
+
+  """column name"""
+  work_id
+}
+
+"""aggregate var_pop on columns"""
+type works_files_var_pop_fields {
+  order: Float
+}
+
+"""
+order by var_pop() on columns of table "works_files"
+"""
+input works_files_var_pop_order_by {
+  order: order_by
+}
+
+"""aggregate var_samp on columns"""
+type works_files_var_samp_fields {
+  order: Float
+}
+
+"""
+order by var_samp() on columns of table "works_files"
+"""
+input works_files_var_samp_order_by {
+  order: order_by
+}
+
+"""aggregate variance on columns"""
+type works_files_variance_fields {
+  order: Float
+}
+
+"""
+order by variance() on columns of table "works_files"
+"""
+input works_files_variance_order_by {
+  order: order_by
+}
+
+"""
+input type for inserting data into table "works"
+"""
+input works_insert_input {
+  application_id: uuid
+  created_at: timestamptz
+  files: works_files_arr_rel_insert_input
+  id: uuid
+  specifications: works_specifications_arr_rel_insert_input
+  type: String
+  updated_at: timestamptz
+}
+
+"""aggregate max on columns"""
+type works_max_fields {
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  type: String
+  updated_at: timestamptz
+}
+
+"""
+order by max() on columns of table "works"
+"""
+input works_max_order_by {
+  application_id: order_by
+  created_at: order_by
+  id: order_by
+  type: order_by
+  updated_at: order_by
+}
+
+"""aggregate min on columns"""
+type works_min_fields {
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  type: String
+  updated_at: timestamptz
+}
+
+"""
+order by min() on columns of table "works"
+"""
+input works_min_order_by {
+  application_id: order_by
+  created_at: order_by
+  id: order_by
+  type: order_by
+  updated_at: order_by
+}
+
+"""
+response of any mutation on the table "works"
+"""
+type works_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [works!]!
+}
+
+"""
+input type for inserting object relation for remote table "works"
+"""
+input works_obj_rel_insert_input {
+  data: works_insert_input!
+  on_conflict: works_on_conflict
+}
+
+"""
+on conflict condition type for table "works"
+"""
+input works_on_conflict {
+  constraint: works_constraint!
+  update_columns: [works_update_column!]!
+  where: works_bool_exp
+}
+
+"""
+ordering options when selecting data from "works"
+"""
+input works_order_by {
+  application_id: order_by
+  created_at: order_by
+  files_aggregate: works_files_aggregate_order_by
+  id: order_by
+  specifications_aggregate: works_specifications_aggregate_order_by
+  type: order_by
+  updated_at: order_by
+}
+
+"""
+primary key columns input for table: "works"
+"""
+input works_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "works"
+"""
+enum works_select_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  type
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "works"
+"""
+input works_set_input {
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  type: String
+  updated_at: timestamptz
+}
+
+"""
+columns and relationships of "works_specifications"
+"""
+type works_specifications {
+  created_at: timestamptz!
+  description: String
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  id: uuid!
+  medium: String
+  number_of_editions: Int
+  order: Int!
+  title: String!
+  updated_at: timestamptz!
+  work_id: uuid!
+  year: date!
+}
+
+"""
+aggregated selection of "works_specifications"
+"""
+type works_specifications_aggregate {
+  aggregate: works_specifications_aggregate_fields
+  nodes: [works_specifications!]!
+}
+
+"""
+aggregate fields of "works_specifications"
+"""
+type works_specifications_aggregate_fields {
+  avg: works_specifications_avg_fields
+  count(columns: [works_specifications_select_column!], distinct: Boolean): Int
+  max: works_specifications_max_fields
+  min: works_specifications_min_fields
+  stddev: works_specifications_stddev_fields
+  stddev_pop: works_specifications_stddev_pop_fields
+  stddev_samp: works_specifications_stddev_samp_fields
+  sum: works_specifications_sum_fields
+  var_pop: works_specifications_var_pop_fields
+  var_samp: works_specifications_var_samp_fields
+  variance: works_specifications_variance_fields
+}
+
+"""
+order by aggregate values of table "works_specifications"
+"""
+input works_specifications_aggregate_order_by {
+  avg: works_specifications_avg_order_by
+  count: order_by
+  max: works_specifications_max_order_by
+  min: works_specifications_min_order_by
+  stddev: works_specifications_stddev_order_by
+  stddev_pop: works_specifications_stddev_pop_order_by
+  stddev_samp: works_specifications_stddev_samp_order_by
+  sum: works_specifications_sum_order_by
+  var_pop: works_specifications_var_pop_order_by
+  var_samp: works_specifications_var_samp_order_by
+  variance: works_specifications_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "works_specifications"
+"""
+input works_specifications_arr_rel_insert_input {
+  data: [works_specifications_insert_input!]!
+  on_conflict: works_specifications_on_conflict
+}
+
+"""aggregate avg on columns"""
+type works_specifications_avg_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by avg() on columns of table "works_specifications"
+"""
+input works_specifications_avg_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "works_specifications". All fields are combined with a logical 'AND'.
+"""
+input works_specifications_bool_exp {
+  _and: [works_specifications_bool_exp]
+  _not: works_specifications_bool_exp
+  _or: [works_specifications_bool_exp]
+  created_at: timestamptz_comparison_exp
+  description: String_comparison_exp
+  dimensions_depth: Int_comparison_exp
+  dimensions_height: Int_comparison_exp
+  dimensions_width: Int_comparison_exp
+  id: uuid_comparison_exp
+  medium: String_comparison_exp
+  number_of_editions: Int_comparison_exp
+  order: Int_comparison_exp
+  title: String_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  work_id: uuid_comparison_exp
+  year: date_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "works_specifications"
+"""
+enum works_specifications_constraint {
+  """unique or primary key constraint"""
+  works_specifications_pkey
+}
+
+"""
+input type for incrementing integer column in table "works_specifications"
+"""
+input works_specifications_inc_input {
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  number_of_editions: Int
+  order: Int
+}
+
+"""
+input type for inserting data into table "works_specifications"
+"""
+input works_specifications_insert_input {
+  created_at: timestamptz
+  description: String
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  id: uuid
+  medium: String
+  number_of_editions: Int
+  order: Int
+  title: String
+  updated_at: timestamptz
+  work_id: uuid
+  year: date
+}
+
+"""aggregate max on columns"""
+type works_specifications_max_fields {
+  created_at: timestamptz
+  description: String
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  id: uuid
+  medium: String
+  number_of_editions: Int
+  order: Int
+  title: String
+  updated_at: timestamptz
+  work_id: uuid
+  year: date
+}
+
+"""
+order by max() on columns of table "works_specifications"
+"""
+input works_specifications_max_order_by {
+  created_at: order_by
+  description: order_by
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  id: order_by
+  medium: order_by
+  number_of_editions: order_by
+  order: order_by
+  title: order_by
+  updated_at: order_by
+  work_id: order_by
+  year: order_by
+}
+
+"""aggregate min on columns"""
+type works_specifications_min_fields {
+  created_at: timestamptz
+  description: String
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  id: uuid
+  medium: String
+  number_of_editions: Int
+  order: Int
+  title: String
+  updated_at: timestamptz
+  work_id: uuid
+  year: date
+}
+
+"""
+order by min() on columns of table "works_specifications"
+"""
+input works_specifications_min_order_by {
+  created_at: order_by
+  description: order_by
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  id: order_by
+  medium: order_by
+  number_of_editions: order_by
+  order: order_by
+  title: order_by
+  updated_at: order_by
+  work_id: order_by
+  year: order_by
+}
+
+"""
+response of any mutation on the table "works_specifications"
+"""
+type works_specifications_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [works_specifications!]!
+}
+
+"""
+input type for inserting object relation for remote table "works_specifications"
+"""
+input works_specifications_obj_rel_insert_input {
+  data: works_specifications_insert_input!
+  on_conflict: works_specifications_on_conflict
+}
+
+"""
+on conflict condition type for table "works_specifications"
+"""
+input works_specifications_on_conflict {
+  constraint: works_specifications_constraint!
+  update_columns: [works_specifications_update_column!]!
+  where: works_specifications_bool_exp
+}
+
+"""
+ordering options when selecting data from "works_specifications"
+"""
+input works_specifications_order_by {
+  created_at: order_by
+  description: order_by
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  id: order_by
+  medium: order_by
+  number_of_editions: order_by
+  order: order_by
+  title: order_by
+  updated_at: order_by
+  work_id: order_by
+  year: order_by
+}
+
+"""
+primary key columns input for table: "works_specifications"
+"""
+input works_specifications_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "works_specifications"
+"""
+enum works_specifications_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  description
+
+  """column name"""
+  dimensions_depth
+
+  """column name"""
+  dimensions_height
+
+  """column name"""
+  dimensions_width
+
+  """column name"""
+  id
+
+  """column name"""
+  medium
+
+  """column name"""
+  number_of_editions
+
+  """column name"""
+  order
+
+  """column name"""
+  title
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  work_id
+
+  """column name"""
+  year
+}
+
+"""
+input type for updating data in table "works_specifications"
+"""
+input works_specifications_set_input {
+  created_at: timestamptz
+  description: String
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  id: uuid
+  medium: String
+  number_of_editions: Int
+  order: Int
+  title: String
+  updated_at: timestamptz
+  work_id: uuid
+  year: date
+}
+
+"""aggregate stddev on columns"""
+type works_specifications_stddev_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by stddev() on columns of table "works_specifications"
+"""
+input works_specifications_stddev_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type works_specifications_stddev_pop_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by stddev_pop() on columns of table "works_specifications"
+"""
+input works_specifications_stddev_pop_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type works_specifications_stddev_samp_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by stddev_samp() on columns of table "works_specifications"
+"""
+input works_specifications_stddev_samp_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""aggregate sum on columns"""
+type works_specifications_sum_fields {
+  dimensions_depth: Int
+  dimensions_height: Int
+  dimensions_width: Int
+  number_of_editions: Int
+  order: Int
+}
+
+"""
+order by sum() on columns of table "works_specifications"
+"""
+input works_specifications_sum_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""
+update columns of table "works_specifications"
+"""
+enum works_specifications_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  description
+
+  """column name"""
+  dimensions_depth
+
+  """column name"""
+  dimensions_height
+
+  """column name"""
+  dimensions_width
+
+  """column name"""
+  id
+
+  """column name"""
+  medium
+
+  """column name"""
+  number_of_editions
+
+  """column name"""
+  order
+
+  """column name"""
+  title
+
+  """column name"""
+  updated_at
+
+  """column name"""
+  work_id
+
+  """column name"""
+  year
+}
+
+"""aggregate var_pop on columns"""
+type works_specifications_var_pop_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by var_pop() on columns of table "works_specifications"
+"""
+input works_specifications_var_pop_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""aggregate var_samp on columns"""
+type works_specifications_var_samp_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by var_samp() on columns of table "works_specifications"
+"""
+input works_specifications_var_samp_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""aggregate variance on columns"""
+type works_specifications_variance_fields {
+  dimensions_depth: Float
+  dimensions_height: Float
+  dimensions_width: Float
+  number_of_editions: Float
+  order: Float
+}
+
+"""
+order by variance() on columns of table "works_specifications"
+"""
+input works_specifications_variance_order_by {
+  dimensions_depth: order_by
+  dimensions_height: order_by
+  dimensions_width: order_by
+  number_of_editions: order_by
+  order: order_by
+}
+
+"""
+update columns of table "works"
+"""
+enum works_update_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  type
+
+  """column name"""
+  updated_at
+}

@@ -1,0 +1,31 @@
+fragment Edition on editions {
+  id
+  name
+  current
+  created_at
+}
+
+mutation CreateEdition($name: String!) {
+  insert_editions_one(object: { name: $name }) {
+    ...Edition
+  }
+}
+mutation RenameEdition($id: Int!, $name: String!) {
+  update_editions_by_pk(pk_columns: { id: $id }, _set: { name: $name }) {
+    ...Edition
+  }
+}
+
+mutation SetCurrentEdition($id: Int!) {
+  update_editions(_set: { current: null }, where: { current: { _eq: true } }) {
+    affected_rows
+  }
+  update_editions_by_pk(pk_columns: { id: $id }, _set: { current: true }) {
+    ...Edition
+  }
+}
+mutation DisableEditions {
+  update_editions(_set: { current: null }, where: { current: { _eq: true } }) {
+    affected_rows
+  }
+}

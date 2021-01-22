@@ -1,0 +1,9 @@
+query GetCurrentRound {
+  rating_rounds(
+    where: {
+      _and: { edition: { current: { _eq: true } }, _not: { next_round: {} } }
+    }
+  ) {
+    id
+  }
+}

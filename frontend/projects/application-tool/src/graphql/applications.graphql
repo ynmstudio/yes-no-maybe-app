@@ -1,0 +1,23 @@
+# User
+
+query GetApplications {
+  applications {
+    name
+    edition {
+      name
+    }
+  }
+}
+
+# Jury
+
+# Admin
+
+query GetApplicationsByEdition($id: Int!) {
+  applications(where: { edition: { id: { _eq: $id } } }) {
+    name
+    edition {
+      name
+    }
+  }
+}

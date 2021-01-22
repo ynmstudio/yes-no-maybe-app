@@ -5,6 +5,18 @@ admin.initializeApp(functions.config().firebase);
 
 // On sign up.
 exports.processSignUp = functions.auth.user().onCreate((user) => {
+
+//   if (user.email &&
+//     user.email.endsWith('@admin.example.com') &&
+//     user.emailVerified) {
+//   const customClaims = {
+//     admin: true,
+//     accessLevel: 9
+//   };
+// } else {
+
+// }
+
   const customClaims = {
     "https://hasura.io/jwt/claims": {
       "x-hasura-default-role": "user",

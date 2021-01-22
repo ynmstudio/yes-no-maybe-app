@@ -20,6 +20,14 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "apollo-link-ws",
+              "@apollo/client",
+              "apollo-link-queue",
+              "subscriptions-transport-ws",
+              "graphql-tag",
+              "zen-observable"
+            ],
             "outputPath": "dist/application-tool",
             "index": "projects/application-tool/src/index.html",
             "main": "projects/application-tool/src/main.ts",
@@ -41,12 +49,6 @@
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/application-tool/src/environments/environment.ts",
-                  "with": "projects/application-tool/src/environments/environment.prod.ts"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,

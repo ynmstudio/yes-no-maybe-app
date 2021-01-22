@@ -1,0 +1,13 @@
+overwrite: true
+schema:
+  - schema.hasura.graphql
+generates:
+  generated/types.graphql-gen.ts:
+    documents: "projects/application-tool/**/*.graphql"
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-apollo-angular"
+      - "fragment-matcher"
+    config:
+      apolloClientVersion: 3
