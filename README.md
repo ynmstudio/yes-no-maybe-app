@@ -51,3 +51,10 @@ Important: always run via `hasura console --admin-secret myadminsecretkey` insid
 ### Firebase
 
 Firebase config data will be extracted via REST-API before publishing the project. (see [Firebase Remote Config API](https://firebase.google.com/docs/reference/remote-config/rest) as an example)
+
+#### Firebase Setup
+
+1. `cd functions`
+2. `firebase login` and select your project
+3. Set the admin account which gets the team role assigned on sign-up with `firebase functions:config:set hasura.admin_email="webmaster@example.com"`
+4. (optional) Set automatic team member accounts by defining your email domain with `firebase functions:config:set hasura.team_role_email_domain="@example.com"`
