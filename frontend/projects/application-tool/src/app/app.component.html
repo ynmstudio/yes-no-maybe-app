@@ -1,1 +1,13 @@
+<div
+  *ngIf="!(authService.emailVerified | async)"
+  class="verify-email fixed bottom-0 inset-x-0 px-4 py-3 z-10 bg-yellow-300 text-black leading-none"
+>
+  Bitte bestätige deine Email-Addresse.
+  <button
+    class="font-mono uppercase text-xs p-1 ml-2"
+    (click)="sendVerification()"
+  >
+    &rarr; Bestätigungsemail zusenden
+  </button>
+</div>
 <router-outlet></router-outlet>
