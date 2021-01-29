@@ -1,1 +1,345 @@
-[]
+- table:
+    schema: public
+    name: applications
+  object_relationships:
+  - name: edition
+    using:
+      foreign_key_constraint_on: edition_id
+  array_relationships:
+  - name: ratings
+    using:
+      foreign_key_constraint_on:
+        column: application_id
+        table:
+          schema: public
+          name: ratings
+  - name: works
+    using:
+      foreign_key_constraint_on:
+        column: application_id
+        table:
+          schema: public
+          name: works
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        edition:
+          _and:
+          - current:
+              _eq: true
+          - application_start:
+              _lte: now()
+          - application_end:
+              _gte: now()
+      set:
+        created_by: x-hasura-user-id
+      columns:
+      - edition_id
+      - name
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - edition_id
+      - created_by
+      - name
+      - created_at
+      - updated_at
+      - id
+      filter:
+        edition:
+          current:
+            _eq: true
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - created_at
+      - created_by
+      - edition_id
+      - id
+      - name
+      - updated_at
+      filter:
+        edition:
+          current:
+            _eq: true
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - name
+      - edition_id
+      filter:
+        _and:
+        - edition:
+            current:
+              _eq: true
+        - created_by:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - name
+      filter:
+        _and:
+        - created_by:
+            _eq: X-Hasura-User-Id
+        - edition:
+            _and:
+            - current:
+                _eq: true
+            - application_start:
+                _lte: now()
+            - application_end:
+                _gte: now()
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _and:
+        - created_by:
+            _eq: X-Hasura-User-Id
+        - edition:
+            _and:
+            - current:
+                _eq: true
+            - application_start:
+                _lte: now()
+            - application_end:
+                _gte: now()
+- table:
+    schema: public
+    name: editions
+  array_relationships:
+  - name: applications
+    using:
+      foreign_key_constraint_on:
+        column: edition_id
+        table:
+          schema: public
+          name: applications
+  - name: rating_rounds
+    using:
+      foreign_key_constraint_on:
+        column: edition_id
+        table:
+          schema: public
+          name: rating_rounds
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      columns:
+      - application_end
+      - application_start
+      - current
+      - name
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - application_end
+      - application_start
+      - current
+      - id
+      - name
+      filter:
+        current:
+          _eq: true
+  - role: team
+    permission:
+      columns:
+      - current
+      - id
+      - name
+      - application_end
+      - application_start
+      - created_at
+      filter: {}
+      limit: 1
+  - role: user
+    permission:
+      columns:
+      - application_end
+      - application_start
+      - current
+      - id
+      - name
+      filter:
+        current:
+          _eq: true
+      limit: 1
+  update_permissions:
+  - role: team
+    permission:
+      columns:
+      - application_end
+      - application_start
+      - current
+      - name
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: rating_rounds
+  object_relationships:
+  - name: edition
+    using:
+      foreign_key_constraint_on: edition_id
+  - name: next_round
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: rating_rounds
+        column_mapping:
+          id: prev_round_id
+  - name: prev_round
+    using:
+      foreign_key_constraint_on: prev_round_id
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - id
+      - start_at
+      - end_at
+      - edition_id
+      - goal
+      - prev_round_id
+      - created_at
+      - updated_at
+      filter:
+        _and:
+        - edition:
+            current:
+              _eq: true
+        - _not:
+            next_round: {}
+- table:
+    schema: public
+    name: ratings
+- table:
+    schema: public
+    name: users
+  insert_permissions:
+  - role: jury
+    permission:
+      check: {}
+      set:
+        id: x-hasura-user-id
+        type: x-hasura-default-role
+      columns: []
+      backend_only: false
+  - role: team
+    permission:
+      check: {}
+      set:
+        id: x-hasura-user-id
+        type: x-hasura-default-role
+      columns: []
+      backend_only: false
+  - role: user
+    permission:
+      check: {}
+      set:
+        id: x-hasura-user-id
+        type: x-hasura-default-role
+      columns: []
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - name
+      - type
+      - id
+      filter: {}
+  - role: team
+    permission:
+      columns:
+      - name
+      - type
+      - id
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - id
+      - type
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: jury
+    permission:
+      columns: []
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+      set:
+        type: x-hasura-default-role
+  - role: team
+    permission:
+      columns:
+      - name
+      - type
+      filter: {}
+      check: null
+  - role: user
+    permission:
+      columns: []
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+      set:
+        type: x-hasura-default-role
+  delete_permissions:
+  - role: team
+    permission:
+      filter: {}
+  - role: user
+    permission:
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: works
+  array_relationships:
+  - name: files
+    using:
+      foreign_key_constraint_on:
+        column: work_id
+        table:
+          schema: public
+          name: works_files
+  - name: specifications
+    using:
+      foreign_key_constraint_on:
+        column: work_id
+        table:
+          schema: public
+          name: works_specifications
+- table:
+    schema: public
+    name: works_files
+- table:
+    schema: public
+    name: works_specifications
