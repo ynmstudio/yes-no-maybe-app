@@ -16,24 +16,42 @@ import { ConnectionService } from 'ng-connection-service';
 import { environment } from '../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { take } from 'rxjs/operators';
+import { env } from 'process';
 
 // This should be in sync with update information inside ngsw-config.json file
-export const SCHEMA_VERSION = '0.0.5'; // Must be a string.
+export const SCHEMA_VERSION = '0.0.0'; // Must be a string.
 export const SCHEMA_VERSION_KEY = 'apollo_schema_version';
 
 const uri = environment.hasura.graphql; // <-- add the URL of the GraphQL server here
 const websocket = environment.hasura.websocket; // <-- add the URL of the GraphQL server here
 
+const localHeaders = (role: string, id: string) => {
+  return {
+    'x-hasura-admin-secret': environment.hasura.secret_key,
+    'x-hasura-role': role, // adapt accordingly to test different users
+    'x-hasura-user-id': id,
+  };
+};
+
 const authCtx = (auth: AngularFireAuth) =>
   setContext(async (_, { headers }) => {
     // Grab token if there is one in storage or hasn't expired
     const token = await auth.idToken.pipe(take(1)).toPromise();
-    console.warn(token);
+
     if (token) {
+      let devHeaders = {};
+      if (!environment.production) {
+        const tokenResult = await auth.idTokenResult.pipe(take(1)).toPromise();
+        devHeaders = localHeaders(
+          tokenResult?.claims['role'],
+          tokenResult?.claims['user_id']
+        );
+      }
       // Return the headers as usual
       return {
         headers: {
           ...headers,
+          ...devHeaders,
           Authorization: token ? `Bearer ${token}` : '',
         },
       };
@@ -68,11 +86,23 @@ export function createApollo(
       connectionParams: async ({ headers }: any) => {
         // @TODO Check why Websocket Link is not working
         const token = await auth.idToken.pipe(take(1)).toPromise();
+
         if (token) {
+          let devHeaders = {};
+          if (!environment.production) {
+            const tokenResult = await auth.idTokenResult
+              .pipe(take(1))
+              .toPromise();
+            devHeaders = localHeaders(
+              tokenResult?.claims['role'],
+              tokenResult?.claims['user_id']
+            );
+          }
           // Return the headers as usual
           return {
             headers: {
               ...headers,
+              ...devHeaders,
               Authorization: token ? `Bearer ${token}` : '',
             },
           };

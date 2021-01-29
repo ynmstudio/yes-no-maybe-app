@@ -33,9 +33,21 @@ Other authentication/storage/hosting providers could be added at a later stage.
 
 ### Angular
 
+#### Local Development
+
+1. `cd frontend`
+2. `npm install`
+3. `npm start`
+
 ### Hasura
 
 Important: always run via `hasura console --admin-secret myadminsecretkey` inside folder `database` to keep track of changes!
+
+#### Local Development
+
+1. `docker-compose up -d`
+2. `cd database`
+3. `hasura console --admin-secret myadminsecretkey`
 
 #### Migration
 
@@ -58,3 +70,11 @@ Firebase config data will be extracted via REST-API before publishing the projec
 2. `firebase login` and select your project
 3. Set the admin account which gets the team role assigned on sign-up with `firebase functions:config:set hasura.admin_email="webmaster@example.com"`
 4. (optional) Set automatic team member accounts by defining your email domain with `firebase functions:config:set hasura.team_role_email_domain="@example.com"`
+
+#### Local Development
+
+1. `cd functions`
+2. `npm install`
+3. `firebase init emulators`
+4. `firebase functions:config:get > .runtimeconfig.json`
+5. `npm start`

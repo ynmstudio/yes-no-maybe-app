@@ -10,6 +10,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
 import { SharedModule } from './shared/shared.module';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
+import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
+import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
+import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +27,21 @@ import { SharedModule } from './shared/shared.module';
     SharedModule.forRoot(),
     GraphQLModule,
   ],
-  providers: [],
+  providers: [
+    // check firebase.json for matching ports
+    {
+      provide: AUTH_EMULATOR,
+      useValue: environment.production ? undefined : ['localhost', 9099],
+    },
+    {
+      provide: DATABASE_EMULATOR,
+      useValue: environment.production ? undefined : ['localhost', 9000],
+    },
+    {
+      provide: FUNCTIONS_EMULATOR,
+      useValue: environment.production ? undefined : ['localhost', 5001],
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
