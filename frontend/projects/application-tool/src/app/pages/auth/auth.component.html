@@ -1,21 +1,11 @@
 <header
-  class="fixed top-0 inset-x-0 flex items-center justify-between py-8 px-4 sm:px-6 lg:px-8"
+  class="container--default fixed top-0 inset-x-0 flex items-center justify-between z-0"
 >
-  <h1 class="text-3xl leading-none">Berlin Art Prize</h1>
-  <nav>
-    <ul>
-      <li class="inline-block">
-        <button class="uppercase px-1 font-condensed underline">de</button>
-      </li>
-      <li class="inline-block">
-        <button class="uppercase px-1 font-condensed">en</button>
-      </li>
-    </ul>
-  </nav>
+  <div class="text-headline">Berlin Art Prize</div>
 </header>
 <main
   [ngSwitch]="mode"
-  class="min-h-screen flex items-center justify-center pt-10 pb-16 px-4 sm:px-6 lg:px-8"
+  class="min-h-screen flex items-center justify-center pt-10 pb-16 container--default-x"
 >
   <!-- REGISTER FORM -->
   <form
@@ -26,7 +16,7 @@
     (ngSubmit)="register()"
   >
     <div>
-      <h2 class="mt-6 text-3xl">Registrieren</h2>
+      <h2 class="mt-6 text-headline">Registrieren</h2>
       <div class="mt-3 font-mono text-sm text-gray-400">
         <p>
           Bereits registriert?
@@ -41,56 +31,72 @@
         <p>&nbsp;</p>
       </div>
     </div>
-    <div class="mt-8 flex-auto bg-black text-white pt-4 pb-10 relative">
+    <div class="mt-8 flex-auto pt-4 pb-10 relative">
       <input type="hidden" name="remember" value="true" />
-      <div class="lg:flex lg:space-x-8 space-y-4 lg:space-y-0">
-        <div class="flex-auto px-2 relative">
-          <div>
-            <label for="email-address" class="sr-only">E-Mail</label>
-            <input
-              id="email-address"
-              formControlName="loginName"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              class="appearance-none rounded-none relative block w-full px-0 py-2 border-solid bg-transparent border-b border-t-0 border-r-0 border-l-0 border-white font-mono placeholder-gray-300 text-white focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-              placeholder="E-Mail"
-            />
-          </div>
+      <div
+        class="font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
+      >
+        <label for="firstName" class="text-right">Vorname*</label>
+        <input
+          id="first-name"
+          formControlName="firstName"
+          name="firstName"
+          type="text"
+          autocomplete="name"
+          class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        />
+
+        <label for="lastName" class="text-right">Nachname*</label>
+        <input
+          id="last-name"
+          formControlName="lastName"
+          name="lastName"
+          type="text"
+          autocomplete="family-name"
+          class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        />
+
+        <label for="email-address" class="text-right">E-Mail*</label>
+        <input
+          id="email-address"
+          formControlName="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        />
+
+        <label for="password" class="text-right">Passwort*</label>
+        <div class="relative">
+          <input
+            id="password"
+            formControlName="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+          />
+        </div>
+        <label for="confirmPassword" class="text-right"
+          >Passwort<br />wiederholen*</label
+        >
+        <div class="relative">
+          <input
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+          />
           <p
-            *ngIf="loginName.touched && loginName.invalid"
-            class="absolute top-full w-full mt-2 text-xs font-mono text-red-200 leading-tight truncate"
-            id="email-error"
+            class="absolute top-100 mt-2 text-xs font-mono text-gray-500 leading-tight truncate"
           >
-            Bitte gültige Email eingeben
+            (i) Mindestens 6 oder mehr Zeichen eingeben
           </p>
         </div>
-        <div class="flex-auto px-2 relative">
-          <div>
-            <label for="password" class="sr-only">Passwort</label>
-            <input
-              id="password"
-              formControlName="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required
-              class="appearance-none rounded-none relative block w-full px-0 py-2 border-solid bg-transparent border-b border-t-0 border-r-0 border-l-0 border-white font-mono placeholder-gray-300 text-white focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-              placeholder="Passwort"
-            />
-          </div>
-          <p
-            *ngIf="password.touched && password.invalid"
-            class="absolute top-full w-full mt-2 text-xs font-mono text-red-200 leading-tight truncate"
-            id="email-error"
-          >
-            Bitte Kennwort eingeben
-          </p>
-        </div>
-      </div>
-      <div class="absolute top-full">
-        <div class="privacy mt-3 px-4 flex items-center">
+        <div class="privacy col-start-2 mt-10 flex items-center">
           <!-- This example requires Tailwind CSS v2.0+ -->
           <!-- On: "bg-gray-600", Off: "bg-gray-200" -->
           <button
@@ -101,7 +107,7 @@
             [ngClass]="[
               confirmPrivacy.value ? 'bg-green-500' : 'bg-gray-300',
               confirmPrivacy.touched && confirmPrivacy.invalid
-                ? ' outline-none ring-1 ring-offset-1 ring-red-400'
+                ? ' outline-none ring-1 ring-offset-1 ring-red-500'
                 : ''
             ]"
             class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
@@ -133,10 +139,49 @@
           </span>
         </div>
       </div>
+      <div class="px-2 py-4 text-xs font-mono text-red-600 leading-tight">
+        <p
+          *ngIf="firstName.touched && firstName.invalid"
+          class="mt-2 truncate"
+          id="email-error"
+        >
+          Bitte Vornamen eingeben.
+        </p>
+        <p
+          *ngIf="lastName.touched && lastName.invalid"
+          class="mt-2 truncate"
+          id="email-error"
+        >
+          Bitte Nachnamen eingeben.
+        </p>
+        <p
+          *ngIf="email.touched && email.invalid"
+          class="mt-2 truncate"
+          id="email-error"
+        >
+          Bitte gültige Email eingeben.
+        </p>
+        <p
+          *ngIf="password.touched && password.invalid"
+          class="mt-2 truncate"
+          id="email-error"
+        >
+          Bitte Kennwort mit 6 oder mehr Zeichen eingeben.
+        </p>
+        <p>
+          {{ form.errors | json }}
+        </p>
+      </div>
     </div>
 
     <div class="flex md:justify-end sm:col-span-full lg:col-auto">
-      <button type="submit" class="button--auth-submit">Konto erstellen</button>
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="button--auth-submit"
+      >
+        Konto erstellen
+      </button>
     </div>
   </form>
   <!-- FORGOT LOGIN FORM -->
@@ -148,7 +193,7 @@
     (ngSubmit)="forgot()"
   >
     <div>
-      <h2 class="mt-6 text-3xl">Passwort vergessen?</h2>
+      <h2 class="mt-6 text-headline">Passwort vergessen?</h2>
       <div class="mt-3 font-mono text-sm text-gray-400">
         <p>
           Kein Login?
@@ -180,7 +225,7 @@
             <label for="email-address" class="sr-only">E-Mail</label>
             <input
               id="email-address"
-              formControlName="loginName"
+              formControlName="email"
               name="email"
               type="email"
               autocomplete="email"
@@ -189,8 +234,8 @@
             />
           </div>
           <p
-            *ngIf="loginName.touched && loginName.invalid"
-            class="absolute top-full w-full mt-2 text-xs font-mono text-red-200 leading-tight truncate"
+            *ngIf="email.touched && email.invalid"
+            class="absolute top-full w-full mt-2 text-xs font-mono text-red-400 text-opacity-90 leading-tight truncate"
             id="email-error"
           >
             Bitte gültige Email eingeben
@@ -200,7 +245,13 @@
     </div>
 
     <div class="flex md:justify-end sm:col-span-full lg:col-auto">
-      <button type="submit" class="button--auth-submit">zurücksetzen</button>
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="button--auth-submit"
+      >
+        zurücksetzen
+      </button>
     </div>
   </form>
   <!-- LOGIN FORM -->
@@ -212,7 +263,7 @@
     (ngSubmit)="login()"
   >
     <div>
-      <h2 class="mt-6 text-3xl">Login</h2>
+      <h2 class="mt-6 text-headline">Login</h2>
       <div class="mt-3 font-mono text-sm text-gray-400">
         <p>
           Kein Login?
@@ -243,7 +294,7 @@
             <label for="email-address" class="sr-only">E-Mail</label>
             <input
               id="email-address"
-              formControlName="loginName"
+              formControlName="email"
               name="email"
               type="email"
               autocomplete="email"
@@ -253,8 +304,8 @@
             />
           </div>
           <p
-            *ngIf="loginName.touched && loginName.invalid"
-            class="absolute top-full w-full mt-2 text-xs font-mono text-red-200 leading-tight truncate"
+            *ngIf="email.touched && email.invalid"
+            class="absolute top-full w-full mt-2 text-xs font-mono text-red-400 text-opacity-90 leading-tight truncate"
             id="email-error"
           >
             Bitte gültige Email eingeben
@@ -276,28 +327,32 @@
           </div>
           <p
             *ngIf="password.touched && password.invalid"
-            class="absolute top-full w-full mt-2 text-xs font-mono text-red-200 leading-tight truncate"
+            class="absolute top-full w-full mt-2 text-xs font-mono text-red-400 text-opacity-90 leading-tight truncate"
             id="email-error"
           >
-            Bitte Kennwort eingeben
+            Bitte Kennwort eingeben.
           </p>
         </div>
       </div>
     </div>
 
     <div class="flex md:justify-end sm:col-span-full lg:col-auto">
-      <button type="submit" class="button--auth-submit">Anmelden</button>
+      <button
+        type="submit"
+        [disabled]="form.invalid"
+        class="button--auth-submit"
+      >
+        Anmelden
+      </button>
     </div>
   </form>
 </main>
 
 <footer
-  class="fixed bottom-0 inset-x-0 md:flex justify-end py-8 px-4 sm:px-6 lg:px-8"
+  class="container--default lg:fixed bottom-0 inset-x-0 md:flex justify-end z-0"
 >
-  <div class="mb-4">
+  <div>
     <p>Berlin Art Prize e.V.</p>
-  </div>
-  <div class="md:pl-8">
-    <p>+49 (0)30 88 49 29 64<br />contact@berlinartprize.com</p>
+    <p>contact@berlinartprize.com</p>
   </div>
 </footer>

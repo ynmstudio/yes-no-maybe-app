@@ -1,3 +1,27 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @apply py-8 px-4 sm:px-6 lg:px-8;
+// @apply p-4 sm:p-6 lg:p-8;
+@layer base {
+  .container--default {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  .container--default-x {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  .container--default-y {
+    @apply py-4 sm:py-6 lg:py-8;
+  }
+}
+
+@layer components {
+  .text-headline {
+    @apply text-2xl md:text-3xl;
+  }
+}

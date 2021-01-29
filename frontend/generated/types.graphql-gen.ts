@@ -22,16 +22,19 @@ export type Scalars = {
 /** columns and relationships of "applications" */
 export type Applications = {
   __typename?: 'applications';
+  as_group: Scalars['Boolean'];
   created_at: Scalars['timestamptz'];
+  created_by: Scalars['String'];
   /** An object relationship */
   edition: Editions;
   edition_id: Scalars['Int'];
   id: Scalars['uuid'];
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   /** An array relationship */
   ratings: Array<Ratings>;
   /** An aggregated array relationship */
   ratings_aggregate: Ratings_Aggregate;
+  statement?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   /** An array relationship */
   works: Array<Works>;
@@ -146,12 +149,15 @@ export type Applications_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Applications_Bool_Exp>>>;
   _not?: Maybe<Applications_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Applications_Bool_Exp>>>;
+  as_group?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  created_by?: Maybe<String_Comparison_Exp>;
   edition?: Maybe<Editions_Bool_Exp>;
   edition_id?: Maybe<Int_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
+  statement?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   works?: Maybe<Works_Bool_Exp>;
 };
@@ -169,12 +175,15 @@ export type Applications_Inc_Input = {
 
 /** input type for inserting data into table "applications" */
 export type Applications_Insert_Input = {
+  as_group?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  created_by?: Maybe<Scalars['String']>;
   edition?: Maybe<Editions_Obj_Rel_Insert_Input>;
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
+  statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   works?: Maybe<Works_Arr_Rel_Insert_Input>;
 };
@@ -183,18 +192,22 @@ export type Applications_Insert_Input = {
 export type Applications_Max_Fields = {
   __typename?: 'applications_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  created_by?: Maybe<Scalars['String']>;
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by max() on columns of table "applications" */
 export type Applications_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -202,18 +215,22 @@ export type Applications_Max_Order_By = {
 export type Applications_Min_Fields = {
   __typename?: 'applications_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  created_by?: Maybe<Scalars['String']>;
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 /** order by min() on columns of table "applications" */
 export type Applications_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
 
@@ -241,12 +258,15 @@ export type Applications_On_Conflict = {
 
 /** ordering options when selecting data from "applications" */
 export type Applications_Order_By = {
+  as_group?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
   edition?: Maybe<Editions_Order_By>;
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
+  statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   works_aggregate?: Maybe<Works_Aggregate_Order_By>;
 };
@@ -259,7 +279,11 @@ export type Applications_Pk_Columns_Input = {
 /** select columns of table "applications" */
 export enum Applications_Select_Column {
   /** column name */
+  AsGroup = 'as_group',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
   /** column name */
   EditionId = 'edition_id',
   /** column name */
@@ -267,15 +291,20 @@ export enum Applications_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  Statement = 'statement',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "applications" */
 export type Applications_Set_Input = {
+  as_group?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  created_by?: Maybe<Scalars['String']>;
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
@@ -326,13 +355,19 @@ export type Applications_Sum_Order_By = {
 /** update columns of table "applications" */
 export enum Applications_Update_Column {
   /** column name */
+  AsGroup = 'as_group',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
   /** column name */
   EditionId = 'edition_id',
   /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
+  /** column name */
+  Statement = 'statement',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -927,7 +962,7 @@ export type Mutation_RootDelete_UsersArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Users_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['String'];
 };
 
 
@@ -1398,7 +1433,7 @@ export type Query_RootUsers_AggregateArgs = {
 
 /** query root */
 export type Query_RootUsers_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['String'];
 };
 
 
@@ -2414,7 +2449,7 @@ export type Subscription_RootUsers_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootUsers_By_PkArgs = {
-  id: Scalars['uuid'];
+  id: Scalars['String'];
 };
 
 
@@ -2512,7 +2547,7 @@ export type Timestamptz_Comparison_Exp = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
-  id: Scalars['uuid'];
+  id: Scalars['String'];
   name: Scalars['String'];
   type: Scalars['String'];
 };
@@ -2557,7 +2592,7 @@ export type Users_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
   _not?: Maybe<Users_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
-  id?: Maybe<Uuid_Comparison_Exp>;
+  id?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   type?: Maybe<String_Comparison_Exp>;
 };
@@ -2565,12 +2600,14 @@ export type Users_Bool_Exp = {
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
   /** unique or primary key constraint */
+  UsersNameKey = 'users_name_key',
+  /** unique or primary key constraint */
   UsersPkey = 'users_pkey'
 }
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
-  id?: Maybe<Scalars['uuid']>;
+  id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2578,7 +2615,7 @@ export type Users_Insert_Input = {
 /** aggregate max on columns */
 export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
-  id?: Maybe<Scalars['uuid']>;
+  id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2593,7 +2630,7 @@ export type Users_Max_Order_By = {
 /** aggregate min on columns */
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
-  id?: Maybe<Scalars['uuid']>;
+  id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2636,7 +2673,7 @@ export type Users_Order_By = {
 
 /** primary key columns input for table: "users" */
 export type Users_Pk_Columns_Input = {
-  id: Scalars['uuid'];
+  id: Scalars['String'];
 };
 
 /** select columns of table "users" */
@@ -2651,7 +2688,7 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
-  id?: Maybe<Scalars['uuid']>;
+  id?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -3711,7 +3748,13 @@ export type GetApplicationsQuery = (
       { __typename?: 'editions' }
       & Pick<Editions, 'name'>
     ) }
-  )> }
+  )>, applications_aggregate: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type GetApplicationsByEditionQueryVariables = Exact<{
@@ -3820,6 +3863,11 @@ export const GetApplicationsDocument = gql`
     name
     edition {
       name
+    }
+  }
+  applications_aggregate {
+    aggregate {
+      count
     }
   }
 }

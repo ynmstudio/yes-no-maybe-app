@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from './services/app.service';
 import { AuthService } from './services/auth.service';
 import { HasuraService } from './services/hasura.service';
+import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -14,6 +15,7 @@ const MODULES = [
 
 const PIPES: any = [
   // put pipes here
+  TimeAgoPipe,
 ];
 
 const COMPONENTS: any = [

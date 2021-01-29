@@ -7,25 +7,25 @@ import {
   GetApplicationsQuery,
 } from 'generated/types.graphql-gen';
 import { Observable } from 'rxjs';
-import { AuthMode } from '../../auth/auth.component';
 
 @Component({
   selector: 'app-user-dashboard',
-  templateUrl: './user-dashboard.component.html',
-  styleUrls: ['./user-dashboard.component.scss'],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
-export class UserDashboardComponent implements OnInit {
-  mode: AuthMode = 'login';
-
-  applications$: Observable<SubscriptionResult<GetApplicationsQuery>>;
+export class DashboardComponent implements OnInit {
+  user$;
+  applications$;
 
   constructor(
     private getApplicationsGQL: GetApplicationsGQL,
-    private userservice: UserService,
     private afAuth: AngularFireAuth
   ) {
-    this.applications$ = this.getApplicationsGQL.watch().valueChanges;
-    this.afAuth.idTokenResult.subscribe((result) => console.warn(result));
+    this.applications$ = this.getApplicationsGQL.watch(
+      {},
+      { fetchPolicy: 'cache-and-network' }
+    ).valueChanges;
+    this.user$ = this.afAuth.authState;
   }
 
   ngOnInit(): void {

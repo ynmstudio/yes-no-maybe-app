@@ -57,23 +57,59 @@ export class AuthService {
     });
   }
 
-  async register(email: string, password: string) {
-    await this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        if (!result.user?.emailVerified) result.user?.sendEmailVerification();
+  async register(
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string
+  ) {
+    try {
+      const result = await this.afAuth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      if (!result.user?.emailVerified) result.user?.sendEmailVerification();
 
-        console.log('AuthService >> register > user', result);
+      console.log('AuthService >> register > user', result);
 
-        this.router.navigate(['u']);
-        this.afAuth.idTokenResult
-          .toPromise()
-          .then((result) => console.log(result));
-      })
-      .catch((error) => this.appService.message(error));
+      const user = await this.afAuth.currentUser;
+      await user?.updateProfile({
+        displayName: `${firstName} ${lastName}`,
+      });
+
+      const idTokenResult = await result.user?.getIdTokenResult(true);
+
+      if (idTokenResult) {
+        switch (idTokenResult.claims['role']) {
+          case 'user':
+            this.router.navigate(['u', 'dashboard']);
+            break;
+          case 'jury':
+            this.router.navigate(['j', 'dashboard']);
+            break;
+          case 'team':
+            this.router.navigate(['t', 'dashboard']);
+            break;
+          default:
+            this.router.navigate(['u', 'dashboard']);
+            break;
+        }
+      }
+    } catch (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+      if (errorCode == 'auth/weak-password') {
+        this.appService.message('The password is too weak.');
+      } else {
+        this.appService.message(error);
+      }
+    }
   }
 
   async forgot(email: string) {
+    await this.afAuth.useDeviceLanguage();
     await this.afAuth
       .sendPasswordResetEmail(email)
       .then(() => this.appService.message('Please check your inbox', 'success'))
@@ -81,21 +117,38 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    await this.afAuth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        console.log('AuthService >> login > user', result);
+    try {
+      const result = await this.afAuth.signInWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log('AuthService >> login > user', result);
 
-        this.router.navigate(['u']);
-        this.afAuth.idTokenResult
-          .toPromise()
-          .then((result) => console.log(result));
-        this.appService.message('');
-      })
-      .catch((error) => this.appService.message(error));
+      const idTokenResult = await result.user?.getIdTokenResult(true);
+
+      if (idTokenResult) {
+        switch (idTokenResult.claims['role']) {
+          case 'user':
+            this.router.navigate(['u', 'dashboard']);
+            break;
+          case 'jury':
+            this.router.navigate(['j', 'dashboard']);
+            break;
+          case 'team':
+            this.router.navigate(['t', 'dashboard']);
+            break;
+          default:
+            this.router.navigate(['u', 'dashboard']);
+            break;
+        }
+      }
+    } catch (error) {
+      this.appService.message(error);
+    }
   }
 
   async sendEmailVerification() {
+    this.afAuth.useDeviceLanguage();
     await this.afAuth
       .onAuthStateChanged((user) => user?.sendEmailVerification())
       .catch((error) => this.appService.message(error));

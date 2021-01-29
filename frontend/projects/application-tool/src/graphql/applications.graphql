@@ -7,6 +7,11 @@ query GetApplications {
       name
     }
   }
+  applications_aggregate {
+    aggregate {
+      count
+    }
+  }
 }
 
 # Jury

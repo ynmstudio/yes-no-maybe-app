@@ -12,6 +12,7 @@ const envConfigFile = `export const environment = {
   hasura: {
     graphql: '${process.env.HASURA_GRAPHQL_URL}',
     websocket: '${process.env.HASURA_WEBSOCKET_URL}',
+    secret_key: '${process.env.HASURA_LOCAL_DEV_SECRET_KEY}'
   },
   firebase: {
     apiKey: '${process.env.FIREBASE_API_KEY}',

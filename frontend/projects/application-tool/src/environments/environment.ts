@@ -3,6 +3,7 @@ export const environment = {
   hasura: {
     graphql: 'http://localhost:8080/v1/graphql',
     websocket: 'ws://localhost:8080/v1/graphql',
+    secret_key: 'myadminsecretkey'
   },
   firebase: {
     apiKey: 'AIzaSyDDlFmixa4iLYYIEdja_MsWiyn-7qSe6mg',
