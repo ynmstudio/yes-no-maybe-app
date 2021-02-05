@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
       {},
       { fetchPolicy: 'cache-and-network' }
     ).valueChanges;
+
     this.user$ = this.afAuth.authState;
   }
 

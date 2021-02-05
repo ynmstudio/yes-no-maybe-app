@@ -12,6 +12,18 @@ const routes: Routes = [
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path: 'applications/:id',
+    loadChildren: () =>
+      import('./edit-application/edit-application.module').then(
+        (m) => m.EditApplicationModule
+      ),
+  },
+  {
+    path: 'applications',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
