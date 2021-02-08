@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../shared/shared.module';
 
 import { EditApplicationRoutingModule } from './edit-application-routing.module';
 import { EditApplicationComponent } from './edit-application.component';
 
-
 @NgModule({
   declarations: [EditApplicationComponent],
-  imports: [
-    CommonModule,
-    EditApplicationRoutingModule
-  ]
+  imports: [SharedModule, EditApplicationRoutingModule],
 })
-export class EditApplicationModule { }
+export class EditApplicationModule {}

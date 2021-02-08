@@ -2,7 +2,26 @@ fragment Edition on editions {
   id
   name
   current
-  created_at
+  application_end
+  application_start
+  applications_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+
+query GetEdition {
+  editions(where: { current: { _eq: true } }) {
+    ...Edition
+  }
+}
+
+# Admin
+query GetAllEditions {
+  editions {
+    ...Edition
+  }
 }
 
 mutation CreateEdition($name: String!) {

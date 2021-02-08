@@ -6,10 +6,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 @Pipe({
-  name: 'timeAgo',
+  name: 'timePassed',
   pure: false,
 })
-export class TimeAgoPipe implements PipeTransform, OnDestroy {
+export class TimePassedPipe implements PipeTransform, OnDestroy {
   private timer: number | null = null;
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
@@ -39,28 +39,28 @@ export class TimeAgoPipe implements PipeTransform, OnDestroy {
     if (Number.isNaN(seconds)) {
       return '';
     } else if (seconds <= 45) {
-      return 'a few seconds ago';
+      return 'a few seconds';
     } else if (seconds <= 90) {
-      return 'a minute ago';
+      return 'a minute';
     } else if (minutes <= 45) {
-      return minutes + ' minutes ago';
+      return minutes + ' minutes';
     } else if (minutes <= 90) {
-      return 'an hour ago';
+      return 'an hour';
     } else if (hours <= 22) {
-      return hours + ' hours ago';
+      return hours + ' hours';
     } else if (hours <= 36) {
-      return 'a day ago';
+      return 'a day';
     } else if (days <= 25) {
-      return days + ' days ago';
+      return days + ' days';
     } else if (days <= 45) {
-      return 'a month ago';
+      return 'a month';
     } else if (days <= 345) {
-      return months + ' months ago';
+      return months + ' months';
     } else if (days <= 545) {
-      return 'a year ago';
+      return 'a year';
     } else {
       // (days > 545)
-      return years + ' years ago';
+      return years + ' years';
     }
   }
   ngOnDestroy(): void {

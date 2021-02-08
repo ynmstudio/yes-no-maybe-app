@@ -30,6 +30,7 @@ const localHeaders = (role: string, id: string) => {
     'x-hasura-admin-secret': environment.hasura.secret_key,
     'x-hasura-role': role, // adapt accordingly to test different users
     'x-hasura-user-id': id,
+    'x-hasura-default-role': role,
   };
 };
 
@@ -56,9 +57,11 @@ const authCtx = (auth: AngularFireAuth) =>
         },
       };
     } else {
+      const devHeaders = localHeaders('user', 'yFVIqlR8dNKzhgubUYy9uYwb3fVR');
       return {
         headers: {
           ...headers,
+          ...devHeaders,
         },
       };
     }

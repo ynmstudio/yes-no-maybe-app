@@ -82,6 +82,7 @@ module.exports = {
       gridTemplateColumns: {
         login: "2fr 3fr 2fr",
         form: "auto 1fr",
+        application: "auto 3fr 2fr",
       },
       colors: {
         gray: {

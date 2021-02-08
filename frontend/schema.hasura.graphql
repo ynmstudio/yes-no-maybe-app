@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Feb 08 2021 08:21:22 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Feb 08 2021 15:16:38 GMT+0100 (Central European Standard Time)
 
 schema {
   query: query_root
@@ -11,15 +11,18 @@ schema {
 columns and relationships of "applications"
 """
 type applications {
-  as_group: Boolean!
   created_at: timestamptz!
   created_by: String!
+  database: Boolean!
+  disclaimer: Boolean!
 
   """An object relationship"""
   edition: editions!
   edition_id: Int!
+  group: Boolean!
   id: uuid!
   name: String
+  payment_file: String
 
   """An array relationship"""
   ratings(
@@ -56,8 +59,12 @@ type applications {
     """filter the rows returned"""
     where: ratings_bool_exp
   ): ratings_aggregate!
+  residency: Boolean!
   statement: String
   updated_at: timestamptz!
+
+  """An object relationship"""
+  user: users!
 
   """An array relationship"""
   works(
@@ -165,16 +172,21 @@ input applications_bool_exp {
   _and: [applications_bool_exp]
   _not: applications_bool_exp
   _or: [applications_bool_exp]
-  as_group: Boolean_comparison_exp
   created_at: timestamptz_comparison_exp
   created_by: String_comparison_exp
+  database: Boolean_comparison_exp
+  disclaimer: Boolean_comparison_exp
   edition: editions_bool_exp
   edition_id: Int_comparison_exp
+  group: Boolean_comparison_exp
   id: uuid_comparison_exp
   name: String_comparison_exp
+  payment_file: String_comparison_exp
   ratings: ratings_bool_exp
+  residency: Boolean_comparison_exp
   statement: String_comparison_exp
   updated_at: timestamptz_comparison_exp
+  user: users_bool_exp
   works: works_bool_exp
 }
 
@@ -197,16 +209,21 @@ input applications_inc_input {
 input type for inserting data into table "applications"
 """
 input applications_insert_input {
-  as_group: Boolean
   created_at: timestamptz
   created_by: String
+  database: Boolean
+  disclaimer: Boolean
   edition: editions_obj_rel_insert_input
   edition_id: Int
+  group: Boolean
   id: uuid
   name: String
+  payment_file: String
   ratings: ratings_arr_rel_insert_input
+  residency: Boolean
   statement: String
   updated_at: timestamptz
+  user: users_obj_rel_insert_input
   works: works_arr_rel_insert_input
 }
 
@@ -217,6 +234,7 @@ type applications_max_fields {
   edition_id: Int
   id: uuid
   name: String
+  payment_file: String
   statement: String
   updated_at: timestamptz
 }
@@ -230,6 +248,7 @@ input applications_max_order_by {
   edition_id: order_by
   id: order_by
   name: order_by
+  payment_file: order_by
   statement: order_by
   updated_at: order_by
 }
@@ -241,6 +260,7 @@ type applications_min_fields {
   edition_id: Int
   id: uuid
   name: String
+  payment_file: String
   statement: String
   updated_at: timestamptz
 }
@@ -254,6 +274,7 @@ input applications_min_order_by {
   edition_id: order_by
   id: order_by
   name: order_by
+  payment_file: order_by
   statement: order_by
   updated_at: order_by
 }
@@ -290,16 +311,21 @@ input applications_on_conflict {
 ordering options when selecting data from "applications"
 """
 input applications_order_by {
-  as_group: order_by
   created_at: order_by
   created_by: order_by
+  database: order_by
+  disclaimer: order_by
   edition: editions_order_by
   edition_id: order_by
+  group: order_by
   id: order_by
   name: order_by
+  payment_file: order_by
   ratings_aggregate: ratings_aggregate_order_by
+  residency: order_by
   statement: order_by
   updated_at: order_by
+  user: users_order_by
   works_aggregate: works_aggregate_order_by
 }
 
@@ -315,22 +341,34 @@ select columns of table "applications"
 """
 enum applications_select_column {
   """column name"""
-  as_group
-
-  """column name"""
   created_at
 
   """column name"""
   created_by
 
   """column name"""
+  database
+
+  """column name"""
+  disclaimer
+
+  """column name"""
   edition_id
+
+  """column name"""
+  group
 
   """column name"""
   id
 
   """column name"""
   name
+
+  """column name"""
+  payment_file
+
+  """column name"""
+  residency
 
   """column name"""
   statement
@@ -343,12 +381,16 @@ enum applications_select_column {
 input type for updating data in table "applications"
 """
 input applications_set_input {
-  as_group: Boolean
   created_at: timestamptz
   created_by: String
+  database: Boolean
+  disclaimer: Boolean
   edition_id: Int
+  group: Boolean
   id: uuid
   name: String
+  payment_file: String
+  residency: Boolean
   statement: String
   updated_at: timestamptz
 }
@@ -406,22 +448,34 @@ update columns of table "applications"
 """
 enum applications_update_column {
   """column name"""
-  as_group
-
-  """column name"""
   created_at
 
   """column name"""
   created_by
 
   """column name"""
+  database
+
+  """column name"""
+  disclaimer
+
+  """column name"""
   edition_id
+
+  """column name"""
+  group
 
   """column name"""
   id
 
   """column name"""
   name
+
+  """column name"""
+  payment_file
+
+  """column name"""
+  residency
 
   """column name"""
   statement
@@ -1010,6 +1064,19 @@ type mutation_root {
   delete_users_by_pk(id: String!): users
 
   """
+  delete data from the table: "wordlist"
+  """
+  delete_wordlist(
+    """filter the rows which have to be deleted"""
+    where: wordlist_bool_exp!
+  ): wordlist_mutation_response
+
+  """
+  delete single row from the table: "wordlist"
+  """
+  delete_wordlist_by_pk(value: String!): wordlist
+
+  """
   delete data from the table: "works"
   """
   delete_works(
@@ -1157,6 +1224,28 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: users_on_conflict
   ): users
+
+  """
+  insert data into the table: "wordlist"
+  """
+  insert_wordlist(
+    """the rows to be inserted"""
+    objects: [wordlist_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: wordlist_on_conflict
+  ): wordlist_mutation_response
+
+  """
+  insert a single row into the table: "wordlist"
+  """
+  insert_wordlist_one(
+    """the row to be inserted"""
+    object: wordlist_insert_input!
+
+    """on conflict condition"""
+    on_conflict: wordlist_on_conflict
+  ): wordlist
 
   """
   insert data into the table: "works"
@@ -1347,6 +1436,26 @@ type mutation_root {
     _set: users_set_input
     pk_columns: users_pk_columns_input!
   ): users
+
+  """
+  update data of the table: "wordlist"
+  """
+  update_wordlist(
+    """sets the columns of the filtered rows to the given values"""
+    _set: wordlist_set_input
+
+    """filter the rows which have to be updated"""
+    where: wordlist_bool_exp!
+  ): wordlist_mutation_response
+
+  """
+  update single row of the table: "wordlist"
+  """
+  update_wordlist_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: wordlist_set_input
+    pk_columns: wordlist_pk_columns_input!
+  ): wordlist
 
   """
   update data of the table: "works"
@@ -1658,6 +1767,49 @@ type query_root {
 
   """fetch data from the table: "users" using primary key columns"""
   users_by_pk(id: String!): users
+
+  """
+  fetch data from the table: "wordlist"
+  """
+  wordlist(
+    """distinct select on columns"""
+    distinct_on: [wordlist_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [wordlist_order_by!]
+
+    """filter the rows returned"""
+    where: wordlist_bool_exp
+  ): [wordlist!]!
+
+  """
+  fetch aggregated fields from the table: "wordlist"
+  """
+  wordlist_aggregate(
+    """distinct select on columns"""
+    distinct_on: [wordlist_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [wordlist_order_by!]
+
+    """filter the rows returned"""
+    where: wordlist_bool_exp
+  ): wordlist_aggregate!
+
+  """fetch data from the table: "wordlist" using primary key columns"""
+  wordlist_by_pk(value: String!): wordlist
 
   """
   fetch data from the table: "works"
@@ -2865,6 +3017,49 @@ type subscription_root {
   users_by_pk(id: String!): users
 
   """
+  fetch data from the table: "wordlist"
+  """
+  wordlist(
+    """distinct select on columns"""
+    distinct_on: [wordlist_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [wordlist_order_by!]
+
+    """filter the rows returned"""
+    where: wordlist_bool_exp
+  ): [wordlist!]!
+
+  """
+  fetch aggregated fields from the table: "wordlist"
+  """
+  wordlist_aggregate(
+    """distinct select on columns"""
+    distinct_on: [wordlist_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [wordlist_order_by!]
+
+    """filter the rows returned"""
+    where: wordlist_bool_exp
+  ): wordlist_aggregate!
+
+  """fetch data from the table: "wordlist" using primary key columns"""
+  wordlist_by_pk(value: String!): wordlist
+
+  """
   fetch data from the table: "works"
   """
   works(
@@ -3018,7 +3213,8 @@ columns and relationships of "users"
 """
 type users {
   id: String!
-  name: String!
+  last_seen: timestamptz
+  name: String
   type: String!
 }
 
@@ -3064,6 +3260,7 @@ input users_bool_exp {
   _not: users_bool_exp
   _or: [users_bool_exp]
   id: String_comparison_exp
+  last_seen: timestamptz_comparison_exp
   name: String_comparison_exp
   type: String_comparison_exp
 }
@@ -3084,6 +3281,7 @@ input type for inserting data into table "users"
 """
 input users_insert_input {
   id: String
+  last_seen: timestamptz
   name: String
   type: String
 }
@@ -3091,6 +3289,7 @@ input users_insert_input {
 """aggregate max on columns"""
 type users_max_fields {
   id: String
+  last_seen: timestamptz
   name: String
   type: String
 }
@@ -3100,6 +3299,7 @@ order by max() on columns of table "users"
 """
 input users_max_order_by {
   id: order_by
+  last_seen: order_by
   name: order_by
   type: order_by
 }
@@ -3107,6 +3307,7 @@ input users_max_order_by {
 """aggregate min on columns"""
 type users_min_fields {
   id: String
+  last_seen: timestamptz
   name: String
   type: String
 }
@@ -3116,6 +3317,7 @@ order by min() on columns of table "users"
 """
 input users_min_order_by {
   id: order_by
+  last_seen: order_by
   name: order_by
   type: order_by
 }
@@ -3153,6 +3355,7 @@ ordering options when selecting data from "users"
 """
 input users_order_by {
   id: order_by
+  last_seen: order_by
   name: order_by
   type: order_by
 }
@@ -3172,6 +3375,9 @@ enum users_select_column {
   id
 
   """column name"""
+  last_seen
+
+  """column name"""
   name
 
   """column name"""
@@ -3183,6 +3389,7 @@ input type for updating data in table "users"
 """
 input users_set_input {
   id: String
+  last_seen: timestamptz
   name: String
   type: String
 }
@@ -3193,6 +3400,9 @@ update columns of table "users"
 enum users_update_column {
   """column name"""
   id
+
+  """column name"""
+  last_seen
 
   """column name"""
   name
@@ -3216,6 +3426,161 @@ input uuid_comparison_exp {
   _lte: uuid
   _neq: uuid
   _nin: [uuid!]
+}
+
+"""
+columns and relationships of "wordlist"
+"""
+type wordlist {
+  value: String!
+}
+
+"""
+aggregated selection of "wordlist"
+"""
+type wordlist_aggregate {
+  aggregate: wordlist_aggregate_fields
+  nodes: [wordlist!]!
+}
+
+"""
+aggregate fields of "wordlist"
+"""
+type wordlist_aggregate_fields {
+  count(columns: [wordlist_select_column!], distinct: Boolean): Int
+  max: wordlist_max_fields
+  min: wordlist_min_fields
+}
+
+"""
+order by aggregate values of table "wordlist"
+"""
+input wordlist_aggregate_order_by {
+  count: order_by
+  max: wordlist_max_order_by
+  min: wordlist_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "wordlist"
+"""
+input wordlist_arr_rel_insert_input {
+  data: [wordlist_insert_input!]!
+  on_conflict: wordlist_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "wordlist". All fields are combined with a logical 'AND'.
+"""
+input wordlist_bool_exp {
+  _and: [wordlist_bool_exp]
+  _not: wordlist_bool_exp
+  _or: [wordlist_bool_exp]
+  value: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "wordlist"
+"""
+enum wordlist_constraint {
+  """unique or primary key constraint"""
+  wordlist_pkey
+}
+
+"""
+input type for inserting data into table "wordlist"
+"""
+input wordlist_insert_input {
+  value: String
+}
+
+"""aggregate max on columns"""
+type wordlist_max_fields {
+  value: String
+}
+
+"""
+order by max() on columns of table "wordlist"
+"""
+input wordlist_max_order_by {
+  value: order_by
+}
+
+"""aggregate min on columns"""
+type wordlist_min_fields {
+  value: String
+}
+
+"""
+order by min() on columns of table "wordlist"
+"""
+input wordlist_min_order_by {
+  value: order_by
+}
+
+"""
+response of any mutation on the table "wordlist"
+"""
+type wordlist_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [wordlist!]!
+}
+
+"""
+input type for inserting object relation for remote table "wordlist"
+"""
+input wordlist_obj_rel_insert_input {
+  data: wordlist_insert_input!
+  on_conflict: wordlist_on_conflict
+}
+
+"""
+on conflict condition type for table "wordlist"
+"""
+input wordlist_on_conflict {
+  constraint: wordlist_constraint!
+  update_columns: [wordlist_update_column!]!
+  where: wordlist_bool_exp
+}
+
+"""
+ordering options when selecting data from "wordlist"
+"""
+input wordlist_order_by {
+  value: order_by
+}
+
+"""
+primary key columns input for table: "wordlist"
+"""
+input wordlist_pk_columns_input {
+  value: String!
+}
+
+"""
+select columns of table "wordlist"
+"""
+enum wordlist_select_column {
+  """column name"""
+  value
+}
+
+"""
+input type for updating data in table "wordlist"
+"""
+input wordlist_set_input {
+  value: String
+}
+
+"""
+update columns of table "wordlist"
+"""
+enum wordlist_update_column {
+  """column name"""
+  value
 }
 
 """

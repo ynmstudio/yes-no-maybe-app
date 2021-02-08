@@ -22,20 +22,26 @@ export type Scalars = {
 /** columns and relationships of "applications" */
 export type Applications = {
   __typename?: 'applications';
-  as_group: Scalars['Boolean'];
   created_at: Scalars['timestamptz'];
   created_by: Scalars['String'];
+  database: Scalars['Boolean'];
+  disclaimer: Scalars['Boolean'];
   /** An object relationship */
   edition: Editions;
   edition_id: Scalars['Int'];
+  group: Scalars['Boolean'];
   id: Scalars['uuid'];
   name?: Maybe<Scalars['String']>;
+  payment_file?: Maybe<Scalars['String']>;
   /** An array relationship */
   ratings: Array<Ratings>;
   /** An aggregated array relationship */
   ratings_aggregate: Ratings_Aggregate;
+  residency: Scalars['Boolean'];
   statement?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  user: Users;
   /** An array relationship */
   works: Array<Works>;
   /** An aggregated array relationship */
@@ -149,16 +155,21 @@ export type Applications_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Applications_Bool_Exp>>>;
   _not?: Maybe<Applications_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Applications_Bool_Exp>>>;
-  as_group?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   created_by?: Maybe<String_Comparison_Exp>;
+  database?: Maybe<Boolean_Comparison_Exp>;
+  disclaimer?: Maybe<Boolean_Comparison_Exp>;
   edition?: Maybe<Editions_Bool_Exp>;
   edition_id?: Maybe<Int_Comparison_Exp>;
+  group?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
+  payment_file?: Maybe<String_Comparison_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
+  residency?: Maybe<Boolean_Comparison_Exp>;
   statement?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<Users_Bool_Exp>;
   works?: Maybe<Works_Bool_Exp>;
 };
 
@@ -175,16 +186,21 @@ export type Applications_Inc_Input = {
 
 /** input type for inserting data into table "applications" */
 export type Applications_Insert_Input = {
-  as_group?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   created_by?: Maybe<Scalars['String']>;
+  database?: Maybe<Scalars['Boolean']>;
+  disclaimer?: Maybe<Scalars['Boolean']>;
   edition?: Maybe<Editions_Obj_Rel_Insert_Input>;
   edition_id?: Maybe<Scalars['Int']>;
+  group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  payment_file?: Maybe<Scalars['String']>;
   ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
+  residency?: Maybe<Scalars['Boolean']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<Users_Obj_Rel_Insert_Input>;
   works?: Maybe<Works_Arr_Rel_Insert_Input>;
 };
 
@@ -196,6 +212,7 @@ export type Applications_Max_Fields = {
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  payment_file?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -207,6 +224,7 @@ export type Applications_Max_Order_By = {
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  payment_file?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -219,6 +237,7 @@ export type Applications_Min_Fields = {
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  payment_file?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -230,6 +249,7 @@ export type Applications_Min_Order_By = {
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  payment_file?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -258,16 +278,21 @@ export type Applications_On_Conflict = {
 
 /** ordering options when selecting data from "applications" */
 export type Applications_Order_By = {
-  as_group?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   created_by?: Maybe<Order_By>;
+  database?: Maybe<Order_By>;
+  disclaimer?: Maybe<Order_By>;
   edition?: Maybe<Editions_Order_By>;
   edition_id?: Maybe<Order_By>;
+  group?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  payment_file?: Maybe<Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
+  residency?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user?: Maybe<Users_Order_By>;
   works_aggregate?: Maybe<Works_Aggregate_Order_By>;
 };
 
@@ -279,17 +304,25 @@ export type Applications_Pk_Columns_Input = {
 /** select columns of table "applications" */
 export enum Applications_Select_Column {
   /** column name */
-  AsGroup = 'as_group',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CreatedBy = 'created_by',
   /** column name */
+  Database = 'database',
+  /** column name */
+  Disclaimer = 'disclaimer',
+  /** column name */
   EditionId = 'edition_id',
+  /** column name */
+  Group = 'group',
   /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
+  /** column name */
+  PaymentFile = 'payment_file',
+  /** column name */
+  Residency = 'residency',
   /** column name */
   Statement = 'statement',
   /** column name */
@@ -298,12 +331,16 @@ export enum Applications_Select_Column {
 
 /** input type for updating data in table "applications" */
 export type Applications_Set_Input = {
-  as_group?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   created_by?: Maybe<Scalars['String']>;
+  database?: Maybe<Scalars['Boolean']>;
+  disclaimer?: Maybe<Scalars['Boolean']>;
   edition_id?: Maybe<Scalars['Int']>;
+  group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
+  payment_file?: Maybe<Scalars['String']>;
+  residency?: Maybe<Scalars['Boolean']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -355,17 +392,25 @@ export type Applications_Sum_Order_By = {
 /** update columns of table "applications" */
 export enum Applications_Update_Column {
   /** column name */
-  AsGroup = 'as_group',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CreatedBy = 'created_by',
   /** column name */
+  Database = 'database',
+  /** column name */
+  Disclaimer = 'disclaimer',
+  /** column name */
   EditionId = 'edition_id',
+  /** column name */
+  Group = 'group',
   /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
+  /** column name */
+  PaymentFile = 'payment_file',
+  /** column name */
+  Residency = 'residency',
   /** column name */
   Statement = 'statement',
   /** column name */
@@ -827,6 +872,10 @@ export type Mutation_Root = {
   delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
   delete_users_by_pk?: Maybe<Users>;
+  /** delete data from the table: "wordlist" */
+  delete_wordlist?: Maybe<Wordlist_Mutation_Response>;
+  /** delete single row from the table: "wordlist" */
+  delete_wordlist_by_pk?: Maybe<Wordlist>;
   /** delete data from the table: "works" */
   delete_works?: Maybe<Works_Mutation_Response>;
   /** delete single row from the table: "works" */
@@ -859,6 +908,10 @@ export type Mutation_Root = {
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one?: Maybe<Users>;
+  /** insert data into the table: "wordlist" */
+  insert_wordlist?: Maybe<Wordlist_Mutation_Response>;
+  /** insert a single row into the table: "wordlist" */
+  insert_wordlist_one?: Maybe<Wordlist>;
   /** insert data into the table: "works" */
   insert_works?: Maybe<Works_Mutation_Response>;
   /** insert data into the table: "works_files" */
@@ -891,6 +944,10 @@ export type Mutation_Root = {
   update_users?: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
   update_users_by_pk?: Maybe<Users>;
+  /** update data of the table: "wordlist" */
+  update_wordlist?: Maybe<Wordlist_Mutation_Response>;
+  /** update single row of the table: "wordlist" */
+  update_wordlist_by_pk?: Maybe<Wordlist>;
   /** update data of the table: "works" */
   update_works?: Maybe<Works_Mutation_Response>;
   /** update single row of the table: "works" */
@@ -963,6 +1020,18 @@ export type Mutation_RootDelete_UsersArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Users_By_PkArgs = {
   id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_WordlistArgs = {
+  where: Wordlist_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Wordlist_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -1069,6 +1138,20 @@ export type Mutation_RootInsert_UsersArgs = {
 export type Mutation_RootInsert_Users_OneArgs = {
   object: Users_Insert_Input;
   on_conflict?: Maybe<Users_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_WordlistArgs = {
+  objects: Array<Wordlist_Insert_Input>;
+  on_conflict?: Maybe<Wordlist_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Wordlist_OneArgs = {
+  object: Wordlist_Insert_Input;
+  on_conflict?: Maybe<Wordlist_On_Conflict>;
 };
 
 
@@ -1193,6 +1276,20 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_WordlistArgs = {
+  _set?: Maybe<Wordlist_Set_Input>;
+  where: Wordlist_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Wordlist_By_PkArgs = {
+  _set?: Maybe<Wordlist_Set_Input>;
+  pk_columns: Wordlist_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_WorksArgs = {
   _set?: Maybe<Works_Set_Input>;
   where: Works_Bool_Exp;
@@ -1286,6 +1383,12 @@ export type Query_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+  /** fetch data from the table: "wordlist" */
+  wordlist: Array<Wordlist>;
+  /** fetch aggregated fields from the table: "wordlist" */
+  wordlist_aggregate: Wordlist_Aggregate;
+  /** fetch data from the table: "wordlist" using primary key columns */
+  wordlist_by_pk?: Maybe<Wordlist>;
   /** fetch data from the table: "works" */
   works: Array<Works>;
   /** fetch aggregated fields from the table: "works" */
@@ -1434,6 +1537,32 @@ export type Query_RootUsers_AggregateArgs = {
 /** query root */
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars['String'];
+};
+
+
+/** query root */
+export type Query_RootWordlistArgs = {
+  distinct_on?: Maybe<Array<Wordlist_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Wordlist_Order_By>>;
+  where?: Maybe<Wordlist_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootWordlist_AggregateArgs = {
+  distinct_on?: Maybe<Array<Wordlist_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Wordlist_Order_By>>;
+  where?: Maybe<Wordlist_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootWordlist_By_PkArgs = {
+  value: Scalars['String'];
 };
 
 
@@ -2302,6 +2431,12 @@ export type Subscription_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+  /** fetch data from the table: "wordlist" */
+  wordlist: Array<Wordlist>;
+  /** fetch aggregated fields from the table: "wordlist" */
+  wordlist_aggregate: Wordlist_Aggregate;
+  /** fetch data from the table: "wordlist" using primary key columns */
+  wordlist_by_pk?: Maybe<Wordlist>;
   /** fetch data from the table: "works" */
   works: Array<Works>;
   /** fetch aggregated fields from the table: "works" */
@@ -2454,6 +2589,32 @@ export type Subscription_RootUsers_By_PkArgs = {
 
 
 /** subscription root */
+export type Subscription_RootWordlistArgs = {
+  distinct_on?: Maybe<Array<Wordlist_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Wordlist_Order_By>>;
+  where?: Maybe<Wordlist_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootWordlist_AggregateArgs = {
+  distinct_on?: Maybe<Array<Wordlist_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Wordlist_Order_By>>;
+  where?: Maybe<Wordlist_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootWordlist_By_PkArgs = {
+  value: Scalars['String'];
+};
+
+
+/** subscription root */
 export type Subscription_RootWorksArgs = {
   distinct_on?: Maybe<Array<Works_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2548,7 +2709,8 @@ export type Timestamptz_Comparison_Exp = {
 export type Users = {
   __typename?: 'users';
   id: Scalars['String'];
-  name: Scalars['String'];
+  last_seen?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
   type: Scalars['String'];
 };
 
@@ -2593,6 +2755,7 @@ export type Users_Bool_Exp = {
   _not?: Maybe<Users_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
   id?: Maybe<String_Comparison_Exp>;
+  last_seen?: Maybe<Timestamptz_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   type?: Maybe<String_Comparison_Exp>;
 };
@@ -2608,6 +2771,7 @@ export enum Users_Constraint {
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
   id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2616,6 +2780,7 @@ export type Users_Insert_Input = {
 export type Users_Max_Fields = {
   __typename?: 'users_max_fields';
   id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2623,6 +2788,7 @@ export type Users_Max_Fields = {
 /** order by max() on columns of table "users" */
 export type Users_Max_Order_By = {
   id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   type?: Maybe<Order_By>;
 };
@@ -2631,6 +2797,7 @@ export type Users_Max_Order_By = {
 export type Users_Min_Fields = {
   __typename?: 'users_min_fields';
   id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2638,6 +2805,7 @@ export type Users_Min_Fields = {
 /** order by min() on columns of table "users" */
 export type Users_Min_Order_By = {
   id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   type?: Maybe<Order_By>;
 };
@@ -2667,6 +2835,7 @@ export type Users_On_Conflict = {
 /** ordering options when selecting data from "users" */
 export type Users_Order_By = {
   id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   type?: Maybe<Order_By>;
 };
@@ -2681,6 +2850,8 @@ export enum Users_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  LastSeen = 'last_seen',
+  /** column name */
   Name = 'name',
   /** column name */
   Type = 'type'
@@ -2689,6 +2860,7 @@ export enum Users_Select_Column {
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
   id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
 };
@@ -2697,6 +2869,8 @@ export type Users_Set_Input = {
 export enum Users_Update_Column {
   /** column name */
   Id = 'id',
+  /** column name */
+  LastSeen = 'last_seen',
   /** column name */
   Name = 'name',
   /** column name */
@@ -2716,6 +2890,137 @@ export type Uuid_Comparison_Exp = {
   _neq?: Maybe<Scalars['uuid']>;
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
+
+/** columns and relationships of "wordlist" */
+export type Wordlist = {
+  __typename?: 'wordlist';
+  value: Scalars['String'];
+};
+
+/** aggregated selection of "wordlist" */
+export type Wordlist_Aggregate = {
+  __typename?: 'wordlist_aggregate';
+  aggregate?: Maybe<Wordlist_Aggregate_Fields>;
+  nodes: Array<Wordlist>;
+};
+
+/** aggregate fields of "wordlist" */
+export type Wordlist_Aggregate_Fields = {
+  __typename?: 'wordlist_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Wordlist_Max_Fields>;
+  min?: Maybe<Wordlist_Min_Fields>;
+};
+
+
+/** aggregate fields of "wordlist" */
+export type Wordlist_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Wordlist_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "wordlist" */
+export type Wordlist_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Wordlist_Max_Order_By>;
+  min?: Maybe<Wordlist_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "wordlist" */
+export type Wordlist_Arr_Rel_Insert_Input = {
+  data: Array<Wordlist_Insert_Input>;
+  on_conflict?: Maybe<Wordlist_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "wordlist". All fields are combined with a logical 'AND'. */
+export type Wordlist_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Wordlist_Bool_Exp>>>;
+  _not?: Maybe<Wordlist_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Wordlist_Bool_Exp>>>;
+  value?: Maybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "wordlist" */
+export enum Wordlist_Constraint {
+  /** unique or primary key constraint */
+  WordlistPkey = 'wordlist_pkey'
+}
+
+/** input type for inserting data into table "wordlist" */
+export type Wordlist_Insert_Input = {
+  value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Wordlist_Max_Fields = {
+  __typename?: 'wordlist_max_fields';
+  value?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "wordlist" */
+export type Wordlist_Max_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Wordlist_Min_Fields = {
+  __typename?: 'wordlist_min_fields';
+  value?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "wordlist" */
+export type Wordlist_Min_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "wordlist" */
+export type Wordlist_Mutation_Response = {
+  __typename?: 'wordlist_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Wordlist>;
+};
+
+/** input type for inserting object relation for remote table "wordlist" */
+export type Wordlist_Obj_Rel_Insert_Input = {
+  data: Wordlist_Insert_Input;
+  on_conflict?: Maybe<Wordlist_On_Conflict>;
+};
+
+/** on conflict condition type for table "wordlist" */
+export type Wordlist_On_Conflict = {
+  constraint: Wordlist_Constraint;
+  update_columns: Array<Wordlist_Update_Column>;
+  where?: Maybe<Wordlist_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "wordlist" */
+export type Wordlist_Order_By = {
+  value?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "wordlist" */
+export type Wordlist_Pk_Columns_Input = {
+  value: Scalars['String'];
+};
+
+/** select columns of table "wordlist" */
+export enum Wordlist_Select_Column {
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "wordlist" */
+export type Wordlist_Set_Input = {
+  value?: Maybe<Scalars['String']>;
+};
+
+/** update columns of table "wordlist" */
+export enum Wordlist_Update_Column {
+  /** column name */
+  Value = 'value'
+}
 
 /** columns and relationships of "works" */
 export type Works = {
@@ -3736,6 +4041,15 @@ export enum Works_Update_Column {
   UpdatedAt = 'updated_at'
 }
 
+export type ApplicationFragment = (
+  { __typename?: 'applications' }
+  & Pick<Applications, 'id' | 'name' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'residency' | 'database' | 'disclaimer' | 'payment_file'>
+  & { edition: (
+    { __typename?: 'editions' }
+    & Pick<Editions, 'name'>
+  ) }
+);
+
 export type GetApplicationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -3743,11 +4057,7 @@ export type GetApplicationsQuery = (
   { __typename?: 'query_root' }
   & { applications: Array<(
     { __typename?: 'applications' }
-    & Pick<Applications, 'name'>
-    & { edition: (
-      { __typename?: 'editions' }
-      & Pick<Editions, 'name'>
-    ) }
+    & ApplicationFragment
   )>, applications_aggregate: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
@@ -3755,6 +4065,59 @@ export type GetApplicationsQuery = (
       & Pick<Applications_Aggregate_Fields, 'count'>
     )> }
   ) }
+);
+
+export type GetApplicationQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetApplicationQuery = (
+  { __typename?: 'query_root' }
+  & { applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & ApplicationFragment
+  )> }
+);
+
+export type AddApplicationMutationVariables = Exact<{
+  edition_id: Scalars['Int'];
+}>;
+
+
+export type AddApplicationMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_applications_one?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id'>
+  )> }
+);
+
+export type UpdateApplicationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  data: Applications_Set_Input;
+}>;
+
+
+export type UpdateApplicationMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & ApplicationFragment
+  )> }
+);
+
+export type DeleteApplicationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteApplicationMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id'>
+  )> }
 );
 
 export type GetApplicationsByEditionQueryVariables = Exact<{
@@ -3766,11 +4129,7 @@ export type GetApplicationsByEditionQuery = (
   { __typename?: 'query_root' }
   & { applications: Array<(
     { __typename?: 'applications' }
-    & Pick<Applications, 'name'>
-    & { edition: (
-      { __typename?: 'editions' }
-      & Pick<Editions, 'name'>
-    ) }
+    & ApplicationFragment
   )> }
 );
 
@@ -3781,7 +4140,36 @@ export type BaseQuery = { __typename: 'query_root' };
 
 export type EditionFragment = (
   { __typename?: 'editions' }
-  & Pick<Editions, 'id' | 'name' | 'current' | 'created_at'>
+  & Pick<Editions, 'id' | 'name' | 'current' | 'application_end' | 'application_start'>
+  & { applications_aggregate: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
+export type GetEditionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetEditionQuery = (
+  { __typename?: 'query_root' }
+  & { editions: Array<(
+    { __typename?: 'editions' }
+    & EditionFragment
+  )> }
+);
+
+export type GetAllEditionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllEditionsQuery = (
+  { __typename?: 'query_root' }
+  & { editions: Array<(
+    { __typename?: 'editions' }
+    & EditionFragment
+  )> }
 );
 
 export type CreateEditionMutationVariables = Exact<{
@@ -3849,22 +4237,30 @@ export type GetCurrentRoundQuery = (
   )> }
 );
 
+export const ApplicationFragmentDoc = gql`
+    fragment Application on applications {
+  id
+  name
+  group
+  created_at
+  updated_at
+  statement
+  residency
+  database
+  disclaimer
+  payment_file
+  edition {
+    name
+  }
+}
+    `;
 export const EditionFragmentDoc = gql`
     fragment Edition on editions {
   id
   name
   current
-  created_at
-}
-    `;
-export const GetApplicationsDocument = gql`
-    query GetApplications {
-  applications {
-    name
-    edition {
-      name
-    }
-  }
+  application_end
+  application_start
   applications_aggregate {
     aggregate {
       count
@@ -3872,6 +4268,18 @@ export const GetApplicationsDocument = gql`
   }
 }
     `;
+export const GetApplicationsDocument = gql`
+    query GetApplications {
+  applications {
+    ...Application
+  }
+  applications_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    ${ApplicationFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -3883,16 +4291,87 @@ export const GetApplicationsDocument = gql`
       super(apollo);
     }
   }
-export const GetApplicationsByEditionDocument = gql`
-    query GetApplicationsByEdition($id: Int!) {
-  applications(where: {edition: {id: {_eq: $id}}}) {
-    name
-    edition {
-      name
+export const GetApplicationDocument = gql`
+    query GetApplication($id: uuid!) {
+  applications_by_pk(id: $id) {
+    ...Application
+  }
+}
+    ${ApplicationFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetApplicationGQL extends Apollo.Query<GetApplicationQuery, GetApplicationQueryVariables> {
+    document = GetApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
     }
+  }
+export const AddApplicationDocument = gql`
+    mutation AddApplication($edition_id: Int!) {
+  insert_applications_one(
+    object: {edition_id: $edition_id, user: {data: {}, on_conflict: {constraint: users_pkey, update_columns: last_seen}}}
+  ) {
+    id
   }
 }
     `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AddApplicationGQL extends Apollo.Mutation<AddApplicationMutation, AddApplicationMutationVariables> {
+    document = AddApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateApplicationDocument = gql`
+    mutation UpdateApplication($id: uuid!, $data: applications_set_input!) {
+  update_applications_by_pk(pk_columns: {id: $id}, _set: $data) {
+    ...Application
+  }
+}
+    ${ApplicationFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateApplicationGQL extends Apollo.Mutation<UpdateApplicationMutation, UpdateApplicationMutationVariables> {
+    document = UpdateApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteApplicationDocument = gql`
+    mutation DeleteApplication($id: uuid!) {
+  delete_applications_by_pk(id: $id) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteApplicationGQL extends Apollo.Mutation<DeleteApplicationMutation, DeleteApplicationMutationVariables> {
+    document = DeleteApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetApplicationsByEditionDocument = gql`
+    query GetApplicationsByEdition($id: Int!) {
+  applications(where: {edition: {id: {_eq: $id}}}) {
+    ...Application
+  }
+}
+    ${ApplicationFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -3915,6 +4394,42 @@ export const BaseDocument = gql`
   })
   export class BaseGQL extends Apollo.Query<BaseQuery, BaseQueryVariables> {
     document = BaseDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetEditionDocument = gql`
+    query GetEdition {
+  editions(where: {current: {_eq: true}}) {
+    ...Edition
+  }
+}
+    ${EditionFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetEditionGQL extends Apollo.Query<GetEditionQuery, GetEditionQueryVariables> {
+    document = GetEditionDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetAllEditionsDocument = gql`
+    query GetAllEditions {
+  editions {
+    ...Edition
+  }
+}
+    ${EditionFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAllEditionsGQL extends Apollo.Query<GetAllEditionsQuery, GetAllEditionsQueryVariables> {
+    document = GetAllEditionsDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

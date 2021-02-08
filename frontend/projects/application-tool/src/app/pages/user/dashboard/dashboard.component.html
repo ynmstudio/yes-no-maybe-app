@@ -20,69 +20,109 @@
           }}
           Einreichungen
         </div>
-        <div class="my-4 h-48 bg-gray-100 flex items-center justify-center">
-          <span class="text-gray-300">Keine Einreichungen vorhanden</span>
-        </div>
-        <div class="my-4 bg-gray-100 xl:grid grid-cols-5">
-          <div class="col-span-2 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
-            <div class="text-3xl">
-              <span class="text-xs font-mono uppercase text-gray-800">
-                Code:
-              </span>
-              N9TT
-            </div>
-            <div class="text-xs mt-4 lg:mt-6">
-              <div class="font-mono uppercase text-gray-800">
-                Upload (1,4 GB):
+        <ng-container
+          *ngIf="
+            applicationsObject.data?.applications_aggregate?.aggregate?.count ||
+              0 > 0;
+            else noApplications
+          "
+        >
+          <div
+            *ngFor="let application of applicationsObject.data?.applications"
+            class="my-1 bg-gray-100 xl:grid grid-cols-5"
+          >
+            <div class="col-span-2 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
+              <div class="text-3xl">
+                <span class="text-xs font-mono uppercase text-gray-800">
+                  Code:
+                </span>
+                <span
+                  class="uppercase"
+                  [innerText]="application.id | slice: 0:5"
+                ></span>
               </div>
-              <div>
-                <a href="#" class="underline">Portfolio-XD.pdf</a>,
-                Lessmore.mov, Bibibi.mov,camouflage.jpg
+              <div class="text-xs mt-4 lg:mt-6">
+                <div class="font-mono uppercase text-gray-800">
+                  Upload (1,4 GB):
+                </div>
+                <div>
+                  <a href="#" class="underline">Portfolio-XD.pdf</a>,
+                  Lessmore.mov, Bibibi.mov,camouflage.jpg
+                </div>
+              </div>
+            </div>
+            <div class="col-span-3 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
+              <div
+                class="grid grid-cols-7 lg:grid-cols-4 gap-6 items-baseline border-b border-gray-300 py-2 sm:py-4 font-mono"
+              >
+                <div
+                  class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
+                >
+                  Gruppenarbeit:
+                </div>
+                <div
+                  class="cols-span-5 lg:col-span-3"
+                  [innerText]="application.group ? 'Ja' : 'Nein'"
+                ></div>
+              </div>
+              <div
+                class="grid grid-cols-7 lg:grid-cols-4 gap-6 items-baseline border-b border-gray-300 py-2 sm:py-4 font-mono"
+              >
+                <div
+                  class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
+                >
+                  Status:
+                </div>
+                <div class="cols-span-5 lg:col-span-3">
+                  <!-- @TODO Compute application status in hasura -->
+                  <span
+                    class="text-red-600"
+                    *ngIf="!application.payment_file && application.disclaimer"
+                  >
+                    Zahlungsnachweis noch ausstehend
+                  </span>
+                  <span
+                    class="text-orange-500"
+                    *ngIf="!application.payment_file && !application.disclaimer"
+                  >
+                    Arbeitsangaben unvollständig
+                  </span>
+                  <span
+                    class="text-green-500"
+                    *ngIf="application.payment_file && application.disclaimer"
+                  >
+                    Arbeitsangaben vollständig
+                  </span>
+                </div>
+              </div>
+              <div class="flex justify-end mt-6 space-x-4 items-center">
+                <a
+                  [routerLink]="['/', 'u', 'applications', application.id]"
+                  class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
+                  >Bearbeiten</a
+                >
+                <button
+                  class="underline font-mono leading-none"
+                  (click)="deleteApplication(application.id)"
+                >
+                  Löschen
+                </button>
               </div>
             </div>
           </div>
-          <div class="col-span-3 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
-            <div
-              class="grid grid-cols-7 lg:grid-cols-4 gap-6 items-baseline border-b border-gray-300 py-2 sm:py-4 font-mono"
-            >
-              <div
-                class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
-              >
-                Gruppenarbeit:
-              </div>
-              <div class="cols-span-5 lg:col-span-3">Nein</div>
-            </div>
-            <div
-              class="grid grid-cols-7 lg:grid-cols-4 gap-6 items-baseline border-b border-gray-300 py-2 sm:py-4 font-mono"
-            >
-              <div
-                class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
-              >
-                Status:
-              </div>
-              <div class="cols-span-5 lg:col-span-3 text-green-500">
-                Arbeitsangaben vollständig
-              </div>
-            </div>
-            <div class="flex justify-end mt-6 space-x-4 items-center">
-              <button
-                class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-              >
-                Bearbeiten
-              </button>
-              <button class="underline font-mono leading-none">Löschen</button>
-            </div>
+        </ng-container>
+        <ng-template #noApplications>
+          <div class="my-1 h-48 bg-gray-100 flex items-center justify-center">
+            <span class="text-gray-300">Keine Einreichungen vorhanden</span>
           </div>
-        </div>
+        </ng-template>
       </div>
       <button
-        class="bg-black text-white font-mono text-base leading-none py-3 px-6 w-full rounded-xl"
+        (click)="addApplication()"
+        class="bg-black text-white font-mono text-base leading-none mt-8 py-3 px-6 w-full rounded-xl"
       >
         Neue Einreichung anlegen
       </button>
-      <div class="text-center text-gray-400 pt-4 text-xs">
-        Last updated {{ "Fri Jan 29 2021 16:29:07 GMT+0100" | timeAgo }}
-      </div>
     </div>
     <!-- STATUS AND UPDATES -->
     <div class="container--default flex-auto max-w-full md:flex-shrink-0">
@@ -91,7 +131,10 @@
         <div
           class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
-          <div class="text-headline">Einreichung endet in 4&nbsp;Wochen</div>
+          <div class="text-headline">
+            Application ends in
+            {{ (edition$ | async)?.application_end | timePassed }}
+          </div>
           <a
             class="inline-block mt-4 font-mono text-black text-opacity-70"
             [routerLink]="[]"

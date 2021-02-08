@@ -1,16 +1,58 @@
+fragment Application on applications {
+  id
+  name
+  group
+  created_at
+  updated_at
+  statement
+  residency
+  database
+  disclaimer
+  payment_file
+  edition {
+    name
+  }
+}
 # User
 
 query GetApplications {
   applications {
-    name
-    edition {
-      name
-    }
+    ...Application
   }
   applications_aggregate {
     aggregate {
       count
     }
+  }
+}
+query GetApplication($id: uuid!) {
+  applications_by_pk(id: $id) {
+    ...Application
+  }
+}
+mutation AddApplication($edition_id: Int!) {
+  insert_applications_one(
+    object: {
+      edition_id: $edition_id
+      user: {
+        data: {}
+        on_conflict: { constraint: users_pkey, update_columns: last_seen }
+      }
+    }
+  ) {
+    id
+  }
+}
+
+mutation UpdateApplication($id: uuid!, $data: applications_set_input!) {
+  update_applications_by_pk(pk_columns: { id: $id }, _set: $data) {
+    ...Application
+  }
+}
+
+mutation DeleteApplication($id: uuid!) {
+  delete_applications_by_pk(id: $id) {
+    id
   }
 }
 
@@ -20,9 +62,6 @@ query GetApplications {
 
 query GetApplicationsByEdition($id: Int!) {
   applications(where: { edition: { id: { _eq: $id } } }) {
-    name
-    edition {
-      name
-    }
+    ...Application
   }
 }

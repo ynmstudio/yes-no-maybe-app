@@ -11,6 +11,9 @@ import { environment } from '../environments/environment';
 
 import { SharedModule } from './shared/shared.module';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+// @TODO Delete on production
+// @BODY check https://github.com/angular/angularfire/issues/2656
+import 'firebase/auth';
 
 import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
 import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
