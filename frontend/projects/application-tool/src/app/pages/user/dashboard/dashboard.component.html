@@ -3,7 +3,10 @@
     class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-200"
   >
     <div class="text-headline">
-      Hallo {{ (user$ | async)?.displayName || "…" }}
+      {{
+        "snippets.welcome-user"
+          | translate: { user: (user$ | async)?.displayName || "…" }
+      }}
     </div>
   </div>
   <div class="flex-auto md:flex max-w-full">
@@ -18,7 +21,13 @@
             applicationsObject.data?.applications_aggregate?.aggregate?.count ||
               0
           }}
-          Einreichungen
+          {{
+            (applicationsObject.data?.applications_aggregate?.aggregate
+              ?.count === 1
+              ? "defaults.application-single"
+              : "defaults.application-multi"
+            ) | translate
+          }}
         </div>
         <ng-container
           *ngIf="
@@ -34,7 +43,7 @@
             <div class="col-span-2 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
               <div class="text-3xl">
                 <span class="text-xs font-mono uppercase text-gray-800">
-                  Code:
+                  {{ "defaults.code" | translate }}:
                 </span>
                 <span
                   class="uppercase"
@@ -43,7 +52,7 @@
               </div>
               <div class="text-xs mt-4 lg:mt-6">
                 <div class="font-mono uppercase text-gray-800">
-                  Upload (1,4 GB):
+                  {{ "defaults.upload" | translate }} (1,4 GB):
                 </div>
                 <div>
                   <a href="#" class="underline">Portfolio-XD.pdf</a>,
@@ -58,11 +67,14 @@
                 <div
                   class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
                 >
-                  Gruppenarbeit:
+                  {{ "application.group_application" | translate }}:
                 </div>
                 <div
                   class="cols-span-5 lg:col-span-3"
-                  [innerText]="application.group ? 'Ja' : 'Nein'"
+                  [innerText]="
+                    (application.group ? 'defaults.yes' : 'defaults.no')
+                      | translate
+                  "
                 ></div>
               </div>
               <div
@@ -71,27 +83,33 @@
                 <div
                   class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
                 >
-                  Status:
+                  {{ "application.status" | translate }}:
                 </div>
                 <div class="cols-span-5 lg:col-span-3">
                   <!-- @TODO Compute application status in hasura -->
                   <span
                     class="text-red-600"
                     *ngIf="!application.payment_file && application.disclaimer"
+                    [innerText]="
+                      'application.status--missing-payment' | translate
+                    "
                   >
-                    Zahlungsnachweis noch ausstehend
                   </span>
                   <span
                     class="text-orange-500"
                     *ngIf="!application.payment_file && !application.disclaimer"
+                    [innerText]="
+                      'application.status--application-incomplete' | translate
+                    "
                   >
-                    Arbeitsangaben unvollständig
                   </span>
                   <span
                     class="text-green-500"
                     *ngIf="application.payment_file && application.disclaimer"
+                    [innerText]="
+                      'application.status--application-complete' | translate
+                    "
                   >
-                    Arbeitsangaben vollständig
                   </span>
                 </div>
               </div>
@@ -99,30 +117,31 @@
                 <a
                   [routerLink]="['/', 'u', 'applications', application.id]"
                   class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-                  >Bearbeiten</a
-                >
+                  [innerText]="'defaults.edit' | translate"
+                ></a>
                 <button
                   class="underline font-mono leading-none"
                   (click)="deleteApplication(application.id)"
-                >
-                  Löschen
-                </button>
+                  [innerText]="'defaults.delete' | translate"
+                ></button>
               </div>
             </div>
           </div>
         </ng-container>
         <ng-template #noApplications>
           <div class="my-1 h-48 bg-gray-100 flex items-center justify-center">
-            <span class="text-gray-300">Keine Einreichungen vorhanden</span>
+            <span
+              class="text-gray-300"
+              [innerText]="'snippets.no-applications' | translate"
+            ></span>
           </div>
         </ng-template>
       </div>
       <button
         (click)="addApplication()"
         class="bg-black text-white font-mono text-base leading-none mt-8 py-3 px-6 w-full rounded-xl"
-      >
-        Neue Einreichung anlegen
-      </button>
+        [innerText]="'snippets.add-application' | translate"
+      ></button>
     </div>
     <!-- STATUS AND UPDATES -->
     <div class="container--default flex-auto max-w-full md:flex-shrink-0">
@@ -131,10 +150,14 @@
         <div
           class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
-          <div class="text-headline">
-            Application ends in
-            {{ (edition$ | async)?.application_end | timePassed }}
-          </div>
+          <div
+            class="text-headline"
+            [innerText]="
+              'edition.status--application-ends-in'
+                | translate
+                  : { time: (edition$ | async)?.application_end | timePassed }
+            "
+          ></div>
           <a
             class="inline-block mt-4 font-mono text-black text-opacity-70"
             [routerLink]="[]"

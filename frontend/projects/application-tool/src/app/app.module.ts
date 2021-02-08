@@ -4,10 +4,19 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
+
+import {
+  FakeMissingTranslationHandler,
+  MissingTranslationHandler,
+  MissingTranslationHandlerParams,
+  TranslateLoader,
+  TranslateModule,
+} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { SharedModule } from './shared/shared.module';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -19,6 +28,13 @@ import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
 import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
 import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
 
+export class ToolMissingTranslationHandler
+  implements MissingTranslationHandler {
+  handle(params: MissingTranslationHandlerParams) {
+    return `<${params.key}>`;
+  }
+}
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -29,6 +45,20 @@ import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
     AngularFireAuthModule,
     SharedModule.forRoot(),
     GraphQLModule,
+    TranslateModule.forRoot({
+      useDefaultLang: true,
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useClass: ToolMissingTranslationHandler,
+      },
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (http: HttpClient) => {
+          return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+        },
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [
     // check firebase.json for matching ports

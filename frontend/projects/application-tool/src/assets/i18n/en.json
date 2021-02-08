@@ -1,0 +1,21 @@
+{
+	"application.group_application": "Group Application",
+	"application.status": "Status",
+	"application.status--application-complete": "Application is ready",
+	"application.status--application-incomplete": "Application incomplete",
+	"application.status--missing-payment": "Missing proof of payment",
+	"defaults.application-multi": "Applications",
+	"defaults.application-single": "Application",
+	"defaults.code": "Code",
+	"defaults.delete": "Delete",
+	"defaults.edit": "Edit",
+	"defaults.no": "No",
+	"defaults.upload": "Upload",
+	"defaults.yes": "Yes",
+	"edition.status--application-ends-in": "Application ends in {{time}}",
+	"email.please-verify-your-email": "",
+	"email.send-verification-email": "",
+	"snippets.add-application": "Add new application",
+	"snippets.no-applications": "No applications found",
+	"snippets.welcome-user": "Hello {{user}}"
+}

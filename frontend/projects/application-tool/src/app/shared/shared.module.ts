@@ -6,6 +6,8 @@ import { AuthService } from './services/auth.service';
 import { HasuraService } from './services/hasura.service';
 import { TimePassedPipe } from './pipes/time-passed.pipe';
 import { ModalModule } from './components/modal/modal.module';
+import { MultilangService } from './services/multilang.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -13,6 +15,7 @@ const MODULES = [
   FormsModule,
   ReactiveFormsModule,
   ModalModule,
+  TranslateModule,
 ];
 
 const PIPES: any = [
@@ -29,6 +32,7 @@ const PROVIDERS: any = [
   AppService,
   AuthService,
   HasuraService,
+  MultilangService,
 ];
 
 @NgModule({

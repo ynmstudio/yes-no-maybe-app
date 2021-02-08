@@ -44,6 +44,12 @@ export class EditApplicationComponent implements OnInit {
   get updated_at() {
     return this.form.get('updated_at');
   }
+  get id() {
+    return this.form.get('id');
+  }
+  get edition() {
+    return this.form.get('edition');
+  }
 
   constructor(
     private fb: FormBuilder,

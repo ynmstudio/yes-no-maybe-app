@@ -1,0 +1,21 @@
+{
+	"application.group_application": "Gruppenarbeit",
+	"application.status": "Status",
+	"application.status--application-complete": "Arbeitsangaben vollständig",
+	"application.status--application-incomplete": "Arbeitsangaben unvollständig",
+	"application.status--missing-payment": "Zahlungsnachweis noch ausstehend",
+	"defaults.application-multi": "Einreichungen",
+	"defaults.application-single": "Einreichung",
+	"defaults.code": "Code",
+	"defaults.delete": "Löschen",
+	"defaults.edit": "Bearbeiten",
+	"defaults.no": "Nein",
+	"defaults.upload": "Upload",
+	"defaults.yes": "Ja",
+	"edition.status--application-ends-in": "Einreichung endet in {{time}}",
+	"email.please-verify-your-email": "Bitte bestätige deine Email-Addresse.",
+	"email.send-verification-email": "Bestätigungsemail zusenden",
+	"snippets.add-application": "Neue Einreichung anlegen",
+	"snippets.no-applications": "Keine Einreichungen vorhanden",
+	"snippets.welcome-user": "Hallo {{user}}"
+}

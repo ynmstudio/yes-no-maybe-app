@@ -107,17 +107,17 @@
           <div
             class="whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
             [ngClass]="
-              statement?.value.length > statementMaxLength * 0.95
-                ? statement?.value.length > statementMaxLength
+              statement?.value?.length > statementMaxLength * 0.95
+                ? statement?.value?.length > statementMaxLength
                   ? 'text-red-600'
                   : 'text-yellow-600'
-                : statement?.touched &&
-                  statement?.value.length >= statementMinLenght
+                : (statement?.touched && statement?.value?.length) >=
+                  statementMinLenght
                 ? 'text-green-500'
                 : 'text-gray-800'
             "
           >
-            {{ statement?.value.length }}/{{ statementMaxLength }} Zeichen
+            {{ statement?.value?.length || 0 }}/{{ statementMaxLength }} Zeichen
           </div>
         </div>
         <label class="col-start-1" for="residency">Residency</label>
@@ -221,7 +221,10 @@
             IBAN: DE84830944950003237516<br />
             <br />
             Verwendungszweck:
-            <span class="font-medium">Code 833de7 BAP 2021</span>
+            <span class="font-medium"
+              >Code {{ id?.value | slice: 0:5 }} BAP
+              {{ edition?.value.name }}</span
+            >
           </p>
         </div>
         <div
@@ -278,16 +281,18 @@
     </div>
   </form>
 
-  <!-- <pre>{{ form.value | json }}</pre>
+  <pre>{{ form.value | json }}</pre>
   <pre>{{ form.valid | json }}</pre>
-  <pre>{{ name?.errors | json }}</pre> -->
+  <pre>{{ name?.errors | json }}</pre>
 
   <footer class="container--default flex items-baseline justify-between">
     <div class="text-headline">Berlin Art Prize</div>
     <div class="flex justify-end space-x-3 items-end">
       <div class="space-x-16 flex mr-16">
-        <a class="font-mono hover:underline" href="">AGB</a>
-        <a class="font-mono hover:underline" href="">Datenschutz</a>
+        <a class="font-mono hover:underline" tabindex="-1" href="">AGB</a>
+        <a class="font-mono hover:underline" tabindex="-1" href=""
+          >Datenschutz</a
+        >
       </div>
       <button
         (click)="saveAndClose()"

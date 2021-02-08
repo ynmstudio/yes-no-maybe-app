@@ -3,19 +3,26 @@
 >
   <nav>
     <ul class="rounded-xl pointer-events-auto">
-      <li class="inline-block">
+      <li
+        class="inline-block"
+        *ngFor="
+          let lang of multilangService.availableLanguages;
+          let first = first;
+          let last = last
+        "
+      >
         <button
-          class="bg-black text-white rounded-tl-xl rounded-bl-xl uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300"
-        >
-          de
-        </button>
-      </li>
-      <li class="inline-block">
-        <button
-          class="bg-gray-200 text-black rounded-tr-xl rounded-br-xl uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300"
-        >
-          en
-        </button>
+          (click)="changeLanguage(lang)"
+          class="uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50"
+          [ngClass]="[
+            first ? ' rounded-tl-xl rounded-bl-xl border-none' : 'border-l',
+            last ? 'rounded-tr-xl rounded-br-xl' : '',
+            lang === multilangService.currentLanguage
+              ? 'bg-black text-white border-black'
+              : 'bg-gray-200 text-black'
+          ]"
+          [innerText]="lang"
+        ></button>
       </li>
     </ul>
   </nav>
@@ -24,12 +31,13 @@
   *ngIf="!(authService.emailVerified | async)"
   class="verify-email fixed bottom-0 inset-x-0 px-4 py-3 z-20 bg-orange-300 text-black leading-none"
 >
-  Bitte bestätige deine Email-Addresse.
+  {{ "email.please-verify-your-email" | translate }}
   <button
     class="font-mono uppercase text-xs p-1 ml-2"
     (click)="sendVerification()"
   >
-    &rarr; Bestätigungsemail zusenden
+    &rarr;
+    {{ "email.send-verification-email" | translate }}
   </button>
 </div>
 <router-outlet></router-outlet>
