@@ -1,3 +1,7 @@
+// USE REGEX TO CREATE POSTGRESQL INSERT
+// Search for (.*)
+// Replace with INSERT INTO wordlist (value) VALUES ('$1');
+
 abandon
 ability
 able

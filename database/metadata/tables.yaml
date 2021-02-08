@@ -50,6 +50,7 @@
       - edition_id
       - group
       - id
+      - internal_name
       - statement
       - updated_at
       filter:
@@ -67,6 +68,7 @@
       - edition_id
       - group
       - id
+      - internal_name
       - name
       - payment_file
       - residency
@@ -101,6 +103,12 @@
             _eq: X-Hasura-User-Id
       allow_aggregations: true
   update_permissions:
+  - role: team
+    permission:
+      columns:
+      - internal_name
+      filter: {}
+      check: null
   - role: user
     permission:
       columns:

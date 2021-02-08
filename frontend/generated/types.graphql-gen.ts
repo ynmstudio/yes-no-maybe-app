@@ -31,6 +31,7 @@ export type Applications = {
   edition_id: Scalars['Int'];
   group: Scalars['Boolean'];
   id: Scalars['uuid'];
+  internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   payment_file?: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -163,6 +164,7 @@ export type Applications_Bool_Exp = {
   edition_id?: Maybe<Int_Comparison_Exp>;
   group?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  internal_name?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   payment_file?: Maybe<String_Comparison_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
@@ -175,6 +177,8 @@ export type Applications_Bool_Exp = {
 
 /** unique or primary key constraints on table "applications" */
 export enum Applications_Constraint {
+  /** unique or primary key constraint */
+  ApplicationsEditionIdInternalNameKey = 'applications_edition_id_internal_name_key',
   /** unique or primary key constraint */
   ApplicationsPkey = 'applications_pkey'
 }
@@ -194,6 +198,7 @@ export type Applications_Insert_Input = {
   edition_id?: Maybe<Scalars['Int']>;
   group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
+  internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   payment_file?: Maybe<Scalars['String']>;
   ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
@@ -211,6 +216,7 @@ export type Applications_Max_Fields = {
   created_by?: Maybe<Scalars['String']>;
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
+  internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   payment_file?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
@@ -223,6 +229,7 @@ export type Applications_Max_Order_By = {
   created_by?: Maybe<Order_By>;
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  internal_name?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   payment_file?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
@@ -236,6 +243,7 @@ export type Applications_Min_Fields = {
   created_by?: Maybe<Scalars['String']>;
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
+  internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   payment_file?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
@@ -248,6 +256,7 @@ export type Applications_Min_Order_By = {
   created_by?: Maybe<Order_By>;
   edition_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  internal_name?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   payment_file?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
@@ -286,6 +295,7 @@ export type Applications_Order_By = {
   edition_id?: Maybe<Order_By>;
   group?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  internal_name?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   payment_file?: Maybe<Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
@@ -318,6 +328,8 @@ export enum Applications_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  InternalName = 'internal_name',
+  /** column name */
   Name = 'name',
   /** column name */
   PaymentFile = 'payment_file',
@@ -338,6 +350,7 @@ export type Applications_Set_Input = {
   edition_id?: Maybe<Scalars['Int']>;
   group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
+  internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   payment_file?: Maybe<Scalars['String']>;
   residency?: Maybe<Scalars['Boolean']>;
@@ -405,6 +418,8 @@ export enum Applications_Update_Column {
   Group = 'group',
   /** column name */
   Id = 'id',
+  /** column name */
+  InternalName = 'internal_name',
   /** column name */
   Name = 'name',
   /** column name */
@@ -1031,7 +1046,7 @@ export type Mutation_RootDelete_WordlistArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Wordlist_By_PkArgs = {
-  value: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 
@@ -1277,6 +1292,7 @@ export type Mutation_RootUpdate_Users_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_WordlistArgs = {
+  _inc?: Maybe<Wordlist_Inc_Input>;
   _set?: Maybe<Wordlist_Set_Input>;
   where: Wordlist_Bool_Exp;
 };
@@ -1284,6 +1300,7 @@ export type Mutation_RootUpdate_WordlistArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Wordlist_By_PkArgs = {
+  _inc?: Maybe<Wordlist_Inc_Input>;
   _set?: Maybe<Wordlist_Set_Input>;
   pk_columns: Wordlist_Pk_Columns_Input;
 };
@@ -1562,7 +1579,7 @@ export type Query_RootWordlist_AggregateArgs = {
 
 /** query root */
 export type Query_RootWordlist_By_PkArgs = {
-  value: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 
@@ -2610,7 +2627,7 @@ export type Subscription_RootWordlist_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootWordlist_By_PkArgs = {
-  value: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 
@@ -2894,6 +2911,7 @@ export type Uuid_Comparison_Exp = {
 /** columns and relationships of "wordlist" */
 export type Wordlist = {
   __typename?: 'wordlist';
+  id: Scalars['Int'];
   value: Scalars['String'];
 };
 
@@ -2907,9 +2925,17 @@ export type Wordlist_Aggregate = {
 /** aggregate fields of "wordlist" */
 export type Wordlist_Aggregate_Fields = {
   __typename?: 'wordlist_aggregate_fields';
+  avg?: Maybe<Wordlist_Avg_Fields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<Wordlist_Max_Fields>;
   min?: Maybe<Wordlist_Min_Fields>;
+  stddev?: Maybe<Wordlist_Stddev_Fields>;
+  stddev_pop?: Maybe<Wordlist_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Wordlist_Stddev_Samp_Fields>;
+  sum?: Maybe<Wordlist_Sum_Fields>;
+  var_pop?: Maybe<Wordlist_Var_Pop_Fields>;
+  var_samp?: Maybe<Wordlist_Var_Samp_Fields>;
+  variance?: Maybe<Wordlist_Variance_Fields>;
 };
 
 
@@ -2921,9 +2947,17 @@ export type Wordlist_Aggregate_FieldsCountArgs = {
 
 /** order by aggregate values of table "wordlist" */
 export type Wordlist_Aggregate_Order_By = {
+  avg?: Maybe<Wordlist_Avg_Order_By>;
   count?: Maybe<Order_By>;
   max?: Maybe<Wordlist_Max_Order_By>;
   min?: Maybe<Wordlist_Min_Order_By>;
+  stddev?: Maybe<Wordlist_Stddev_Order_By>;
+  stddev_pop?: Maybe<Wordlist_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Wordlist_Stddev_Samp_Order_By>;
+  sum?: Maybe<Wordlist_Sum_Order_By>;
+  var_pop?: Maybe<Wordlist_Var_Pop_Order_By>;
+  var_samp?: Maybe<Wordlist_Var_Samp_Order_By>;
+  variance?: Maybe<Wordlist_Variance_Order_By>;
 };
 
 /** input type for inserting array relation for remote table "wordlist" */
@@ -2932,11 +2966,23 @@ export type Wordlist_Arr_Rel_Insert_Input = {
   on_conflict?: Maybe<Wordlist_On_Conflict>;
 };
 
+/** aggregate avg on columns */
+export type Wordlist_Avg_Fields = {
+  __typename?: 'wordlist_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "wordlist" */
+export type Wordlist_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
 /** Boolean expression to filter rows from the table "wordlist". All fields are combined with a logical 'AND'. */
 export type Wordlist_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Wordlist_Bool_Exp>>>;
   _not?: Maybe<Wordlist_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Wordlist_Bool_Exp>>>;
+  id?: Maybe<Int_Comparison_Exp>;
   value?: Maybe<String_Comparison_Exp>;
 };
 
@@ -2946,30 +2992,40 @@ export enum Wordlist_Constraint {
   WordlistPkey = 'wordlist_pkey'
 }
 
+/** input type for incrementing integer column in table "wordlist" */
+export type Wordlist_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+};
+
 /** input type for inserting data into table "wordlist" */
 export type Wordlist_Insert_Input = {
+  id?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type Wordlist_Max_Fields = {
   __typename?: 'wordlist_max_fields';
+  id?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['String']>;
 };
 
 /** order by max() on columns of table "wordlist" */
 export type Wordlist_Max_Order_By = {
+  id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
 
 /** aggregate min on columns */
 export type Wordlist_Min_Fields = {
   __typename?: 'wordlist_min_fields';
+  id?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['String']>;
 };
 
 /** order by min() on columns of table "wordlist" */
 export type Wordlist_Min_Order_By = {
+  id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
 
@@ -2997,30 +3053,113 @@ export type Wordlist_On_Conflict = {
 
 /** ordering options when selecting data from "wordlist" */
 export type Wordlist_Order_By = {
+  id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
 
 /** primary key columns input for table: "wordlist" */
 export type Wordlist_Pk_Columns_Input = {
-  value: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 /** select columns of table "wordlist" */
 export enum Wordlist_Select_Column {
+  /** column name */
+  Id = 'id',
   /** column name */
   Value = 'value'
 }
 
 /** input type for updating data in table "wordlist" */
 export type Wordlist_Set_Input = {
+  id?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Wordlist_Stddev_Fields = {
+  __typename?: 'wordlist_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "wordlist" */
+export type Wordlist_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Wordlist_Stddev_Pop_Fields = {
+  __typename?: 'wordlist_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "wordlist" */
+export type Wordlist_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Wordlist_Stddev_Samp_Fields = {
+  __typename?: 'wordlist_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "wordlist" */
+export type Wordlist_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Wordlist_Sum_Fields = {
+  __typename?: 'wordlist_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "wordlist" */
+export type Wordlist_Sum_Order_By = {
+  id?: Maybe<Order_By>;
 };
 
 /** update columns of table "wordlist" */
 export enum Wordlist_Update_Column {
   /** column name */
+  Id = 'id',
+  /** column name */
   Value = 'value'
 }
+
+/** aggregate var_pop on columns */
+export type Wordlist_Var_Pop_Fields = {
+  __typename?: 'wordlist_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "wordlist" */
+export type Wordlist_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Wordlist_Var_Samp_Fields = {
+  __typename?: 'wordlist_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "wordlist" */
+export type Wordlist_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Wordlist_Variance_Fields = {
+  __typename?: 'wordlist_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "wordlist" */
+export type Wordlist_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+};
 
 /** columns and relationships of "works" */
 export type Works = {
