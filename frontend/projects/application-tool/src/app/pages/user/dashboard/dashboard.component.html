@@ -89,68 +89,96 @@
       <!-- STATUS -->
       <div id="status" class="md:w-80 lg:w-96">
         <div
-          class="relative z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+          class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div class="text-headline">Einreichung endet in 4&nbsp;Wochen</div>
-          <a [routerLink]="[]"></a>
+          <a
+            class="inline-block mt-4 font-mono text-black text-opacity-70"
+            [routerLink]="[]"
+            ><span class="group-hover:underline">Einstellungen</span> &rarr;</a
+          >
           <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
         </div>
       </div>
       <!-- UPDATES -->
       <div id="updates" class="mt-16 md:w-80 lg:w-96">
+        <div
+          class="updates--header border-b border-gray-300 flex items-center pb-3 space-x-2"
+        >
+          <span>&darr;</span>
+          <h3 class="font-mono bg-gray-100 py-2 px-4">Updates</h3>
+        </div>
         <!-- SINGLE UPDATE -->
         <div class="update mt-4">
           <div
-            class="relative font-mono text-sm py-2 px-3 sm:px-5 lg:px-7 md:ml-1"
+            class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
           >
-            {{ "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short" }}
+            <span>{{
+              "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short"
+            }}</span>
             <a [routerLink]="[]">X</a>
           </div>
           <div
-            class="relative bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+            class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
           >
             <div class="text-headline">Jury 2021 steht fest!</div>
-            <a [routerLink]="[]">Mehr dazu</a>
+            <a
+              class="inline-block mt-4 font-mono text-black text-opacity-60"
+              [routerLink]="[]"
+              ><span class="group-hover:underline">Mehr dazu</span> &rarr;</a
+            >
           </div>
         </div>
         <!-- SINGLE UPDATE -->
         <div class="update mt-4">
           <div
-            class="relative font-mono text-sm py-2 px-3 sm:px-5 lg:px-7 md:ml-1"
+            class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
           >
-            {{ "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short" }}
+            <span>{{
+              "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short"
+            }}</span>
             <a [routerLink]="[]">X</a>
           </div>
           <div
-            class="relative bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+            class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
           >
             <div class="text-headline">Jury 2021 steht fest!</div>
-            <a [routerLink]="[]">Mehr dazu</a>
+            <a
+              class="inline-block mt-4 font-mono text-black text-opacity-60"
+              [routerLink]="[]"
+              ><span class="group-hover:underline">Mehr dazu</span> &rarr;</a
+            >
           </div>
         </div>
         <!-- SINGLE UPDATE -->
         <div class="update mt-4">
           <div
-            class="relative font-mono text-sm py-2 px-3 sm:px-5 lg:px-7 md:ml-1"
+            class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
           >
-            {{ "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short" }}
+            <span>{{
+              "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short"
+            }}</span>
             <a [routerLink]="[]">X</a>
           </div>
           <div
-            class="relative bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+            class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
           >
             <div class="text-headline">Jury 2021 steht fest!</div>
-            <a [routerLink]="[]">Mehr dazu</a>
+            <a
+              class="inline-block mt-4 font-mono text-black text-opacity-60"
+              [routerLink]="[]"
+              ><span class="group-hover:underline">Mehr dazu</span> &rarr;</a
+            >
           </div>
         </div>
       </div>
     </div>
   </div>
-  <footer class="container--default flex items-center justify-between">
+  <footer class="container--default flex items-baseline justify-between">
     <div class="text-headline">Berlin Art Prize</div>
-    <div>
-      <p>Berlin Art Prize e.V.</p>
-      <p>contact@berlinartprize.com</p>
+    <div class="space-x-8 flex">
+      <a class="font-mono hover:underline" href="">Profil</a>
+      <a class="font-mono hover:underline" href="">Logout</a>
     </div>
   </footer>
 </div>

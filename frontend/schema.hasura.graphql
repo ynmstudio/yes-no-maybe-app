@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Fri Feb 05 2021 10:07:34 GMT+0100 (Central European Standard Time)
+# timestamp: Mon Feb 08 2021 08:21:22 GMT+0100 (Central European Standard Time)
 
 schema {
   query: query_root
