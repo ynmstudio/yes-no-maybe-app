@@ -5,6 +5,9 @@
   - name: edition
     using:
       foreign_key_constraint_on: edition_id
+  - name: user
+    using:
+      foreign_key_constraint_on: created_by
   array_relationships:
   - name: ratings
     using:
@@ -42,12 +45,13 @@
   - role: jury
     permission:
       columns:
-      - edition_id
-      - created_by
-      - name
       - created_at
-      - updated_at
+      - created_by
+      - edition_id
+      - group
       - id
+      - statement
+      - updated_at
       filter:
         edition:
           current:
@@ -58,9 +62,15 @@
       columns:
       - created_at
       - created_by
+      - database
+      - disclaimer
       - edition_id
+      - group
       - id
       - name
+      - payment_file
+      - residency
+      - statement
       - updated_at
       filter:
         edition:
@@ -75,6 +85,13 @@
       - updated_at
       - name
       - edition_id
+      - created_by
+      - group
+      - statement
+      - residency
+      - database
+      - disclaimer
+      - payment_file
       filter:
         _and:
         - edition:
@@ -87,7 +104,12 @@
   - role: user
     permission:
       columns:
+      - database
+      - disclaimer
+      - group
       - name
+      - residency
+      - statement
       filter:
         _and:
         - created_by:
@@ -243,7 +265,8 @@
       set:
         id: x-hasura-user-id
         type: x-hasura-default-role
-      columns: []
+      columns:
+      - name
       backend_only: false
   - role: team
     permission:
@@ -251,7 +274,8 @@
       set:
         id: x-hasura-user-id
         type: x-hasura-default-role
-      columns: []
+      columns:
+      - name
       backend_only: false
   - role: user
     permission:
@@ -259,7 +283,8 @@
       set:
         id: x-hasura-user-id
         type: x-hasura-default-role
-      columns: []
+      columns:
+      - last_seen
       backend_only: false
   select_permissions:
   - role: jury
@@ -303,7 +328,8 @@
       check: null
   - role: user
     permission:
-      columns: []
+      columns:
+      - last_seen
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -319,6 +345,9 @@
       filter:
         id:
           _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: wordlist
 - table:
     schema: public
     name: works

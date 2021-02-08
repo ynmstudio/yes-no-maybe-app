@@ -1,0 +1,1 @@
+ALTER TABLE ONLY "public"."users" ALTER COLUMN "name" DROP DEFAULT;
