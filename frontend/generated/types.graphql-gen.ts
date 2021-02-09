@@ -5419,7 +5419,7 @@ export type WorkFileFragment = (
 
 export type WorkSpecificationFragment = (
   { __typename?: 'works_specifications' }
-  & Pick<Works_Specifications, 'id' | 'work_id' | 'application_id' | 'medium' | 'year' | 'title' | 'order' | 'number_of_editions' | 'description' | 'dimensions_depth' | 'dimensions_height'>
+  & Pick<Works_Specifications, 'id' | 'work_id' | 'application_id' | 'medium' | 'year' | 'title' | 'order' | 'number_of_editions' | 'description' | 'dimensions_width' | 'dimensions_height' | 'dimensions_depth'>
 );
 
 export type AddWorkMutationVariables = Exact<{
@@ -5474,6 +5474,24 @@ export type GetPortfolioWorksQuery = (
   & { works: Array<(
     { __typename?: 'works' }
     & WorkFragment
+  )> }
+);
+
+export type UpdateSpecificationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  set: Works_Specifications_Set_Input;
+  application_id: Scalars['uuid'];
+}>;
+
+
+export type UpdateSpecificationMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'updated_at'>
+  )>, update_works_specifications_by_pk?: Maybe<(
+    { __typename?: 'works_specifications' }
+    & WorkSpecificationFragment
   )> }
 );
 
@@ -5571,8 +5589,9 @@ export const WorkSpecificationFragmentDoc = gql`
   order
   number_of_editions
   description
-  dimensions_depth
+  dimensions_width
   dimensions_height
+  dimensions_depth
 }
     `;
 export const WorkFragmentDoc = gql`
@@ -5853,7 +5872,7 @@ export const GetCurrentRoundDocument = gql`
 export const AddWorkDocument = gql`
     mutation AddWork($application_id: uuid!, $portfolio: Boolean) {
   insert_works_one(
-    object: {application_id: $application_id, portfolio: $portfolio, specifications: {data: {application_id: $application_id}}}
+    object: {application_id: $application_id, portfolio: $portfolio, specifications: {data: {application_id: $application_id, order: 0}}}
   ) {
     ...Work
   }
@@ -5927,6 +5946,31 @@ export const GetPortfolioWorksDocument = gql`
   })
   export class GetPortfolioWorksGQL extends Apollo.Query<GetPortfolioWorksQuery, GetPortfolioWorksQueryVariables> {
     document = GetPortfolioWorksDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateSpecificationDocument = gql`
+    mutation UpdateSpecification($id: uuid!, $set: works_specifications_set_input!, $application_id: uuid!) {
+  update_applications_by_pk(
+    pk_columns: {id: $application_id}
+    _set: {updated_at: "now()"}
+  ) {
+    id
+    updated_at
+  }
+  update_works_specifications_by_pk(pk_columns: {id: $id}, _set: $set) {
+    ...WorkSpecification
+  }
+}
+    ${WorkSpecificationFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateSpecificationGQL extends Apollo.Mutation<UpdateSpecificationMutation, UpdateSpecificationMutationVariables> {
+    document = UpdateSpecificationDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

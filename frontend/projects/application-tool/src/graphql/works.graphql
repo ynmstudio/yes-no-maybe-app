@@ -28,8 +28,9 @@ fragment WorkSpecification on works_specifications {
   order
   number_of_editions
   description
-  dimensions_depth
+  dimensions_width
   dimensions_height
+  dimensions_depth
 }
 
 # User
@@ -38,7 +39,7 @@ mutation AddWork($application_id: uuid!, $portfolio: Boolean) {
     object: {
       application_id: $application_id
       portfolio: $portfolio
-      specifications: { data: { application_id: $application_id } }
+      specifications: { data: { application_id: $application_id, order: 0 } }
     }
   ) {
     ...Work
@@ -83,6 +84,24 @@ query GetPortfolioWorks($application_id: uuid!) {
     ...Work
   }
 }
+
+mutation UpdateSpecification(
+  $id: uuid!
+  $set: works_specifications_set_input!
+  $application_id: uuid!
+) {
+  update_applications_by_pk(
+    pk_columns: { id: $application_id }
+    _set: { updated_at: "now()" }
+  ) {
+    id
+    updated_at
+  }
+  update_works_specifications_by_pk(pk_columns: { id: $id }, _set: $set) {
+    ...WorkSpecification
+  }
+}
+
 mutation UpdateWorksOrder($objects: [works_insert_input!]!) {
   insert_works(
     objects: $objects

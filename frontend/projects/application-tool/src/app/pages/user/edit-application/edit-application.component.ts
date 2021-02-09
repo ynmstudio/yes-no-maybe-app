@@ -3,7 +3,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -29,6 +29,7 @@ import {
   WorkSpecificationFragmentDoc,
 } from 'generated/types.graphql-gen';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { WorkSpecificationComponent } from './work-specification/work-specification.component';
 
 @Component({
   selector: 'app-edit-application',
@@ -74,6 +75,9 @@ export class EditApplicationComponent implements OnInit {
 
   singleWorks$;
   portfolioWorks$;
+
+  @ViewChildren(WorkSpecificationComponent)
+  specificationComponents!: QueryList<WorkSpecificationComponent>;
 
   constructor(
     private fb: FormBuilder,
@@ -153,7 +157,7 @@ export class EditApplicationComponent implements OnInit {
     this.form.valueChanges
       .pipe(distinctUntilChanged(), debounceTime(5000))
       .subscribe((changes) => {
-        if (!this.form.pristine) this.saveApplication();
+        this.saveApplication();
       });
   }
 
@@ -164,103 +168,15 @@ export class EditApplicationComponent implements OnInit {
   }
   async saveAndClose() {
     await this.saveApplication();
+    this.specificationComponents.forEach(async (component) => {
+      await component.saveSpecification();
+    });
+
     this.router.navigate(['u', 'dashboard']);
   }
 
-  async dropSpecifications(
-    items: WorkSpecificationFragment[],
-    event: CdkDragDrop<WorkSpecificationFragment[]>
-  ) {
-    if (event.previousContainer === event.container) {
-      const newItems = [...items];
-      moveItemInArray(newItems, event.previousIndex, event.currentIndex);
-
-      const objects = newItems.map((item, index) => {
-        return {
-          id: item.id,
-          application_id: item.application_id,
-          work_id: item.work_id,
-          order: index,
-        };
-      });
-
-      await this.updateSpecificationsOrderGQL
-        .mutate(
-          {
-            objects,
-          },
-          {
-            optimisticResponse: {
-              insert_works_specifications: {
-                __typename: 'works_specifications_mutation_response',
-                returning: [
-                  ...objects.map((object) => {
-                    return {
-                      id: object.id,
-                      order: object.order,
-                      __typename: 'works_specifications',
-                    };
-                  }),
-                ] as any,
-              },
-            },
-            update: (store, { data: { ...updatedSpecifications } }) => {
-              console.log(
-                updatedSpecifications?.insert_works_specifications?.returning
-              );
-
-              // const variables = {
-              //   application_id: this.application_id,
-              //   portfolio:true
-              // };
-              // // Read the data from our cache for this query.
-              // const { ...data }: any = store.readQuery({
-              //   query: GetPortfolioWorksDocument,
-              //   variables,
-              // });
-              // // Filter array by deleted producer id
-
-              // data.works = data.works.forEach(work => {
-              //   work.id
-              // });;
-              // // Write our data back to the cache.
-              // store.writeQuery({
-              //   query: portfolio
-              //     ? GetPortfolioWorksDocument
-              //     : GetSingleWorksDocument,
-              //   variables,
-              //   data,
-              // });
-
-              updatedSpecifications?.insert_works_specifications?.returning.forEach(
-                (updatedSpecification: any) => {
-                  // Read the data from our cache for this query.
-                  let { ...data }: any = store.readFragment({
-                    id: `works_specifications:${updatedSpecification.id}`,
-                    fragment: WorkSpecificationFragmentDoc,
-                    fragmentName: 'WorkSpecification',
-                    optimistic: true,
-                  });
-                  // Add our message from the mutation to the end.
-                  data = { ...data, order: updatedSpecification.order };
-                  // Write our data back to the cache.
-                  store.writeFragment({
-                    id: `works_specifications:${updatedSpecification.id}`,
-                    fragment: WorkSpecificationFragmentDoc,
-                    fragmentName: 'WorkSpecification',
-                    data,
-                  });
-                }
-              );
-            },
-          }
-        )
-        .toPromise();
-    } else {
-    }
-  }
-
   async saveApplication() {
+    if (this.form.pristine) return;
     const application: ApplicationFragment = this.form.value;
 
     let data = {
@@ -355,5 +271,151 @@ export class EditApplicationComponent implements OnInit {
 
   trackByFn(index: number, item: any) {
     return item.id;
+  }
+
+  /*
+   * SORTING
+   */
+
+  async dropSpecifications(
+    work_id: string,
+    items: WorkSpecificationFragment[],
+    event: CdkDragDrop<WorkSpecificationFragment[]>
+  ) {
+    if (event.previousContainer === event.container) {
+      const newItems = [...items];
+      moveItemInArray(newItems, event.previousIndex, event.currentIndex);
+
+      const objects = newItems.map((item, index) => {
+        return {
+          id: item.id,
+          application_id: item.application_id,
+          work_id: item.work_id,
+          order: index,
+        };
+      });
+
+      await this.updateSpecificationsOrderGQL
+        .mutate(
+          {
+            objects,
+          },
+          {
+            optimisticResponse: {
+              insert_works_specifications: {
+                __typename: 'works_specifications_mutation_response',
+                returning: [
+                  ...objects.map((object) => {
+                    return {
+                      id: object.id,
+                      order: object.order,
+                      __typename: 'works_specifications',
+                    };
+                  }),
+                ] as any,
+              },
+            },
+            update: (store, { data: { ...updatedSpecifications } }) => {
+              console.log(
+                updatedSpecifications?.insert_works_specifications?.returning
+              );
+              // Read the data from our cache for this query.
+              let { ...data }: any = store.readFragment({
+                id: `works:${work_id}`,
+                fragment: WorkFragmentDoc,
+                fragmentName: 'Work',
+                optimistic: true,
+              });
+              // Filter array by deleted producer id
+              console.warn(data.specifications);
+              data.specifications = updatedSpecifications?.insert_works_specifications?.returning.map(
+                (updatedSpecification) => {
+                  let item = data.specifications.find(
+                    (specification: any) =>
+                      updatedSpecification.id === specification.id
+                  );
+                  if (updatedSpecification) {
+                    return { ...updatedSpecification, ...item };
+                  }
+                }
+              );
+              console.warn(data.specifications);
+              // // Write our data back to the cache.
+              store.writeFragment({
+                id: `works:${work_id}`,
+                fragment: WorkFragmentDoc,
+                fragmentName: 'Work',
+                data,
+              });
+
+              updatedSpecifications?.insert_works_specifications?.returning.forEach(
+                (updatedSpecification: any) => {
+                  // Read the data from our cache for this query.
+                  let { ...data }: any = store.readFragment({
+                    id: `works_specifications:${updatedSpecification.id}`,
+                    fragment: WorkSpecificationFragmentDoc,
+                    fragmentName: 'WorkSpecification',
+                    optimistic: true,
+                  });
+                  // Add our message from the mutation to the end.
+                  data = { ...data, order: updatedSpecification.order };
+                  // Write our data back to the cache.
+                  store.writeFragment({
+                    id: `works_specifications:${updatedSpecification.id}`,
+                    fragment: WorkSpecificationFragmentDoc,
+                    fragmentName: 'WorkSpecification',
+                    data,
+                  });
+                }
+              );
+            },
+          }
+        )
+        .toPromise();
+    } else {
+    }
+  }
+
+  async dropWorks(
+    items: WorkFragment[] | undefined,
+    event: CdkDragDrop<WorkFragment[]>
+  ) {
+    if (items && event.previousContainer === event.container) {
+      const newItems = [...items];
+      moveItemInArray(newItems, event.previousIndex, event.currentIndex);
+
+      const objects = newItems.map((item, index) => {
+        return {
+          id: item.id,
+          application_id: this.application_id,
+          order: index,
+        };
+      });
+
+      await this.updateWorksOrderGQL
+        .mutate(
+          {
+            objects,
+          },
+          {
+            optimisticResponse: {
+              insert_works: {
+                __typename: 'works_mutation_response',
+                returning: [
+                  ...objects.map((object) => {
+                    return {
+                      id: object.id,
+                      order: object.order,
+                      __typename: 'works',
+                    };
+                  }),
+                ] as any,
+              },
+            },
+          }
+        )
+        .toPromise();
+    } else {
+    }
   }
 }

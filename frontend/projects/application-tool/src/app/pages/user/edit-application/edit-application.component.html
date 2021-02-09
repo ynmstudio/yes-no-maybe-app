@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="container--default-x py-8 lg:py-0">
-      <div class="lg:flex lg:space-x-16">
+      <div class="lg:flex lg:space-x-6 xl:space-x-8">
         <div class="flex-auto">
           <div
             *ngIf="
@@ -104,13 +104,19 @@
               ></app-work-portfolio>
               <div
                 cdkDropList
+                cdkDropListOrientation="vertical"
                 (cdkDropListDropped)="
-                  dropSpecifications(work.specifications, $event)
+                  dropSpecifications(work.id, work.specifications, $event)
+                "
+                [cdkDropListDisabled]="
+                  !((work?.specifications?.length || 0) > 1)
                 "
               >
                 <app-work-specification
                   cdkDrag
-                  class="block"
+                  cdkDragLockAxis="y"
+                  [cdkDragStartDelay]="50"
+                  class="block mb-4 sm:pb-4 border-b border-transparent"
                   *ngFor="
                     let specification of work.specifications;
                     let last = last;
@@ -120,15 +126,16 @@
                   [application_id]="application_id"
                   [work_id]="work.id"
                   [ngClass]="{
-                    'sm:mb-4 sm:pb-4 border-gray-100 border-b': !last
+                    'border-gray-100 ': !last
                   }"
-                ></app-work-specification>
+                >
+                </app-work-specification>
               </div>
               <button
                 (click)="
                   addPortfolioSpecification(work.id, work.specifications.length)
                 "
-                class="block ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
+                class="block w-full md:w-auto ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
               >
                 Weitere Werkangabe hinzufügen +
               </button>
@@ -146,15 +153,30 @@
         <div
           class="h-px lg:h-auto lg:w-px my-8 lg:my-0 flex-none bg-gray-200"
         ></div>
-        <div class="flex-auto">
+        <div
+          class="flex-auto"
+          *ngIf="singleWorks$ | async as singleWorksObject"
+        >
           <div
             *ngIf="
-              ((singleWorks$ | async)?.data?.works?.length || 0) > 0;
+              (singleWorksObject?.data?.works?.length || 0) > 0;
               else noSingleWork
+            "
+            cdkDropList
+            cdkDropListOrientation="vertical"
+            cdkDragLockAxis="y"
+            (cdkDropListDropped)="
+              dropWorks(singleWorksObject?.data?.works, $event)
+            "
+            [cdkDropListDisabled]="
+              !((singleWorksObject?.data?.works?.length || 0) > 1)
             "
           >
             <div
-              class="sm:my-4 sm:pb-4 border-gray-200"
+              cdkDrag
+              cdkDragLockAxis="y"
+              [cdkDragStartDelay]="50"
+              class="mb-4 sm:my-4 sm:pb-4 border-gray-200"
               [ngClass]="{
                 'border-b': !last
               }"
@@ -182,7 +204,7 @@
             </div>
             <button
               (click)="addWork()"
-              class="block ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
+              class="block w-full md:w-auto ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
             >
               Weiteres Werk hinzufügen +
             </button>
@@ -208,7 +230,7 @@
             id="statement"
             formControlName="statement"
             name="statement"
-            rows="6"
+            rows="10"
             class="font-sans text-base rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
           ></textarea>
           <div
@@ -392,10 +414,14 @@
   <pre>{{ form.valid | json }}</pre>
   <pre>{{ name?.errors | json }}</pre>
 
-  <footer class="container--default flex items-baseline justify-between">
+  <footer
+    class="container--default flex items-end md:items-baseline justify-between"
+  >
     <div class="text-headline">Berlin Art Prize</div>
-    <div class="flex justify-end space-x-3 items-end">
-      <div class="space-x-16 flex mr-16">
+    <div
+      class="flex flex-col md:flex-row justify-end space-y-3 md:space-x-3 md:space-y-0 items-end"
+    >
+      <div class="space-x-16 flex mt-16 md:mt-0 md:mr-16 order-2 md:order-none">
         <a class="font-mono hover:underline" tabindex="-1" href="">AGB</a>
         <a class="font-mono hover:underline" tabindex="-1" href=""
           >Datenschutz</a

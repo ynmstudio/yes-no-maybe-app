@@ -27,6 +27,27 @@
   .box-padding-y {
     @apply py-3 sm:py-5;
   }
+
+  // Drag & Drop
+
+  .cdk-drag-animating {
+    @apply transition-transform duration-200;
+  }
+  .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    @apply transition-transform duration-200;
+  }
+  .cdk-drag {
+    @apply transition-drag duration-500 delay-100 bg-transparent ring-transparent ring-0;
+  }
+  .cdk-drag:active {
+    @apply bg-gray-300 ring-gray-300 ring-8;
+  }
+  .cdk-drag-preview {
+    @apply bg-gray-300 ring-gray-300 ring-8;
+  }
+  .cdk-drag-placeholder {
+    @apply transition-transform opacity-25;
+  }
 }
 
 @layer components {

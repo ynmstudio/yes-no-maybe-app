@@ -132,6 +132,7 @@
       - name
       - residency
       - statement
+      - updated_at
       filter:
         _and:
         - created_by:

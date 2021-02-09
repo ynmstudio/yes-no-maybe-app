@@ -79,14 +79,18 @@ module.exports = {
     //   },
     // },
     extend: {
+      transitionProperty: {
+        drag: "background, box-shadow",
+      },
       gridTemplateColumns: {
         login: "2fr 3fr 2fr",
         form: "auto 1fr",
         application: "auto 3fr 2fr",
+        specifications: "auto auto auto auto",
       },
       colors: {
         gray: {
-          50: "#F9F9F9",
+          50: "#FBFBFB",
           100: "#F5F5F5",
           200: "#ECECEC",
           300: "#D4D4D4",

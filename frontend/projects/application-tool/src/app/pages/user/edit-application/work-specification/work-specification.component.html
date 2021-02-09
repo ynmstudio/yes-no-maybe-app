@@ -1,6 +1,103 @@
-<p>work-specification works!</p>
-<pre>
-  {{ specification?.id }}
-  {{ application_id }}
-  {{ work_id }}
-</pre>
+<form
+  [formGroup]="form"
+  class="relative font-mono text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-1 lg:gap-y-2"
+>
+  <label for="title-{{ specification?.id }}">Titel:</label>
+  <input
+    id="title-{{ specification?.id }}"
+    formControlName="title"
+    name="title"
+    type="text"
+    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+  />
+  <label for="year-{{ specification?.id }}">Erstellungsjahr:</label>
+  <input
+    id="year-{{ specification?.id }}"
+    formControlName="year"
+    name="year"
+    type="number"
+    min="0"
+    [max]="currentYear"
+    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    [ngClass]="{
+      'ring-1 ring-red-500': year?.touched && year?.invalid
+    }"
+  />
+  <label for="number_of_editions-{{ specification?.id }}" class="text-right"
+    >Editionen (optional):</label
+  >
+  <input
+    id="number_of_editions-{{ specification?.id }}"
+    formControlName="number_of_editions"
+    name="number_of_editions"
+    type="number"
+    min="0"
+    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+  />
+  <label for="medium-{{ specification?.id }}">Medium:</label>
+  <input
+    id="medium-{{ specification?.id }}"
+    formControlName="medium"
+    name="medium"
+    type="text"
+    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+  />
+  <label>Maße:</label>
+  <div class="col-span-3 flex items-center space-x-2">
+    <label for="dimensions_width-{{ specification?.id }}">B</label>
+    <input
+      id="dimensions_width-{{ specification?.id }}"
+      formControlName="dimensions_width"
+      name="dimensions_width"
+      type="number"
+      min="0"
+      class="flex-1 w-4 appearance-none rounded-none p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    />
+    <label for="dimensions_height-{{ specification?.id }}"
+      >&times;&nbsp;H</label
+    >
+    <input
+      id="dimensions_height-{{ specification?.id }}"
+      formControlName="dimensions_height"
+      name="dimensions_height"
+      type="number"
+      min="0"
+      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    />
+    <label for="dimensions_depth-{{ specification?.id }}">&times;&nbsp;T</label>
+    <input
+      id="dimensions_depth-{{ specification?.id }}"
+      formControlName="dimensions_depth"
+      name="dimensions_depth"
+      type="number"
+      min="0"
+      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    />
+    <span>cm</span>
+  </div>
+  <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
+    <div>Artist Statement</div>
+  </label>
+  <div class="relative col-span-3">
+    <textarea
+      id="description-{{ specification?.id }}"
+      formControlName="description"
+      name="description"
+      rows="6"
+      class="font-sans text-base rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+    ></textarea>
+    <div
+      class="absolute bottom-0 right-0 p-1 z-20 pointer-events-none whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
+      [ngClass]="
+        description?.value?.length > descriptionMaxLength * 0.95
+          ? description?.value?.length > descriptionMaxLength
+            ? 'text-red-600'
+            : 'text-yellow-600'
+          : 'text-gray-800'
+      "
+    >
+      {{ description?.value?.length || 0 }}/{{ descriptionMaxLength }} Zeichen
+    </div>
+  </div>
+  <ng-content></ng-content>
+</form>
