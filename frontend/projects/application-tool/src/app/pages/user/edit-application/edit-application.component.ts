@@ -10,6 +10,11 @@ import {
   ApplicationFragment,
   GetApplicationGQL,
   UpdateApplicationGQL,
+  AddWorkGQL,
+  GetSingleWorksGQL,
+  GetSingleWorksDocument,
+  GetPortfolioWorksGQL,
+  GetPortfolioWorksDocument,
 } from 'generated/types.graphql-gen';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -51,15 +56,38 @@ export class EditApplicationComponent implements OnInit {
     return this.form.get('edition');
   }
 
+  get application_id() {
+    return this.route.snapshot.params['id'];
+  }
+
+  singleWorks$;
+  portfolioWorks$;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private getApplicationGQL: GetApplicationGQL,
-    private updateApplicationGQL: UpdateApplicationGQL
+    private updateApplicationGQL: UpdateApplicationGQL,
+    private addWorkGQL: AddWorkGQL,
+    private getSingleWorksGQL: GetSingleWorksGQL,
+    private getPortfolioWorksGQL: GetPortfolioWorksGQL
   ) {
     // If navigation extra is set by dashboard on addApplication() show "New Application" headline
     this.isNew = this.router.getCurrentNavigation()?.extras.state?.new || false;
+
+    this.singleWorks$ = this.getSingleWorksGQL.watch(
+      { application_id: this.application_id },
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    ).valueChanges;
+    this.portfolioWorks$ = this.getPortfolioWorksGQL.watch(
+      { application_id: this.application_id },
+      {
+        fetchPolicy: 'cache-and-network',
+      }
+    ).valueChanges;
 
     this.form = this.fb.group({
       name: new FormControl('', {
@@ -83,7 +111,7 @@ export class EditApplicationComponent implements OnInit {
 
     this.getApplicationGQL
       .watch(
-        { id: this.route.snapshot.params['id'] },
+        { id: this.application_id },
         {
           fetchPolicy: 'cache-and-network',
         }
@@ -137,11 +165,48 @@ export class EditApplicationComponent implements OnInit {
 
     await this.updateApplicationGQL
       .mutate({
-        id: this.route.snapshot.params['id'],
+        id: this.application_id,
         data,
       })
       .toPromise();
 
     this.form.markAsPristine();
+  }
+
+  async addWork(portfolio?: boolean) {
+    await this.addWorkGQL
+      .mutate(
+        {
+          application_id: this.application_id,
+          portfolio,
+        },
+        {
+          update: (store, { data: { ...newWork } }) => {
+            const variables = {
+              application_id: this.application_id,
+            };
+            // Read the data from our cache for this query.
+            const { ...data }: any = store.readQuery({
+              query: portfolio
+                ? GetPortfolioWorksDocument
+                : GetSingleWorksDocument,
+              variables,
+            });
+            console.log(newWork, data.works);
+            // Filter array by deleted producer id
+            data.works = [...data.works, newWork];
+            console.log(data);
+            // Write our data back to the cache.
+            store.writeQuery({
+              query: portfolio
+                ? GetPortfolioWorksDocument
+                : GetSingleWorksDocument,
+              variables,
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
   }
 }

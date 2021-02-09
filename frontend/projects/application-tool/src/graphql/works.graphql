@@ -1,0 +1,66 @@
+fragment Work on works {
+  id
+  portfolio
+  files {
+    ...WorkFile
+  }
+  specifications {
+    ...WorkSpecification
+  }
+}
+fragment WorkFile on works_files {
+  id
+  order
+  mimetype
+  key
+  originalname
+  size
+}
+fragment WorkSpecification on works_specifications {
+  medium
+  year
+  title
+  order
+  number_of_editions
+  description
+  dimensions_depth
+  dimensions_height
+}
+
+# User
+mutation AddWork($application_id: uuid!, $portfolio: Boolean) {
+  insert_works_one(
+    object: {
+      application_id: $application_id
+      portfolio: $portfolio
+      specifications: { data: { application_id: $application_id } }
+    }
+  ) {
+    ...Work
+  }
+}
+
+query GetSingleWorks($application_id: uuid!) {
+  works(
+    where: {
+      application_id: { _eq: $application_id }
+      portfolio: { _is_null: true }
+    }
+  ) {
+    ...Work
+  }
+}
+query GetPortfolioWorks($application_id: uuid!) {
+  works(
+    where: {
+      application_id: { _eq: $application_id }
+      portfolio: { _eq: true }
+    }
+  ) {
+    ...Work
+  }
+}
+
+# Jury
+
+# Admin

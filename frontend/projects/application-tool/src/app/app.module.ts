@@ -7,6 +7,7 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 
 import {
@@ -43,6 +44,7 @@ export class ToolMissingTranslationHandler
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFireStorageModule,
     SharedModule.forRoot(),
     GraphQLModule,
     TranslateModule.forRoot({
@@ -61,6 +63,7 @@ export class ToolMissingTranslationHandler
     }),
   ],
   providers: [
+    { provide: BUCKET, useValue: 'berlin-art-prize-dev' },
     // check firebase.json for matching ports
     {
       provide: AUTH_EMULATOR,

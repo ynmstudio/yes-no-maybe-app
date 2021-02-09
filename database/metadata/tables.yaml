@@ -9,6 +9,13 @@
     using:
       foreign_key_constraint_on: created_by
   array_relationships:
+  - name: files
+    using:
+      foreign_key_constraint_on:
+        column: application_id
+        table:
+          schema: public
+          name: works_files
   - name: ratings
     using:
       foreign_key_constraint_on:
@@ -16,6 +23,13 @@
         table:
           schema: public
           name: ratings
+  - name: specifications
+    using:
+      foreign_key_constraint_on:
+        column: application_id
+        table:
+          schema: public
+          name: works_specifications
   - name: works
     using:
       foreign_key_constraint_on:
@@ -265,6 +279,12 @@
     name: ratings
 - table:
     schema: public
+    name: types_medium
+- table:
+    schema: public
+    name: types_tags
+- table:
+    schema: public
     name: users
   insert_permissions:
   - role: jury
@@ -359,6 +379,10 @@
 - table:
     schema: public
     name: works
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
   array_relationships:
   - name: files
     using:
@@ -374,9 +398,298 @@
         table:
           schema: public
           name: works_specifications
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              _and:
+              - current:
+                  _eq: true
+              - application_start:
+                  _lte: now()
+              - application_end:
+                  _gte: now()
+      columns:
+      - application_id
+      - portfolio
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - portfolio
+      - updated_at
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              current:
+                _eq: true
+      allow_aggregations: true
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              _and:
+              - current:
+                  _eq: true
+              - application_start:
+                  _lte: now()
+              - application_end:
+                  _gte: now()
 - table:
     schema: public
     name: works_files
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  - name: work
+    using:
+      foreign_key_constraint_on: work_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
+      columns:
+      - application_id
+      - key
+      - mimetype
+      - order
+      - originalname
+      - size
+      - work_id
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - key
+      - mimetype
+      - order
+      - originalname
+      - size
+      - work_id
+      filter:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                current:
+                  _eq: true
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - order
+      filter:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
 - table:
     schema: public
     name: works_specifications
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  - name: work
+    using:
+      foreign_key_constraint_on: work_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
+      columns:
+      - application_id
+      - description
+      - dimensions_depth
+      - dimensions_height
+      - dimensions_width
+      - medium
+      - number_of_editions
+      - order
+      - title
+      - work_id
+      - year
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - work_id
+      - order
+      - title
+      - year
+      - number_of_editions
+      - medium
+      - dimensions_height
+      - dimensions_width
+      - dimensions_depth
+      - description
+      - application_id
+      filter:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                current:
+                  _eq: true
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - description
+      - dimensions_depth
+      - dimensions_height
+      - dimensions_width
+      - medium
+      - number_of_editions
+      - order
+      - title
+      - year
+      filter:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        _and:
+        - application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+        - work:
+            application:
+              created_by:
+                _eq: X-Hasura-User-Id

@@ -12,6 +12,14 @@ fragment Application on applications {
   edition {
     name
   }
+  files_aggregate {
+    aggregate {
+      count
+      sum {
+        size
+      }
+    }
+  }
 }
 # User
 

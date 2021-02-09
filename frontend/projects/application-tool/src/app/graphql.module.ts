@@ -25,7 +25,10 @@ export const SCHEMA_VERSION_KEY = 'apollo_schema_version';
 const uri = environment.hasura.graphql; // <-- add the URL of the GraphQL server here
 const websocket = environment.hasura.websocket; // <-- add the URL of the GraphQL server here
 
-const localHeaders = (role: string, id: string) => {
+const localHeaders = (
+  role: string = 'user',
+  id: string = 'yFVIqlR8dNKzhgubUYy9uYwb3fVR'
+) => {
   return {
     'x-hasura-admin-secret': environment.hasura.secret_key,
     'x-hasura-role': role, // adapt accordingly to test different users
@@ -57,11 +60,10 @@ const authCtx = (auth: AngularFireAuth) =>
         },
       };
     } else {
-      const devHeaders = localHeaders('user', 'yFVIqlR8dNKzhgubUYy9uYwb3fVR');
       return {
         headers: {
           ...headers,
-          ...devHeaders,
+          ...(environment.production ? {} : localHeaders()),
         },
       };
     }
@@ -113,6 +115,7 @@ export function createApollo(
           return {
             headers: {
               ...headers,
+              ...(environment.production ? {} : localHeaders()),
             },
           };
         }

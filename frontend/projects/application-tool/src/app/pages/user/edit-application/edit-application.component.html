@@ -77,18 +77,94 @@
         </span>
       </div>
     </div>
-    <div class="container--default-x py-8">
+    <div class="container--default-x py-8 lg:py-0">
       <div class="lg:flex lg:space-x-16">
-        <button
-          class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-        >
-          PDF Portfolio hochladen +
-        </button>
-        <button
-          class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-        >
-          Werke einzeln hochladen +
-        </button>
+        <div class="flex-auto">
+          <div
+            *ngIf="
+              ((portfolioWorks$ | async)?.data?.works?.length || 0) > 0;
+              else noPortfolio
+            "
+          >
+            <div
+              class="sm:my-4 sm:pb-4 border-gray-200"
+              [ngClass]="{
+                'border-b': !last
+              }"
+              *ngFor="
+                let work of (portfolioWorks$ | async)?.data?.works;
+                let last = last
+              "
+            >
+              <app-work-portfolio
+                [files]="work.files"
+                [application_id]="application_id"
+                [work_id]="work.id"
+              ></app-work-portfolio>
+              <app-work-specification
+                *ngFor="
+                  let specification of work.specifications;
+                  let last = last
+                "
+                [specification]="specification"
+                [application_id]="application_id"
+                [work_id]="work.id"
+                [ngClass]="{
+                  'block sm:mb-4 sm:pb-4 border-gray-100 border-b': last
+                }"
+              ></app-work-specification>
+              <button
+                (click)="addPortfolioSpecification()"
+                class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+              >
+                Weitere Werkangabe hinzufügen +
+              </button>
+            </div>
+          </div>
+          <ng-template #noPortfolio>
+            <button
+              (click)="addWork(true)"
+              class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+            >
+              PDF Portfolio hochladen +
+            </button>
+          </ng-template>
+        </div>
+        <div
+          class="h-px lg:h-auto lg:w-px my-8 lg:my-0 flex-none bg-gray-200"
+        ></div>
+        <div class="flex-auto">
+          <div>
+            <div
+              class="sm:my-4 sm:pb-4 border-gray-200"
+              [ngClass]="{
+                'border-b': !last
+              }"
+              *ngFor="
+                let work of (singleWorks$ | async)?.data?.works;
+                let last = last
+              "
+            >
+              <app-work-files
+                [files]="work.files"
+                [application_id]="application_id"
+                [work_id]="work.id"
+              ></app-work-files>
+              <app-work-specification
+                *ngFor="let specification of work.specifications"
+                [specification]="specification"
+                [application_id]="application_id"
+                [work_id]="work.id"
+              ></app-work-specification>
+            </div>
+          </div>
+          <button
+            (click)="addWork()"
+            class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+          >
+            Werke einzeln hochladen +
+          </button>
+        </div>
       </div>
     </div>
     <div class="xl:container container--default mx-auto">
