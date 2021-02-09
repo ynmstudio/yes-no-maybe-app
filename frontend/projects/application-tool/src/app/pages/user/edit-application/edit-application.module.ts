@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { EditApplicationRoutingModule } from './edit-application-routing.module';
 import { EditApplicationComponent } from './edit-application.component';
@@ -14,6 +15,6 @@ import { WorkPortfolioComponent } from './work-portfolio/work-portfolio.componen
     WorkFilesComponent,
     WorkPortfolioComponent,
   ],
-  imports: [SharedModule, EditApplicationRoutingModule],
+  imports: [SharedModule, EditApplicationRoutingModule, DragDropModule],
 })
 export class EditApplicationModule {}

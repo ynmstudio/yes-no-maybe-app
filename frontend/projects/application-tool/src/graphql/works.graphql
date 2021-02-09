@@ -1,15 +1,17 @@
 fragment Work on works {
   id
   portfolio
-  files {
+  files(order_by: { order: asc_nulls_last }) {
     ...WorkFile
   }
-  specifications {
+  specifications(order_by: { order: asc_nulls_last }) {
     ...WorkSpecification
   }
 }
 fragment WorkFile on works_files {
   id
+  work_id
+  application_id
   order
   mimetype
   key
@@ -17,6 +19,9 @@ fragment WorkFile on works_files {
   size
 }
 fragment WorkSpecification on works_specifications {
+  id
+  work_id
+  application_id
   medium
   year
   title
@@ -40,12 +45,29 @@ mutation AddWork($application_id: uuid!, $portfolio: Boolean) {
   }
 }
 
+mutation AddPortfolioSpecification(
+  $application_id: uuid!
+  $work_id: uuid!
+  $order: Int!
+) {
+  insert_works_specifications_one(
+    object: {
+      application_id: $application_id
+      work_id: $work_id
+      order: $order
+    }
+  ) {
+    ...WorkSpecification
+  }
+}
+
 query GetSingleWorks($application_id: uuid!) {
   works(
     where: {
       application_id: { _eq: $application_id }
       portfolio: { _is_null: true }
     }
+    order_by: { order: asc_nulls_last }
   ) {
     ...Work
   }
@@ -56,8 +78,36 @@ query GetPortfolioWorks($application_id: uuid!) {
       application_id: { _eq: $application_id }
       portfolio: { _eq: true }
     }
+    order_by: { order: asc_nulls_last }
   ) {
     ...Work
+  }
+}
+mutation UpdateWorksOrder($objects: [works_insert_input!]!) {
+  insert_works(
+    objects: $objects
+    on_conflict: { constraint: works_pkey, update_columns: [order] }
+  ) {
+    returning {
+      id
+      order
+    }
+  }
+}
+mutation UpdateSpecificationsOrder(
+  $objects: [works_specifications_insert_input!]!
+) {
+  insert_works_specifications(
+    objects: $objects
+    on_conflict: {
+      constraint: works_specifications_pkey
+      update_columns: [order]
+    }
+  ) {
+    returning {
+      id
+      order
+    }
   }
 }
 

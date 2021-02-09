@@ -416,6 +416,8 @@
                   _gte: now()
       columns:
       - application_id
+      - id
+      - order
       - portfolio
       backend_only: false
   select_permissions:
@@ -425,6 +427,7 @@
       - application_id
       - created_at
       - id
+      - order
       - portfolio
       - updated_at
       filter:
@@ -436,6 +439,25 @@
               current:
                 _eq: true
       allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - order
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              _and:
+              - current:
+                  _eq: true
+              - application_start:
+                  _lte: now()
+              - application_end:
+                  _gte: now()
+      check: null
   delete_permissions:
   - role: user
     permission:
@@ -485,6 +507,7 @@
                 _eq: X-Hasura-User-Id
       columns:
       - application_id
+      - id
       - key
       - mimetype
       - order
@@ -601,6 +624,7 @@
       - dimensions_depth
       - dimensions_height
       - dimensions_width
+      - id
       - medium
       - number_of_editions
       - order

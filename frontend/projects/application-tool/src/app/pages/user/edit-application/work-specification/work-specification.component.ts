@@ -6,11 +6,13 @@ import { WorkSpecificationFragment } from 'generated/types.graphql-gen';
   styleUrls: ['./work-specification.component.scss'],
 })
 export class WorkSpecificationComponent implements OnInit {
-  @Input() application_id: string = '';
-  @Input() work_id: string = '';
-  @Input() specification: WorkSpecificationFragment = {};
+  @Input() application_id?: string;
+  @Input() work_id?: string;
+  @Input() specification?: WorkSpecificationFragment;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.warn('HELLO SPECI');
+  }
 }

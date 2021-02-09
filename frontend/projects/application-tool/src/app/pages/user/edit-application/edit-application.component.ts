@@ -1,3 +1,8 @@
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -15,8 +20,15 @@ import {
   GetSingleWorksDocument,
   GetPortfolioWorksGQL,
   GetPortfolioWorksDocument,
+  AddPortfolioSpecificationGQL,
+  WorkFragmentDoc,
+  WorkFragment,
+  WorkSpecificationFragment,
+  UpdateSpecificationsOrderGQL,
+  UpdateWorksOrderGQL,
+  WorkSpecificationFragmentDoc,
 } from 'generated/types.graphql-gen';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-application',
@@ -71,7 +83,10 @@ export class EditApplicationComponent implements OnInit {
     private updateApplicationGQL: UpdateApplicationGQL,
     private addWorkGQL: AddWorkGQL,
     private getSingleWorksGQL: GetSingleWorksGQL,
-    private getPortfolioWorksGQL: GetPortfolioWorksGQL
+    private getPortfolioWorksGQL: GetPortfolioWorksGQL,
+    private addPortfolioSpecificationGQL: AddPortfolioSpecificationGQL,
+    private updateSpecificationsOrderGQL: UpdateSpecificationsOrderGQL,
+    private updateWorksOrderGQL: UpdateWorksOrderGQL
   ) {
     // If navigation extra is set by dashboard on addApplication() show "New Application" headline
     this.isNew = this.router.getCurrentNavigation()?.extras.state?.new || false;
@@ -82,6 +97,7 @@ export class EditApplicationComponent implements OnInit {
         fetchPolicy: 'cache-and-network',
       }
     ).valueChanges;
+
     this.portfolioWorks$ = this.getPortfolioWorksGQL.watch(
       { application_id: this.application_id },
       {
@@ -151,6 +167,99 @@ export class EditApplicationComponent implements OnInit {
     this.router.navigate(['u', 'dashboard']);
   }
 
+  async dropSpecifications(
+    items: WorkSpecificationFragment[],
+    event: CdkDragDrop<WorkSpecificationFragment[]>
+  ) {
+    if (event.previousContainer === event.container) {
+      const newItems = [...items];
+      moveItemInArray(newItems, event.previousIndex, event.currentIndex);
+
+      const objects = newItems.map((item, index) => {
+        return {
+          id: item.id,
+          application_id: item.application_id,
+          work_id: item.work_id,
+          order: index,
+        };
+      });
+
+      await this.updateSpecificationsOrderGQL
+        .mutate(
+          {
+            objects,
+          },
+          {
+            optimisticResponse: {
+              insert_works_specifications: {
+                __typename: 'works_specifications_mutation_response',
+                returning: [
+                  ...objects.map((object) => {
+                    return {
+                      id: object.id,
+                      order: object.order,
+                      __typename: 'works_specifications',
+                    };
+                  }),
+                ] as any,
+              },
+            },
+            update: (store, { data: { ...updatedSpecifications } }) => {
+              console.log(
+                updatedSpecifications?.insert_works_specifications?.returning
+              );
+
+              // const variables = {
+              //   application_id: this.application_id,
+              //   portfolio:true
+              // };
+              // // Read the data from our cache for this query.
+              // const { ...data }: any = store.readQuery({
+              //   query: GetPortfolioWorksDocument,
+              //   variables,
+              // });
+              // // Filter array by deleted producer id
+
+              // data.works = data.works.forEach(work => {
+              //   work.id
+              // });;
+              // // Write our data back to the cache.
+              // store.writeQuery({
+              //   query: portfolio
+              //     ? GetPortfolioWorksDocument
+              //     : GetSingleWorksDocument,
+              //   variables,
+              //   data,
+              // });
+
+              updatedSpecifications?.insert_works_specifications?.returning.forEach(
+                (updatedSpecification: any) => {
+                  // Read the data from our cache for this query.
+                  let { ...data }: any = store.readFragment({
+                    id: `works_specifications:${updatedSpecification.id}`,
+                    fragment: WorkSpecificationFragmentDoc,
+                    fragmentName: 'WorkSpecification',
+                    optimistic: true,
+                  });
+                  // Add our message from the mutation to the end.
+                  data = { ...data, order: updatedSpecification.order };
+                  // Write our data back to the cache.
+                  store.writeFragment({
+                    id: `works_specifications:${updatedSpecification.id}`,
+                    fragment: WorkSpecificationFragmentDoc,
+                    fragmentName: 'WorkSpecification',
+                    data,
+                  });
+                }
+              );
+            },
+          }
+        )
+        .toPromise();
+    } else {
+    }
+  }
+
   async saveApplication() {
     const application: ApplicationFragment = this.form.value;
 
@@ -192,10 +301,8 @@ export class EditApplicationComponent implements OnInit {
                 : GetSingleWorksDocument,
               variables,
             });
-            console.log(newWork, data.works);
             // Filter array by deleted producer id
             data.works = [...data.works, newWork];
-            console.log(data);
             // Write our data back to the cache.
             store.writeQuery({
               query: portfolio
@@ -208,5 +315,45 @@ export class EditApplicationComponent implements OnInit {
         }
       )
       .toPromise();
+  }
+
+  async addPortfolioSpecification(work_id: string, order: number) {
+    await this.addPortfolioSpecificationGQL
+      .mutate(
+        {
+          application_id: this.application_id,
+          work_id,
+          order,
+        },
+        {
+          update: (store, { data: { ...newSpecification } }) => {
+            // Read the data from our cache for this query.
+            let { ...data }: any = store.readFragment({
+              id: `works:${work_id}`,
+              fragment: WorkFragmentDoc,
+              fragmentName: 'Work',
+            });
+            console.log(newSpecification, data.works);
+            // Filter array by deleted producer id
+            data = {
+              ...data,
+              specifications: [...data.specifications, newSpecification],
+            };
+            console.log(data);
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `works:${work_id}`,
+              fragment: WorkFragmentDoc,
+              fragmentName: 'Work',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+
+  trackByFn(index: number, item: any) {
+    return item.id;
   }
 }
