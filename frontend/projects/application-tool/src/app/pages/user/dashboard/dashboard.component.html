@@ -52,11 +52,16 @@
               </div>
               <div class="text-xs mt-4 lg:mt-6">
                 <div class="font-mono uppercase text-gray-800">
-                  {{ "defaults.upload" | translate }} (1,4 GB):
-                </div>
-                <div>
-                  <a href="#" class="underline">Portfolio-XD.pdf</a>,
-                  Lessmore.mov, Bibibi.mov,camouflage.jpg
+                  {{ application.files_aggregate.aggregate?.count }}
+                  {{
+                    (application.files_aggregate.aggregate?.count === 1
+                      ? "defaults.file-single"
+                      : "defaults.file-multi"
+                    ) | translate
+                  }}
+                  ({{
+                    application.files_aggregate.aggregate?.sum?.size | filesize
+                  }}):
                 </div>
               </div>
             </div>

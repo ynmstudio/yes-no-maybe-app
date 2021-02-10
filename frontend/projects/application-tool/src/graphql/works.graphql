@@ -9,15 +9,18 @@ fragment Work on works {
     ...WorkSpecification
   }
 }
+fragment File on works_files {
+  mimetype
+  key
+  originalname
+  size
+}
 fragment WorkFile on works_files {
   id
   work_id
   application_id
   order
-  mimetype
-  key
-  originalname
-  size
+  ...File
 }
 fragment WorkSpecification on works_specifications {
   id
@@ -60,6 +63,37 @@ mutation AddPortfolioSpecification(
     }
   ) {
     ...WorkSpecification
+  }
+}
+
+mutation AddWorkFile(
+  $application_id: uuid!
+  $work_id: uuid!
+  $order: Int!
+  $key: String!
+  $mimetype: String!
+  $originalname: String!
+  $size: numeric!
+) {
+  update_applications_by_pk(
+    pk_columns: { id: $application_id }
+    _set: { updated_at: "now()" }
+  ) {
+    id
+    updated_at
+  }
+  insert_works_files_one(
+    object: {
+      application_id: $application_id
+      key: $key
+      mimetype: $mimetype
+      order: $order
+      originalname: $originalname
+      size: $size
+      work_id: $work_id
+    }
+  ) {
+    ...WorkFile
   }
 }
 

@@ -24,6 +24,7 @@ const envConfigFile = `export const environment = {
     appId: '${process.env.FIREBASE_APP_ID}',
     measurementId: '${process.env.FIREBASE_MEASUREMENT_ID}',
   },
+  firebase_file_endpoint: '${process.env.FIREBASE_FILE_ENDPOINT}',
 };
 `;
 console.log(

@@ -15,4 +15,5 @@ export const environment = {
     appId: '1:635172283651:web:b12337bad108751a017536',
     measurementId: 'G-23W7H5Q133',
   },
+  firebase_file_endpoint: 'https://firebasestorage.googleapis.com/v0/b/berlin-art-prize-dev/o/',
 };

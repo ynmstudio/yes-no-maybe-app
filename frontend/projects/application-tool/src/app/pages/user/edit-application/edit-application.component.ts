@@ -152,7 +152,7 @@ export class EditApplicationComponent implements OnInit {
       });
 
     this.form.valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(5000))
+      .pipe(distinctUntilChanged(), debounceTime(2000))
       .subscribe((changes) => {
         this.saveApplication();
       });

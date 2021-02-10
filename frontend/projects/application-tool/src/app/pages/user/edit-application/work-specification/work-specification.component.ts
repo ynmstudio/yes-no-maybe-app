@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -19,7 +26,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   templateUrl: './work-specification.component.html',
   styleUrls: ['./work-specification.component.scss'],
 })
-export class WorkSpecificationComponent implements OnInit {
+export class WorkSpecificationComponent implements OnInit, OnChanges {
   @Input() application_id?: string;
   @Input() work_id?: string;
   @Input() specification?: WorkSpecificationFragment;
@@ -66,22 +73,28 @@ export class WorkSpecificationComponent implements OnInit {
       });
   }
 
-  ngOnInit(): void {
-    console.log(this.specification);
-    const specifications = this.specification as any;
+  ngOnInit(): void {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.specification) {
+      this.updateFormValues();
+      if (changes.specification.firstChange) this.form.enable();
+    }
+  }
+
+  private updateFormValues() {
+    if (!this.specification) return;
+    console.warn('updateFormValues()');
+    const specifications = { ...this.specification } as any;
     for (const key in specifications) {
       if (specifications.hasOwnProperty(key)) {
         let control = this.form.get(key);
         if (control) {
-          console.log(specifications[key]);
           control.setValue(specifications[key]);
         } else {
           console.info('Missing form field :', key);
         }
       }
     }
-
-    this.form.enable();
   }
 
   public async saveSpecification() {

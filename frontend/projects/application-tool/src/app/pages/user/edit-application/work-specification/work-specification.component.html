@@ -2,7 +2,10 @@
   [formGroup]="form"
   class="relative font-mono text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-1 lg:gap-y-2"
 >
-  <label for="title-{{ specification?.id }}">Titel:</label>
+  <label
+    for="title-{{ specification?.id }}"
+    [innerText]="('defaults.title-single' | translate | titlecase) + ':'"
+  ></label>
   <input
     id="title-{{ specification?.id }}"
     formControlName="title"
@@ -10,7 +13,12 @@
     type="text"
     class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
   />
-  <label for="year-{{ specification?.id }}">Erstellungsjahr:</label>
+  <label
+    for="year-{{ specification?.id }}"
+    [innerText]="
+      ('defaults.year-of-creating-single' | translate | titlecase) + ':'
+    "
+  ></label>
   <input
     id="year-{{ specification?.id }}"
     formControlName="year"
@@ -24,7 +32,9 @@
     }"
   />
   <label for="number_of_editions-{{ specification?.id }}" class="text-right"
-    >Editionen (optional):</label
+    >{{ "defaults.edition-multi" | translate | titlecase }} ({{
+      "defaults.optional" | translate
+    }}):</label
   >
   <input
     id="number_of_editions-{{ specification?.id }}"
@@ -34,7 +44,10 @@
     min="0"
     class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
   />
-  <label for="medium-{{ specification?.id }}">Medium:</label>
+  <label
+    for="medium-{{ specification?.id }}"
+    [innerText]="('defaults.medium-single' | translate | titlecase) + ':'"
+  ></label>
   <input
     id="medium-{{ specification?.id }}"
     formControlName="medium"
@@ -42,9 +55,14 @@
     type="text"
     class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
   />
-  <label>Maße:</label>
+  <label
+    [innerText]="('defaults.dimensions' | translate | titlecase) + ':'"
+  ></label>
   <div class="col-span-3 flex items-center space-x-2">
-    <label for="dimensions_width-{{ specification?.id }}">B</label>
+    <label
+      for="dimensions_width-{{ specification?.id }}"
+      [innerText]="'defaults.dimensions-width' | translate | uppercase"
+    ></label>
     <input
       id="dimensions_width-{{ specification?.id }}"
       formControlName="dimensions_width"
@@ -54,7 +72,9 @@
       class="flex-1 w-4 appearance-none rounded-none p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
     />
     <label for="dimensions_height-{{ specification?.id }}"
-      >&times;&nbsp;H</label
+      >&times;&nbsp;{{
+        "defaults.dimensions-height" | translate | uppercase
+      }}</label
     >
     <input
       id="dimensions_height-{{ specification?.id }}"
@@ -64,7 +84,11 @@
       min="0"
       class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
     />
-    <label for="dimensions_depth-{{ specification?.id }}">&times;&nbsp;T</label>
+    <label for="dimensions_depth-{{ specification?.id }}"
+      >&times;&nbsp;{{
+        "defaults.dimensions-depth" | translate | uppercase
+      }}</label
+    >
     <input
       id="dimensions_depth-{{ specification?.id }}"
       formControlName="dimensions_depth"
@@ -76,7 +100,11 @@
     <span>cm</span>
   </div>
   <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
-    <div>Beschreibung:</div>
+    <div
+      [innerText]="
+        ('defaults.description-single' | translate | titlecase) + ':'
+      "
+    ></div>
   </label>
   <div class="relative col-span-3">
     <textarea
@@ -84,10 +112,10 @@
       formControlName="description"
       name="description"
       rows="6"
-      class="font-sans text-base rounded-none relative block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+      class="font-sans text-base rounded-none block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
     ></textarea>
     <div
-      class="absolute bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur z-20 pointer-events-none whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
+      class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors"
       [ngClass]="
         description?.value?.length > descriptionMaxLength * 0.95
           ? description?.value?.length > descriptionMaxLength
@@ -100,5 +128,5 @@
       {{ "defaults.characters" | translate }}
     </div>
   </div>
-  <ng-content></ng-content>
 </form>
+<ng-content></ng-content>

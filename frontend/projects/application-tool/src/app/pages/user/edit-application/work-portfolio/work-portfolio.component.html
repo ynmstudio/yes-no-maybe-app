@@ -1,7 +1,38 @@
-<div class="h-28 bg-gray-100 p-2 lg:p-4">
-  <p>work-portfolio works!</p>
-  <pre>
-    {{ application_id }}
-    {{ work_id }}
-  </pre>
+<div
+  dropzone
+  (hovered)="toggleHover($event)"
+  (dropped)="onDrop($event)"
+  [ngClass]="{
+    'ring-green-500': isHovering,
+    'ring-2': isHovering
+  }"
+  class="h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
+>
+  <app-upload-task
+    class="flex-none flex items-center justify-center bg-gray-300 h-full w-full text-white"
+    *ngFor="let file of filesToUpload; let index = index"
+    [file]="file"
+    [path_prefix]="path_prefix"
+    [pdf]="true"
+    (uploaded)="finishTask(filesToUpload, index, $event)"
+  >
+    <div class="spinner text-gray-800"></div>
+  </app-upload-task>
+  <button
+    *ngIf="filesToUpload.length < 1"
+    class="flex-auto text-gray-300 h-full w-full flex items-center justify-center font-mono text-sm cursor-pointer"
+    (click)="fileInput.click()"
+    [innerText]="
+      'application-form.buttons.drop-pdf-portfolio-here' | translate | titlecase
+    "
+  ></button>
+  <input
+    class="hidden"
+    type="file"
+    id="upload-file"
+    name="upload-file"
+    accept=".pdf"
+    (change)="onFileSelect($event)"
+    #fileInput
+  />
 </div>

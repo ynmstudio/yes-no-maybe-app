@@ -5201,7 +5201,7 @@ export type ApplicationFragment = (
   & Pick<Applications, 'id' | 'name' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'residency' | 'database' | 'disclaimer' | 'payment_file'>
   & { edition: (
     { __typename?: 'editions' }
-    & Pick<Editions, 'name'>
+    & Pick<Editions, 'id' | 'name'>
   ), files_aggregate: (
     { __typename?: 'works_files_aggregate' }
     & { aggregate?: Maybe<(
@@ -5414,9 +5414,15 @@ export type WorkFragment = (
   )> }
 );
 
+export type FileFragment = (
+  { __typename?: 'works_files' }
+  & Pick<Works_Files, 'mimetype' | 'key' | 'originalname' | 'size'>
+);
+
 export type WorkFileFragment = (
   { __typename?: 'works_files' }
-  & Pick<Works_Files, 'id' | 'work_id' | 'application_id' | 'order' | 'mimetype' | 'key' | 'originalname' | 'size'>
+  & Pick<Works_Files, 'id' | 'work_id' | 'application_id' | 'order'>
+  & FileFragment
 );
 
 export type WorkSpecificationFragment = (
@@ -5450,6 +5456,28 @@ export type AddPortfolioSpecificationMutation = (
   & { insert_works_specifications_one?: Maybe<(
     { __typename?: 'works_specifications' }
     & WorkSpecificationFragment
+  )> }
+);
+
+export type AddWorkFileMutationVariables = Exact<{
+  application_id: Scalars['uuid'];
+  work_id: Scalars['uuid'];
+  order: Scalars['Int'];
+  key: Scalars['String'];
+  mimetype: Scalars['String'];
+  originalname: Scalars['String'];
+  size: Scalars['numeric'];
+}>;
+
+
+export type AddWorkFileMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'updated_at'>
+  )>, insert_works_files_one?: Maybe<(
+    { __typename?: 'works_files' }
+    & WorkFileFragment
   )> }
 );
 
@@ -5542,6 +5570,7 @@ export const ApplicationFragmentDoc = gql`
   disclaimer
   payment_file
   edition {
+    id
     name
   }
   files_aggregate {
@@ -5568,18 +5597,23 @@ export const EditionFragmentDoc = gql`
   }
 }
     `;
-export const WorkFileFragmentDoc = gql`
-    fragment WorkFile on works_files {
-  id
-  work_id
-  application_id
-  order
+export const FileFragmentDoc = gql`
+    fragment File on works_files {
   mimetype
   key
   originalname
   size
 }
     `;
+export const WorkFileFragmentDoc = gql`
+    fragment WorkFile on works_files {
+  id
+  work_id
+  application_id
+  order
+  ...File
+}
+    ${FileFragmentDoc}`;
 export const WorkSpecificationFragmentDoc = gql`
     fragment WorkSpecification on works_specifications {
   id
@@ -5907,6 +5941,33 @@ export const AddPortfolioSpecificationDocument = gql`
   })
   export class AddPortfolioSpecificationGQL extends Apollo.Mutation<AddPortfolioSpecificationMutation, AddPortfolioSpecificationMutationVariables> {
     document = AddPortfolioSpecificationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AddWorkFileDocument = gql`
+    mutation AddWorkFile($application_id: uuid!, $work_id: uuid!, $order: Int!, $key: String!, $mimetype: String!, $originalname: String!, $size: numeric!) {
+  update_applications_by_pk(
+    pk_columns: {id: $application_id}
+    _set: {updated_at: "now()"}
+  ) {
+    id
+    updated_at
+  }
+  insert_works_files_one(
+    object: {application_id: $application_id, key: $key, mimetype: $mimetype, order: $order, originalname: $originalname, size: $size, work_id: $work_id}
+  ) {
+    ...WorkFile
+  }
+}
+    ${WorkFileFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AddWorkFileGQL extends Apollo.Mutation<AddWorkFileMutation, AddWorkFileMutationVariables> {
+    document = AddWorkFileDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

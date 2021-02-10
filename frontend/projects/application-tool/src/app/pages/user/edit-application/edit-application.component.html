@@ -134,8 +134,7 @@
                 <app-work-specification
                   cdkDrag
                   cdkDragLockAxis="y"
-                  [cdkDragStartDelay]="50"
-                  class="block mb-4 sm:pb-4 border-b border-transparent"
+                  class="block relative mb-4 sm:pb-4 border-b border-transparent"
                   *ngFor="
                     let specification of work.specifications;
                     let last = last;
@@ -148,6 +147,32 @@
                     'border-gray-100 ': !last
                   }"
                 >
+                  <div
+                    cdkDragHandle
+                    class="absolute bottom-0 left-0 pb-4 cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
+                  >
+                    <svg
+                      width="19px"
+                      height="36px"
+                      viewBox="0 0 19 36"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <g
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <path
+                          d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
+                          id="Rectangle-Copy-3"
+                          fill="currentColor"
+                        ></path>
+                      </g>
+                    </svg>
+                  </div>
                 </app-work-specification>
               </div>
               <button
@@ -196,7 +221,6 @@
             <div
               cdkDrag
               cdkDragLockAxis="y"
-              [cdkDragStartDelay]="50"
               class="relative mb-4 sm:my-4 sm:pb-4 border-gray-200"
               [ngClass]="{
                 'border-b': !last
@@ -303,7 +327,11 @@
             {{ "defaults.characters" | translate }}
           </div>
         </div>
-        <label class="col-start-1" for="residency">Residency</label>
+        <label
+          class="col-start-1"
+          for="residency"
+          [innerText]="'defaults.residency-single' | translate | titlecase"
+        ></label>
         <div class="bg-gray-100 p-4 font-sans text-base mb-3">
           <div>
             Wenn ich den Berlin Art Prize gewinne, würde ich gerne an der
@@ -318,15 +346,21 @@
               class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
             />
             <label for="residency" class="ml-3"
-              >Ja
+              >{{ "defaults.yes" | translate | titlecase }}
               <span class="text-gray-500">
-                (hat keinen Einfluss auf die Entscheidung der Jury)
+                ({{
+                  "application-form.has-no-influence-on-the-jury" | translate
+                }})
               </span>
             </label>
           </div>
         </div>
 
-        <label class="col-start-1" for="database">Datenbank</label>
+        <label
+          class="col-start-1"
+          for="database"
+          [innerText]="'defaults.database-single' | translate | titlecase"
+        ></label>
         <div class="bg-gray-100 p-4 font-sans text-base mb-3">
           <div>
             Mein Portfolio darf in das Archiv des Berlin Art Prize aufgenommen
@@ -341,14 +375,20 @@
               class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
             />
             <label for="database" class="ml-3"
-              >Ja
+              >{{ "defaults.yes" | translate | titlecase }}
               <span class="text-gray-500">
-                (hat keinen Einfluss auf die Entscheidung der Jury)
+                ({{
+                  "application-form.has-no-influence-on-the-jury" | translate
+                }})
               </span>
             </label>
           </div>
         </div>
-        <label class="col-start-1" for="disclaimer">Haftungsausschluss</label>
+        <label
+          class="col-start-1"
+          for="disclaimer"
+          [innerText]="'defaults.disclaimer-single' | translate | titlecase"
+        ></label>
         <div class="bg-gray-100 p-4 font-sans text-base mb-3">
           <div>
             <p class="mb-5">
@@ -385,7 +425,11 @@
             </label>
           </div>
         </div>
-        <label class="col-start-1" for="payment">Bezahlung</label>
+        <label
+          class="col-start-1"
+          for="payment"
+          [innerText]="'defaults.payment-single' | translate | titlecase"
+        ></label>
         <div class="bg-gray-100 p-4 font-sans text-base">
           <p class="mb-5">
             Um die Einreichung abzuschließen benötigen wir einen Nachweis über
@@ -455,7 +499,14 @@
               </g>
             </g>
           </svg>
-          <div>PDF/Screenshot hier ablegen</div>
+          <div
+            class="text-center"
+            [innerText]="
+              'application-form.buttons.add-payment-screenshot'
+                | translate
+                | titlecase
+            "
+          ></div>
         </div>
       </div>
     </div>
@@ -464,9 +515,11 @@
     </div>
   </form>
 
-  <pre>{{ form.value | json }}</pre>
-  <pre>{{ form.valid | json }}</pre>
-  <pre>{{ name?.errors | json }}</pre>
+  <pre class="p-1 bg-red-50 text-xs">
+    {{ form.value | json }}
+    {{ form.valid | json }}
+    {{ name?.errors | json }}
+  </pre>
 
   <footer
     class="container--default flex items-end md:items-baseline justify-between"

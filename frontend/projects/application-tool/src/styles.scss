@@ -39,19 +39,28 @@
   .cdk-drag {
     @apply transition-drag duration-500 delay-100 bg-transparent ring-transparent ring-0 shadow-none;
   }
-  .cdk-drag:active {
-    @apply bg-white ring-white ring-4 shadow-drag;
-  }
+  // .cdk-drag:active {
+  //   @apply bg-white ring-white ring-8 shadow-drag;
+  // }
   .cdk-drag-preview {
-    @apply bg-white ring-white ring-4 shadow-drag;
+    @apply bg-white ring-white ring-8 shadow-drag;
   }
   .cdk-drag-placeholder {
     @apply transition-transform opacity-25;
+  }
+
+  pre {
+    @apply overflow-hidden;
   }
 }
 
 @layer components {
   .text-headline {
     @apply text-2xl md:text-3xl;
+  }
+  .spinner {
+    @apply w-4 h-4 rounded-full border-current border animate-spin;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
   }
 }
