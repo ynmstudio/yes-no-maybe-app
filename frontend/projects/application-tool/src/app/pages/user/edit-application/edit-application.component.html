@@ -7,7 +7,10 @@
         (click)="saveAndClose()"
         class="py-3 px-4 rounded-xl leading-none bg-gray-200"
       >
-        <span class="sr-only">Back to overview</span>
+        <span
+          class="sr-only"
+          [innerText]="'screen-reader.back-to-overview' | translate"
+        ></span>
         <svg
           width="11px"
           height="17px"
@@ -31,8 +34,16 @@
         </svg>
       </button>
 
-      <div class="text-headline" *ngIf="isNew">Neue Einreichung:</div>
-      <div class="text-headline" *ngIf="!isNew">Einreichung bearbeiten:</div>
+      <div
+        class="text-headline"
+        *ngIf="isNew"
+        [innerText]="('application-form.new-application' | translate) + ':'"
+      ></div>
+      <div
+        class="text-headline"
+        *ngIf="!isNew"
+        [innerText]="('application-form.edit-application' | translate) + ':'"
+      ></div>
     </div>
   </div>
 
@@ -42,7 +53,10 @@
       <div
         class="flex-auto font-mono text-sm grid grid-cols-1 lg:grid-cols-form items-center gap-x-4 gap-y-2 lg:gap-y-3"
       >
-        <label for="name">Name Künstler:in oder Gruppe</label>
+        <label
+          for="name"
+          [innerText]="'application-form.name-of-artist-or-group' | translate"
+        ></label>
         <input
           id="name"
           formControlName="name"
@@ -62,7 +76,10 @@
           [ngClass]="group?.value ? 'bg-green-500' : 'bg-gray-300'"
           class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
         >
-          <span class="sr-only">Is Group</span>
+          <span
+            class="sr-only"
+            [innerText]="'screen-reader.this-is-a-group' | translate"
+          ></span>
           <!-- On: "translate-x-5", Off: "translate-x-0" -->
           <span
             aria-hidden="true"
@@ -71,8 +88,10 @@
           ></span>
         </button>
         <span class="ml-3" id="toggleLabel">
-          <span class="font-mono text-xs uppercase text-black leading-none"
-            >Es bewirbt sich eine Gruppe
+          <span
+            class="font-mono text-xs uppercase text-black leading-none"
+            [innerText]="'application-form.application-is-by-group' | translate"
+          >
           </span>
         </span>
       </div>
@@ -136,18 +155,20 @@
                   addPortfolioSpecification(work.id, work.specifications.length)
                 "
                 class="block w-full md:w-auto ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
-              >
-                Weitere Werkangabe hinzufügen +
-              </button>
+                [innerText]="
+                  'application-form.buttons.add-work-specification' | translate
+                "
+              ></button>
             </div>
           </div>
           <ng-template #noPortfolioWork>
             <button
               (click)="addWork(true)"
               class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-            >
-              PDF Portfolio hochladen +
-            </button>
+              [innerText]="
+                'application-form.buttons.add-pdf-portfolio' | translate
+              "
+            ></button>
           </ng-template>
         </div>
         <div
@@ -176,7 +197,7 @@
               cdkDrag
               cdkDragLockAxis="y"
               [cdkDragStartDelay]="50"
-              class="mb-4 sm:my-4 sm:pb-4 border-gray-200"
+              class="relative mb-4 sm:my-4 sm:pb-4 border-gray-200"
               [ngClass]="{
                 'border-b': !last
               }"
@@ -201,21 +222,49 @@
                 [application_id]="application_id"
                 [work_id]="work.id"
               ></app-work-specification>
+              <div
+                cdkDragHandle
+                class="absolute bottom-0 left-0 pb-4 cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
+              >
+                <svg
+                  width="19px"
+                  height="36px"
+                  viewBox="0 0 19 36"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                >
+                  <g
+                    stroke="none"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                  >
+                    <path
+                      d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
+                      id="Rectangle-Copy-3"
+                      fill="currentColor"
+                    ></path>
+                  </g>
+                </svg>
+              </div>
             </div>
             <button
               (click)="addWork()"
               class="block w-full md:w-auto ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
-            >
-              Weiteres Werk hinzufügen +
-            </button>
+              [innerText]="
+                'application-form.buttons.add-single-work' | translate
+              "
+            ></button>
           </div>
           <ng-template #noSingleWork>
             <button
               (click)="addWork()"
               class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-            >
-              Werke einzeln hochladen +
-            </button>
+              [innerText]="
+                'application-form.buttons.add-works-separately' | translate
+              "
+            ></button>
           </ng-template>
         </div>
       </div>
@@ -224,7 +273,11 @@
       <div
         class="flex-auto font-mono text-sm grid grid-cols-1 lg:grid-cols-application items-baseline gap-x-4 gap-y-3 sm:gap-y-5 lg:gap-y-7"
       >
-        <label class="col-start-1" for="statement">Artist Statement</label>
+        <label
+          class="col-start-1"
+          for="statement"
+          [innerText]="'application-form.statement' | translate"
+        ></label>
         <div class="lg:col-span-2 flex items-baseline mb-3">
           <textarea
             id="statement"
@@ -246,7 +299,8 @@
                 : 'text-gray-800'
             "
           >
-            {{ statement?.value?.length || 0 }}/{{ statementMaxLength }} Zeichen
+            {{ statement?.value?.length || 0 }}/{{ statementMaxLength }}
+            {{ "defaults.characters" | translate }}
           </div>
         </div>
         <label class="col-start-1" for="residency">Residency</label>
@@ -351,7 +405,7 @@
             <br />
             Verwendungszweck:
             <span class="font-medium"
-              >Code {{ id?.value | slice: 0:5 }} BAP
+              >Code {{ id?.value | uppercase | slice: 0:5 }} BAP
               {{ edition?.value.name }}</span
             >
           </p>

@@ -1,6 +1,7 @@
 fragment Work on works {
   id
   portfolio
+  order
   files(order_by: { order: asc_nulls_last }) {
     ...WorkFile
   }

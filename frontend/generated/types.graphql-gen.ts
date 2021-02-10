@@ -12,7 +12,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  date: any;
   numeric: any;
   timestamptz: any;
   uuid: any;
@@ -531,20 +530,6 @@ export type Boolean_Comparison_Exp = {
   _lte?: Maybe<Scalars['Boolean']>;
   _neq?: Maybe<Scalars['Boolean']>;
   _nin?: Maybe<Array<Scalars['Boolean']>>;
-};
-
-
-/** expression to compare columns of type date. All fields are combined with logical 'AND'. */
-export type Date_Comparison_Exp = {
-  _eq?: Maybe<Scalars['date']>;
-  _gt?: Maybe<Scalars['date']>;
-  _gte?: Maybe<Scalars['date']>;
-  _in?: Maybe<Array<Scalars['date']>>;
-  _is_null?: Maybe<Scalars['Boolean']>;
-  _lt?: Maybe<Scalars['date']>;
-  _lte?: Maybe<Scalars['date']>;
-  _neq?: Maybe<Scalars['date']>;
-  _nin?: Maybe<Array<Scalars['date']>>;
 };
 
 /** columns and relationships of "editions" */
@@ -4634,7 +4619,7 @@ export type Works_Specifications = {
   /** An object relationship */
   work: Works;
   work_id: Scalars['uuid'];
-  year?: Maybe<Scalars['date']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "works_specifications" */
@@ -4696,6 +4681,7 @@ export type Works_Specifications_Avg_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "works_specifications" */
@@ -4705,6 +4691,7 @@ export type Works_Specifications_Avg_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "works_specifications". All fields are combined with a logical 'AND'. */
@@ -4727,7 +4714,7 @@ export type Works_Specifications_Bool_Exp = {
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   work?: Maybe<Works_Bool_Exp>;
   work_id?: Maybe<Uuid_Comparison_Exp>;
-  year?: Maybe<Date_Comparison_Exp>;
+  year?: Maybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "works_specifications" */
@@ -4743,6 +4730,7 @@ export type Works_Specifications_Inc_Input = {
   dimensions_width?: Maybe<Scalars['Int']>;
   number_of_editions?: Maybe<Scalars['Int']>;
   order?: Maybe<Scalars['Int']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "works_specifications" */
@@ -4762,7 +4750,7 @@ export type Works_Specifications_Insert_Input = {
   updated_at?: Maybe<Scalars['timestamptz']>;
   work?: Maybe<Works_Obj_Rel_Insert_Input>;
   work_id?: Maybe<Scalars['uuid']>;
-  year?: Maybe<Scalars['date']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
@@ -4781,7 +4769,7 @@ export type Works_Specifications_Max_Fields = {
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   work_id?: Maybe<Scalars['uuid']>;
-  year?: Maybe<Scalars['date']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** order by max() on columns of table "works_specifications" */
@@ -4818,7 +4806,7 @@ export type Works_Specifications_Min_Fields = {
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   work_id?: Maybe<Scalars['uuid']>;
-  year?: Maybe<Scalars['date']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** order by min() on columns of table "works_specifications" */
@@ -4933,7 +4921,7 @@ export type Works_Specifications_Set_Input = {
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   work_id?: Maybe<Scalars['uuid']>;
-  year?: Maybe<Scalars['date']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
@@ -4944,6 +4932,7 @@ export type Works_Specifications_Stddev_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "works_specifications" */
@@ -4953,6 +4942,7 @@ export type Works_Specifications_Stddev_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -4963,6 +4953,7 @@ export type Works_Specifications_Stddev_Pop_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "works_specifications" */
@@ -4972,6 +4963,7 @@ export type Works_Specifications_Stddev_Pop_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -4982,6 +4974,7 @@ export type Works_Specifications_Stddev_Samp_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "works_specifications" */
@@ -4991,6 +4984,7 @@ export type Works_Specifications_Stddev_Samp_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** aggregate sum on columns */
@@ -5001,6 +4995,7 @@ export type Works_Specifications_Sum_Fields = {
   dimensions_width?: Maybe<Scalars['Int']>;
   number_of_editions?: Maybe<Scalars['Int']>;
   order?: Maybe<Scalars['Int']>;
+  year?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "works_specifications" */
@@ -5010,6 +5005,7 @@ export type Works_Specifications_Sum_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** update columns of table "works_specifications" */
@@ -5052,6 +5048,7 @@ export type Works_Specifications_Var_Pop_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "works_specifications" */
@@ -5061,6 +5058,7 @@ export type Works_Specifications_Var_Pop_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -5071,6 +5069,7 @@ export type Works_Specifications_Var_Samp_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "works_specifications" */
@@ -5080,6 +5079,7 @@ export type Works_Specifications_Var_Samp_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -5090,6 +5090,7 @@ export type Works_Specifications_Variance_Fields = {
   dimensions_width?: Maybe<Scalars['Float']>;
   number_of_editions?: Maybe<Scalars['Float']>;
   order?: Maybe<Scalars['Float']>;
+  year?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "works_specifications" */
@@ -5099,6 +5100,7 @@ export type Works_Specifications_Variance_Order_By = {
   dimensions_width?: Maybe<Order_By>;
   number_of_editions?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
+  year?: Maybe<Order_By>;
 };
 
 /** aggregate stddev on columns */
@@ -5402,7 +5404,7 @@ export type GetCurrentRoundQuery = (
 
 export type WorkFragment = (
   { __typename?: 'works' }
-  & Pick<Works, 'id' | 'portfolio'>
+  & Pick<Works, 'id' | 'portfolio' | 'order'>
   & { files: Array<(
     { __typename?: 'works_files' }
     & WorkFileFragment
@@ -5598,6 +5600,7 @@ export const WorkFragmentDoc = gql`
     fragment Work on works {
   id
   portfolio
+  order
   files(order_by: {order: asc_nulls_last}) {
     ...WorkFile
   }

@@ -37,13 +37,13 @@
     @apply transition-transform duration-200;
   }
   .cdk-drag {
-    @apply transition-drag duration-500 delay-100 bg-transparent ring-transparent ring-0;
+    @apply transition-drag duration-500 delay-100 bg-transparent ring-transparent ring-0 shadow-none;
   }
   .cdk-drag:active {
-    @apply bg-gray-300 ring-gray-300 ring-8;
+    @apply bg-white ring-white ring-4 shadow-drag;
   }
   .cdk-drag-preview {
-    @apply bg-gray-300 ring-gray-300 ring-8;
+    @apply bg-white ring-white ring-4 shadow-drag;
   }
   .cdk-drag-placeholder {
     @apply transition-transform opacity-25;

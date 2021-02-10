@@ -82,6 +82,10 @@ module.exports = {
       transitionProperty: {
         drag: "background, box-shadow",
       },
+      boxShadow: {
+        drag:
+          "0 10px 25px 0 rgba(0, 0, 0, 0.1), 0 5px 10px 0 rgba(0, 0, 0, 0.04)",
+      },
       gridTemplateColumns: {
         login: "2fr 3fr 2fr",
         form: "auto 1fr",

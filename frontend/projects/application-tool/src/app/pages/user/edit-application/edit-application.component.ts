@@ -1,8 +1,4 @@
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import {
   FormBuilder,
@@ -27,6 +23,7 @@ import {
   UpdateSpecificationsOrderGQL,
   UpdateWorksOrderGQL,
   WorkSpecificationFragmentDoc,
+  ApplicationFragmentDoc,
 } from 'generated/types.graphql-gen';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { WorkSpecificationComponent } from './work-specification/work-specification.component';
@@ -198,6 +195,10 @@ export class EditApplicationComponent implements OnInit {
     this.form.markAsPristine();
   }
 
+  /**
+   * Add a work item to the applicatoin
+   * @param portfolio Should the work be added as the single portfolio element?
+   */
   async addWork(portfolio?: boolean) {
     await this.addWorkGQL
       .mutate(
@@ -277,6 +278,12 @@ export class EditApplicationComponent implements OnInit {
    * SORTING
    */
 
+  /**
+   * drop and sort portoflio specifications
+   * @param work_id current work item
+   * @param items specifications to sort
+   * @param event the drop event
+   */
   async dropSpecifications(
     work_id: string,
     items: WorkSpecificationFragment[],
@@ -316,9 +323,6 @@ export class EditApplicationComponent implements OnInit {
               },
             },
             update: (store, { data: { ...updatedSpecifications } }) => {
-              console.log(
-                updatedSpecifications?.insert_works_specifications?.returning
-              );
               // Read the data from our cache for this query.
               let { ...data }: any = store.readFragment({
                 id: `works:${work_id}`,
@@ -326,21 +330,25 @@ export class EditApplicationComponent implements OnInit {
                 fragmentName: 'Work',
                 optimistic: true,
               });
-              // Filter array by deleted producer id
-              console.warn(data.specifications);
-              data.specifications = updatedSpecifications?.insert_works_specifications?.returning.map(
-                (updatedSpecification) => {
-                  let item = data.specifications.find(
-                    (specification: any) =>
+
+              // Update objects
+              data.specifications = data.specifications.map(
+                (specification: any) => {
+                  let updatedSpecification = updatedSpecifications?.insert_works_specifications?.returning.find(
+                    (updatedSpecification) =>
                       updatedSpecification.id === specification.id
                   );
                   if (updatedSpecification) {
-                    return { ...updatedSpecification, ...item };
+                    return { ...specification, ...updatedSpecification };
                   }
                 }
               );
-              console.warn(data.specifications);
-              // // Write our data back to the cache.
+              data.specifications.sort(
+                (a: WorkSpecificationFragment, b: WorkSpecificationFragment) =>
+                  (a.order == null ? 9999 : a.order) -
+                  (b.order == null ? 9999 : b.order)
+              );
+              // Write our data back to the cache.
               store.writeFragment({
                 id: `works:${work_id}`,
                 fragment: WorkFragmentDoc,
@@ -376,6 +384,11 @@ export class EditApplicationComponent implements OnInit {
     }
   }
 
+  /**
+   * drop and sort single work items
+   * @param items Work items
+   * @param event drop event
+   */
   async dropWorks(
     items: WorkFragment[] | undefined,
     event: CdkDragDrop<WorkFragment[]>
@@ -411,6 +424,37 @@ export class EditApplicationComponent implements OnInit {
                   }),
                 ] as any,
               },
+            },
+            update: (store, { data: { ...updatedWorks } }) => {
+              const variables = { application_id: this.application_id };
+
+              // Read the data from our cache for this query.
+              let { ...data }: any = store.readQuery({
+                query: GetSingleWorksDocument,
+                variables,
+                optimistic: true,
+              });
+
+              // Update objects
+              data.works = data.works.map((work: any) => {
+                let updatedWork = updatedWorks?.insert_works?.returning.find(
+                  (updatedWork: any) => updatedWork.id === work.id
+                );
+                if (updatedWork) {
+                  return { ...work, ...updatedWork };
+                }
+              });
+              data.works.sort(
+                (a: WorkFragment, b: WorkFragment) =>
+                  (a.order == null ? 9999 : a.order) -
+                  (b.order == null ? 9999 : b.order)
+              );
+              // Write our data back to the cache.
+              store.writeQuery({
+                query: GetSingleWorksDocument,
+                variables,
+                data,
+              });
             },
           }
         )

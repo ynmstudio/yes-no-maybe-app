@@ -5,8 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { ApolloCache } from '@apollo/client/core';
 import {
+  ApplicationFragmentDoc,
   UpdateSpecificationGQL,
+  UpdateSpecificationMutation,
   WorkSpecificationFragment,
 } from 'generated/types.graphql-gen';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
@@ -100,15 +103,49 @@ export class WorkSpecificationComponent implements OnInit {
     } as WorkSpecificationFragment;
 
     await this.updateSpecificationGQL
-      .mutate({
-        id: this.specification.id,
-        set: {
-          ...data,
+      .mutate(
+        {
+          id: this.specification.id,
+          set: {
+            ...data,
+          },
+          application_id: this.application_id,
         },
-        application_id: this.application_id,
-      })
+        {
+          update: (store, { data: { ...updatedSpecification } }) => {
+            this.updateApplicationFragment(
+              store,
+              updatedSpecification.update_applications_by_pk?.id,
+              updatedSpecification.update_applications_by_pk?.updated_at
+            );
+          },
+        }
+      )
       .toPromise();
 
     this.form.markAsPristine();
+  }
+
+  private updateApplicationFragment(
+    store: ApolloCache<any>,
+    application_id: string,
+    updated_at: string
+  ) {
+    // Read the data from our cache for this query.
+    let { ...data }: any = store.readFragment({
+      id: `applications:${application_id}`,
+      fragment: ApplicationFragmentDoc,
+      fragmentName: 'Application',
+      optimistic: true,
+    });
+    // Add our message from the mutation to the end.
+    data = { ...data, updated_at };
+    // Write our data back to the cache.
+    store.writeFragment({
+      id: `applications:${application_id}`,
+      fragment: ApplicationFragmentDoc,
+      fragmentName: 'Application',
+      data,
+    });
   }
 }

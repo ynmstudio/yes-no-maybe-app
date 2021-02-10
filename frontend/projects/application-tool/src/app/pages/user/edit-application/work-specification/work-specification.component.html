@@ -76,7 +76,7 @@
     <span>cm</span>
   </div>
   <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
-    <div>Artist Statement</div>
+    <div>Beschreibung:</div>
   </label>
   <div class="relative col-span-3">
     <textarea
@@ -84,10 +84,10 @@
       formControlName="description"
       name="description"
       rows="6"
-      class="font-sans text-base rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+      class="font-sans text-base rounded-none relative block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
     ></textarea>
     <div
-      class="absolute bottom-0 right-0 p-1 z-20 pointer-events-none whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
+      class="absolute bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur z-20 pointer-events-none whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
       [ngClass]="
         description?.value?.length > descriptionMaxLength * 0.95
           ? description?.value?.length > descriptionMaxLength
@@ -96,7 +96,8 @@
           : 'text-gray-800'
       "
     >
-      {{ description?.value?.length || 0 }}/{{ descriptionMaxLength }} Zeichen
+      {{ description?.value?.length || 0 }}/{{ descriptionMaxLength }}
+      {{ "defaults.characters" | translate }}
     </div>
   </div>
   <ng-content></ng-content>

@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Tue Feb 09 2021 20:15:23 GMT+0100 (Central European Standard Time)
+# timestamp: Wed Feb 10 2021 09:49:31 GMT+0100 (Central European Standard Time)
 
 schema {
   query: query_root
@@ -629,23 +629,6 @@ input Boolean_comparison_exp {
   _lte: Boolean
   _neq: Boolean
   _nin: [Boolean!]
-}
-
-scalar date
-
-"""
-expression to compare columns of type date. All fields are combined with logical 'AND'.
-"""
-input date_comparison_exp {
-  _eq: date
-  _gt: date
-  _gte: date
-  _in: [date!]
-  _is_null: Boolean
-  _lt: date
-  _lte: date
-  _neq: date
-  _nin: [date!]
 }
 
 """
@@ -5482,7 +5465,7 @@ type works_specifications {
   """An object relationship"""
   work: works!
   work_id: uuid!
-  year: date
+  year: Int
 }
 
 """
@@ -5542,6 +5525,7 @@ type works_specifications_avg_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -5553,6 +5537,7 @@ input works_specifications_avg_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """
@@ -5577,7 +5562,7 @@ input works_specifications_bool_exp {
   updated_at: timestamptz_comparison_exp
   work: works_bool_exp
   work_id: uuid_comparison_exp
-  year: date_comparison_exp
+  year: Int_comparison_exp
 }
 
 """
@@ -5597,6 +5582,7 @@ input works_specifications_inc_input {
   dimensions_width: Int
   number_of_editions: Int
   order: Int
+  year: Int
 }
 
 """
@@ -5618,7 +5604,7 @@ input works_specifications_insert_input {
   updated_at: timestamptz
   work: works_obj_rel_insert_input
   work_id: uuid
-  year: date
+  year: Int
 }
 
 """aggregate max on columns"""
@@ -5636,7 +5622,7 @@ type works_specifications_max_fields {
   title: String
   updated_at: timestamptz
   work_id: uuid
-  year: date
+  year: Int
 }
 
 """
@@ -5674,7 +5660,7 @@ type works_specifications_min_fields {
   title: String
   updated_at: timestamptz
   work_id: uuid
-  year: date
+  year: Int
 }
 
 """
@@ -5818,7 +5804,7 @@ input works_specifications_set_input {
   title: String
   updated_at: timestamptz
   work_id: uuid
-  year: date
+  year: Int
 }
 
 """aggregate stddev on columns"""
@@ -5828,6 +5814,7 @@ type works_specifications_stddev_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -5839,6 +5826,7 @@ input works_specifications_stddev_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """aggregate stddev_pop on columns"""
@@ -5848,6 +5836,7 @@ type works_specifications_stddev_pop_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -5859,6 +5848,7 @@ input works_specifications_stddev_pop_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -5868,6 +5858,7 @@ type works_specifications_stddev_samp_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -5879,6 +5870,7 @@ input works_specifications_stddev_samp_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """aggregate sum on columns"""
@@ -5888,6 +5880,7 @@ type works_specifications_sum_fields {
   dimensions_width: Int
   number_of_editions: Int
   order: Int
+  year: Int
 }
 
 """
@@ -5899,6 +5892,7 @@ input works_specifications_sum_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """
@@ -5955,6 +5949,7 @@ type works_specifications_var_pop_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -5966,6 +5961,7 @@ input works_specifications_var_pop_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """aggregate var_samp on columns"""
@@ -5975,6 +5971,7 @@ type works_specifications_var_samp_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -5986,6 +5983,7 @@ input works_specifications_var_samp_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """aggregate variance on columns"""
@@ -5995,6 +5993,7 @@ type works_specifications_variance_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
+  year: Float
 }
 
 """
@@ -6006,6 +6005,7 @@ input works_specifications_variance_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
+  year: order_by
 }
 
 """aggregate stddev on columns"""
