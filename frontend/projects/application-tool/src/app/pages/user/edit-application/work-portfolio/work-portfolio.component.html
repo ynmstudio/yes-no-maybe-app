@@ -8,6 +8,22 @@
   }"
   class="h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
 >
+  <div
+    *ngFor="let file of files; trackBy: trackByKeyFn"
+    class="group flex-none h-20 bg-gray-200 cursor-move relative"
+  >
+    {{ file.size | filesize }}
+    <app-image
+      [key]="file.key"
+      [mimetype]="file.mimetype"
+      size="_200x200"
+    ></app-image>
+    <div
+      class="opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+    >
+      X
+    </div>
+  </div>
   <app-upload-task
     class="flex-none flex items-center justify-center bg-gray-300 h-full w-full text-white"
     *ngFor="let file of filesToUpload; let index = index"

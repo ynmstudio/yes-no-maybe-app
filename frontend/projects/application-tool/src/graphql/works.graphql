@@ -49,6 +49,12 @@ mutation AddWork($application_id: uuid!, $portfolio: Boolean) {
     ...Work
   }
 }
+mutation DeleteWork($id: uuid!) {
+  delete_works_by_pk(id: $id) {
+    id
+    portfolio
+  }
+}
 
 mutation AddPortfolioSpecification(
   $application_id: uuid!
@@ -63,6 +69,11 @@ mutation AddPortfolioSpecification(
     }
   ) {
     ...WorkSpecification
+  }
+}
+mutation DeletePortfolioSpecification($id: uuid!) {
+  delete_works_specifications_by_pk(id: $id) {
+    id
   }
 }
 

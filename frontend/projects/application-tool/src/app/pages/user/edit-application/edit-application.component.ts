@@ -12,18 +12,19 @@ import {
   GetApplicationGQL,
   UpdateApplicationGQL,
   AddWorkGQL,
+  DeleteWorkGQL,
   GetSingleWorksGQL,
   GetSingleWorksDocument,
   GetPortfolioWorksGQL,
   GetPortfolioWorksDocument,
   AddPortfolioSpecificationGQL,
+  DeletePortfolioSpecificationGQL,
   WorkFragmentDoc,
   WorkFragment,
   WorkSpecificationFragment,
   UpdateSpecificationsOrderGQL,
   UpdateWorksOrderGQL,
   WorkSpecificationFragmentDoc,
-  ApplicationFragmentDoc,
 } from 'generated/types.graphql-gen';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { WorkSpecificationComponent } from './work-specification/work-specification.component';
@@ -83,9 +84,11 @@ export class EditApplicationComponent implements OnInit {
     private getApplicationGQL: GetApplicationGQL,
     private updateApplicationGQL: UpdateApplicationGQL,
     private addWorkGQL: AddWorkGQL,
+    private deleteWorkGQL: DeleteWorkGQL,
     private getSingleWorksGQL: GetSingleWorksGQL,
     private getPortfolioWorksGQL: GetPortfolioWorksGQL,
     private addPortfolioSpecificationGQL: AddPortfolioSpecificationGQL,
+    private deletePortfolioSpecificationGQL: DeletePortfolioSpecificationGQL,
     private updateSpecificationsOrderGQL: UpdateSpecificationsOrderGQL,
     private updateWorksOrderGQL: UpdateWorksOrderGQL
   ) {
@@ -273,6 +276,43 @@ export class EditApplicationComponent implements OnInit {
   trackByFn(index: number, item: any) {
     return item.id;
   }
+
+  async deleteWork(id: string) {
+    await this.deleteWorkGQL
+      .mutate(
+        { id },
+        {
+          update: (store, { data: { ...deletedWork } }) => {
+            const variables = {
+              application_id: this.application_id,
+            };
+            // Read the data from our cache for this query.
+            const { ...data }: any = store.readQuery({
+              query: deletedWork.delete_works_by_pk?.portfolio
+                ? GetPortfolioWorksDocument
+                : GetSingleWorksDocument,
+              variables,
+            });
+            // Filter array by deleted producer id
+            data.works = [
+              ...data.works.filter(
+                (work: any) => work.id !== deletedWork.delete_works_by_pk?.id
+              ),
+            ];
+            // Write our data back to the cache.
+            store.writeQuery({
+              query: deletedWork.delete_works_by_pk?.portfolio
+                ? GetPortfolioWorksDocument
+                : GetSingleWorksDocument,
+              variables,
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+  async deleteSpecification() {}
 
   /*
    * SORTING

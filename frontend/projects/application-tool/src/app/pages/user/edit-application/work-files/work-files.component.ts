@@ -8,6 +8,7 @@ import {
   ApplicationFragmentDoc,
   WorkFragmentDoc,
 } from 'generated/types.graphql-gen';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-work-files',
@@ -26,16 +27,11 @@ export class WorkFilesComponent implements OnInit {
   }
 
   constructor(
-    private storage: AngularFireStorage,
-    private addWorkFileGQL: AddWorkFileGQL
+    private addWorkFileGQL: AddWorkFileGQL,
+    private userService: UserService
   ) {}
 
-  ngOnInit(): void {
-    this.files.forEach(async (file) => {
-      const url = await this.getDownloadURL(file.key).toPromise();
-      console.log(url);
-    });
-  }
+  ngOnInit(): void {}
 
   filesToUpload: File[] = [];
 
@@ -69,7 +65,7 @@ export class WorkFilesComponent implements OnInit {
         },
         {
           update: (store, { data: { ...addedFile } }) => {
-            this.updateApplicationFragment(
+            this.userService.updateApplicationFragment(
               store,
               addedFile.update_applications_by_pk?.id,
               addedFile?.update_applications_by_pk?.updated_at
@@ -99,46 +95,7 @@ export class WorkFilesComponent implements OnInit {
         }
       )
       .toPromise();
-
-    // if (Array.isArray(data)) {
-    //   data.push({
-    //     sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //   });
-    // } else {
-    //   this.galleryForm.patchValue(
-    //     this.getVarAsKey(data, {
-    //       sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //     })
-    //   );
-    // }
     filesToUpload.splice(index, 1);
-  }
-
-  getDownloadURL(key: string) {
-    return this.storage.ref(key).getDownloadURL();
-  }
-
-  private updateApplicationFragment(
-    store: ApolloCache<any>,
-    application_id: string,
-    updated_at: string
-  ) {
-    // Read the data from our cache for this query.
-    let { ...data }: any = store.readFragment({
-      id: `applications:${application_id}`,
-      fragment: ApplicationFragmentDoc,
-      fragmentName: 'Application',
-      optimistic: true,
-    });
-    // Add our message from the mutation to the end.
-    data = { ...data, updated_at };
-    // Write our data back to the cache.
-    store.writeFragment({
-      id: `applications:${application_id}`,
-      fragment: ApplicationFragmentDoc,
-      fragmentName: 'Application',
-      data,
-    });
   }
 
   trackByKeyFn(index: number, item: any) {

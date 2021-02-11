@@ -10,6 +10,8 @@
 	"application-form.buttons.add-single-work": "Add artwork +",
 	"application-form.buttons.add-work-specification": "Add artwork specification +",
 	"application-form.buttons.add-works-separately": "Add artworks seperately +",
+	"application-form.buttons.delete-specification": "delete specification",
+	"application-form.buttons.delete-work": "delete artwork",
 	"application-form.buttons.drop-pdf-portfolio-here": "Drop PDF Portfolio here",
 	"application-form.edit-application": "Edit application",
 	"application-form.has-no-influence-on-the-jury": "has no influence on the jury",

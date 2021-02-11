@@ -12,7 +12,6 @@ import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 
 import {
-  FakeMissingTranslationHandler,
   MissingTranslationHandler,
   MissingTranslationHandlerParams,
   TranslateLoader,

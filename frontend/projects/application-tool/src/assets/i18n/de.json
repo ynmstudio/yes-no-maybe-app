@@ -10,6 +10,8 @@
 	"application-form.buttons.add-single-work": "Weiteres Werk hinzufügen +",
 	"application-form.buttons.add-work-specification": "Weitere Werkangabe hinzufügen +",
 	"application-form.buttons.add-works-separately": "Werke einzeln hochladen +",
+	"application-form.buttons.delete-specification": "Werkangabe löschen",
+	"application-form.buttons.delete-work": "Werk löschen",
 	"application-form.buttons.drop-pdf-portfolio-here": "PDF Portfolio hier ablegen",
 	"application-form.edit-application": "Einreichung bearbeiten",
 	"application-form.has-no-influence-on-the-jury": "hat keinen Einfluss auf die Entscheidung der Jury",

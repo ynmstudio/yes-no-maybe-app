@@ -71,20 +71,14 @@ export class UploadTaskComponent implements OnInit {
     }
 
     const user = await this.afAuth.currentUser;
-    const edition_id = (await this.getEditionGQL.fetch().toPromise()).data
-      .editions[0].id;
-
-    if (!edition_id) alert('No current edition');
 
     const uuid = uuidv4();
 
     console.warn(user);
     // The storage path
     const path =
-      (this.public || !user?.uid
-        ? 'public'
-        : `editions/${edition_id}/users/${user?.uid}`) +
-      `/${this.path_prefix}/${Date.now()}_${uuid}`;
+      (this.public || !user?.uid ? 'public' : `users/${user?.uid}`) +
+      `/${this.path_prefix}/${uuid}`;
 
     console.warn(path);
 

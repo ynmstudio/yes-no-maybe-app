@@ -1,0 +1,11 @@
+<img
+  *ngIf="downloadURL | async; let url"
+  class="h-full w-auto inline-block"
+  [src]="url"
+/>
+<div
+  *ngIf="error"
+  class="bg-red-200 text-red-600 w-16 h-20 inline-block relative"
+>
+  <span class="absolute bottom-1 left-1 text-base font-mono">404</span>
+</div>

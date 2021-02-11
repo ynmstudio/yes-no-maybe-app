@@ -21,6 +21,7 @@ import {
 } from 'generated/types.graphql-gen';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { UserService } from '../../user.service';
 @Component({
   selector: 'app-work-specification',
   templateUrl: './work-specification.component.html',
@@ -46,7 +47,8 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    private updateSpecificationGQL: UpdateSpecificationGQL
+    private updateSpecificationGQL: UpdateSpecificationGQL,
+    private userService: UserService
   ) {
     this.form = this.fb.group({
       title: new FormControl('', {
@@ -126,7 +128,7 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
         },
         {
           update: (store, { data: { ...updatedSpecification } }) => {
-            this.updateApplicationFragment(
+            this.userService.updateApplicationFragment(
               store,
               updatedSpecification.update_applications_by_pk?.id,
               updatedSpecification.update_applications_by_pk?.updated_at
@@ -137,28 +139,5 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
       .toPromise();
 
     this.form.markAsPristine();
-  }
-
-  private updateApplicationFragment(
-    store: ApolloCache<any>,
-    application_id: string,
-    updated_at: string
-  ) {
-    // Read the data from our cache for this query.
-    let { ...data }: any = store.readFragment({
-      id: `applications:${application_id}`,
-      fragment: ApplicationFragmentDoc,
-      fragmentName: 'Application',
-      optimistic: true,
-    });
-    // Add our message from the mutation to the end.
-    data = { ...data, updated_at };
-    // Write our data back to the cache.
-    store.writeFragment({
-      id: `applications:${application_id}`,
-      fragment: ApplicationFragmentDoc,
-      fragmentName: 'Application',
-      data,
-    });
   }
 }

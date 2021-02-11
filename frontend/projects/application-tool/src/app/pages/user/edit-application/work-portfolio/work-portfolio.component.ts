@@ -1,5 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FileFragment, WorkFileFragment } from 'generated/types.graphql-gen';
+import { ApolloCache } from '@apollo/client/core';
+import {
+  AddWorkFileGQL,
+  ApplicationFragmentDoc,
+  FileFragment,
+  WorkFileFragment,
+  WorkFragmentDoc,
+} from 'generated/types.graphql-gen';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-work-portfolio',
@@ -15,7 +23,10 @@ export class WorkPortfolioComponent implements OnInit {
     return `applications/${this.application_id}/portfolio/${this.work_id}`;
   }
 
-  constructor() {}
+  constructor(
+    private addWorkFileGQL: AddWorkFileGQL,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -38,19 +49,54 @@ export class WorkPortfolioComponent implements OnInit {
       this.onDrop(fileInput.target.files);
     }
   }
-  finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
+  async finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
     console.log(asset);
-    // if (Array.isArray(data)) {
-    //   data.push({
-    //     sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //   });
-    // } else {
-    //   this.galleryForm.patchValue(
-    //     this.getVarAsKey(data, {
-    //       sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //     })
-    //   );
-    // }
+
+    await this.addWorkFileGQL
+      .mutate(
+        {
+          application_id: this.application_id,
+          work_id: this.work_id,
+          order: this.files.length || 0,
+          ...asset,
+        },
+        {
+          update: (store, { data: { ...addedFile } }) => {
+            this.userService.updateApplicationFragment(
+              store,
+              addedFile.update_applications_by_pk?.id,
+              addedFile?.update_applications_by_pk?.updated_at
+            );
+
+            // Read the data from our cache for this query.
+            let { ...data }: any = store.readFragment({
+              id: `works:${this.work_id}`,
+              fragment: WorkFragmentDoc,
+              fragmentName: 'Work',
+            });
+            console.log(addedFile, data.files);
+            // Filter array by deleted producer id
+            data = {
+              ...data,
+              files: [...data.files, addedFile],
+            };
+            console.log(data);
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `works:${this.work_id}`,
+              fragment: WorkFragmentDoc,
+              fragmentName: 'Work',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+
     filesToUpload.splice(index, 1);
+  }
+
+  trackByKeyFn(index: number, item: any) {
+    return item.key;
   }
 }

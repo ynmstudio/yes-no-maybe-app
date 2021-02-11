@@ -5444,6 +5444,19 @@ export type AddWorkMutation = (
   )> }
 );
 
+export type DeleteWorkMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteWorkMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_works_by_pk?: Maybe<(
+    { __typename?: 'works' }
+    & Pick<Works, 'id' | 'portfolio'>
+  )> }
+);
+
 export type AddPortfolioSpecificationMutationVariables = Exact<{
   application_id: Scalars['uuid'];
   work_id: Scalars['uuid'];
@@ -5456,6 +5469,19 @@ export type AddPortfolioSpecificationMutation = (
   & { insert_works_specifications_one?: Maybe<(
     { __typename?: 'works_specifications' }
     & WorkSpecificationFragment
+  )> }
+);
+
+export type DeletePortfolioSpecificationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeletePortfolioSpecificationMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_works_specifications_by_pk?: Maybe<(
+    { __typename?: 'works_specifications' }
+    & Pick<Works_Specifications, 'id'>
   )> }
 );
 
@@ -5926,6 +5952,25 @@ export const AddWorkDocument = gql`
       super(apollo);
     }
   }
+export const DeleteWorkDocument = gql`
+    mutation DeleteWork($id: uuid!) {
+  delete_works_by_pk(id: $id) {
+    id
+    portfolio
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteWorkGQL extends Apollo.Mutation<DeleteWorkMutation, DeleteWorkMutationVariables> {
+    document = DeleteWorkDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const AddPortfolioSpecificationDocument = gql`
     mutation AddPortfolioSpecification($application_id: uuid!, $work_id: uuid!, $order: Int!) {
   insert_works_specifications_one(
@@ -5941,6 +5986,24 @@ export const AddPortfolioSpecificationDocument = gql`
   })
   export class AddPortfolioSpecificationGQL extends Apollo.Mutation<AddPortfolioSpecificationMutation, AddPortfolioSpecificationMutationVariables> {
     document = AddPortfolioSpecificationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeletePortfolioSpecificationDocument = gql`
+    mutation DeletePortfolioSpecification($id: uuid!) {
+  delete_works_specifications_by_pk(id: $id) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeletePortfolioSpecificationGQL extends Apollo.Mutation<DeletePortfolioSpecificationMutation, DeletePortfolioSpecificationMutationVariables> {
+    document = DeletePortfolioSpecificationDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

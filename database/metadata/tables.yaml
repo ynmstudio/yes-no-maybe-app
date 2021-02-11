@@ -287,6 +287,14 @@
 - table:
     schema: public
     name: users
+  array_relationships:
+  - name: applications
+    using:
+      foreign_key_constraint_on:
+        column: created_by
+        table:
+          schema: public
+          name: applications
   insert_permissions:
   - role: jury
     permission:
