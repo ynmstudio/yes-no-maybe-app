@@ -15,7 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UploadTaskModule } from './components/upload-task/upload-task.module';
 
 import { DropzoneDirective } from './directives/dropzone.directive';
-import { GetFilePipe } from './pipes/get-file.pipe';
+import { ImageModule } from './components/image/image.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -26,12 +26,12 @@ const MODULES = [
   ModalModule,
   TranslateModule,
   UploadTaskModule,
+  ImageModule,
 ];
 
 const PIPES: any = [
   // put pipes here
   TimePassedPipe,
-  GetFilePipe,
 ];
 
 const COMPONENTS: any = [

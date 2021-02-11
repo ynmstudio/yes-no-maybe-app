@@ -1,5 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FileFragment, WorkFileFragment } from 'generated/types.graphql-gen';
+import { ApolloCache } from '@apollo/client/core';
+import {
+  AddWorkFileGQL,
+  ApplicationFragmentDoc,
+  DeleteWorkFileGQL,
+  FileFragment,
+  WorkFileFragment,
+  WorkFragmentDoc,
+} from 'generated/types.graphql-gen';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-work-portfolio',
@@ -15,7 +24,11 @@ export class WorkPortfolioComponent implements OnInit {
     return `applications/${this.application_id}/portfolio/${this.work_id}`;
   }
 
-  constructor() {}
+  constructor(
+    private addWorkFileGQL: AddWorkFileGQL,
+    private deleteWorkFileGQL: DeleteWorkFileGQL,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -38,19 +51,28 @@ export class WorkPortfolioComponent implements OnInit {
       this.onDrop(fileInput.target.files);
     }
   }
-  finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
+  async finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
     console.log(asset);
-    // if (Array.isArray(data)) {
-    //   data.push({
-    //     sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //   });
-    // } else {
-    //   this.galleryForm.patchValue(
-    //     this.getVarAsKey(data, {
-    //       sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //     })
-    //   );
-    // }
+
+    await this.userService.addWorkFile(
+      asset,
+      this.files.length,
+      this.work_id,
+      this.application_id
+    );
+
     filesToUpload.splice(index, 1);
+  }
+
+  async deleteFile(id: string) {
+    await this.userService.deleteWorkFile(
+      id,
+      this.work_id,
+      this.application_id
+    );
+  }
+
+  trackByKeyFn(index: number, item: any) {
+    return item.key;
   }
 }

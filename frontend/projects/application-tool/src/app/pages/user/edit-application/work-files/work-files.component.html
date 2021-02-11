@@ -2,33 +2,36 @@
   dropzone
   (hovered)="toggleHover($event)"
   (dropped)="onDrop($event)"
+  [disabled]="(files?.length || 0) >= maxFiles"
   [ngClass]="{
-    'ring-green-500': isHovering,
-    'ring-2': isHovering
+    'ring-2 ring-gray-800': isHovering
   }"
-  class="h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
+  class="h-24 lg:h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
 >
   <div
     class="absolute inset-0 p-2 lg:p-4 space-x-2 flex flex-row overflow-x-scroll"
     cdkDropList
     cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="reorderFiles(files, $event)"
+    [cdkDropListDisabled]="!((files?.length || 0) > 1)"
   >
     <div
       cdkDrag
       *ngFor="let file of files; trackBy: trackByKeyFn"
       class="group flex-none h-20 bg-gray-200 cursor-move relative"
     >
-      <img
-        [src]=""
-        width="240"
-        height="300"
-        class="h-full w-auto inline-block"
-      />
-      <div
-        class="opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+      <app-image
+        [key]="file.key"
+        [mimetype]="file.mimetype"
+        size="_200x200"
+        [title]="file.originalname"
+      ></app-image>
+      <button
+        (click)="deleteFile(file.id)"
+        class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
       >
         X
-      </div>
+      </button>
     </div>
     <!-- <div cdkDrag class="group flex-none h-16 bg-gray-200 cursor-move relative">
       <img
@@ -55,7 +58,7 @@
     </app-upload-task>
 
     <button
-      *ngIf="files.length < maxFiles"
+      *ngIf="(files?.length || 0) < maxFiles"
       class="flex-none flex items-center justify-center text-3xl h-20 w-16 bg-black text-white cursor-pointer"
       (click)="fileInput.click()"
     >
@@ -76,9 +79,11 @@
   </div>
   <div
     class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors"
-    [ngClass]="files.length > maxFiles ? 'text-red-600' : 'text-gray-800'"
+    [ngClass]="
+      (files?.length || 0) > maxFiles ? 'text-red-600' : 'text-gray-800'
+    "
   >
-    {{ files.length || 0 }}/{{ maxFiles }}
+    {{ files?.length || 0 }}/{{ maxFiles }}
     {{ "defaults.file-multi" | translate }}
   </div>
 </div>

@@ -71,7 +71,7 @@ const routes: Routes = [
     path: 'u',
     loadChildren: () =>
       import('./pages/user/user.module').then((m) => m.UserModule),
-    // ...canActivate(userOnly),
+    ...canActivate(userOnly),
   },
   {
     path: 'j',

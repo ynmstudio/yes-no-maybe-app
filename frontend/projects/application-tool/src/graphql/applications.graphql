@@ -1,3 +1,12 @@
+fragment Payment on payments {
+  id
+  mimetype
+  key
+  originalname
+  size
+  application_id
+}
+
 fragment Application on applications {
   id
   name
@@ -8,7 +17,9 @@ fragment Application on applications {
   residency
   database
   disclaimer
-  payment_file
+  payment {
+    ...Payment
+  }
   edition {
     id
     name
@@ -19,6 +30,11 @@ fragment Application on applications {
       sum {
         size
       }
+    }
+  }
+  works_aggregate {
+    aggregate {
+      count
     }
   }
 }
@@ -62,6 +78,48 @@ mutation UpdateApplication($id: uuid!, $data: applications_set_input!) {
 mutation DeleteApplication($id: uuid!) {
   delete_applications_by_pk(id: $id) {
     id
+  }
+}
+
+mutation AddPayment(
+  $application_id: uuid!
+  $id: uuid!
+  $key: String!
+  $mimetype: String!
+  $originalname: String!
+  $size: numeric!
+) {
+  update_applications_by_pk(
+    pk_columns: { id: $application_id }
+    _set: { updated_at: "now()" }
+  ) {
+    id
+    updated_at
+  }
+  insert_payments_one(
+    object: {
+      application_id: $application_id
+      id: $id
+      key: $key
+      mimetype: $mimetype
+      size: $size
+      originalname: $originalname
+    }
+  ) {
+    ...Payment
+  }
+}
+mutation DeletePayment($id: uuid!, $application_id: uuid!) {
+  update_applications_by_pk(
+    pk_columns: { id: $application_id }
+    _set: { updated_at: "now()" }
+  ) {
+    id
+    updated_at
+  }
+  delete_payments_by_pk(id: $id) {
+    id
+    application_id
   }
 }
 

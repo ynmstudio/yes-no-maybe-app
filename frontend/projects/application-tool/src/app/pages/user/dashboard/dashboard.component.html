@@ -93,24 +93,30 @@
                 <div class="cols-span-5 lg:col-span-3">
                   <!-- @TODO Compute application status in hasura -->
                   <span
-                    class="text-red-600"
-                    *ngIf="!application.payment_file && application.disclaimer"
-                    [innerText]="
-                      'application.status--missing-payment' | translate
-                    "
-                  >
-                  </span>
-                  <span
                     class="text-orange-500"
-                    *ngIf="!application.payment_file && !application.disclaimer"
+                    *ngIf="!application.payment?.id && !application.disclaimer"
                     [innerText]="
                       'application.status--application-incomplete' | translate
                     "
                   >
                   </span>
                   <span
+                    class="text-red-600"
+                    *ngIf="!application.payment?.id && application.disclaimer"
+                    [innerText]="
+                      'application.status--missing-payment' | translate
+                    "
+                  >
+                  </span>
+                  <span
+                    class="text-gray-6500"
+                    *ngIf="application.payment?.id && !application.disclaimer"
+                    [innerText]="'application.status--disclaimer' | translate"
+                  >
+                  </span>
+                  <span
                     class="text-green-500"
-                    *ngIf="application.payment_file && application.disclaimer"
+                    *ngIf="application.payment?.id && application.disclaimer"
                     [innerText]="
                       'application.status--application-complete' | translate
                     "

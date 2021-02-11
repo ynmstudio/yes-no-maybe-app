@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Wed Feb 10 2021 19:39:15 GMT+0100 (Central European Standard Time)
+# timestamp: Thu Feb 11 2021 17:08:30 GMT+0100 (Central European Standard Time)
 
 schema {
   query: query_root
@@ -59,7 +59,9 @@ type applications {
   id: uuid!
   internal_name: String
   name: String
-  payment_file: String
+
+  """An object relationship"""
+  payment: payments
 
   """An array relationship"""
   ratings(
@@ -256,7 +258,7 @@ input applications_bool_exp {
   id: uuid_comparison_exp
   internal_name: String_comparison_exp
   name: String_comparison_exp
-  payment_file: String_comparison_exp
+  payment: payments_bool_exp
   ratings: ratings_bool_exp
   residency: Boolean_comparison_exp
   specifications: works_specifications_bool_exp
@@ -299,7 +301,7 @@ input applications_insert_input {
   id: uuid
   internal_name: String
   name: String
-  payment_file: String
+  payment: payments_obj_rel_insert_input
   ratings: ratings_arr_rel_insert_input
   residency: Boolean
   specifications: works_specifications_arr_rel_insert_input
@@ -317,7 +319,6 @@ type applications_max_fields {
   id: uuid
   internal_name: String
   name: String
-  payment_file: String
   statement: String
   updated_at: timestamptz
 }
@@ -332,7 +333,6 @@ input applications_max_order_by {
   id: order_by
   internal_name: order_by
   name: order_by
-  payment_file: order_by
   statement: order_by
   updated_at: order_by
 }
@@ -345,7 +345,6 @@ type applications_min_fields {
   id: uuid
   internal_name: String
   name: String
-  payment_file: String
   statement: String
   updated_at: timestamptz
 }
@@ -360,7 +359,6 @@ input applications_min_order_by {
   id: order_by
   internal_name: order_by
   name: order_by
-  payment_file: order_by
   statement: order_by
   updated_at: order_by
 }
@@ -408,7 +406,7 @@ input applications_order_by {
   id: order_by
   internal_name: order_by
   name: order_by
-  payment_file: order_by
+  payment: payments_order_by
   ratings_aggregate: ratings_aggregate_order_by
   residency: order_by
   specifications_aggregate: works_specifications_aggregate_order_by
@@ -457,9 +455,6 @@ enum applications_select_column {
   name
 
   """column name"""
-  payment_file
-
-  """column name"""
   residency
 
   """column name"""
@@ -482,7 +477,6 @@ input applications_set_input {
   id: uuid
   internal_name: String
   name: String
-  payment_file: String
   residency: Boolean
   statement: String
   updated_at: timestamptz
@@ -566,9 +560,6 @@ enum applications_update_column {
 
   """column name"""
   name
-
-  """column name"""
-  payment_file
 
   """column name"""
   residency
@@ -1104,6 +1095,19 @@ type mutation_root {
   delete_editions_by_pk(id: Int!): editions
 
   """
+  delete data from the table: "payments"
+  """
+  delete_payments(
+    """filter the rows which have to be deleted"""
+    where: payments_bool_exp!
+  ): payments_mutation_response
+
+  """
+  delete single row from the table: "payments"
+  """
+  delete_payments_by_pk(id: uuid!): payments
+
+  """
   delete data from the table: "rating_rounds"
   """
   delete_rating_rounds(
@@ -1263,6 +1267,28 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: editions_on_conflict
   ): editions
+
+  """
+  insert data into the table: "payments"
+  """
+  insert_payments(
+    """the rows to be inserted"""
+    objects: [payments_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: payments_on_conflict
+  ): payments_mutation_response
+
+  """
+  insert a single row into the table: "payments"
+  """
+  insert_payments_one(
+    """the row to be inserted"""
+    object: payments_insert_input!
+
+    """on conflict condition"""
+    on_conflict: payments_on_conflict
+  ): payments
 
   """
   insert data into the table: "rating_rounds"
@@ -1513,6 +1539,32 @@ type mutation_root {
     _set: editions_set_input
     pk_columns: editions_pk_columns_input!
   ): editions
+
+  """
+  update data of the table: "payments"
+  """
+  update_payments(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: payments_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: payments_set_input
+
+    """filter the rows which have to be updated"""
+    where: payments_bool_exp!
+  ): payments_mutation_response
+
+  """
+  update single row of the table: "payments"
+  """
+  update_payments_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: payments_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: payments_set_input
+    pk_columns: payments_pk_columns_input!
+  ): payments
 
   """
   update data of the table: "rating_rounds"
@@ -1781,6 +1833,378 @@ enum order_by {
   desc_nulls_last
 }
 
+"""
+columns and relationships of "payments"
+"""
+type payments {
+  """An object relationship"""
+  application: applications!
+  application_id: uuid!
+  created_at: timestamptz!
+  id: uuid!
+  key: String!
+  mimetype: String!
+  originalname: String!
+  size: numeric!
+}
+
+"""
+aggregated selection of "payments"
+"""
+type payments_aggregate {
+  aggregate: payments_aggregate_fields
+  nodes: [payments!]!
+}
+
+"""
+aggregate fields of "payments"
+"""
+type payments_aggregate_fields {
+  avg: payments_avg_fields
+  count(columns: [payments_select_column!], distinct: Boolean): Int
+  max: payments_max_fields
+  min: payments_min_fields
+  stddev: payments_stddev_fields
+  stddev_pop: payments_stddev_pop_fields
+  stddev_samp: payments_stddev_samp_fields
+  sum: payments_sum_fields
+  var_pop: payments_var_pop_fields
+  var_samp: payments_var_samp_fields
+  variance: payments_variance_fields
+}
+
+"""
+order by aggregate values of table "payments"
+"""
+input payments_aggregate_order_by {
+  avg: payments_avg_order_by
+  count: order_by
+  max: payments_max_order_by
+  min: payments_min_order_by
+  stddev: payments_stddev_order_by
+  stddev_pop: payments_stddev_pop_order_by
+  stddev_samp: payments_stddev_samp_order_by
+  sum: payments_sum_order_by
+  var_pop: payments_var_pop_order_by
+  var_samp: payments_var_samp_order_by
+  variance: payments_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "payments"
+"""
+input payments_arr_rel_insert_input {
+  data: [payments_insert_input!]!
+  on_conflict: payments_on_conflict
+}
+
+"""aggregate avg on columns"""
+type payments_avg_fields {
+  size: Float
+}
+
+"""
+order by avg() on columns of table "payments"
+"""
+input payments_avg_order_by {
+  size: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "payments". All fields are combined with a logical 'AND'.
+"""
+input payments_bool_exp {
+  _and: [payments_bool_exp]
+  _not: payments_bool_exp
+  _or: [payments_bool_exp]
+  application: applications_bool_exp
+  application_id: uuid_comparison_exp
+  created_at: timestamptz_comparison_exp
+  id: uuid_comparison_exp
+  key: String_comparison_exp
+  mimetype: String_comparison_exp
+  originalname: String_comparison_exp
+  size: numeric_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "payments"
+"""
+enum payments_constraint {
+  """unique or primary key constraint"""
+  payments_application_id_key
+
+  """unique or primary key constraint"""
+  payments_pkey
+}
+
+"""
+input type for incrementing integer column in table "payments"
+"""
+input payments_inc_input {
+  size: numeric
+}
+
+"""
+input type for inserting data into table "payments"
+"""
+input payments_insert_input {
+  application: applications_obj_rel_insert_input
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  originalname: String
+  size: numeric
+}
+
+"""aggregate max on columns"""
+type payments_max_fields {
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  originalname: String
+  size: numeric
+}
+
+"""
+order by max() on columns of table "payments"
+"""
+input payments_max_order_by {
+  application_id: order_by
+  created_at: order_by
+  id: order_by
+  key: order_by
+  mimetype: order_by
+  originalname: order_by
+  size: order_by
+}
+
+"""aggregate min on columns"""
+type payments_min_fields {
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  originalname: String
+  size: numeric
+}
+
+"""
+order by min() on columns of table "payments"
+"""
+input payments_min_order_by {
+  application_id: order_by
+  created_at: order_by
+  id: order_by
+  key: order_by
+  mimetype: order_by
+  originalname: order_by
+  size: order_by
+}
+
+"""
+response of any mutation on the table "payments"
+"""
+type payments_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [payments!]!
+}
+
+"""
+input type for inserting object relation for remote table "payments"
+"""
+input payments_obj_rel_insert_input {
+  data: payments_insert_input!
+  on_conflict: payments_on_conflict
+}
+
+"""
+on conflict condition type for table "payments"
+"""
+input payments_on_conflict {
+  constraint: payments_constraint!
+  update_columns: [payments_update_column!]!
+  where: payments_bool_exp
+}
+
+"""
+ordering options when selecting data from "payments"
+"""
+input payments_order_by {
+  application: applications_order_by
+  application_id: order_by
+  created_at: order_by
+  id: order_by
+  key: order_by
+  mimetype: order_by
+  originalname: order_by
+  size: order_by
+}
+
+"""
+primary key columns input for table: "payments"
+"""
+input payments_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "payments"
+"""
+enum payments_select_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  key
+
+  """column name"""
+  mimetype
+
+  """column name"""
+  originalname
+
+  """column name"""
+  size
+}
+
+"""
+input type for updating data in table "payments"
+"""
+input payments_set_input {
+  application_id: uuid
+  created_at: timestamptz
+  id: uuid
+  key: String
+  mimetype: String
+  originalname: String
+  size: numeric
+}
+
+"""aggregate stddev on columns"""
+type payments_stddev_fields {
+  size: Float
+}
+
+"""
+order by stddev() on columns of table "payments"
+"""
+input payments_stddev_order_by {
+  size: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type payments_stddev_pop_fields {
+  size: Float
+}
+
+"""
+order by stddev_pop() on columns of table "payments"
+"""
+input payments_stddev_pop_order_by {
+  size: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type payments_stddev_samp_fields {
+  size: Float
+}
+
+"""
+order by stddev_samp() on columns of table "payments"
+"""
+input payments_stddev_samp_order_by {
+  size: order_by
+}
+
+"""aggregate sum on columns"""
+type payments_sum_fields {
+  size: numeric
+}
+
+"""
+order by sum() on columns of table "payments"
+"""
+input payments_sum_order_by {
+  size: order_by
+}
+
+"""
+update columns of table "payments"
+"""
+enum payments_update_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  id
+
+  """column name"""
+  key
+
+  """column name"""
+  mimetype
+
+  """column name"""
+  originalname
+
+  """column name"""
+  size
+}
+
+"""aggregate var_pop on columns"""
+type payments_var_pop_fields {
+  size: Float
+}
+
+"""
+order by var_pop() on columns of table "payments"
+"""
+input payments_var_pop_order_by {
+  size: order_by
+}
+
+"""aggregate var_samp on columns"""
+type payments_var_samp_fields {
+  size: Float
+}
+
+"""
+order by var_samp() on columns of table "payments"
+"""
+input payments_var_samp_order_by {
+  size: order_by
+}
+
+"""aggregate variance on columns"""
+type payments_variance_fields {
+  size: Float
+}
+
+"""
+order by variance() on columns of table "payments"
+"""
+input payments_variance_order_by {
+  size: order_by
+}
+
 """query root"""
 type query_root {
   """
@@ -1868,6 +2292,49 @@ type query_root {
 
   """fetch data from the table: "editions" using primary key columns"""
   editions_by_pk(id: Int!): editions
+
+  """
+  fetch data from the table: "payments"
+  """
+  payments(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): [payments!]!
+
+  """
+  fetch aggregated fields from the table: "payments"
+  """
+  payments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): payments_aggregate!
+
+  """fetch data from the table: "payments" using primary key columns"""
+  payments_by_pk(id: uuid!): payments
 
   """
   fetch data from the table: "rating_rounds"
@@ -3204,6 +3671,49 @@ type subscription_root {
   editions_by_pk(id: Int!): editions
 
   """
+  fetch data from the table: "payments"
+  """
+  payments(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): [payments!]!
+
+  """
+  fetch aggregated fields from the table: "payments"
+  """
+  payments_aggregate(
+    """distinct select on columns"""
+    distinct_on: [payments_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [payments_order_by!]
+
+    """filter the rows returned"""
+    where: payments_bool_exp
+  ): payments_aggregate!
+
+  """fetch data from the table: "payments" using primary key columns"""
+  payments_by_pk(id: uuid!): payments
+
+  """
   fetch data from the table: "rating_rounds"
   """
   rating_rounds(
@@ -4192,6 +4702,41 @@ input types_tags_variance_order_by {
 columns and relationships of "users"
 """
 type users {
+  """An array relationship"""
+  applications(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): [applications!]!
+
+  """An aggregated array relationship"""
+  applications_aggregate(
+    """distinct select on columns"""
+    distinct_on: [applications_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [applications_order_by!]
+
+    """filter the rows returned"""
+    where: applications_bool_exp
+  ): applications_aggregate!
   id: String!
   last_seen: timestamptz
   name: String
@@ -4239,6 +4784,7 @@ input users_bool_exp {
   _and: [users_bool_exp]
   _not: users_bool_exp
   _or: [users_bool_exp]
+  applications: applications_bool_exp
   id: String_comparison_exp
   last_seen: timestamptz_comparison_exp
   name: String_comparison_exp
@@ -4260,6 +4806,7 @@ enum users_constraint {
 input type for inserting data into table "users"
 """
 input users_insert_input {
+  applications: applications_arr_rel_insert_input
   id: String
   last_seen: timestamptz
   name: String
@@ -4334,6 +4881,7 @@ input users_on_conflict {
 ordering options when selecting data from "users"
 """
 input users_order_by {
+  applications_aggregate: applications_aggregate_order_by
   id: order_by
   last_seen: order_by
   name: order_by

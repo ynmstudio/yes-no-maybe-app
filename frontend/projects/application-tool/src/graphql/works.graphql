@@ -10,13 +10,13 @@ fragment Work on works {
   }
 }
 fragment File on works_files {
+  id
   mimetype
   key
   originalname
   size
 }
 fragment WorkFile on works_files {
-  id
   work_id
   application_id
   order
@@ -49,6 +49,12 @@ mutation AddWork($application_id: uuid!, $portfolio: Boolean) {
     ...Work
   }
 }
+mutation DeleteWork($id: uuid!) {
+  delete_works_by_pk(id: $id) {
+    id
+    portfolio
+  }
+}
 
 mutation AddPortfolioSpecification(
   $application_id: uuid!
@@ -65,8 +71,15 @@ mutation AddPortfolioSpecification(
     ...WorkSpecification
   }
 }
+mutation DeletePortfolioSpecification($id: uuid!) {
+  delete_works_specifications_by_pk(id: $id) {
+    id
+    work_id
+  }
+}
 
 mutation AddWorkFile(
+  $id: uuid!
   $application_id: uuid!
   $work_id: uuid!
   $order: Int!
@@ -84,6 +97,7 @@ mutation AddWorkFile(
   }
   insert_works_files_one(
     object: {
+      id: $id
       application_id: $application_id
       key: $key
       mimetype: $mimetype
@@ -94,6 +108,19 @@ mutation AddWorkFile(
     }
   ) {
     ...WorkFile
+  }
+}
+mutation DeleteWorkFile($id: uuid!, $application_id: uuid!) {
+  update_applications_by_pk(
+    pk_columns: { id: $application_id }
+    _set: { updated_at: "now()" }
+  ) {
+    id
+    updated_at
+  }
+  delete_works_files_by_pk(id: $id) {
+    id
+    work_id
   }
 }
 
@@ -157,6 +184,17 @@ mutation UpdateSpecificationsOrder(
       constraint: works_specifications_pkey
       update_columns: [order]
     }
+  ) {
+    returning {
+      id
+      order
+    }
+  }
+}
+mutation UpdateWorkFilesOrder($objects: [works_files_insert_input!]!) {
+  insert_works_files(
+    objects: $objects
+    on_conflict: { constraint: works_files_pkey, update_columns: [order] }
   ) {
     returning {
       id

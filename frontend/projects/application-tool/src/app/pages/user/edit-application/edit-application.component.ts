@@ -12,20 +12,23 @@ import {
   GetApplicationGQL,
   UpdateApplicationGQL,
   AddWorkGQL,
+  DeleteWorkGQL,
   GetSingleWorksGQL,
   GetSingleWorksDocument,
   GetPortfolioWorksGQL,
   GetPortfolioWorksDocument,
   AddPortfolioSpecificationGQL,
+  DeletePortfolioSpecificationGQL,
   WorkFragmentDoc,
   WorkFragment,
   WorkSpecificationFragment,
   UpdateSpecificationsOrderGQL,
   UpdateWorksOrderGQL,
   WorkSpecificationFragmentDoc,
-  ApplicationFragmentDoc,
+  FileFragment,
 } from 'generated/types.graphql-gen';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { UserService } from '../user.service';
 import { WorkSpecificationComponent } from './work-specification/work-specification.component';
 
 @Component({
@@ -83,11 +86,14 @@ export class EditApplicationComponent implements OnInit {
     private getApplicationGQL: GetApplicationGQL,
     private updateApplicationGQL: UpdateApplicationGQL,
     private addWorkGQL: AddWorkGQL,
+    private deleteWorkGQL: DeleteWorkGQL,
     private getSingleWorksGQL: GetSingleWorksGQL,
     private getPortfolioWorksGQL: GetPortfolioWorksGQL,
     private addPortfolioSpecificationGQL: AddPortfolioSpecificationGQL,
+    private deletePortfolioSpecificationGQL: DeletePortfolioSpecificationGQL,
     private updateSpecificationsOrderGQL: UpdateSpecificationsOrderGQL,
-    private updateWorksOrderGQL: UpdateWorksOrderGQL
+    private updateWorksOrderGQL: UpdateWorksOrderGQL,
+    private userService: UserService
   ) {
     // If navigation extra is set by dashboard on addApplication() show "New Application" headline
     this.isNew = this.router.getCurrentNavigation()?.extras.state?.new || false;
@@ -120,8 +126,8 @@ export class EditApplicationComponent implements OnInit {
       disclaimer: new FormControl(false, {
         validators: Validators.requiredTrue,
       }),
-      payment: new FormControl(false, {
-        validators: Validators.requiredTrue,
+      payment: new FormControl(null, {
+        validators: Validators.required,
       }),
     });
     this.form.disable();
@@ -147,6 +153,10 @@ export class EditApplicationComponent implements OnInit {
             }
           }
         }
+        if (application)
+          this.form
+            .get('works')
+            ?.setValue(application.works_aggregate.aggregate.count);
 
         this.form.enable();
       });
@@ -212,7 +222,7 @@ export class EditApplicationComponent implements OnInit {
               application_id: this.application_id,
             };
             // Read the data from our cache for this query.
-            const { ...data }: any = store.readQuery({
+            let { ...data }: any = store.readQuery({
               query: portfolio
                 ? GetPortfolioWorksDocument
                 : GetSingleWorksDocument,
@@ -228,6 +238,8 @@ export class EditApplicationComponent implements OnInit {
               variables,
               data,
             });
+
+            this.userService.updateWorkCount(store, this.application_id, 1);
           },
         }
       )
@@ -272,6 +284,123 @@ export class EditApplicationComponent implements OnInit {
 
   trackByFn(index: number, item: any) {
     return item.id;
+  }
+
+  async deleteWork(id: string) {
+    await this.deleteWorkGQL
+      .mutate(
+        { id },
+        {
+          update: (store, { data: { ...deletedWork } }) => {
+            const variables = {
+              application_id: this.application_id,
+            };
+            // Read the data from our cache for this query.
+            const { ...data }: any = store.readQuery({
+              query: deletedWork.delete_works_by_pk?.portfolio
+                ? GetPortfolioWorksDocument
+                : GetSingleWorksDocument,
+              variables,
+            });
+            // Filter array by deleted producer id
+            data.works = [
+              ...data.works.filter(
+                (work: any) => work.id !== deletedWork.delete_works_by_pk?.id
+              ),
+            ];
+            // Write our data back to the cache.
+            store.writeQuery({
+              query: deletedWork.delete_works_by_pk?.portfolio
+                ? GetPortfolioWorksDocument
+                : GetSingleWorksDocument,
+              variables,
+              data,
+            });
+
+            this.userService.updateWorkCount(store, this.application_id, -1);
+          },
+        }
+      )
+      .toPromise();
+  }
+  async deleteSpecification(id: string) {
+    await this.deletePortfolioSpecificationGQL
+      .mutate(
+        { id },
+        {
+          update: (store, { data: { ...deletedSpecification } }) => {
+            const variables = {
+              application_id: this.application_id,
+            };
+
+            let { ...data }: any = store.readFragment({
+              id: `works:${deletedSpecification.delete_works_specifications_by_pk?.work_id}`,
+              fragment: WorkFragmentDoc,
+              fragmentName: 'Work',
+            });
+            console.log(deletedSpecification, data.specifications);
+            // Filter array by deleted producer id
+            data.specifications = [
+              ...data.specifications.filter(
+                (specification: any) =>
+                  specification.id !==
+                  deletedSpecification.delete_works_specifications_by_pk?.id
+              ),
+            ];
+
+            console.log(data);
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `works:${deletedSpecification.delete_works_specifications_by_pk?.work_id}`,
+              fragment: WorkFragmentDoc,
+              fragmentName: 'Work',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+
+  /**
+   * PAYMENT FILE
+   */
+
+  get payment_path_prefix() {
+    return `applications/${this.application_id}/payment`;
+  }
+
+  isHovering: boolean = false;
+  toggleHover(event: boolean) {
+    this.isHovering = event;
+  }
+  paymentFileToUpload: File[] = [];
+  onPaymentFileSelect(fileInput: any) {
+    if (fileInput.target.files) {
+      this.onPaymentDrop(fileInput.target.files);
+    }
+  }
+  onPaymentDrop(files: FileList) {
+    if (files.length > 1) {
+      alert('Only single file allowed. Uploading first file.');
+    }
+    const file = files.item(0);
+    if (file) this.paymentFileToUpload.push(file);
+  }
+  async finishPaymentTask(
+    paymentFileToUpload: File[],
+    index: number,
+    asset: FileFragment
+  ) {
+    console.log(asset);
+
+    await this.userService.addPayment(asset, this.application_id);
+
+    paymentFileToUpload.splice(index, 1);
+  }
+
+  async deletePayment(id: string) {
+    await this.userService.deletePayment(id, this.application_id);
   }
 
   /*

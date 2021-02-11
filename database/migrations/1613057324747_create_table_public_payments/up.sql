@@ -1,0 +1,2 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE "public"."payments"("id" uuid NOT NULL DEFAULT gen_random_uuid(), "created_at" timestamptz NOT NULL DEFAULT now(), "key" text NOT NULL, "mimetype" text NOT NULL, "originalname" text NOT NULL, "application_id" uuid NOT NULL, "size" numeric NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("application_id") REFERENCES "public"."applications"("id") ON UPDATE cascade ON DELETE cascade);

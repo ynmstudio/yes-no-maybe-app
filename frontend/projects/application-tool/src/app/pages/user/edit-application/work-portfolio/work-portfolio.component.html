@@ -3,11 +3,53 @@
   (hovered)="toggleHover($event)"
   (dropped)="onDrop($event)"
   [ngClass]="{
-    'ring-green-500': isHovering,
-    'ring-2': isHovering
+    'ring-2 ring-gray-800': isHovering
   }"
-  class="h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
+  class="h-28 relative flex ring-transparent ring-0 transition-shadow"
 >
+  <div
+    *ngFor="let file of files; trackBy: trackByKeyFn"
+    class="group flex-auto bg-gray-200 cursor-move relative flex p-4 items-end"
+  >
+    <div>
+      <svg
+        class="h-20 w-auto"
+        width="51px"
+        height="71px"
+        viewBox="0 0 51 71"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+          <polygon
+            id="Fill-1"
+            fill="#000000"
+            points="15.7882114 0 15.8916148 0.106408033 0 16.4613227 0 71 51 71 51 0"
+          ></polygon>
+          <text
+            id="PDF"
+            fill="#FFFFFF"
+            text-anchor="middle"
+            font-size="20"
+            alignment-baseline="central"
+          >
+            <tspan x="25" y="57" class="font-condensed">PDF</tspan>
+          </text>
+        </g>
+      </svg>
+    </div>
+    <div class="ml-4">
+      <div [innerText]="file.originalname"></div>
+      <div class="text-gray-800" [innerText]="file.size || 0 | filesize"></div>
+    </div>
+    <button
+      (click)="deleteFile(file.id)"
+      class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+    >
+      X
+    </button>
+  </div>
   <app-upload-task
     class="flex-none flex items-center justify-center bg-gray-300 h-full w-full text-white"
     *ngFor="let file of filesToUpload; let index = index"
@@ -19,8 +61,13 @@
     <div class="spinner text-gray-800"></div>
   </app-upload-task>
   <button
-    *ngIf="filesToUpload.length < 1"
-    class="flex-auto text-gray-300 h-full w-full flex items-center justify-center font-mono text-sm cursor-pointer"
+    *ngIf="
+      files &&
+      (files?.length || 0) < 1 &&
+      filesToUpload &&
+      (filesToUpload?.length || 0) < 1
+    "
+    class="flex-auto bg-gray-100 text-gray-300 h-full w-full flex items-center justify-center font-mono text-sm cursor-pointer"
     (click)="fileInput.click()"
     [innerText]="
       'application-form.buttons.drop-pdf-portfolio-here' | translate | titlecase

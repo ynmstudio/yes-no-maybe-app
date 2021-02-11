@@ -45,9 +45,10 @@ Important: always run via `hasura console --admin-secret myadminsecretkey` insid
 
 #### Local Development
 
-1. `docker-compose up -d`
-2. `cd database`
-3. `hasura console --admin-secret myadminsecretkey`
+1. duplicate `.env.example` and rename to `.env` and adapt accordingly. please adapt firebase env accordingly (see firebase section)
+2. `docker-compose up -d`
+3. `cd database`
+4. `hasura console --admin-secret myadminsecretkey`
 
 #### Migration
 
@@ -70,6 +71,7 @@ Firebase config data will be extracted via REST-API before publishing the projec
 2. `firebase login` and select your project
 3. Set the admin account which gets the team role assigned on sign-up with `firebase functions:config:set hasura.admin_email="webmaster@example.com"`
 4. (optional) Set automatic team member accounts by defining your email domain with `firebase functions:config:set hasura.team_role_email_domain="@example.com"`
+5. Set shared secret key so hasura is able to interact with firebase storage with `firebase functions:config:set hasura.shared_secret="somesecuresecretkey"`
 
 #### Local Development
 

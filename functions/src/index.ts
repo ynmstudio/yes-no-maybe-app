@@ -45,3 +45,52 @@ exports.processSignUp = functions
         console.log(error);
       });
   });
+
+exports.deleteFile = functions
+  .region("europe-west3")
+  .https.onRequest((req, res) => {
+    if (req.method !== "POST") {
+      res.status(400).send("Please send a POST request");
+      return;
+    }
+    if (
+      req.get("x-hasura-shared-secret") !==
+      functions.config().hasura.shared_secret
+    ) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+
+    if (req.body.event.op !== "DELETE") {
+      res.status(405).send(`Method ${req.body.event.op} not allowed`);
+      return;
+    }
+
+    const key = req.body.event.data.old.key;
+
+    if (!key) {
+      res.status(400).send("Payload does not contain a file key");
+      return;
+    }
+
+    const bucket = admin
+      .storage()
+      .bucket(functions.config().storage?.dev_bucket);
+
+    bucket
+      .deleteFiles({ prefix: key })
+      .then(() => {
+        console.log(`file deleted with key: ${key}`);
+        res
+          .status(200)
+          .send(
+            `Successfully deleted file '${req.body.event.data.old.originalname}'.`
+          );
+        return;
+      })
+      .catch((err) => {
+        console.log(`Failed to remove file, error: ${err}`);
+        res.status(404).send(`Failed to remove file, error: ${err}`);
+        return;
+      });
+  });

@@ -37,7 +37,8 @@ export type Applications = {
   id: Scalars['uuid'];
   internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  payment_file?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  payment?: Maybe<Payments>;
   /** An array relationship */
   ratings: Array<Ratings>;
   /** An aggregated array relationship */
@@ -215,7 +216,7 @@ export type Applications_Bool_Exp = {
   id?: Maybe<Uuid_Comparison_Exp>;
   internal_name?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
-  payment_file?: Maybe<String_Comparison_Exp>;
+  payment?: Maybe<Payments_Bool_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
   residency?: Maybe<Boolean_Comparison_Exp>;
   specifications?: Maybe<Works_Specifications_Bool_Exp>;
@@ -251,7 +252,7 @@ export type Applications_Insert_Input = {
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  payment_file?: Maybe<Scalars['String']>;
+  payment?: Maybe<Payments_Obj_Rel_Insert_Input>;
   ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
   residency?: Maybe<Scalars['Boolean']>;
   specifications?: Maybe<Works_Specifications_Arr_Rel_Insert_Input>;
@@ -270,7 +271,6 @@ export type Applications_Max_Fields = {
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  payment_file?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -283,7 +283,6 @@ export type Applications_Max_Order_By = {
   id?: Maybe<Order_By>;
   internal_name?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
-  payment_file?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -297,7 +296,6 @@ export type Applications_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  payment_file?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
@@ -310,7 +308,6 @@ export type Applications_Min_Order_By = {
   id?: Maybe<Order_By>;
   internal_name?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
-  payment_file?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
 };
@@ -350,7 +347,7 @@ export type Applications_Order_By = {
   id?: Maybe<Order_By>;
   internal_name?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
-  payment_file?: Maybe<Order_By>;
+  payment?: Maybe<Payments_Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
   residency?: Maybe<Order_By>;
   specifications_aggregate?: Maybe<Works_Specifications_Aggregate_Order_By>;
@@ -386,8 +383,6 @@ export enum Applications_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
-  PaymentFile = 'payment_file',
-  /** column name */
   Residency = 'residency',
   /** column name */
   Statement = 'statement',
@@ -406,7 +401,6 @@ export type Applications_Set_Input = {
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  payment_file?: Maybe<Scalars['String']>;
   residency?: Maybe<Scalars['Boolean']>;
   statement?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
@@ -476,8 +470,6 @@ export enum Applications_Update_Column {
   InternalName = 'internal_name',
   /** column name */
   Name = 'name',
-  /** column name */
-  PaymentFile = 'payment_file',
   /** column name */
   Residency = 'residency',
   /** column name */
@@ -915,6 +907,10 @@ export type Mutation_Root = {
   delete_editions?: Maybe<Editions_Mutation_Response>;
   /** delete single row from the table: "editions" */
   delete_editions_by_pk?: Maybe<Editions>;
+  /** delete data from the table: "payments" */
+  delete_payments?: Maybe<Payments_Mutation_Response>;
+  /** delete single row from the table: "payments" */
+  delete_payments_by_pk?: Maybe<Payments>;
   /** delete data from the table: "rating_rounds" */
   delete_rating_rounds?: Maybe<Rating_Rounds_Mutation_Response>;
   /** delete single row from the table: "rating_rounds" */
@@ -959,6 +955,10 @@ export type Mutation_Root = {
   insert_editions?: Maybe<Editions_Mutation_Response>;
   /** insert a single row into the table: "editions" */
   insert_editions_one?: Maybe<Editions>;
+  /** insert data into the table: "payments" */
+  insert_payments?: Maybe<Payments_Mutation_Response>;
+  /** insert a single row into the table: "payments" */
+  insert_payments_one?: Maybe<Payments>;
   /** insert data into the table: "rating_rounds" */
   insert_rating_rounds?: Maybe<Rating_Rounds_Mutation_Response>;
   /** insert a single row into the table: "rating_rounds" */
@@ -1003,6 +1003,10 @@ export type Mutation_Root = {
   update_editions?: Maybe<Editions_Mutation_Response>;
   /** update single row of the table: "editions" */
   update_editions_by_pk?: Maybe<Editions>;
+  /** update data of the table: "payments" */
+  update_payments?: Maybe<Payments_Mutation_Response>;
+  /** update single row of the table: "payments" */
+  update_payments_by_pk?: Maybe<Payments>;
   /** update data of the table: "rating_rounds" */
   update_rating_rounds?: Maybe<Rating_Rounds_Mutation_Response>;
   /** update single row of the table: "rating_rounds" */
@@ -1063,6 +1067,18 @@ export type Mutation_RootDelete_EditionsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Editions_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_PaymentsArgs = {
+  where: Payments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Payments_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -1199,6 +1215,20 @@ export type Mutation_RootInsert_EditionsArgs = {
 export type Mutation_RootInsert_Editions_OneArgs = {
   object: Editions_Insert_Input;
   on_conflict?: Maybe<Editions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_PaymentsArgs = {
+  objects: Array<Payments_Insert_Input>;
+  on_conflict?: Maybe<Payments_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Payments_OneArgs = {
+  object: Payments_Insert_Input;
+  on_conflict?: Maybe<Payments_On_Conflict>;
 };
 
 
@@ -1357,6 +1387,22 @@ export type Mutation_RootUpdate_Editions_By_PkArgs = {
   _inc?: Maybe<Editions_Inc_Input>;
   _set?: Maybe<Editions_Set_Input>;
   pk_columns: Editions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_PaymentsArgs = {
+  _inc?: Maybe<Payments_Inc_Input>;
+  _set?: Maybe<Payments_Set_Input>;
+  where: Payments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Payments_By_PkArgs = {
+  _inc?: Maybe<Payments_Inc_Input>;
+  _set?: Maybe<Payments_Set_Input>;
+  pk_columns: Payments_Pk_Columns_Input;
 };
 
 
@@ -1531,6 +1577,331 @@ export enum Order_By {
   DescNullsLast = 'desc_nulls_last'
 }
 
+/** columns and relationships of "payments" */
+export type Payments = {
+  __typename?: 'payments';
+  /** An object relationship */
+  application: Applications;
+  application_id: Scalars['uuid'];
+  created_at: Scalars['timestamptz'];
+  id: Scalars['uuid'];
+  key: Scalars['String'];
+  mimetype: Scalars['String'];
+  originalname: Scalars['String'];
+  size: Scalars['numeric'];
+};
+
+/** aggregated selection of "payments" */
+export type Payments_Aggregate = {
+  __typename?: 'payments_aggregate';
+  aggregate?: Maybe<Payments_Aggregate_Fields>;
+  nodes: Array<Payments>;
+};
+
+/** aggregate fields of "payments" */
+export type Payments_Aggregate_Fields = {
+  __typename?: 'payments_aggregate_fields';
+  avg?: Maybe<Payments_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Payments_Max_Fields>;
+  min?: Maybe<Payments_Min_Fields>;
+  stddev?: Maybe<Payments_Stddev_Fields>;
+  stddev_pop?: Maybe<Payments_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Payments_Stddev_Samp_Fields>;
+  sum?: Maybe<Payments_Sum_Fields>;
+  var_pop?: Maybe<Payments_Var_Pop_Fields>;
+  var_samp?: Maybe<Payments_Var_Samp_Fields>;
+  variance?: Maybe<Payments_Variance_Fields>;
+};
+
+
+/** aggregate fields of "payments" */
+export type Payments_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Payments_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "payments" */
+export type Payments_Aggregate_Order_By = {
+  avg?: Maybe<Payments_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Payments_Max_Order_By>;
+  min?: Maybe<Payments_Min_Order_By>;
+  stddev?: Maybe<Payments_Stddev_Order_By>;
+  stddev_pop?: Maybe<Payments_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Payments_Stddev_Samp_Order_By>;
+  sum?: Maybe<Payments_Sum_Order_By>;
+  var_pop?: Maybe<Payments_Var_Pop_Order_By>;
+  var_samp?: Maybe<Payments_Var_Samp_Order_By>;
+  variance?: Maybe<Payments_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "payments" */
+export type Payments_Arr_Rel_Insert_Input = {
+  data: Array<Payments_Insert_Input>;
+  on_conflict?: Maybe<Payments_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Payments_Avg_Fields = {
+  __typename?: 'payments_avg_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "payments" */
+export type Payments_Avg_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "payments". All fields are combined with a logical 'AND'. */
+export type Payments_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Payments_Bool_Exp>>>;
+  _not?: Maybe<Payments_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Payments_Bool_Exp>>>;
+  application?: Maybe<Applications_Bool_Exp>;
+  application_id?: Maybe<Uuid_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  id?: Maybe<Uuid_Comparison_Exp>;
+  key?: Maybe<String_Comparison_Exp>;
+  mimetype?: Maybe<String_Comparison_Exp>;
+  originalname?: Maybe<String_Comparison_Exp>;
+  size?: Maybe<Numeric_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "payments" */
+export enum Payments_Constraint {
+  /** unique or primary key constraint */
+  PaymentsApplicationIdKey = 'payments_application_id_key',
+  /** unique or primary key constraint */
+  PaymentsPkey = 'payments_pkey'
+}
+
+/** input type for incrementing integer column in table "payments" */
+export type Payments_Inc_Input = {
+  size?: Maybe<Scalars['numeric']>;
+};
+
+/** input type for inserting data into table "payments" */
+export type Payments_Insert_Input = {
+  application?: Maybe<Applications_Obj_Rel_Insert_Input>;
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  key?: Maybe<Scalars['String']>;
+  mimetype?: Maybe<Scalars['String']>;
+  originalname?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate max on columns */
+export type Payments_Max_Fields = {
+  __typename?: 'payments_max_fields';
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  key?: Maybe<Scalars['String']>;
+  mimetype?: Maybe<Scalars['String']>;
+  originalname?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['numeric']>;
+};
+
+/** order by max() on columns of table "payments" */
+export type Payments_Max_Order_By = {
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  key?: Maybe<Order_By>;
+  mimetype?: Maybe<Order_By>;
+  originalname?: Maybe<Order_By>;
+  size?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Payments_Min_Fields = {
+  __typename?: 'payments_min_fields';
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  key?: Maybe<Scalars['String']>;
+  mimetype?: Maybe<Scalars['String']>;
+  originalname?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['numeric']>;
+};
+
+/** order by min() on columns of table "payments" */
+export type Payments_Min_Order_By = {
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  key?: Maybe<Order_By>;
+  mimetype?: Maybe<Order_By>;
+  originalname?: Maybe<Order_By>;
+  size?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "payments" */
+export type Payments_Mutation_Response = {
+  __typename?: 'payments_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Payments>;
+};
+
+/** input type for inserting object relation for remote table "payments" */
+export type Payments_Obj_Rel_Insert_Input = {
+  data: Payments_Insert_Input;
+  on_conflict?: Maybe<Payments_On_Conflict>;
+};
+
+/** on conflict condition type for table "payments" */
+export type Payments_On_Conflict = {
+  constraint: Payments_Constraint;
+  update_columns: Array<Payments_Update_Column>;
+  where?: Maybe<Payments_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "payments" */
+export type Payments_Order_By = {
+  application?: Maybe<Applications_Order_By>;
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  key?: Maybe<Order_By>;
+  mimetype?: Maybe<Order_By>;
+  originalname?: Maybe<Order_By>;
+  size?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: "payments" */
+export type Payments_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "payments" */
+export enum Payments_Select_Column {
+  /** column name */
+  ApplicationId = 'application_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Key = 'key',
+  /** column name */
+  Mimetype = 'mimetype',
+  /** column name */
+  Originalname = 'originalname',
+  /** column name */
+  Size = 'size'
+}
+
+/** input type for updating data in table "payments" */
+export type Payments_Set_Input = {
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  key?: Maybe<Scalars['String']>;
+  mimetype?: Maybe<Scalars['String']>;
+  originalname?: Maybe<Scalars['String']>;
+  size?: Maybe<Scalars['numeric']>;
+};
+
+/** aggregate stddev on columns */
+export type Payments_Stddev_Fields = {
+  __typename?: 'payments_stddev_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "payments" */
+export type Payments_Stddev_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Payments_Stddev_Pop_Fields = {
+  __typename?: 'payments_stddev_pop_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "payments" */
+export type Payments_Stddev_Pop_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Payments_Stddev_Samp_Fields = {
+  __typename?: 'payments_stddev_samp_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "payments" */
+export type Payments_Stddev_Samp_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Payments_Sum_Fields = {
+  __typename?: 'payments_sum_fields';
+  size?: Maybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "payments" */
+export type Payments_Sum_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** update columns of table "payments" */
+export enum Payments_Update_Column {
+  /** column name */
+  ApplicationId = 'application_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Key = 'key',
+  /** column name */
+  Mimetype = 'mimetype',
+  /** column name */
+  Originalname = 'originalname',
+  /** column name */
+  Size = 'size'
+}
+
+/** aggregate var_pop on columns */
+export type Payments_Var_Pop_Fields = {
+  __typename?: 'payments_var_pop_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "payments" */
+export type Payments_Var_Pop_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Payments_Var_Samp_Fields = {
+  __typename?: 'payments_var_samp_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "payments" */
+export type Payments_Var_Samp_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Payments_Variance_Fields = {
+  __typename?: 'payments_variance_fields';
+  size?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "payments" */
+export type Payments_Variance_Order_By = {
+  size?: Maybe<Order_By>;
+};
+
 /** query root */
 export type Query_Root = {
   __typename?: 'query_root';
@@ -1546,6 +1917,12 @@ export type Query_Root = {
   editions_aggregate: Editions_Aggregate;
   /** fetch data from the table: "editions" using primary key columns */
   editions_by_pk?: Maybe<Editions>;
+  /** fetch data from the table: "payments" */
+  payments: Array<Payments>;
+  /** fetch aggregated fields from the table: "payments" */
+  payments_aggregate: Payments_Aggregate;
+  /** fetch data from the table: "payments" using primary key columns */
+  payments_by_pk?: Maybe<Payments>;
   /** fetch data from the table: "rating_rounds" */
   rating_rounds: Array<Rating_Rounds>;
   /** fetch aggregated fields from the table: "rating_rounds" */
@@ -1652,6 +2029,32 @@ export type Query_RootEditions_AggregateArgs = {
 /** query root */
 export type Query_RootEditions_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootPaymentsArgs = {
+  distinct_on?: Maybe<Array<Payments_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Payments_Order_By>>;
+  where?: Maybe<Payments_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootPayments_AggregateArgs = {
+  distinct_on?: Maybe<Array<Payments_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Payments_Order_By>>;
+  where?: Maybe<Payments_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootPayments_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -2658,6 +3061,12 @@ export type Subscription_Root = {
   editions_aggregate: Editions_Aggregate;
   /** fetch data from the table: "editions" using primary key columns */
   editions_by_pk?: Maybe<Editions>;
+  /** fetch data from the table: "payments" */
+  payments: Array<Payments>;
+  /** fetch aggregated fields from the table: "payments" */
+  payments_aggregate: Payments_Aggregate;
+  /** fetch data from the table: "payments" using primary key columns */
+  payments_by_pk?: Maybe<Payments>;
   /** fetch data from the table: "rating_rounds" */
   rating_rounds: Array<Rating_Rounds>;
   /** fetch aggregated fields from the table: "rating_rounds" */
@@ -2764,6 +3173,32 @@ export type Subscription_RootEditions_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootEditions_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootPaymentsArgs = {
+  distinct_on?: Maybe<Array<Payments_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Payments_Order_By>>;
+  where?: Maybe<Payments_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootPayments_AggregateArgs = {
+  distinct_on?: Maybe<Array<Payments_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Payments_Order_By>>;
+  where?: Maybe<Payments_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootPayments_By_PkArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -3523,10 +3958,34 @@ export type Types_Tags_Variance_Order_By = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
+  /** An array relationship */
+  applications: Array<Applications>;
+  /** An aggregated array relationship */
+  applications_aggregate: Applications_Aggregate;
   id: Scalars['String'];
   last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
   type: Scalars['String'];
+};
+
+
+/** columns and relationships of "users" */
+export type UsersApplicationsArgs = {
+  distinct_on?: Maybe<Array<Applications_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Applications_Order_By>>;
+  where?: Maybe<Applications_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersApplications_AggregateArgs = {
+  distinct_on?: Maybe<Array<Applications_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Applications_Order_By>>;
+  where?: Maybe<Applications_Bool_Exp>;
 };
 
 /** aggregated selection of "users" */
@@ -3569,6 +4028,7 @@ export type Users_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
   _not?: Maybe<Users_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Users_Bool_Exp>>>;
+  applications?: Maybe<Applications_Bool_Exp>;
   id?: Maybe<String_Comparison_Exp>;
   last_seen?: Maybe<Timestamptz_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
@@ -3585,6 +4045,7 @@ export enum Users_Constraint {
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
+  applications?: Maybe<Applications_Arr_Rel_Insert_Input>;
   id?: Maybe<Scalars['String']>;
   last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
@@ -3649,6 +4110,7 @@ export type Users_On_Conflict = {
 
 /** ordering options when selecting data from "users" */
 export type Users_Order_By = {
+  applications_aggregate?: Maybe<Applications_Aggregate_Order_By>;
   id?: Maybe<Order_By>;
   last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -5196,10 +5658,18 @@ export type Works_Variance_Order_By = {
   order?: Maybe<Order_By>;
 };
 
+export type PaymentFragment = (
+  { __typename?: 'payments' }
+  & Pick<Payments, 'id' | 'mimetype' | 'key' | 'originalname' | 'size' | 'application_id'>
+);
+
 export type ApplicationFragment = (
   { __typename?: 'applications' }
-  & Pick<Applications, 'id' | 'name' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'residency' | 'database' | 'disclaimer' | 'payment_file'>
-  & { edition: (
+  & Pick<Applications, 'id' | 'name' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'residency' | 'database' | 'disclaimer'>
+  & { payment?: Maybe<(
+    { __typename?: 'payments' }
+    & PaymentFragment
+  )>, edition: (
     { __typename?: 'editions' }
     & Pick<Editions, 'id' | 'name'>
   ), files_aggregate: (
@@ -5211,6 +5681,12 @@ export type ApplicationFragment = (
         { __typename?: 'works_files_sum_fields' }
         & Pick<Works_Files_Sum_Fields, 'size'>
       )> }
+    )> }
+  ), works_aggregate: (
+    { __typename?: 'works_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'works_aggregate_fields' }
+      & Pick<Works_Aggregate_Fields, 'count'>
     )> }
   ) }
 );
@@ -5282,6 +5758,44 @@ export type DeleteApplicationMutation = (
   & { delete_applications_by_pk?: Maybe<(
     { __typename?: 'applications' }
     & Pick<Applications, 'id'>
+  )> }
+);
+
+export type AddPaymentMutationVariables = Exact<{
+  application_id: Scalars['uuid'];
+  id: Scalars['uuid'];
+  key: Scalars['String'];
+  mimetype: Scalars['String'];
+  originalname: Scalars['String'];
+  size: Scalars['numeric'];
+}>;
+
+
+export type AddPaymentMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'updated_at'>
+  )>, insert_payments_one?: Maybe<(
+    { __typename?: 'payments' }
+    & PaymentFragment
+  )> }
+);
+
+export type DeletePaymentMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  application_id: Scalars['uuid'];
+}>;
+
+
+export type DeletePaymentMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'updated_at'>
+  )>, delete_payments_by_pk?: Maybe<(
+    { __typename?: 'payments' }
+    & Pick<Payments, 'id' | 'application_id'>
   )> }
 );
 
@@ -5416,12 +5930,12 @@ export type WorkFragment = (
 
 export type FileFragment = (
   { __typename?: 'works_files' }
-  & Pick<Works_Files, 'mimetype' | 'key' | 'originalname' | 'size'>
+  & Pick<Works_Files, 'id' | 'mimetype' | 'key' | 'originalname' | 'size'>
 );
 
 export type WorkFileFragment = (
   { __typename?: 'works_files' }
-  & Pick<Works_Files, 'id' | 'work_id' | 'application_id' | 'order'>
+  & Pick<Works_Files, 'work_id' | 'application_id' | 'order'>
   & FileFragment
 );
 
@@ -5444,6 +5958,19 @@ export type AddWorkMutation = (
   )> }
 );
 
+export type DeleteWorkMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeleteWorkMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_works_by_pk?: Maybe<(
+    { __typename?: 'works' }
+    & Pick<Works, 'id' | 'portfolio'>
+  )> }
+);
+
 export type AddPortfolioSpecificationMutationVariables = Exact<{
   application_id: Scalars['uuid'];
   work_id: Scalars['uuid'];
@@ -5459,7 +5986,21 @@ export type AddPortfolioSpecificationMutation = (
   )> }
 );
 
+export type DeletePortfolioSpecificationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type DeletePortfolioSpecificationMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_works_specifications_by_pk?: Maybe<(
+    { __typename?: 'works_specifications' }
+    & Pick<Works_Specifications, 'id' | 'work_id'>
+  )> }
+);
+
 export type AddWorkFileMutationVariables = Exact<{
+  id: Scalars['uuid'];
   application_id: Scalars['uuid'];
   work_id: Scalars['uuid'];
   order: Scalars['Int'];
@@ -5478,6 +6019,23 @@ export type AddWorkFileMutation = (
   )>, insert_works_files_one?: Maybe<(
     { __typename?: 'works_files' }
     & WorkFileFragment
+  )> }
+);
+
+export type DeleteWorkFileMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  application_id: Scalars['uuid'];
+}>;
+
+
+export type DeleteWorkFileMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'updated_at'>
+  )>, delete_works_files_by_pk?: Maybe<(
+    { __typename?: 'works_files' }
+    & Pick<Works_Files, 'id' | 'work_id'>
   )> }
 );
 
@@ -5557,6 +6115,32 @@ export type UpdateSpecificationsOrderMutation = (
   )> }
 );
 
+export type UpdateWorkFilesOrderMutationVariables = Exact<{
+  objects: Array<Works_Files_Insert_Input> | Works_Files_Insert_Input;
+}>;
+
+
+export type UpdateWorkFilesOrderMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_works_files?: Maybe<(
+    { __typename?: 'works_files_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'works_files' }
+      & Pick<Works_Files, 'id' | 'order'>
+    )> }
+  )> }
+);
+
+export const PaymentFragmentDoc = gql`
+    fragment Payment on payments {
+  id
+  mimetype
+  key
+  originalname
+  size
+  application_id
+}
+    `;
 export const ApplicationFragmentDoc = gql`
     fragment Application on applications {
   id
@@ -5568,7 +6152,9 @@ export const ApplicationFragmentDoc = gql`
   residency
   database
   disclaimer
-  payment_file
+  payment {
+    ...Payment
+  }
   edition {
     id
     name
@@ -5581,8 +6167,13 @@ export const ApplicationFragmentDoc = gql`
       }
     }
   }
+  works_aggregate {
+    aggregate {
+      count
+    }
+  }
 }
-    `;
+    ${PaymentFragmentDoc}`;
 export const EditionFragmentDoc = gql`
     fragment Edition on editions {
   id
@@ -5599,6 +6190,7 @@ export const EditionFragmentDoc = gql`
     `;
 export const FileFragmentDoc = gql`
     fragment File on works_files {
+  id
   mimetype
   key
   originalname
@@ -5607,7 +6199,6 @@ export const FileFragmentDoc = gql`
     `;
 export const WorkFileFragmentDoc = gql`
     fragment WorkFile on works_files {
-  id
   work_id
   application_id
   order
@@ -5736,6 +6327,59 @@ export const DeleteApplicationDocument = gql`
   })
   export class DeleteApplicationGQL extends Apollo.Mutation<DeleteApplicationMutation, DeleteApplicationMutationVariables> {
     document = DeleteApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AddPaymentDocument = gql`
+    mutation AddPayment($application_id: uuid!, $id: uuid!, $key: String!, $mimetype: String!, $originalname: String!, $size: numeric!) {
+  update_applications_by_pk(
+    pk_columns: {id: $application_id}
+    _set: {updated_at: "now()"}
+  ) {
+    id
+    updated_at
+  }
+  insert_payments_one(
+    object: {application_id: $application_id, id: $id, key: $key, mimetype: $mimetype, size: $size, originalname: $originalname}
+  ) {
+    ...Payment
+  }
+}
+    ${PaymentFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AddPaymentGQL extends Apollo.Mutation<AddPaymentMutation, AddPaymentMutationVariables> {
+    document = AddPaymentDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeletePaymentDocument = gql`
+    mutation DeletePayment($id: uuid!, $application_id: uuid!) {
+  update_applications_by_pk(
+    pk_columns: {id: $application_id}
+    _set: {updated_at: "now()"}
+  ) {
+    id
+    updated_at
+  }
+  delete_payments_by_pk(id: $id) {
+    id
+    application_id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeletePaymentGQL extends Apollo.Mutation<DeletePaymentMutation, DeletePaymentMutationVariables> {
+    document = DeletePaymentDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -5926,6 +6570,25 @@ export const AddWorkDocument = gql`
       super(apollo);
     }
   }
+export const DeleteWorkDocument = gql`
+    mutation DeleteWork($id: uuid!) {
+  delete_works_by_pk(id: $id) {
+    id
+    portfolio
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteWorkGQL extends Apollo.Mutation<DeleteWorkMutation, DeleteWorkMutationVariables> {
+    document = DeleteWorkDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const AddPortfolioSpecificationDocument = gql`
     mutation AddPortfolioSpecification($application_id: uuid!, $work_id: uuid!, $order: Int!) {
   insert_works_specifications_one(
@@ -5946,8 +6609,27 @@ export const AddPortfolioSpecificationDocument = gql`
       super(apollo);
     }
   }
+export const DeletePortfolioSpecificationDocument = gql`
+    mutation DeletePortfolioSpecification($id: uuid!) {
+  delete_works_specifications_by_pk(id: $id) {
+    id
+    work_id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeletePortfolioSpecificationGQL extends Apollo.Mutation<DeletePortfolioSpecificationMutation, DeletePortfolioSpecificationMutationVariables> {
+    document = DeletePortfolioSpecificationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const AddWorkFileDocument = gql`
-    mutation AddWorkFile($application_id: uuid!, $work_id: uuid!, $order: Int!, $key: String!, $mimetype: String!, $originalname: String!, $size: numeric!) {
+    mutation AddWorkFile($id: uuid!, $application_id: uuid!, $work_id: uuid!, $order: Int!, $key: String!, $mimetype: String!, $originalname: String!, $size: numeric!) {
   update_applications_by_pk(
     pk_columns: {id: $application_id}
     _set: {updated_at: "now()"}
@@ -5956,7 +6638,7 @@ export const AddWorkFileDocument = gql`
     updated_at
   }
   insert_works_files_one(
-    object: {application_id: $application_id, key: $key, mimetype: $mimetype, order: $order, originalname: $originalname, size: $size, work_id: $work_id}
+    object: {id: $id, application_id: $application_id, key: $key, mimetype: $mimetype, order: $order, originalname: $originalname, size: $size, work_id: $work_id}
   ) {
     ...WorkFile
   }
@@ -5968,6 +6650,32 @@ export const AddWorkFileDocument = gql`
   })
   export class AddWorkFileGQL extends Apollo.Mutation<AddWorkFileMutation, AddWorkFileMutationVariables> {
     document = AddWorkFileDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteWorkFileDocument = gql`
+    mutation DeleteWorkFile($id: uuid!, $application_id: uuid!) {
+  update_applications_by_pk(
+    pk_columns: {id: $application_id}
+    _set: {updated_at: "now()"}
+  ) {
+    id
+    updated_at
+  }
+  delete_works_files_by_pk(id: $id) {
+    id
+    work_id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteWorkFileGQL extends Apollo.Mutation<DeleteWorkFileMutation, DeleteWorkFileMutationVariables> {
+    document = DeleteWorkFileDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -6083,6 +6791,30 @@ export const UpdateSpecificationsOrderDocument = gql`
   })
   export class UpdateSpecificationsOrderGQL extends Apollo.Mutation<UpdateSpecificationsOrderMutation, UpdateSpecificationsOrderMutationVariables> {
     document = UpdateSpecificationsOrderDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateWorkFilesOrderDocument = gql`
+    mutation UpdateWorkFilesOrder($objects: [works_files_insert_input!]!) {
+  insert_works_files(
+    objects: $objects
+    on_conflict: {constraint: works_files_pkey, update_columns: [order]}
+  ) {
+    returning {
+      id
+      order
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateWorkFilesOrderGQL extends Apollo.Mutation<UpdateWorkFilesOrderMutation, UpdateWorkFilesOrderMutationVariables> {
+    document = UpdateWorkFilesOrderDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

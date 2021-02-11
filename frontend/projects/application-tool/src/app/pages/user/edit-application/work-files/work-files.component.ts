@@ -1,13 +1,13 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { ApolloCache } from '@apollo/client/core';
 import {
   FileFragment,
   WorkFileFragment,
-  AddWorkFileGQL,
-  ApplicationFragmentDoc,
   WorkFragmentDoc,
+  WorkFileFragmentDoc,
+  UpdateWorkFilesOrderGQL,
 } from 'generated/types.graphql-gen';
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-work-files',
@@ -26,16 +26,11 @@ export class WorkFilesComponent implements OnInit {
   }
 
   constructor(
-    private storage: AngularFireStorage,
-    private addWorkFileGQL: AddWorkFileGQL
+    private userService: UserService,
+    private updateWorkFilesOrderGQL: UpdateWorkFilesOrderGQL
   ) {}
 
-  ngOnInit(): void {
-    this.files.forEach(async (file) => {
-      const url = await this.getDownloadURL(file.key).toPromise();
-      console.log(url);
-    });
-  }
+  ngOnInit(): void {}
 
   filesToUpload: File[] = [];
 
@@ -59,89 +54,136 @@ export class WorkFilesComponent implements OnInit {
   async finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
     console.log(asset);
 
-    await this.addWorkFileGQL
-      .mutate(
-        {
-          application_id: this.application_id,
-          work_id: this.work_id,
-          order: this.files.length || 0,
-          ...asset,
-        },
-        {
-          update: (store, { data: { ...addedFile } }) => {
-            this.updateApplicationFragment(
-              store,
-              addedFile.update_applications_by_pk?.id,
-              addedFile?.update_applications_by_pk?.updated_at
-            );
+    await this.userService.addWorkFile(
+      asset,
+      this.files.length,
+      this.work_id,
+      this.application_id
+    );
 
-            // Read the data from our cache for this query.
-            let { ...data }: any = store.readFragment({
-              id: `works:${this.work_id}`,
-              fragment: WorkFragmentDoc,
-              fragmentName: 'Work',
-            });
-            console.log(addedFile, data.files);
-            // Filter array by deleted producer id
-            data = {
-              ...data,
-              files: [...data.files, addedFile],
-            };
-            console.log(data);
-            // Write our data back to the cache.
-            store.writeFragment({
-              id: `works:${this.work_id}`,
-              fragment: WorkFragmentDoc,
-              fragmentName: 'Work',
-              data,
-            });
-          },
-        }
-      )
-      .toPromise();
-
-    // if (Array.isArray(data)) {
-    //   data.push({
-    //     sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //   });
-    // } else {
-    //   this.galleryForm.patchValue(
-    //     this.getVarAsKey(data, {
-    //       sys: { type: "Link", linkType: "Asset", id: asset.sys.id }
-    //     })
-    //   );
-    // }
     filesToUpload.splice(index, 1);
   }
 
-  getDownloadURL(key: string) {
-    return this.storage.ref(key).getDownloadURL();
-  }
-
-  private updateApplicationFragment(
-    store: ApolloCache<any>,
-    application_id: string,
-    updated_at: string
-  ) {
-    // Read the data from our cache for this query.
-    let { ...data }: any = store.readFragment({
-      id: `applications:${application_id}`,
-      fragment: ApplicationFragmentDoc,
-      fragmentName: 'Application',
-      optimistic: true,
-    });
-    // Add our message from the mutation to the end.
-    data = { ...data, updated_at };
-    // Write our data back to the cache.
-    store.writeFragment({
-      id: `applications:${application_id}`,
-      fragment: ApplicationFragmentDoc,
-      fragmentName: 'Application',
-      data,
-    });
+  async deleteFile(id: string) {
+    await this.userService.deleteWorkFile(
+      id,
+      this.work_id,
+      this.application_id
+    );
   }
 
   trackByKeyFn(index: number, item: any) {
     return item.key;
+  }
+
+  /*
+   * SORTING
+   */
+
+  /**
+   * drop and sort portoflio specifications
+   * @param work_id current work item
+   * @param items specifications to sort
+   * @param event the drop event
+   */
+  async reorderFiles(
+    items: WorkFileFragment[],
+    event: CdkDragDrop<WorkFileFragment[]>
+  ) {
+    if (event.previousContainer === event.container) {
+      const newItems = [...items];
+      moveItemInArray(newItems, event.previousIndex, event.currentIndex);
+
+      const objects = newItems.map((item, index) => {
+        return {
+          id: item.id,
+          work_id: item.work_id,
+          order: index,
+          key: '',
+          mimetype: '',
+          originalname: '',
+          application_id: item.application_id,
+          size: 0,
+        };
+      });
+
+      await this.updateWorkFilesOrderGQL
+        .mutate(
+          {
+            objects,
+          },
+          {
+            optimisticResponse: {
+              insert_works_files: {
+                __typename: 'works_files_mutation_response',
+                returning: [
+                  ...objects.map((object) => {
+                    return {
+                      id: object.id,
+                      order: object.order,
+                      __typename: 'works_files',
+                    };
+                  }),
+                ] as any,
+              },
+            },
+            update: (store, { data: { ...updatedFiles } }) => {
+              // Read the data from our cache for this query.
+              let { ...data }: any = store.readFragment({
+                id: `works:${this.work_id}`,
+                fragment: WorkFragmentDoc,
+                fragmentName: 'Work',
+                optimistic: true,
+              });
+              console.log(data);
+              // Update objects
+              data.files = data.files.map((file: any) => {
+                let updatedFile = updatedFiles?.insert_works_files?.returning.find(
+                  (updatedFile) => updatedFile.id === file.id
+                );
+                if (updatedFile) {
+                  return { ...file, ...updatedFile };
+                }
+              });
+              data.files.sort(
+                (a: WorkFileFragment, b: WorkFileFragment) =>
+                  (a.order == null ? 9999 : a.order) -
+                  (b.order == null ? 9999 : b.order)
+              );
+              // Write our data back to the cache.
+              store.writeFragment({
+                id: `works:${this.work_id}`,
+                fragment: WorkFragmentDoc,
+                fragmentName: 'Work',
+                data,
+              });
+
+              updatedFiles?.insert_works_files?.returning.forEach(
+                (updatedFile: any) => {
+                  // Read the data from our cache for this query.
+                  let { ...data }: any = store.readFragment({
+                    id: `works_files:${updatedFile.id}`,
+                    fragment: WorkFileFragmentDoc,
+                    fragmentName: 'WorkFile',
+                    optimistic: true,
+                  });
+                  // Add our message from the mutation to the end.
+                  data = { ...data, order: updatedFile.order };
+
+                  // Write our data back to the cache.
+                  store.writeFragment({
+                    id: `works_files:${updatedFile.id}`,
+                    fragment: WorkFileFragmentDoc,
+                    fragmentName: 'WorkFile',
+                    data,
+                  });
+                }
+              );
+            },
+          }
+        )
+        .toPromise();
+    } else {
+    }
   }
 }

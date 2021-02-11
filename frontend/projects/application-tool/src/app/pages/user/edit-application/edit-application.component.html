@@ -97,6 +97,7 @@
       </div>
     </div>
     <div class="container--default-x py-8 lg:py-0">
+      <!-- WORKS -->
       <div class="lg:flex lg:space-x-6 xl:space-x-8">
         <div class="flex-auto">
           <div
@@ -147,31 +148,45 @@
                     'border-gray-100 ': !last
                   }"
                 >
-                  <div
-                    cdkDragHandle
-                    class="absolute bottom-0 left-0 pb-4 cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
-                  >
-                    <svg
-                      width="19px"
-                      height="36px"
-                      viewBox="0 0 19 36"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                  <div class="absolute bottom-0 left-0 pb-4 space-y-4">
+                    <div
+                      cdkDragHandle
+                      class="cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
+                      [ngClass]="{
+                        'text-opacity-0 hover:text-opacity-0 pointer-events-none':
+                          work.specifications.length <= 1
+                      }"
                     >
-                      <g
-                        stroke="none"
-                        stroke-width="1"
-                        fill="none"
-                        fill-rule="evenodd"
+                      <svg
+                        width="19px"
+                        height="36px"
+                        viewBox="0 0 19 36"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
                       >
-                        <path
-                          d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
-                          id="Rectangle-Copy-3"
-                          fill="currentColor"
-                        ></path>
-                      </g>
-                    </svg>
+                        <g
+                          stroke="none"
+                          stroke-width="1"
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <path
+                            d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
+                            id="Rectangle-Copy-3"
+                            fill="currentColor"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <button
+                      (click)="deleteSpecification(specification.id)"
+                      class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
+                      [innerText]="
+                        'application-form.buttons.delete-specification'
+                          | translate
+                      "
+                    ></button>
                   </div>
                 </app-work-specification>
               </div>
@@ -246,31 +261,40 @@
                 [application_id]="application_id"
                 [work_id]="work.id"
               ></app-work-specification>
-              <div
-                cdkDragHandle
-                class="absolute bottom-0 left-0 pb-4 cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
-              >
-                <svg
-                  width="19px"
-                  height="36px"
-                  viewBox="0 0 19 36"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlns:xlink="http://www.w3.org/1999/xlink"
+              <div class="absolute bottom-0 left-0 pb-4 space-y-4">
+                <div
+                  cdkDragHandle
+                  class="cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
                 >
-                  <g
-                    stroke="none"
-                    stroke-width="1"
-                    fill="none"
-                    fill-rule="evenodd"
+                  <svg
+                    width="19px"
+                    height="36px"
+                    viewBox="0 0 19 36"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
                   >
-                    <path
-                      d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
-                      id="Rectangle-Copy-3"
-                      fill="currentColor"
-                    ></path>
-                  </g>
-                </svg>
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <path
+                        d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
+                        id="Rectangle-Copy-3"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+                <button
+                  class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
+                  [innerText]="
+                    'application-form.buttons.delete-work' | translate
+                  "
+                  (click)="deleteWork(work.id)"
+                ></button>
               </div>
             </div>
             <button
@@ -455,58 +479,141 @@
           </p>
         </div>
         <div
-          [ngClass]="payment?.valid ? 'border-transparent' : 'border-red-600'"
-          class="bg-gray-100 text-gray-800 p-4 self-stretch flex flex-col items-center justify-center border"
+          dropzone
+          (hovered)="toggleHover($event)"
+          (dropped)="onPaymentDrop($event)"
+          [disabled]="payment?.valid || false"
+          [ngClass]="{
+            'ring-1 ring-green-600': payment?.valid,
+            'ring-1 ring-red-600': !payment?.valid && !isHovering,
+            'ring-2 ring-gray-800': !payment?.valid && isHovering
+          }"
+          class="bg-gray-100 text-gray-800 p-4 self-stretch flex flex-col items-center justify-center ring-0 transition-shadow"
         >
-          <svg
-            class="-ml-4 mt-2 mb-5"
-            width="68px"
-            height="66px"
-            viewBox="0 0 68 66"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
+          <app-upload-task
+            class="flex-none flex items-center justify-center h-48 w-48"
+            *ngFor="let file of paymentFileToUpload; let index = index"
+            [file]="file"
+            [path_prefix]="payment_path_prefix"
+            [pdf]="true"
+            (uploaded)="finishPaymentTask(paymentFileToUpload, index, $event)"
           >
-            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-              <g transform="translate(-1116.000000, -1866.000000)">
-                <rect
-                  stroke="currentColor"
-                  fill="transparent"
-                  transform="translate(1149.000000, 1899.000000) scale(-1, 1) translate(-1149.000000, -1899.000000) "
-                  x="908.5"
-                  y="1714.5"
-                  width="481"
-                  height="369"
-                ></rect>
-                <g transform="translate(1116.000000, 1866.000000)">
-                  <g transform="translate(13.000000, 0.000000)">
-                    <path
-                      d="M52.6262,63.0519 L2.5852,63.0519 L2.5852,2.5859 L42.2012,2.5859 L42.2012,11.9689 C42.2012,12.5449 42.6672,13.0099 43.2432,13.0099 L52.6262,13.0099 L52.6262,63.0519 Z M44.2862,4.0599 L51.1512,10.9259 L44.2862,10.9259 L44.2862,4.0599 Z M54.4062,11.2309 L43.9802,0.8069 C43.7932,0.6179 43.5312,0.4999 43.2432,0.4999 L1.5422,0.4999 C0.9662,0.4999 0.5002,0.9669 0.5002,1.5429 L0.5002,64.0939 C0.5002,64.6709 0.9662,65.1369 1.5422,65.1369 L53.6692,65.1369 C54.2452,65.1369 54.7112,64.6709 54.7112,64.0939 L54.7112,11.9689 C54.7112,11.6799 54.5942,11.4179 54.4062,11.2309 L54.4062,11.2309 Z"
-                      id="Fill-1"
+            <div class="spinner text-gray-800"></div>
+          </app-upload-task>
+
+          <div
+            *ngIf="!payment?.valid && paymentFileToUpload.length < 1"
+            (click)="fileInput.click()"
+            class="flex flex-col items-center justify-center cursor-pointer"
+          >
+            <svg
+              class="-ml-4 mt-2 mb-5"
+              width="68px"
+              height="66px"
+              viewBox="0 0 68 66"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g transform="translate(-1116.000000, -1866.000000)">
+                  <rect
+                    stroke="currentColor"
+                    fill="transparent"
+                    transform="translate(1149.000000, 1899.000000) scale(-1, 1) translate(-1149.000000, -1899.000000) "
+                    x="908.5"
+                    y="1714.5"
+                    width="481"
+                    height="369"
+                  ></rect>
+                  <g transform="translate(1116.000000, 1866.000000)">
+                    <g transform="translate(13.000000, 0.000000)">
+                      <path
+                        d="M52.6262,63.0519 L2.5852,63.0519 L2.5852,2.5859 L42.2012,2.5859 L42.2012,11.9689 C42.2012,12.5449 42.6672,13.0099 43.2432,13.0099 L52.6262,13.0099 L52.6262,63.0519 Z M44.2862,4.0599 L51.1512,10.9259 L44.2862,10.9259 L44.2862,4.0599 Z M54.4062,11.2309 L43.9802,0.8069 C43.7932,0.6179 43.5312,0.4999 43.2432,0.4999 L1.5422,0.4999 C0.9662,0.4999 0.5002,0.9669 0.5002,1.5429 L0.5002,64.0939 C0.5002,64.6709 0.9662,65.1369 1.5422,65.1369 L53.6692,65.1369 C54.2452,65.1369 54.7112,64.6709 54.7112,64.0939 L54.7112,11.9689 C54.7112,11.6799 54.5942,11.4179 54.4062,11.2309 L54.4062,11.2309 Z"
+                        id="Fill-1"
+                        fill="currentColor"
+                      ></path>
+                      <path
+                        d="M52.6262,63.0519 L2.5852,63.0519 L2.5852,2.5859 L42.2012,2.5859 L42.2012,11.9689 C42.2012,12.5449 42.6672,13.0099 43.2432,13.0099 L52.6262,13.0099 L52.6262,63.0519 Z M44.2862,4.0599 L51.1512,10.9259 L44.2862,10.9259 L44.2862,4.0599 Z M54.4062,11.2309 L43.9802,0.8069 C43.7932,0.6179 43.5312,0.4999 43.2432,0.4999 L1.5422,0.4999 C0.9662,0.4999 0.5002,0.9669 0.5002,1.5429 L0.5002,64.0939 C0.5002,64.6709 0.9662,65.1369 1.5422,65.1369 L53.6692,65.1369 C54.2452,65.1369 54.7112,64.6709 54.7112,64.0939 L54.7112,11.9689 C54.7112,11.6799 54.5942,11.4179 54.4062,11.2309 Z"
+                        id="Stroke-3"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                    <polygon
                       fill="currentColor"
-                    ></path>
-                    <path
-                      d="M52.6262,63.0519 L2.5852,63.0519 L2.5852,2.5859 L42.2012,2.5859 L42.2012,11.9689 C42.2012,12.5449 42.6672,13.0099 43.2432,13.0099 L52.6262,13.0099 L52.6262,63.0519 Z M44.2862,4.0599 L51.1512,10.9259 L44.2862,10.9259 L44.2862,4.0599 Z M54.4062,11.2309 L43.9802,0.8069 C43.7932,0.6179 43.5312,0.4999 43.2432,0.4999 L1.5422,0.4999 C0.9662,0.4999 0.5002,0.9669 0.5002,1.5429 L0.5002,64.0939 C0.5002,64.6709 0.9662,65.1369 1.5422,65.1369 L53.6692,65.1369 C54.2452,65.1369 54.7112,64.6709 54.7112,64.0939 L54.7112,11.9689 C54.7112,11.6799 54.5942,11.4179 54.4062,11.2309 Z"
-                      id="Stroke-3"
-                      fill="currentColor"
-                    ></path>
+                      points="26.4999766 22.273 24.0652265 24.708501 28.4275027 29.0720523 30.9636228 31.2028585 30.9129378 31.3549253 26.0432506 31.0509787 3.86340959e-12 31.0509787 3.86340959e-12 34.4950213 26.0432506 34.4950213 30.9129378 34.1910747 30.9636228 34.3429545 28.4275027 36.4737606 24.0652265 40.837499 26.4999766 43.273 37 32.7730935"
+                    ></polygon>
                   </g>
-                  <polygon
-                    fill="currentColor"
-                    points="26.4999766 22.273 24.0652265 24.708501 28.4275027 29.0720523 30.9636228 31.2028585 30.9129378 31.3549253 26.0432506 31.0509787 3.86340959e-12 31.0509787 3.86340959e-12 34.4950213 26.0432506 34.4950213 30.9129378 34.1910747 30.9636228 34.3429545 28.4275027 36.4737606 24.0652265 40.837499 26.4999766 43.273 37 32.7730935"
-                  ></polygon>
                 </g>
               </g>
-            </g>
-          </svg>
+            </svg>
+            <div
+              class="text-center"
+              [innerText]="
+                'application-form.buttons.add-payment-screenshot' | translate
+              "
+            ></div>
+            <input
+              class="hidden"
+              type="file"
+              id="upload-file"
+              name="upload-file"
+              accept=".pdf"
+              (change)="onPaymentFileSelect($event)"
+              #fileInput
+            />
+          </div>
           <div
-            class="text-center"
-            [innerText]="
-              'application-form.buttons.add-payment-screenshot'
-                | translate
-                | titlecase
-            "
-          ></div>
+            *ngIf="payment?.valid && payment?.value"
+            class="group cursor-move relative flex p-4 items-end"
+          >
+            <div>
+              <svg
+                class="h-20 w-auto"
+                width="51px"
+                height="71px"
+                viewBox="0 0 51 71"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <g
+                  stroke="none"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <polygon
+                    id="Fill-1"
+                    fill="#000000"
+                    points="15.7882114 0 15.8916148 0.106408033 0 16.4613227 0 71 51 71 51 0"
+                  ></polygon>
+                  <text
+                    id="PDF"
+                    fill="#FFFFFF"
+                    text-anchor="middle"
+                    font-size="20"
+                    alignment-baseline="central"
+                  >
+                    <tspan x="25" y="57" class="font-condensed">PDF</tspan>
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <div [innerText]="payment?.value.originalname"></div>
+              <div
+                class="text-gray-800"
+                [innerText]="payment?.value.size || 0 | filesize"
+              ></div>
+            </div>
+            <button
+              (click)="deletePayment(payment?.value.id)"
+              class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+            >
+              X
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -5,6 +5,14 @@
   - name: edition
     using:
       foreign_key_constraint_on: edition_id
+  - name: payment
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: payments
+        column_mapping:
+          id: application_id
   - name: user
     using:
       foreign_key_constraint_on: created_by
@@ -84,7 +92,6 @@
       - id
       - internal_name
       - name
-      - payment_file
       - residency
       - statement
       - updated_at
@@ -96,18 +103,17 @@
   - role: user
     permission:
       columns:
-      - id
       - created_at
-      - updated_at
-      - name
-      - edition_id
       - created_by
-      - group
-      - statement
-      - residency
       - database
       - disclaimer
-      - payment_file
+      - edition_id
+      - group
+      - id
+      - name
+      - residency
+      - statement
+      - updated_at
       filter:
         _and:
         - edition:
@@ -240,6 +246,69 @@
       filter: {}
 - table:
     schema: public
+    name: payments
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        application:
+          created_by:
+            _eq: X-Hasura-User-Id
+      columns:
+      - application_id
+      - id
+      - key
+      - mimetype
+      - originalname
+      - size
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - size
+      - key
+      - mimetype
+      - originalname
+      - created_at
+      - application_id
+      - id
+      filter:
+        application:
+          created_by:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              application_end:
+                _gte: now()
+  event_triggers:
+  - name: delete_firebase_storage_payment_file
+    definition:
+      enable_manual: false
+      delete:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: '{{FIREBASE_FUNCTION_ENDPOINT}}/deleteFile'
+    headers:
+    - name: x-hasura-shared-secret
+      value_from_env: FIREBASE_SHARED_SECRET
+- table:
+    schema: public
     name: rating_rounds
   object_relationships:
   - name: edition
@@ -287,6 +356,14 @@
 - table:
     schema: public
     name: users
+  array_relationships:
+  - name: applications
+    using:
+      foreign_key_constraint_on:
+        column: created_by
+        table:
+          schema: public
+          name: applications
   insert_permissions:
   - role: jury
     permission:
@@ -588,6 +665,20 @@
             application:
               created_by:
                 _eq: X-Hasura-User-Id
+  event_triggers:
+  - name: delete_firebase_storage_file
+    definition:
+      enable_manual: false
+      delete:
+        columns: '*'
+    retry_conf:
+      num_retries: 0
+      interval_sec: 10
+      timeout_sec: 60
+    webhook: '{{FIREBASE_FUNCTION_ENDPOINT}}/deleteFile'
+    headers:
+    - name: x-hasura-shared-secret
+      value_from_env: FIREBASE_SHARED_SECRET
 - table:
     schema: public
     name: works_specifications
