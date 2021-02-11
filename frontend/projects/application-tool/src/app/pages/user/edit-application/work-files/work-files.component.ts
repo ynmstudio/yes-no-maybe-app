@@ -135,7 +135,6 @@ export class WorkFilesComponent implements OnInit {
                 fragmentName: 'Work',
                 optimistic: true,
               });
-              console.log(data);
               // Update objects
               data.files = data.files.map((file: any) => {
                 let updatedFile = updatedFiles?.insert_works_files?.returning.find(
