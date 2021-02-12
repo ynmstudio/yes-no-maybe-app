@@ -23,6 +23,73 @@ query GetAllEditions {
     ...Edition
   }
 }
+query GetEditionStatistic($id: Int!) {
+  applications_total: applications_aggregate(
+    where: { edition: { id: { _eq: $id } } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  applications_untouched: applications_aggregate(
+    where: {
+      _and: {
+        edition: { id: { _eq: $id } }
+        _and: [
+          { _not: { files: {} } }
+          { _not: { specifications: {} } }
+          { _not: { payment: {} } }
+          { disclaimer: { _eq: false } }
+        ]
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  applications_edited: applications_aggregate(
+    where: {
+      _and: {
+        edition: { id: { _eq: $id } }
+        _or: [
+          { files: {} }
+          { specifications: {} }
+          { payment: {} }
+          { disclaimer: { _eq: true } }
+        ]
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  applications_ready: applications_aggregate(
+    where: {
+      _and: {
+        edition: { id: { _eq: $id } }
+        _and: [
+          { files: {} }
+          { specifications: {} }
+          { payment: {} }
+          { disclaimer: { _eq: true } }
+        ]
+      }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  payments_aggregate(
+    where: { application: { edition: { id: { _eq: $id } } } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
 
 mutation CreateEdition($name: String!) {
   insert_editions_one(object: { name: $name }) {

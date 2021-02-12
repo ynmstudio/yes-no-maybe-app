@@ -1,0 +1,10 @@
+{
+  "storage": {
+    "dev_bucket": "berlin-art-prize-dev"
+  },
+  "hasura": {
+    "admin_email": "denis@ynm.studio",
+    "shared_secret": "uimQAh2nnN*ay-fML9FP8s4pu_NUmazh",
+    "team_role_email_domain": "@ynm.studio"
+  }
+}

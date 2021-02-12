@@ -2,8 +2,19 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
+import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 
 const APPLICATION_PREFERED_LANGUAGE_KEY = 'prefered_language';
+
+// APPLICATION STATES
+_('application-state.pristine');
+_('application-state.no-works');
+_('application-state.no-specifications');
+_('application-state.no-files');
+_('application-state.not-payed');
+_('application-state.unapproved-disclaimer');
+_('application-state.no-statement');
+_('application-state.complete');
 
 @Injectable({
   providedIn: 'root',

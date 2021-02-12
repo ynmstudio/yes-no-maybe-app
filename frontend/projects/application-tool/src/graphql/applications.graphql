@@ -17,6 +17,9 @@ fragment Application on applications {
   residency
   database
   disclaimer
+  locked
+  ready
+  state
   payment {
     ...Payment
   }
@@ -74,7 +77,18 @@ mutation UpdateApplication($id: uuid!, $data: applications_set_input!) {
     ...Application
   }
 }
-
+mutation LockApplication($id: uuid!) {
+  update_applications_by_pk(pk_columns: { id: $id }, _set: { locked: true }) {
+    id
+    locked
+  }
+}
+mutation UnlockApplication($id: uuid!) {
+  update_applications_by_pk(pk_columns: { id: $id }, _set: { locked: false }) {
+    id
+    locked
+  }
+}
 mutation DeleteApplication($id: uuid!) {
   delete_applications_by_pk(id: $id) {
     id
@@ -126,9 +140,3 @@ mutation DeletePayment($id: uuid!, $application_id: uuid!) {
 # Jury
 
 # Admin
-
-query GetApplicationsByEdition($id: Int!) {
-  applications(where: { edition: { id: { _eq: $id } } }) {
-    ...Application
-  }
-}

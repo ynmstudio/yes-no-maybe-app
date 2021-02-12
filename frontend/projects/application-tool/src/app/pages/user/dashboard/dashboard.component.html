@@ -38,7 +38,10 @@
         >
           <div
             *ngFor="let application of applicationsObject.data?.applications"
-            class="my-1 bg-gray-100 xl:grid grid-cols-5"
+            class="my-1 bg-gray-100 xl:grid grid-cols-5 transition-colors duration-200"
+            [ngClass]="{
+              'bg-green-50': application.ready
+            }"
           >
             <div class="col-span-2 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
               <div class="text-3xl">
@@ -97,6 +100,14 @@
                   {{ "application.status" | translate }}:
                 </div>
                 <div class="cols-span-5 lg:col-span-3">
+                  <span
+                    class="text-orange-500"
+                    [innerText]="
+                      'application-state.' + (application.state || 'unknown')
+                        | translate
+                    "
+                  >
+                  </span>
                   <!-- @TODO Compute application status in hasura -->
                   <ng-container
                     *ngIf="
@@ -142,10 +153,21 @@
                       >
                       </span>
                       <span
-                        class="text-green-500"
+                        class="text-yellow-500"
                         *ngIf="
-                          application.payment?.id && application.disclaimer
+                          application.payment?.id &&
+                          application.disclaimer &&
+                          !application.ready
                         "
+                        [innerText]="
+                          'application.status--application-not-marked-ready'
+                            | translate
+                        "
+                      >
+                      </span>
+                      <span
+                        class="text-green-500"
+                        *ngIf="application.ready"
                         [innerText]="
                           'application.status--application-complete' | translate
                         "
@@ -170,16 +192,25 @@
                 </div>
               </div>
               <div class="flex justify-end mt-6 space-x-4 items-center">
-                <a
-                  [routerLink]="['/', 'u', 'applications', application.id]"
-                  class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-                  [innerText]="'defaults.edit' | translate"
-                ></a>
-                <button
-                  class="underline font-mono leading-none"
-                  (click)="deleteApplication(application.id)"
-                  [innerText]="'defaults.delete' | translate"
-                ></button>
+                <ng-container *ngIf="!application.locked; else locked">
+                  <a
+                    [routerLink]="['/', 'u', 'applications', application.id]"
+                    class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
+                    [innerText]="'defaults.edit' | translate"
+                  ></a>
+                  <button
+                    class="underline font-mono leading-none"
+                    (click)="deleteApplication(application.id)"
+                    [innerText]="'defaults.delete' | translate"
+                  ></button>
+                </ng-container>
+                <ng-template #locked>
+                  <button
+                    class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-base leading-none py-3 px-6 rounded-xl"
+                    (click)="unlockApplication(application.id)"
+                    [innerText]="'defaults.unlock' | translate"
+                  ></button>
+                </ng-template>
               </div>
             </div>
           </div>

@@ -45,6 +45,19 @@
         table:
           schema: public
           name: works
+  computed_fields:
+  - name: ready
+    definition:
+      function:
+        schema: public
+        name: application_is_ready
+    comment: ""
+  - name: state
+    definition:
+      function:
+        schema: public
+        name: application_state
+    comment: ""
   insert_permissions:
   - role: user
     permission:
@@ -91,10 +104,14 @@
       - group
       - id
       - internal_name
+      - locked
       - name
       - residency
       - statement
       - updated_at
+      computed_fields:
+      - ready
+      - state
       filter:
         edition:
           current:
@@ -110,10 +127,14 @@
       - edition_id
       - group
       - id
+      - locked
       - name
       - residency
       - statement
       - updated_at
+      computed_fields:
+      - ready
+      - state
       filter:
         _and:
         - edition:
@@ -135,6 +156,7 @@
       - database
       - disclaimer
       - group
+      - locked
       - name
       - residency
       - statement
@@ -167,6 +189,8 @@
                 _lte: now()
             - application_end:
                 _gte: now()
+        - locked:
+            _eq: false
 - table:
     schema: public
     name: editions
@@ -207,6 +231,7 @@
       filter:
         current:
           _eq: true
+      limit: 1
   - role: team
     permission:
       columns:
@@ -217,7 +242,7 @@
       - application_start
       - created_at
       filter: {}
-      limit: 1
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -267,6 +292,18 @@
       - size
       backend_only: false
   select_permissions:
+  - role: team
+    permission:
+      columns:
+      - id
+      - created_at
+      - key
+      - mimetype
+      - originalname
+      - application_id
+      - size
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -499,6 +536,16 @@
       - portfolio
       backend_only: false
   select_permissions:
+  - role: team
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - application_id
+      - portfolio
+      - order
+      filter: {}
   - role: user
     permission:
       columns:
@@ -594,6 +641,20 @@
       - work_id
       backend_only: false
   select_permissions:
+  - role: team
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - key
+      - mimetype
+      - order
+      - originalname
+      - size
+      - work_id
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -725,6 +786,25 @@
       - year
       backend_only: false
   select_permissions:
+  - role: team
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - work_id
+      - order
+      - title
+      - number_of_editions
+      - medium
+      - dimensions_height
+      - dimensions_width
+      - dimensions_depth
+      - description
+      - application_id
+      - year
+      filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:

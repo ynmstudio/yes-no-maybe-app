@@ -3,8 +3,14 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppService } from './app.service';
-import { BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  ValidationErrors,
+} from '@angular/forms';
+import { catchError, first, map, tap } from 'rxjs/operators';
+import { fuzzy } from 'fast-fuzzy';
 
 export interface User {
   loginName: string;
@@ -16,6 +22,10 @@ export interface User {
 })
 export class AuthService {
   public emailVerified = new BehaviorSubject<boolean>(true);
+
+  get authState() {
+    return this.afAuth.authState;
+  }
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -156,5 +166,25 @@ export class AuthService {
   async logout() {
     await this.afAuth.signOut();
     this.router.navigate(['/auth']);
+  }
+
+  // Reactive Form Validator
+  checkRevealedUsername(): AsyncValidatorFn {
+    return (ctrl: AbstractControl): Observable<ValidationErrors | null> => {
+      return this.afAuth.user.pipe(
+        first(),
+        map((user) => {
+          const displayName = user?.displayName;
+          if (!displayName || !ctrl.value) return null;
+          return fuzzy(displayName!, ctrl.value) >= 0.83
+            ? { nameRevealed: true }
+            : null;
+        }),
+        catchError((error) => {
+          console.error(error);
+          return of(null);
+        })
+      );
+    };
   }
 }

@@ -8,6 +8,8 @@ import {
   AddApplicationGQL,
   GetEditionGQL,
   EditionFragment,
+  UnlockApplicationGQL,
+  ApplicationFragmentDoc,
 } from 'generated/types.graphql-gen';
 import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -27,13 +29,14 @@ export class DashboardComponent implements OnInit {
   applications$;
 
   constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router,
     private getApplicationsGQL: GetApplicationsGQL,
     private addApplicationGQL: AddApplicationGQL,
     private getEditionGQL: GetEditionGQL,
-    private afAuth: AngularFireAuth,
-    private authService: AuthService,
-    private router: Router,
-    private modalService: ModalService<DeleteApplicationComponentType>
+    private modalService: ModalService<DeleteApplicationComponentType>,
+    private unlockApplicationGQL: UnlockApplicationGQL
   ) {
     this.edition$ = this.getEditionGQL
       .watch({}, { fetchPolicy: 'cache-and-network' })
@@ -45,7 +48,7 @@ export class DashboardComponent implements OnInit {
       { fetchPolicy: 'cache-and-network' }
     ).valueChanges;
 
-    this.user$ = this.afAuth.authState;
+    this.user$ = this.authService.authState;
   }
 
   ngOnInit(): void {
@@ -70,6 +73,10 @@ export class DashboardComponent implements OnInit {
         }
       );
     }
+  }
+
+  async unlockApplication(id: string) {
+    await this.userService.unlockApplication(id);
   }
 
   async deleteApplication(id: string) {

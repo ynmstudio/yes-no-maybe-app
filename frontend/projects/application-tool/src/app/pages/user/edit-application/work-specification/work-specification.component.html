@@ -6,13 +6,26 @@
     for="title-{{ specification?.id }}"
     [innerText]="('defaults.title-single' | translate | titlecase) + ':'"
   ></label>
-  <input
-    id="title-{{ specification?.id }}"
-    formControlName="title"
-    name="title"
-    type="text"
-    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-  />
+  <div class="relative col-span-3">
+    <input
+      id="title-{{ specification?.id }}"
+      formControlName="title"
+      name="title"
+      type="text"
+      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      [ngClass]="{
+        'ring-1 ring-red-500': title?.invalid
+      }"
+    />
+    <div
+      class="opacity-0 absolute z-0 bottom-px right-px p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap text-xs font-mono leading-none text-red-600 transition-opacity delay-75"
+      [ngClass]="{
+        'opacity-100': title?.errors?.nameRevealed
+      }"
+      [innerText]="'snippets.dont-reveal-name' | translate | uppercase"
+    ></div>
+  </div>
+
   <label
     for="year-{{ specification?.id }}"
     [innerText]="
@@ -28,7 +41,7 @@
     [max]="currentYear"
     class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
     [ngClass]="{
-      'ring-1 ring-red-500': year?.touched && year?.invalid
+      'ring-1 ring-red-500': year?.invalid
     }"
   />
   <label for="number_of_editions-{{ specification?.id }}" class="text-right"
@@ -113,20 +126,38 @@
       name="description"
       rows="6"
       class="font-sans text-base rounded-none block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+      [ngClass]="{
+        'ring-1 ring-red-500': description?.invalid
+      }"
     ></textarea>
     <div
-      class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors"
-      [ngClass]="
+      class="absolute z-0 bottom-px right-px p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap text-xs font-mono leading-none text-gray-800 transition-colors"
+      [ngClass]="[
         description?.value?.length > descriptionMaxLength * 0.95
           ? description?.value?.length > descriptionMaxLength
             ? 'text-red-600'
             : 'text-yellow-600'
           : 'text-gray-800'
-      "
+      ]"
     >
       {{ description?.value?.length || 0 }}/{{ descriptionMaxLength }}
       {{ "defaults.characters" | translate }}
     </div>
+    <div
+      class="opacity-0 absolute z-0 bottom-px left-px p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap text-xs font-mono leading-none text-red-600 transition-opacity delay-75"
+      [ngClass]="{
+        'opacity-100': description?.errors?.nameRevealed
+      }"
+      [innerText]="'snippets.dont-reveal-name' | translate | uppercase"
+    ></div>
   </div>
+  <!-- <pre class="col-span-4 p-1 bg-red-50 text-xs overflow-hidden">
+    {{ form.value | json }}
+    {{ form.valid | json }}
+    {{ form.errors | json }}
+    {{ description?.value | json }}
+    {{ description?.valid | json }}
+    {{ description?.errors | json }}
+  </pre> -->
 </form>
 <ng-content></ng-content>

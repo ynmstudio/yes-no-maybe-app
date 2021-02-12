@@ -63,6 +63,9 @@
           name="name"
           type="text"
           class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+          [ngClass]="{
+            'ring-1 ring-red-500': name?.invalid
+          }"
         />
       </div>
       <div class="flex items-center ml-auto mt-3 lg:mt-0 lg:ml-4">
@@ -646,8 +649,12 @@
         Speichern und schließen
       </button>
       <button
+        (click)="finalizeAndClose()"
         class="bg-gray-300 text-black font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
         [disabled]="!form.valid"
+        [ngClass]="{
+          'bg-green-400': form.valid
+        }"
       >
         Fertig! Absenden
       </button>

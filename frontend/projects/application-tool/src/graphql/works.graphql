@@ -53,6 +53,7 @@ mutation DeleteWork($id: uuid!) {
   delete_works_by_pk(id: $id) {
     id
     portfolio
+    application_id
   }
 }
 
@@ -75,6 +76,7 @@ mutation DeletePortfolioSpecification($id: uuid!) {
   delete_works_specifications_by_pk(id: $id) {
     id
     work_id
+    application_id
   }
 }
 

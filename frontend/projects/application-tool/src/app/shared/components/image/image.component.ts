@@ -32,13 +32,13 @@ export class ImageComponent implements OnInit {
   constructor(private storage: AngularFireStorage) {}
 
   ngOnInit(): void {
-    if (this.mimetype.startsWith('video/')) this.video = true;
-
     this.getDownloadUrl();
   }
 
-  async getDownloadUrl() {
+  getDownloadUrl() {
     if (!this.key) return;
+
+    if (this.mimetype.startsWith('video/')) this.video = true;
 
     this.requestKey.next(
       this.mimetype === 'image/gif' ? this.key : this.key + this.size

@@ -8,6 +8,8 @@ import {
   WorkFragmentDoc,
   AddPaymentGQL,
   DeletePaymentGQL,
+  UnlockApplicationGQL,
+  LockApplicationGQL,
 } from 'generated/types.graphql-gen';
 
 @Injectable({
@@ -18,7 +20,9 @@ export class UserService {
     private addWorkFileGQL: AddWorkFileGQL,
     private deleteWorkFileGQL: DeleteWorkFileGQL,
     private addPaymentGQL: AddPaymentGQL,
-    private deletePaymentGQL: DeletePaymentGQL
+    private deletePaymentGQL: DeletePaymentGQL,
+    private lockApplicationGQL: LockApplicationGQL,
+    private unlockApplicationGQL: UnlockApplicationGQL
   ) {}
 
   updateApplicationFragment(
@@ -229,6 +233,74 @@ export class UserService {
             // Write our data back to the cache.
             store.writeFragment({
               id: `applications:${application_id}`,
+              fragment: ApplicationFragmentDoc,
+              fragmentName: 'Application',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+
+  async lockApplication(id: string) {
+    await this.lockApplicationGQL
+      .mutate(
+        {
+          id,
+        },
+        {
+          update: (store, { data: { ...unlockedApplication } }) => {
+            // Read the data from our cache for this query.
+            let { ...data }: any = store.readFragment({
+              id: `applications:${unlockedApplication.update_applications_by_pk?.id}`,
+              fragment: ApplicationFragmentDoc,
+              fragmentName: 'Application',
+            });
+            console.log(unlockedApplication, data.locked);
+            // Filter array by deleted producer id
+            data = {
+              ...data,
+              locked: unlockedApplication.update_applications_by_pk?.locked,
+            };
+            console.log(data);
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `applications:${unlockedApplication.update_applications_by_pk?.id}`,
+              fragment: ApplicationFragmentDoc,
+              fragmentName: 'Application',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+
+  async unlockApplication(id: string) {
+    await this.unlockApplicationGQL
+      .mutate(
+        {
+          id,
+        },
+        {
+          update: (store, { data: { ...unlockedApplication } }) => {
+            // Read the data from our cache for this query.
+            let { ...data }: any = store.readFragment({
+              id: `applications:${unlockedApplication.update_applications_by_pk?.id}`,
+              fragment: ApplicationFragmentDoc,
+              fragmentName: 'Application',
+            });
+            console.log(unlockedApplication, data.locked);
+            // Filter array by deleted producer id
+            data = {
+              ...data,
+              locked: unlockedApplication.update_applications_by_pk?.locked,
+            };
+            console.log(data);
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `applications:${unlockedApplication.update_applications_by_pk?.id}`,
               fragment: ApplicationFragmentDoc,
               fragmentName: 'Application',
               data,

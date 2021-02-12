@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Fri Feb 12 2021 07:17:38 GMT+0100 (Central European Standard Time)
+# timestamp: Fri Feb 12 2021 19:37:53 GMT+0100 (Central European Standard Time)
 
 schema {
   query: query_root
@@ -58,6 +58,7 @@ type applications {
   group: Boolean!
   id: uuid!
   internal_name: String
+  locked: Boolean!
   name: String
 
   """An object relationship"""
@@ -98,6 +99,11 @@ type applications {
     """filter the rows returned"""
     where: ratings_bool_exp
   ): ratings_aggregate!
+
+  """
+  A computed field, executes function "application_is_ready"
+  """
+  ready: Boolean
   residency: Boolean!
 
   """An array relationship"""
@@ -135,6 +141,11 @@ type applications {
     """filter the rows returned"""
     where: works_specifications_bool_exp
   ): works_specifications_aggregate!
+
+  """
+  A computed field, executes function "application_state"
+  """
+  state: String
   statement: String
   updated_at: timestamptz!
 
@@ -257,6 +268,7 @@ input applications_bool_exp {
   group: Boolean_comparison_exp
   id: uuid_comparison_exp
   internal_name: String_comparison_exp
+  locked: Boolean_comparison_exp
   name: String_comparison_exp
   payment: payments_bool_exp
   ratings: ratings_bool_exp
@@ -300,6 +312,7 @@ input applications_insert_input {
   group: Boolean
   id: uuid
   internal_name: String
+  locked: Boolean
   name: String
   payment: payments_obj_rel_insert_input
   ratings: ratings_arr_rel_insert_input
@@ -405,6 +418,7 @@ input applications_order_by {
   group: order_by
   id: order_by
   internal_name: order_by
+  locked: order_by
   name: order_by
   payment: payments_order_by
   ratings_aggregate: ratings_aggregate_order_by
@@ -452,6 +466,9 @@ enum applications_select_column {
   internal_name
 
   """column name"""
+  locked
+
+  """column name"""
   name
 
   """column name"""
@@ -476,6 +493,7 @@ input applications_set_input {
   group: Boolean
   id: uuid
   internal_name: String
+  locked: Boolean
   name: String
   residency: Boolean
   statement: String
@@ -557,6 +575,9 @@ enum applications_update_column {
 
   """column name"""
   internal_name
+
+  """column name"""
+  locked
 
   """column name"""
   name

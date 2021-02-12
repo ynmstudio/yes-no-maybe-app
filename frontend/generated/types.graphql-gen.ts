@@ -36,6 +36,7 @@ export type Applications = {
   group: Scalars['Boolean'];
   id: Scalars['uuid'];
   internal_name?: Maybe<Scalars['String']>;
+  locked: Scalars['Boolean'];
   name?: Maybe<Scalars['String']>;
   /** An object relationship */
   payment?: Maybe<Payments>;
@@ -43,11 +44,15 @@ export type Applications = {
   ratings: Array<Ratings>;
   /** An aggregated array relationship */
   ratings_aggregate: Ratings_Aggregate;
+  /** A computed field, executes function "application_is_ready" */
+  ready?: Maybe<Scalars['Boolean']>;
   residency: Scalars['Boolean'];
   /** An array relationship */
   specifications: Array<Works_Specifications>;
   /** An aggregated array relationship */
   specifications_aggregate: Works_Specifications_Aggregate;
+  /** A computed field, executes function "application_state" */
+  state?: Maybe<Scalars['String']>;
   statement?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -215,6 +220,7 @@ export type Applications_Bool_Exp = {
   group?: Maybe<Boolean_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   internal_name?: Maybe<String_Comparison_Exp>;
+  locked?: Maybe<Boolean_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   payment?: Maybe<Payments_Bool_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
@@ -251,6 +257,7 @@ export type Applications_Insert_Input = {
   group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
+  locked?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   payment?: Maybe<Payments_Obj_Rel_Insert_Input>;
   ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
@@ -346,6 +353,7 @@ export type Applications_Order_By = {
   group?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   internal_name?: Maybe<Order_By>;
+  locked?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   payment?: Maybe<Payments_Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
@@ -381,6 +389,8 @@ export enum Applications_Select_Column {
   /** column name */
   InternalName = 'internal_name',
   /** column name */
+  Locked = 'locked',
+  /** column name */
   Name = 'name',
   /** column name */
   Residency = 'residency',
@@ -400,6 +410,7 @@ export type Applications_Set_Input = {
   group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
+  locked?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   residency?: Maybe<Scalars['Boolean']>;
   statement?: Maybe<Scalars['String']>;
@@ -468,6 +479,8 @@ export enum Applications_Update_Column {
   Id = 'id',
   /** column name */
   InternalName = 'internal_name',
+  /** column name */
+  Locked = 'locked',
   /** column name */
   Name = 'name',
   /** column name */
@@ -5665,7 +5678,7 @@ export type PaymentFragment = (
 
 export type ApplicationFragment = (
   { __typename?: 'applications' }
-  & Pick<Applications, 'id' | 'name' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'residency' | 'database' | 'disclaimer'>
+  & Pick<Applications, 'id' | 'name' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'residency' | 'database' | 'disclaimer' | 'locked' | 'ready' | 'state'>
   & { payment?: Maybe<(
     { __typename?: 'payments' }
     & PaymentFragment
@@ -5748,6 +5761,32 @@ export type UpdateApplicationMutation = (
   )> }
 );
 
+export type LockApplicationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type LockApplicationMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'locked'>
+  )> }
+);
+
+export type UnlockApplicationMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type UnlockApplicationMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'locked'>
+  )> }
+);
+
 export type DeleteApplicationMutationVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -5799,19 +5838,6 @@ export type DeletePaymentMutation = (
   )> }
 );
 
-export type GetApplicationsByEditionQueryVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type GetApplicationsByEditionQuery = (
-  { __typename?: 'query_root' }
-  & { applications: Array<(
-    { __typename?: 'applications' }
-    & ApplicationFragment
-  )> }
-);
-
 export type BaseQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -5849,6 +5875,46 @@ export type GetAllEditionsQuery = (
     { __typename?: 'editions' }
     & EditionFragment
   )> }
+);
+
+export type GetEditionStatisticQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetEditionStatisticQuery = (
+  { __typename?: 'query_root' }
+  & { applications_total: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), applications_untouched: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), applications_edited: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), applications_ready: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), payments_aggregate: (
+    { __typename?: 'payments_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'payments_aggregate_fields' }
+      & Pick<Payments_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type CreateEditionMutationVariables = Exact<{
@@ -5967,7 +6033,7 @@ export type DeleteWorkMutation = (
   { __typename?: 'mutation_root' }
   & { delete_works_by_pk?: Maybe<(
     { __typename?: 'works' }
-    & Pick<Works, 'id' | 'portfolio'>
+    & Pick<Works, 'id' | 'portfolio' | 'application_id'>
   )> }
 );
 
@@ -5995,7 +6061,7 @@ export type DeletePortfolioSpecificationMutation = (
   { __typename?: 'mutation_root' }
   & { delete_works_specifications_by_pk?: Maybe<(
     { __typename?: 'works_specifications' }
-    & Pick<Works_Specifications, 'id' | 'work_id'>
+    & Pick<Works_Specifications, 'id' | 'work_id' | 'application_id'>
   )> }
 );
 
@@ -6152,6 +6218,9 @@ export const ApplicationFragmentDoc = gql`
   residency
   database
   disclaimer
+  locked
+  ready
+  state
   payment {
     ...Payment
   }
@@ -6314,6 +6383,44 @@ export const UpdateApplicationDocument = gql`
       super(apollo);
     }
   }
+export const LockApplicationDocument = gql`
+    mutation LockApplication($id: uuid!) {
+  update_applications_by_pk(pk_columns: {id: $id}, _set: {locked: true}) {
+    id
+    locked
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class LockApplicationGQL extends Apollo.Mutation<LockApplicationMutation, LockApplicationMutationVariables> {
+    document = LockApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UnlockApplicationDocument = gql`
+    mutation UnlockApplication($id: uuid!) {
+  update_applications_by_pk(pk_columns: {id: $id}, _set: {locked: false}) {
+    id
+    locked
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UnlockApplicationGQL extends Apollo.Mutation<UnlockApplicationMutation, UnlockApplicationMutationVariables> {
+    document = UnlockApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const DeleteApplicationDocument = gql`
     mutation DeleteApplication($id: uuid!) {
   delete_applications_by_pk(id: $id) {
@@ -6385,24 +6492,6 @@ export const DeletePaymentDocument = gql`
       super(apollo);
     }
   }
-export const GetApplicationsByEditionDocument = gql`
-    query GetApplicationsByEdition($id: Int!) {
-  applications(where: {edition: {id: {_eq: $id}}}) {
-    ...Application
-  }
-}
-    ${ApplicationFragmentDoc}`;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetApplicationsByEditionGQL extends Apollo.Query<GetApplicationsByEditionQuery, GetApplicationsByEditionQueryVariables> {
-    document = GetApplicationsByEditionDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
 export const BaseDocument = gql`
     query Base {
   __typename
@@ -6450,6 +6539,52 @@ export const GetAllEditionsDocument = gql`
   })
   export class GetAllEditionsGQL extends Apollo.Query<GetAllEditionsQuery, GetAllEditionsQueryVariables> {
     document = GetAllEditionsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetEditionStatisticDocument = gql`
+    query GetEditionStatistic($id: Int!) {
+  applications_total: applications_aggregate(where: {edition: {id: {_eq: $id}}}) {
+    aggregate {
+      count
+    }
+  }
+  applications_untouched: applications_aggregate(
+    where: {_and: {edition: {id: {_eq: $id}}, _and: [{_not: {files: {}}}, {_not: {specifications: {}}}, {_not: {payment: {}}}, {disclaimer: {_eq: false}}]}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  applications_edited: applications_aggregate(
+    where: {_and: {edition: {id: {_eq: $id}}, _or: [{files: {}}, {specifications: {}}, {payment: {}}, {disclaimer: {_eq: true}}]}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  applications_ready: applications_aggregate(
+    where: {_and: {edition: {id: {_eq: $id}}, _and: [{files: {}}, {specifications: {}}, {payment: {}}, {disclaimer: {_eq: true}}]}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  payments_aggregate(where: {application: {edition: {id: {_eq: $id}}}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetEditionStatisticGQL extends Apollo.Query<GetEditionStatisticQuery, GetEditionStatisticQueryVariables> {
+    document = GetEditionStatisticDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -6575,6 +6710,7 @@ export const DeleteWorkDocument = gql`
   delete_works_by_pk(id: $id) {
     id
     portfolio
+    application_id
   }
 }
     `;
@@ -6614,6 +6750,7 @@ export const DeletePortfolioSpecificationDocument = gql`
   delete_works_specifications_by_pk(id: $id) {
     id
     work_id
+    application_id
   }
 }
     `;

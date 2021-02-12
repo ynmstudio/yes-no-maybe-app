@@ -7,9 +7,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import {
+  ControlContainer,
   FormBuilder,
   FormControl,
   FormGroup,
+  NgForm,
   Validators,
 } from '@angular/forms';
 import { ApolloCache } from '@apollo/client/core';
@@ -19,13 +21,15 @@ import {
   UpdateSpecificationMutation,
   WorkSpecificationFragment,
 } from 'generated/types.graphql-gen';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { AuthService } from 'projects/application-tool/src/app/shared/services/auth.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from '../../user.service';
+
 @Component({
   selector: 'app-work-specification',
   templateUrl: './work-specification.component.html',
   styleUrls: ['./work-specification.component.scss'],
+  viewProviders: [{ provide: ControlContainer, useExisting: NgForm }],
 })
 export class WorkSpecificationComponent implements OnInit, OnChanges {
   @Input() application_id?: string;
@@ -38,6 +42,9 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
 
   currentYear = new Date().getFullYear();
 
+  get title() {
+    return this.form.get('title');
+  }
   get year() {
     return this.form.get('year');
   }
@@ -48,14 +55,22 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private updateSpecificationGQL: UpdateSpecificationGQL,
+    private authService: AuthService,
     private userService: UserService
   ) {
     this.form = this.fb.group({
       title: new FormControl('', {
         validators: [Validators.required],
+        asyncValidators: Validators.composeAsync([
+          this.authService.checkRevealedUsername(),
+        ]),
       }),
       year: new FormControl(null, {
-        validators: [Validators.min(1900), Validators.max(this.currentYear)],
+        validators: [
+          Validators.required,
+          Validators.min(1900),
+          Validators.max(this.currentYear + 10),
+        ],
       }),
       number_of_editions: new FormControl(null),
       medium: new FormControl(''),
@@ -64,6 +79,9 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
       dimensions_depth: new FormControl(''),
       description: new FormControl('', {
         validators: Validators.maxLength(this.descriptionMaxLength * 1.05),
+        asyncValidators: Validators.composeAsync([
+          this.authService.checkRevealedUsername(),
+        ]),
       }),
     });
     this.form.disable();
@@ -92,6 +110,7 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
         let control = this.form.get(key);
         if (control) {
           control.setValue(specifications[key]);
+          control.updateValueAndValidity();
         } else {
           console.info('Missing form field :', key);
         }
