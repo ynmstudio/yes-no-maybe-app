@@ -41,7 +41,7 @@ fragment Application on applications {
 # User
 
 query GetApplications {
-  applications {
+  applications(order_by: { created_at: asc_nulls_first }) {
     ...Application
   }
   applications_aggregate {

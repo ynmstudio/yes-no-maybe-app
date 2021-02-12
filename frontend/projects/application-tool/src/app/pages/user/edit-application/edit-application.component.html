@@ -102,7 +102,7 @@
         <div class="flex-auto">
           <div
             *ngIf="
-              ((portfolioWorks$ | async)?.data?.works?.length || 0) > 0;
+              (portfolioWorks$ | async)?.data?.works?.length! > 0;
               else noPortfolioWork
             "
           >
@@ -128,9 +128,7 @@
                 (cdkDropListDropped)="
                   dropSpecifications(work.id, work.specifications, $event)
                 "
-                [cdkDropListDisabled]="
-                  !((work?.specifications?.length || 0) > 1)
-                "
+                [cdkDropListDisabled]="!(work?.specifications?.length! > 1)"
               >
                 <app-work-specification
                   cdkDrag
@@ -220,7 +218,7 @@
         >
           <div
             *ngIf="
-              (singleWorksObject?.data?.works?.length || 0) > 0;
+              singleWorksObject?.data?.works?.length! > 0;
               else noSingleWork
             "
             cdkDropList
@@ -230,7 +228,7 @@
               dropWorks(singleWorksObject?.data?.works, $event)
             "
             [cdkDropListDisabled]="
-              !((singleWorksObject?.data?.works?.length || 0) > 1)
+              !(singleWorksObject?.data?.works?.length! > 1)
             "
           >
             <div
@@ -604,7 +602,7 @@
               <div [innerText]="payment?.value.originalname"></div>
               <div
                 class="text-gray-800"
-                [innerText]="payment?.value.size || 0 | filesize"
+                [innerText]="payment?.value.size! | filesize"
               ></div>
             </div>
             <button

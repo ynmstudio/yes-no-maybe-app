@@ -1,4 +1,6 @@
 {
+	"actions.login": "anmelden",
+	"actions.logout": "abmelden",
 	"application.group_application": "Gruppenarbeit",
 	"application.status": "Status",
 	"application.status--application-complete": "Arbeitsangaben vollständig",
@@ -39,6 +41,7 @@
 	"defaults.no": "Nein",
 	"defaults.optional": "optional",
 	"defaults.payment-single": "Bezahlung",
+	"defaults.profile-single": "Profil",
 	"defaults.residency-single": "Residency",
 	"defaults.title-multi": "Titel",
 	"defaults.title-single": "Titel",

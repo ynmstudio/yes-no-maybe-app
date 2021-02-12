@@ -51,7 +51,13 @@
                 ></span>
               </div>
               <div class="text-xs mt-4 lg:mt-6">
-                <div class="font-mono uppercase text-gray-800">
+                <div
+                  class="font-mono uppercase text-gray-800"
+                  [ngClass]="{
+                    'text-red-800':
+                      application.files_aggregate.aggregate?.count! < 1
+                  }"
+                >
                   {{ application.files_aggregate.aggregate?.count }}
                   {{
                     (application.files_aggregate.aggregate?.count === 1
@@ -61,7 +67,7 @@
                   }}
                   ({{
                     application.files_aggregate.aggregate?.sum?.size | filesize
-                  }}):
+                  }})
                 </div>
               </div>
             </div>
@@ -92,36 +98,75 @@
                 </div>
                 <div class="cols-span-5 lg:col-span-3">
                   <!-- @TODO Compute application status in hasura -->
-                  <span
-                    class="text-orange-500"
-                    *ngIf="!application.payment?.id && !application.disclaimer"
-                    [innerText]="
-                      'application.status--application-incomplete' | translate
+                  <ng-container
+                    *ngIf="
+                      application.works_aggregate.aggregate?.count! > 0;
+                      else noWork
                     "
                   >
-                  </span>
-                  <span
-                    class="text-red-600"
-                    *ngIf="!application.payment?.id && application.disclaimer"
-                    [innerText]="
-                      'application.status--missing-payment' | translate
-                    "
-                  >
-                  </span>
-                  <span
-                    class="text-gray-6500"
-                    *ngIf="application.payment?.id && !application.disclaimer"
-                    [innerText]="'application.status--disclaimer' | translate"
-                  >
-                  </span>
-                  <span
-                    class="text-green-500"
-                    *ngIf="application.payment?.id && application.disclaimer"
-                    [innerText]="
-                      'application.status--application-complete' | translate
-                    "
-                  >
-                  </span>
+                    <ng-container
+                      *ngIf="
+                        application.files_aggregate.aggregate?.count! > 0;
+                        else noFiles
+                      "
+                    >
+                      <span
+                        class="text-orange-500"
+                        *ngIf="
+                          !application.payment?.id && !application.disclaimer
+                        "
+                        [innerText]="
+                          'application.status--application-incomplete'
+                            | translate
+                        "
+                      >
+                      </span>
+                      <span
+                        class="text-red-600"
+                        *ngIf="
+                          !application.payment?.id && application.disclaimer
+                        "
+                        [innerText]="
+                          'application.status--missing-payment' | translate
+                        "
+                      >
+                      </span>
+                      <span
+                        class="text-orange-600"
+                        *ngIf="
+                          application.payment?.id && !application.disclaimer
+                        "
+                        [innerText]="
+                          'application.status--disclaimer' | translate
+                        "
+                      >
+                      </span>
+                      <span
+                        class="text-green-500"
+                        *ngIf="
+                          application.payment?.id && application.disclaimer
+                        "
+                        [innerText]="
+                          'application.status--application-complete' | translate
+                        "
+                      >
+                      </span>
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #noWork>
+                    <span
+                      class="text-gray-600"
+                      [innerText]="'application.status--no-works' | translate"
+                    >
+                    </span>
+                  </ng-template>
+                  <ng-template #noFiles>
+                    <span
+                      class="text-orange-600"
+                      [innerText]="'application.status--no-files' | translate"
+                    >
+                    </span>
+                  </ng-template>
                 </div>
               </div>
               <div class="flex justify-end mt-6 space-x-4 items-center">
@@ -254,8 +299,15 @@
   <footer class="container--default flex items-baseline justify-between">
     <div class="text-headline">Berlin Art Prize</div>
     <div class="space-x-8 flex">
-      <a class="font-mono hover:underline" href="">Profil</a>
-      <a class="font-mono hover:underline" href="">Logout</a>
+      <button
+        class="appearance-none font-mono underline hover:text-gray-800"
+        [innerText]="'defaults.profile-single' | translate | titlecase"
+      ></button>
+      <button
+        (click)="logout()"
+        class="appearance-none font-mono underline hover:text-gray-800"
+        [innerText]="'actions.logout' | translate | titlecase"
+      ></button>
     </div>
   </footer>
 </div>

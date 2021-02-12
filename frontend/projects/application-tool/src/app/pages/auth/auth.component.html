@@ -341,9 +341,8 @@
         type="submit"
         [disabled]="form.invalid"
         class="button--auth-submit"
-      >
-        Anmelden
-      </button>
+        [innerText]="'actions.login' | translate | titlecase"
+      ></button>
     </div>
   </form>
 </main>

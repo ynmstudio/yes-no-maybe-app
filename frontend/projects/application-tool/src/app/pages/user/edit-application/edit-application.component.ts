@@ -170,15 +170,15 @@ export class EditApplicationComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  toggleGroup() {
+  async toggleGroup() {
     this.form.get('group')?.setValue(!this.form.get('group')?.value);
+    this.form.markAsDirty();
   }
   async saveAndClose() {
     await this.saveApplication();
     this.specificationComponents.forEach(async (component) => {
       await component.saveSpecification();
     });
-
     this.router.navigate(['u', 'dashboard']);
   }
 

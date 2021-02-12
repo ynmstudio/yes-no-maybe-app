@@ -6237,7 +6237,7 @@ export const WorkFragmentDoc = gql`
 ${WorkSpecificationFragmentDoc}`;
 export const GetApplicationsDocument = gql`
     query GetApplications {
-  applications {
+  applications(order_by: {created_at: asc_nulls_first}) {
     ...Application
   }
   applications_aggregate {

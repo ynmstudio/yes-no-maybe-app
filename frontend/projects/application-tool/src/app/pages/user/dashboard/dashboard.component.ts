@@ -14,6 +14,7 @@ import { first, map, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ModalService } from '../../../shared/components/modal/modal.service';
 import { DeleteApplicationComponent as DeleteApplicationComponentType } from '../../../shared/components/modal/modals/delete-application/delete-application.component';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -30,6 +31,7 @@ export class DashboardComponent implements OnInit {
     private addApplicationGQL: AddApplicationGQL,
     private getEditionGQL: GetEditionGQL,
     private afAuth: AngularFireAuth,
+    private authService: AuthService,
     private router: Router,
     private modalService: ModalService<DeleteApplicationComponentType>
   ) {
@@ -75,5 +77,9 @@ export class DashboardComponent implements OnInit {
       './../../../shared/components/modal/modals/delete-application/delete-application.component'
     );
     await this.modalService.open(DeleteApplicationComponent, id);
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }
