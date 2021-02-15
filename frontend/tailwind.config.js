@@ -157,7 +157,12 @@ module.exports = {
     },
   },
   variants: {
-    extend: { opacity: ["disabled"] },
+    extend: {
+      opacity: ["disabled"],
+      backgroundColor: ["even"],
+      backgroundOpacity: ["even"],
+    },
+
     filter: ["responsive"], // defaults to ['responsive']
     backdropFilter: ["responsive"], // defaults to ['responsive']
   },

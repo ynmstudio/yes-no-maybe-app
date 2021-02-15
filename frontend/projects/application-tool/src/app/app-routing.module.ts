@@ -86,6 +86,18 @@ const routes: Routes = [
     ...canActivate(teamOnly),
   },
   {
+    path: 'settings',
+    loadChildren: () =>
+      import('./pages/settings/settings.module').then((m) => m.SettingsModule),
+    ...canActivate(teamOnly),
+  },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./pages/profile/profile.module').then((m) => m.ProfileModule),
+    ...redirectUnauthorizedTo(['auth']),
+  },
+  {
     path: '**',
     redirectTo: '/auth',
     pathMatch: 'full',

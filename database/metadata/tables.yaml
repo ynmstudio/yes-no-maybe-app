@@ -428,6 +428,7 @@
         type: x-hasura-default-role
       columns:
       - last_seen
+      - name
       backend_only: false
   select_permissions:
   - role: jury
@@ -473,6 +474,7 @@
     permission:
       columns:
       - last_seen
+      - name
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -546,6 +548,7 @@
       - portfolio
       - order
       filter: {}
+      allow_aggregations: true
   - role: user
     permission:
       columns:

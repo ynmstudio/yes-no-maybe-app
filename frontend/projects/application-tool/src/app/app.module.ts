@@ -69,18 +69,18 @@ export class ToolMissingTranslationHandler
       provide: BUCKET,
       useValue: environment.production ? undefined : 'berlin-art-prize-dev',
     },
-    {
-      provide: AUTH_EMULATOR,
-      useValue: environment.production ? undefined : ['localhost', 9099],
-    },
-    {
-      provide: DATABASE_EMULATOR,
-      useValue: environment.production ? undefined : ['localhost', 9000],
-    },
-    {
-      provide: FUNCTIONS_EMULATOR,
-      useValue: environment.production ? undefined : ['localhost', 5001],
-    },
+    // {
+    //   provide: AUTH_EMULATOR,
+    //   useValue: environment.production ? undefined : ['localhost', 9099],
+    // },
+    // {
+    //   provide: DATABASE_EMULATOR,
+    //   useValue: environment.production ? undefined : ['localhost', 9000],
+    // },
+    // {
+    //   provide: FUNCTIONS_EMULATOR,
+    //   useValue: environment.production ? undefined : ['localhost', 5001],
+    // },
   ],
   bootstrap: [AppComponent],
 })

@@ -125,6 +125,14 @@ mutation DeleteWorkFile($id: uuid!, $application_id: uuid!) {
     work_id
   }
 }
+query GetWorks($application_id: uuid!) {
+  works(
+    where: { application_id: { _eq: $application_id } }
+    order_by: { portfolio: asc_nulls_last, order: asc_nulls_last }
+  ) {
+    ...Work
+  }
+}
 
 query GetSingleWorks($application_id: uuid!) {
   works(

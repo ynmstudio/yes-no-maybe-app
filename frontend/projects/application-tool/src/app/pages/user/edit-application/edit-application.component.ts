@@ -31,6 +31,7 @@ import { UserService } from '../user.service';
 import { WorkSpecificationComponent } from './work-specification/work-specification.component';
 import { DeleteWorkComponent as DeleteWorkComponentType } from './../../../shared/components/modal/modals/delete-work/delete-work.component';
 import { DeleteSpecificationComponent as DeleteSpecificationComponentType } from './../../../shared/components/modal/modals/delete-specification/delete-specification.component';
+import { AuthService } from '../../../shared/services/auth.service';
 @Component({
   selector: 'app-edit-application',
   templateUrl: './edit-application.component.html',
@@ -93,7 +94,8 @@ export class EditApplicationComponent implements OnInit {
     private getPortfolioWorksGQL: GetPortfolioWorksGQL,
     private addPortfolioSpecificationGQL: AddPortfolioSpecificationGQL,
     private updateSpecificationsOrderGQL: UpdateSpecificationsOrderGQL,
-    private updateWorksOrderGQL: UpdateWorksOrderGQL
+    private updateWorksOrderGQL: UpdateWorksOrderGQL,
+    private authService: AuthService
   ) {
     // If navigation extra is set by dashboard on addApplication() show "New Application" headline
     this.isNew = this.router.getCurrentNavigation()?.extras.state?.new || false;
@@ -120,6 +122,9 @@ export class EditApplicationComponent implements OnInit {
       works: new FormControl(0, { validators: Validators.min(1) }),
       statement: new FormControl('', {
         validators: Validators.maxLength(this.statementMaxLength * 1.05),
+        asyncValidators: Validators.composeAsync([
+          this.authService.checkRevealedUsername(),
+        ]),
       }),
       residency: new FormControl(false),
       database: new FormControl(false),

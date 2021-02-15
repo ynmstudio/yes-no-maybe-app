@@ -5838,6 +5838,53 @@ export type DeletePaymentMutation = (
   )> }
 );
 
+export type GetAdminApplicationsByEditionQueryVariables = Exact<{
+  edition_id: Scalars['Int'];
+}>;
+
+
+export type GetAdminApplicationsByEditionQuery = (
+  { __typename?: 'query_root' }
+  & { applications: Array<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'internal_name'>
+    & ApplicationFragment
+  )>, applications_aggregate: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
+export type GetAdminApplicationQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetAdminApplicationQuery = (
+  { __typename?: 'query_root' }
+  & { applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'internal_name'>
+    & ApplicationFragment
+  )> }
+);
+
+export type CreateNewAliasMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type CreateNewAliasMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id' | 'updated_at' | 'internal_name'>
+  )> }
+);
+
 export type BaseQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -6102,6 +6149,19 @@ export type DeleteWorkFileMutation = (
   )>, delete_works_files_by_pk?: Maybe<(
     { __typename?: 'works_files' }
     & Pick<Works_Files, 'id' | 'work_id'>
+  )> }
+);
+
+export type GetWorksQueryVariables = Exact<{
+  application_id: Scalars['uuid'];
+}>;
+
+
+export type GetWorksQuery = (
+  { __typename?: 'query_root' }
+  & { works: Array<(
+    { __typename?: 'works' }
+    & WorkFragment
   )> }
 );
 
@@ -6492,6 +6552,72 @@ export const DeletePaymentDocument = gql`
       super(apollo);
     }
   }
+export const GetAdminApplicationsByEditionDocument = gql`
+    query GetAdminApplicationsByEdition($edition_id: Int!) {
+  applications(
+    where: {edition_id: {_eq: $edition_id}}
+    order_by: {created_at: asc_nulls_first}
+  ) {
+    ...Application
+    internal_name
+  }
+  applications_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    ${ApplicationFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAdminApplicationsByEditionGQL extends Apollo.Query<GetAdminApplicationsByEditionQuery, GetAdminApplicationsByEditionQueryVariables> {
+    document = GetAdminApplicationsByEditionDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetAdminApplicationDocument = gql`
+    query GetAdminApplication($id: uuid!) {
+  applications_by_pk(id: $id) {
+    ...Application
+    internal_name
+  }
+}
+    ${ApplicationFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAdminApplicationGQL extends Apollo.Query<GetAdminApplicationQuery, GetAdminApplicationQueryVariables> {
+    document = GetAdminApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateNewAliasDocument = gql`
+    mutation CreateNewAlias($id: uuid!) {
+  update_applications_by_pk(pk_columns: {id: $id}, _set: {internal_name: null}) {
+    id
+    updated_at
+    internal_name
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateNewAliasGQL extends Apollo.Mutation<CreateNewAliasMutation, CreateNewAliasMutationVariables> {
+    document = CreateNewAliasDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const BaseDocument = gql`
     query Base {
   __typename
@@ -6552,21 +6678,21 @@ export const GetEditionStatisticDocument = gql`
     }
   }
   applications_untouched: applications_aggregate(
-    where: {_and: {edition: {id: {_eq: $id}}, _and: [{_not: {files: {}}}, {_not: {specifications: {}}}, {_not: {payment: {}}}, {disclaimer: {_eq: false}}]}}
+    where: {_and: {edition: {id: {_eq: $id}}, _and: [{disclaimer: {_eq: false}}, {_not: {files: {}}}, {_not: {specifications: {}}}, {_not: {payment: {}}}]}}
   ) {
     aggregate {
       count
     }
   }
   applications_edited: applications_aggregate(
-    where: {_and: {edition: {id: {_eq: $id}}, _or: [{files: {}}, {specifications: {}}, {payment: {}}, {disclaimer: {_eq: true}}]}}
+    where: {_and: {edition: {id: {_eq: $id}}, _or: [{disclaimer: {_eq: true}}, {files: {}}, {specifications: {}}, {payment: {}}]}}
   ) {
     aggregate {
       count
     }
   }
   applications_ready: applications_aggregate(
-    where: {_and: {edition: {id: {_eq: $id}}, _and: [{files: {}}, {specifications: {}}, {payment: {}}, {disclaimer: {_eq: true}}]}}
+    where: {_and: {edition: {id: {_eq: $id}}, _and: [{disclaimer: {_eq: true}}, {files: {}}, {specifications: {}}, {payment: {}}]}}
   ) {
     aggregate {
       count
@@ -6813,6 +6939,27 @@ export const DeleteWorkFileDocument = gql`
   })
   export class DeleteWorkFileGQL extends Apollo.Mutation<DeleteWorkFileMutation, DeleteWorkFileMutationVariables> {
     document = DeleteWorkFileDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetWorksDocument = gql`
+    query GetWorks($application_id: uuid!) {
+  works(
+    where: {application_id: {_eq: $application_id}}
+    order_by: {portfolio: asc_nulls_last, order: asc_nulls_last}
+  ) {
+    ...Work
+  }
+}
+    ${WorkFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetWorksGQL extends Apollo.Query<GetWorksQuery, GetWorksQueryVariables> {
+    document = GetWorksDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

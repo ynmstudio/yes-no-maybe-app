@@ -1,5 +1,22 @@
 <ng-container *ngIf="downloadURL | async; let url; else: loading">
-  <img *ngIf="!video" class="h-full w-auto inline-block" [src]="url" />
+  <ng-container *ngIf="!video">
+    <pdf-viewer
+      *ngIf="pdf"
+      class="block h-full w-auto"
+      [src]="url"
+      [show-all]="false"
+      [page]="1"
+      [original-size]="false"
+      [autoresize]="true"
+      [zoom-scale]="'page-height'"
+    ></pdf-viewer>
+    <img
+      *ngIf="!pdf"
+      class="h-full w-auto inline-block"
+      [src]="url"
+      [attr.type]="mimetype"
+    />
+  </ng-container>
   <video
     *ngIf="video"
     class="h-full w-auto inline-block"

@@ -1,0 +1,148 @@
+<div class="min-h-screen flex flex-col">
+  <div
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
+  >
+    <!-- <div class="text-headline">
+      {{
+        "snippets.welcome-user"
+          | translate: { user: (user$ | async)?.displayName || "…" }
+      }}
+    </div> -->
+    <div class="relative inline-block text-left">
+      <div>
+        <button
+          (click)="toggleEditionSelect()"
+          type="button"
+          class="inline-flex justify-center w-full uppercase rounded-xl p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 bg-gray-200 hover:bg-gray-300 text-black"
+          id="options-menu"
+          aria-haspopup="true"
+          aria-expanded="true"
+        >
+          <div [innerText]="(selectedEdition$ | async)?.name"></div>
+          <!-- Heroicon name: solid/chevron-down -->
+          <svg
+            class="-mr-1 ml-2 h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 18 18"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!--
+        Dropdown panel, show/hide based on dropdown state.
+
+        Entering: "transition ease-out duration-100"
+          From: "transform opacity-0 scale-95"
+          To: "transform opacity-100 scale-100"
+        Leaving: "transition ease-in duration-75"
+          From: "transform opacity-100 scale-100"
+          To: "transform opacity-0 scale-95"
+      -->
+      <div
+        class="origin-top-left absolute left-0 mt-2 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+        [ngClass]="[
+          showEditions
+            ? 'transition ease-out duration-100'
+            : 'transition ease-in duration-75',
+          showEditions
+            ? 'transform opacity-100 scale-100'
+            : 'transform opacity-0 scale-95',
+          showEditions ? 'pointer-events-auto' : 'pointer-events-none'
+        ]"
+      >
+        <div
+          class="py-1"
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="options-menu"
+        >
+          <button
+            class="appearance-none w-full text-left flex justify-between items-center px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 hover:text-gray-900 focus:outline-none"
+            role="menuitem"
+            *ngFor="let edition of (editions$ | async)?.data?.editions"
+            [ngClass]="{
+              'font-medium bg-gray-100':
+                edition.id === (selectedEdition$ | async)?.id,
+              'pointer-events-none': !showEditions
+            }"
+            (click)="switchEdition($event, edition.id)"
+          >
+            <div [innerText]="edition.name"></div>
+            <div
+              class="relative"
+              *ngIf="edition.id === (currentEdition$ | async)?.id"
+            >
+              <div
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
+              ></div>
+              <div
+                class="bg-red-600 rounded-full text-xs w-3 h-3 relative"
+              ></div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav class="rounded-xl pointer-events-auto whitespace-nowrap flex">
+      <a
+        [routerLink]="['/', 't', 'dashboard']"
+        class="block rounded-tl-xl rounded-bl-xl uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
+        routerLinkActive="bg-black text-white "
+      >
+        Dash
+      </a>
+
+      <a
+        [routerLink]="['/', 't', 'applications']"
+        class="block uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
+        routerLinkActive="bg-black text-white "
+      >
+        Applications
+      </a>
+
+      <a
+        [routerLink]="['/', 't', 'settings']"
+        class="block uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
+        routerLinkActive="bg-black text-white "
+      >
+        Settings
+      </a>
+
+      <a
+        [routerLink]="['/', 't', 'search']"
+        class="block rounded-tr-xl rounded-br-xl uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
+        routerLinkActive="bg-black text-white "
+      >
+        Search
+      </a>
+    </nav>
+    <div></div>
+  </div>
+  <div class="flex-auto relative">
+    <router-outlet></router-outlet>
+  </div>
+  <footer class="container--default flex items-baseline justify-between">
+    <div class="text-headline">Berlin Art Prize</div>
+    <div class="space-x-8 flex">
+      <a
+        [routerLink]="['/', 'profile']"
+        routerLinkActive="router-link-active"
+        class="font-mono underline hover:text-gray-800"
+        [innerText]="'defaults.profile-single' | translate | titlecase"
+      ></a>
+      <button
+        (click)="logout()"
+        class="appearance-none font-mono underline hover:text-gray-800"
+        [innerText]="'actions.logout' | translate | titlecase"
+      ></button>
+    </div>
+  </footer>
+</div>

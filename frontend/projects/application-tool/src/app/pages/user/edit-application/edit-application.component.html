@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-200"
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <div class="flex items-center space-x-4">
       <button
@@ -623,7 +623,7 @@
     </div>
   </form>
 
-  <pre class="p-1 bg-red-50 text-xs">
+  <pre class="p-1 bg-red-50 text-xs overflow-hidden">
     {{ form.value | json }}
     {{ form.valid | json }}
     {{ name?.errors | json }}

@@ -1,15 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import {
-  catchError,
-  concatMap,
-  delay,
-  mergeMap,
-  retryWhen,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { delay, mergeMap, retryWhen, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-image',
@@ -22,6 +14,7 @@ export class ImageComponent implements OnInit {
   @Input() size: string = '';
 
   video: boolean = false;
+  pdf: boolean = false;
 
   requestKey: BehaviorSubject<string> = new BehaviorSubject(this.key);
 
@@ -39,9 +32,14 @@ export class ImageComponent implements OnInit {
     if (!this.key) return;
 
     if (this.mimetype.startsWith('video/')) this.video = true;
+    if (this.mimetype.startsWith('application/pdf')) this.pdf = true;
 
     this.requestKey.next(
-      this.mimetype === 'image/gif' ? this.key : this.key + this.size
+      this.mimetype.startsWith('video/') ||
+        this.mimetype.startsWith('application/pdf') ||
+        this.mimetype === 'image/gif'
+        ? this.key
+        : this.key + this.size
     );
 
     let getOriginal = false;

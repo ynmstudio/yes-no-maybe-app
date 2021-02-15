@@ -36,10 +36,10 @@ query GetEditionStatistic($id: Int!) {
       _and: {
         edition: { id: { _eq: $id } }
         _and: [
+          { disclaimer: { _eq: false } }
           { _not: { files: {} } }
           { _not: { specifications: {} } }
           { _not: { payment: {} } }
-          { disclaimer: { _eq: false } }
         ]
       }
     }
@@ -53,10 +53,10 @@ query GetEditionStatistic($id: Int!) {
       _and: {
         edition: { id: { _eq: $id } }
         _or: [
+          { disclaimer: { _eq: true } }
           { files: {} }
           { specifications: {} }
           { payment: {} }
-          { disclaimer: { _eq: true } }
         ]
       }
     }
@@ -70,10 +70,10 @@ query GetEditionStatistic($id: Int!) {
       _and: {
         edition: { id: { _eq: $id } }
         _and: [
+          { disclaimer: { _eq: true } }
           { files: {} }
           { specifications: {} }
           { payment: {} }
-          { disclaimer: { _eq: true } }
         ]
       }
     }

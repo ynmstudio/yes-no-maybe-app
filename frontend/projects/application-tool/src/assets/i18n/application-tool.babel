@@ -606,6 +606,23 @@
                 <name>defaults</name>
                 <children>
                     <concept_node>
+                        <name>anonymous</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>application-multi</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -878,6 +895,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>medium-multi</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>medium-single</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -946,7 +980,7 @@
                         </translations>
                     </concept_node>
                     <concept_node>
-                        <name>percent</name>
+                        <name>percent-single</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -1109,6 +1143,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>send-email</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>send-verification-email</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -1188,6 +1239,40 @@
                     </concept_node>
                     <concept_node>
                         <name>dont-reveal-name</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>hide-idenity</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>new-alias</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>

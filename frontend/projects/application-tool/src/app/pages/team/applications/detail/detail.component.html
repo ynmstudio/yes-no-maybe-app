@@ -1,0 +1,173 @@
+<div class="">
+  <div class="container--default-x py-4">
+    <a [routerLink]="['..']" class="text-sm font-mono"
+      >&larr; <span class="underline">Zurück zur Übersicht</span></a
+    >
+  </div>
+  <div
+    class="container--default-x"
+    *ngIf="application$ | async as applicationObject"
+  >
+    <div
+      class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 border-t border-b border-gray-300"
+      *ngIf="works$ | async as worksObject"
+    >
+      <div class="relative flex">
+        <div class="bg-gray-200 w-64 lg:w-80 border-r border-gray-300">
+          <div
+            class="px-4 py-2"
+            *ngFor="let work of worksObject.data.works; let first = first"
+            [ngClass]="[first ? 'bg-gray-900' : '']"
+          >
+            <div
+              class="inline-block h-20 w-auto mr-2"
+              *ngFor="let file of work.files"
+            >
+              <app-image
+                [key]="file.key"
+                [mimetype]="file.mimetype"
+                size="_200x200"
+                [title]="file.originalname"
+              ></app-image>
+            </div>
+          </div>
+        </div>
+        <div class="flex-auto overflow-auto overscroll-contain relative">
+          <div *ngFor="let work of worksObject.data.works; let first = first">
+            <app-image
+              *ngFor="let file of work.files"
+              class="absolute inset-0 text-center transform-gpu transition-opacity"
+              [key]="file.key"
+              [mimetype]="file.mimetype"
+              [title]="file.originalname"
+              size="_1440x1200"
+            ></app-image>
+          </div>
+        </div>
+        <div class="bg-gray-200 w-64 lg:w-80 border-l border-gray-300"></div>
+      </div>
+    </div>
+    <div class="container--default border-b border-gray-300 mb-12"></div>
+    <div class="lg:flex items-baseline">
+      <div>
+        <h1
+          class="text-headline capitalize lg:whitespace-nowrap w-96 mb-10"
+          [innerText]="
+            anonymous
+              ? applicationObject.data?.applications_by_pk?.internal_name
+              : applicationObject.data.applications_by_pk?.name ||
+                '<no-title-set>'
+          "
+        ></h1>
+        <div class="flex items-center space-x-6">
+          <div class="flex items-center">
+            <!-- This example requires Tailwind CSS v2.0+ -->
+            <!-- On: "bg-gray-600", Off: "bg-gray-200" -->
+            <button
+              (click)="toggleAnonymity()"
+              type="button"
+              aria-pressed="false"
+              aria-labelledby="toggleLabel"
+              [ngClass]="anonymous ? 'bg-green-600' : 'bg-red-600'"
+              class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
+            >
+              <span
+                class="sr-only"
+                [innerText]="'snippets.hide-idenity' | translate"
+              ></span>
+              <!-- On: "translate-x-5", Off: "translate-x-0" -->
+              <span
+                aria-hidden="true"
+                [ngClass]="[anonymous ? 'translate-x-6' : 'translate-x-0']"
+                class="inline-block h-5 w-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"
+              ></span>
+            </button>
+            <div
+              class="ml-2 text-xs font-mono text-gray-800 leading-none"
+              [innerText]="'defaults.anonymous' | translate | uppercase"
+            ></div>
+          </div>
+          <button
+            [ngClass]="[
+              anonymous ? 'opacity-100' : 'opacity-20 pointer-events-none'
+            ]"
+            [disabled]="!anonymous"
+            (click)="createNewAlias()"
+            class="flex items-center transition-opacity"
+          >
+            <div
+              class="rounded-full bg-gray-200 w-6 h-6 flex items-center justify-center"
+            >
+              <svg
+                width="16px"
+                height="14px"
+                viewBox="0 0 16 14"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <g
+                  id="Page-1"
+                  stroke="none"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <g
+                    id="Group-25"
+                    transform="translate(0.000000, 1.000000)"
+                    stroke="currentColor"
+                  >
+                    <path
+                      d="M12.44476,9 C12.9953008,8.06195636 13.1484619,7.23012361 13.1484619,6.03387761 C13.1484619,2.70151076 10.6718674,0 7.61745673,0 C6.30362793,0 5.09680212,0.500381505 4.14846195,1.33496109"
+                      id="Stroke-1"
+                    ></path>
+                    <path
+                      d="M2.88252666,3 C2.31218921,3.94411631 2.14846195,4.79600182 2.14846195,6.01135847 C2.14846195,9.31849159 4.6068705,12 7.6397826,12 C8.97376399,12 10.1969274,11.4802363 11.1484619,10.617901"
+                      id="Stroke-5"
+                    ></path>
+                    <g
+                      id="Group-24"
+                      transform="translate(0.000000, 2.091343)"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M3.27455103,0.676387463 L3.65562688,2.88130311 L1.17450014,1.44882391 L3.27455103,0.676387463 Z"
+                        id="Triangle"
+                      ></path>
+                      <path
+                        d="M11.8229621,4.71677311 L14.3040888,6.1492523 L12.2040379,6.92168875 L11.8229621,4.71677311 Z"
+                        id="Triangle"
+                      ></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <div
+              class="ml-2 text-xs font-mono text-gray-800 leading-none"
+              [innerText]="'snippets.new-alias' | translate | uppercase"
+            ></div>
+          </button>
+        </div>
+      </div>
+      <div
+        class="flex-auto mt-12 lg:mt-0 lg:ml-16 lg:pl-10 lg:pr-8 lg:border-l lg:border-r border-gray-300"
+      >
+        <div
+          class="font-mono text-base max-w-3xl"
+          [innerText]="applicationObject.data?.applications_by_pk?.statement"
+        ></div>
+        <div *ngIf="!anonymous">
+          <button
+            class="inline-block mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+            [innerText]="'email.send-email' | translate"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <pre class="p-1 bg-red-50 text-xs max-w-full overflow-hidden">
+  {{ application$ | async | json }}
+</pre> -->

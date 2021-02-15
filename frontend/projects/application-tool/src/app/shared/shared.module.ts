@@ -16,6 +16,8 @@ import { UploadTaskModule } from './components/upload-task/upload-task.module';
 
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { ImageModule } from './components/image/image.module';
+import { PdfModule } from './components/pdf/pdf.module';
+import { GalleryModule } from './components/gallery/gallery.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -27,6 +29,8 @@ const MODULES = [
   TranslateModule,
   UploadTaskModule,
   ImageModule,
+  PdfModule,
+  GalleryModule,
 ];
 
 const PIPES: any = [

@@ -1,0 +1,9 @@
+<pdf-viewer
+  *ngIf="downloadURL | async; let url"
+  class="block h-full w-full"
+  [src]="url"
+  [original-size]="false"
+  [autoresize]="true"
+  [zoom-scale]="'page-fit'"
+  (after-load-complete)="afterLoadComplete($event)"
+></pdf-viewer>

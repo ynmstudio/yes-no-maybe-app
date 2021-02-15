@@ -26,7 +26,8 @@
               "apollo-link-queue",
               "subscriptions-transport-ws",
               "graphql-tag",
-              "zen-observable"
+              "zen-observable",
+              "fast-fuzzy"
             ],
             "outputPath": "dist/application-tool",
             "index": "projects/application-tool/src/index.html",
@@ -117,9 +118,7 @@
               "projects/application-tool/tsconfig.spec.json",
               "projects/application-tool/e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

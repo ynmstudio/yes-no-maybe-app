@@ -140,3 +140,33 @@ mutation DeletePayment($id: uuid!, $application_id: uuid!) {
 # Jury
 
 # Admin
+query GetAdminApplicationsByEdition($edition_id: Int!) {
+  applications(
+    where: { edition_id: { _eq: $edition_id } }
+    order_by: { created_at: asc_nulls_first }
+  ) {
+    ...Application
+    internal_name
+  }
+  applications_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+query GetAdminApplication($id: uuid!) {
+  applications_by_pk(id: $id) {
+    ...Application
+    internal_name
+  }
+}
+mutation CreateNewAlias($id: uuid!) {
+  update_applications_by_pk(
+    pk_columns: { id: $id }
+    _set: { internal_name: null }
+  ) {
+    id
+    updated_at
+    internal_name
+  }
+}

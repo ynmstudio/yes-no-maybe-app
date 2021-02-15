@@ -3,9 +3,13 @@ import {
   EditionFragment,
   GetAllEditionsGQL,
   GetEditionStatisticGQL,
+  GetAdminApplicationsByEditionGQL,
+  GetAdminApplicationGQL,
+  CreateNewAliasGQL,
+  GetWorksGQL,
 } from 'generated/types.graphql-gen';
-import { AsyncSubject, BehaviorSubject, EMPTY, of, ReplaySubject } from 'rxjs';
-import { filter, first, map, switchMap } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +21,11 @@ export class TeamService {
 
   constructor(
     private getAllEditionsGQL: GetAllEditionsGQL,
-    private getEditionStatisticGQL: GetEditionStatisticGQL
+    private getEditionStatisticGQL: GetEditionStatisticGQL,
+    private getAdminApplicationsByEditionGQL: GetAdminApplicationsByEditionGQL,
+    private getAdminApplicationGQL: GetAdminApplicationGQL,
+    private createNewAliasGQL: CreateNewAliasGQL,
+    private getWorksGQL: GetWorksGQL
   ) {
     this.currentEdition
       .pipe(first())
@@ -42,7 +50,37 @@ export class TeamService {
       })
     );
   }
-
+  getAdminApplicationsByEdition() {
+    return this.selectedEdition.pipe(
+      switchMap((edition) => {
+        return this.getAdminApplicationsByEditionGQL.watch(
+          {
+            edition_id: edition?.id!,
+          },
+          { fetchPolicy: 'cache-and-network' }
+        ).valueChanges;
+      })
+    );
+  }
+  getAdminApplication(id: string) {
+    return this.getAdminApplicationGQL.watch(
+      {
+        id,
+      },
+      { fetchPolicy: 'cache-and-network' }
+    ).valueChanges;
+  }
+  getWorks(application_id: string) {
+    return this.getWorksGQL.watch(
+      {
+        application_id,
+      },
+      { fetchPolicy: 'cache-and-network' }
+    ).valueChanges;
+  }
+  async createNewAlias(id: string) {
+    return this.createNewAliasGQL.mutate({ id }).toPromise();
+  }
   get currentEdition() {
     return this.getAllEditions().pipe(
       map((editions) =>

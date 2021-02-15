@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-200"
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <div class="text-headline">
       {{
@@ -13,7 +13,7 @@
     <!-- APPLICATIONS -->
     <div
       id="applications"
-      class="container--default flex-auto w-full md:flex-shrink border-b md:border-b-0 md:border-r border-gray-200 pb-12 mb-2"
+      class="container--default flex-auto w-full md:flex-shrink border-b md:border-b-0 md:border-r border-gray-300 pb-12 mb-2"
     >
       <div *ngIf="applications$ | async as applicationsObject">
         <div class="md:px-6 font-mono">
@@ -99,96 +99,19 @@
                 >
                   {{ "application.status" | translate }}:
                 </div>
-                <div class="cols-span-5 lg:col-span-3">
+                <div class="cols-span-5 lg:col-span-3 text-orange-500">
                   <span
-                    class="text-orange-500"
                     [innerText]="
                       'application-state.' + (application.state || 'unknown')
                         | translate
                     "
+                    [ngClass]="{
+                      'text-gray-600': application.state === 'pristine',
+                      'text-red-600': application.state == 'not-payed',
+                      'text-green-500': application.state == 'complete'
+                    }"
                   >
                   </span>
-                  <!-- @TODO Compute application status in hasura -->
-                  <ng-container
-                    *ngIf="
-                      application.works_aggregate.aggregate?.count! > 0;
-                      else noWork
-                    "
-                  >
-                    <ng-container
-                      *ngIf="
-                        application.files_aggregate.aggregate?.count! > 0;
-                        else noFiles
-                      "
-                    >
-                      <span
-                        class="text-orange-500"
-                        *ngIf="
-                          !application.payment?.id && !application.disclaimer
-                        "
-                        [innerText]="
-                          'application.status--application-incomplete'
-                            | translate
-                        "
-                      >
-                      </span>
-                      <span
-                        class="text-red-600"
-                        *ngIf="
-                          !application.payment?.id && application.disclaimer
-                        "
-                        [innerText]="
-                          'application.status--missing-payment' | translate
-                        "
-                      >
-                      </span>
-                      <span
-                        class="text-orange-600"
-                        *ngIf="
-                          application.payment?.id && !application.disclaimer
-                        "
-                        [innerText]="
-                          'application.status--disclaimer' | translate
-                        "
-                      >
-                      </span>
-                      <span
-                        class="text-yellow-500"
-                        *ngIf="
-                          application.payment?.id &&
-                          application.disclaimer &&
-                          !application.ready
-                        "
-                        [innerText]="
-                          'application.status--application-not-marked-ready'
-                            | translate
-                        "
-                      >
-                      </span>
-                      <span
-                        class="text-green-500"
-                        *ngIf="application.ready"
-                        [innerText]="
-                          'application.status--application-complete' | translate
-                        "
-                      >
-                      </span>
-                    </ng-container>
-                  </ng-container>
-                  <ng-template #noWork>
-                    <span
-                      class="text-gray-600"
-                      [innerText]="'application.status--no-works' | translate"
-                    >
-                    </span>
-                  </ng-template>
-                  <ng-template #noFiles>
-                    <span
-                      class="text-orange-600"
-                      [innerText]="'application.status--no-files' | translate"
-                    >
-                    </span>
-                  </ng-template>
                 </div>
               </div>
               <div class="flex justify-end mt-6 space-x-4 items-center">
