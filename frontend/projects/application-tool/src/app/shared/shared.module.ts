@@ -18,6 +18,7 @@ import { DropzoneDirective } from './directives/dropzone.directive';
 import { ImageModule } from './components/image/image.module';
 import { PdfModule } from './components/pdf/pdf.module';
 import { GalleryModule } from './components/gallery/gallery.module';
+import { StorageService } from './services/storage.service';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -49,6 +50,7 @@ const PROVIDERS: any = [
   AuthService,
   HasuraService,
   MultilangService,
+  StorageService,
 ];
 
 @NgModule({

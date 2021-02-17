@@ -8,46 +8,10 @@
     class="container--default-x"
     *ngIf="application$ | async as applicationObject"
   >
-    <div
-      class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 border-t border-b border-gray-300"
+    <app-gallery
       *ngIf="works$ | async as worksObject"
-    >
-      <div class="relative flex">
-        <div class="bg-gray-200 w-64 lg:w-80 border-r border-gray-300">
-          <div
-            class="px-4 py-2"
-            *ngFor="let work of worksObject.data.works; let first = first"
-            [ngClass]="[first ? 'bg-gray-900' : '']"
-          >
-            <div
-              class="inline-block h-20 w-auto mr-2"
-              *ngFor="let file of work.files"
-            >
-              <app-image
-                [key]="file.key"
-                [mimetype]="file.mimetype"
-                size="_200x200"
-                [title]="file.originalname"
-              ></app-image>
-            </div>
-          </div>
-        </div>
-        <div class="flex-auto overflow-auto overscroll-contain relative">
-          <div *ngFor="let work of worksObject.data.works; let first = first">
-            <app-image
-              *ngFor="let file of work.files"
-              class="absolute inset-0 text-center transform-gpu transition-opacity"
-              [key]="file.key"
-              [mimetype]="file.mimetype"
-              [title]="file.originalname"
-              size="_1440x1200"
-            ></app-image>
-          </div>
-        </div>
-        <div class="bg-gray-200 w-64 lg:w-80 border-l border-gray-300"></div>
-      </div>
-    </div>
-    <div class="container--default border-b border-gray-300 mb-12"></div>
+      [works]="worksObject.data.works"
+    ></app-gallery>
     <div class="lg:flex items-baseline">
       <div>
         <h1
@@ -56,7 +20,7 @@
             anonymous
               ? applicationObject.data?.applications_by_pk?.internal_name
               : applicationObject.data.applications_by_pk?.name ||
-                '<no-title-set>'
+                'Untitled Application'
           "
         ></h1>
         <div class="flex items-center space-x-6">

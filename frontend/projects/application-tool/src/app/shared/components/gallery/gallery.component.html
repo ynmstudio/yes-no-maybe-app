@@ -1,1 +1,265 @@
-<p>gallery works!</p>
+<div
+  class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 border-t border-b border-gray-300"
+>
+  <div class="flex">
+    <div class="bg-gray-200 w-64 lg:w-80 border-r border-gray-300">
+      <div
+        class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain transition-colors"
+        *ngFor="let work of works; let indexW = index; let first = first"
+        [ngClass]="[
+          (currentWorkIndex | async) == indexW
+            ? 'bg-gray-900 '
+            : 'hover:bg-gray-300 cursor-pointer'
+        ]"
+        (click)="setCurrentWork(indexW)"
+      >
+        <div
+          class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow"
+          (click)="setCurrentFile(indexF, $event, indexW)"
+          *ngFor="let file of work?.files; let indexF = index"
+          [ngClass]="[
+            (work?.files?.length || 0) > 1
+              ? 'hover:ring-gray-300 hover:ring-1 cursor-pointer'
+              : '',
+            (work?.files?.length || 0) > 1 &&
+            (currentWorkIndex | async) == indexW &&
+            (currentFileIndex | async) == indexF
+              ? 'ring-1'
+              : 'ring-0'
+          ]"
+        >
+          <app-image
+            [key]="file.key"
+            [mimetype]="file.mimetype"
+            size="_200x200"
+            [title]="file.originalname"
+          ></app-image>
+        </div>
+      </div>
+    </div>
+    <div class="flex-auto overflow-hidden relative">
+      <div *ngIf="currentWork | async as work">
+        <ng-container
+          *ngFor="let file of work?.files; let index = index"
+          [ngSwitch]="file.mimetype"
+        >
+          <app-pdf
+            *ngSwitchCase="'application/pdf'"
+            class="absolute inset-0 text-center transform-gpu transition-opacity"
+            [key]="file.key"
+            [mimetype]="file.mimetype"
+            [title]="file.originalname"
+            [ngClass]="[
+              (currentFileIndex | async) == index
+                ? 'opacity-100'
+                : 'opacity-0 pointer-events-none'
+            ]"
+          >
+          </app-pdf>
+          <app-image
+            *ngSwitchDefault
+            class="absolute inset-0 text-center transform-gpu transition-opacity"
+            [key]="file.key"
+            [mimetype]="file.mimetype"
+            [title]="file.originalname"
+            size="_1440x1200"
+            [ngClass]="[
+              (currentFileIndex | async) == index
+                ? 'opacity-100'
+                : 'opacity-0 pointer-events-none'
+            ]"
+          ></app-image>
+        </ng-container>
+        <ng-container *ngIf="(work?.files?.length || 0) > 1">
+          <button
+            (click)="incrementFileIndex(-1, work?.files?.length || 0)"
+            class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 text-3xl"
+          >
+            &larr;
+          </button>
+          <button
+            (click)="incrementFileIndex(1, work?.files?.length || 0)"
+            class="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 text-3xl"
+          >
+            &rarr;
+          </button>
+        </ng-container>
+      </div>
+    </div>
+    <div
+      class="bg-gray-200 w-64 lg:w-80 border-l border-gray-300 relative"
+      *ngIf="currentWork | async as work"
+    >
+      <div
+        class="absolute inset-0 bg-gray-200 overflow-scroll overscroll-contain transform-gpu transition-opacity"
+        *ngFor="let specification of work?.specifications; let index = index"
+        [ngClass]="[
+          (currentSpecificationIndex | async) == index
+            ? 'opacity-100'
+            : 'opacity-0 pointer-events-none'
+        ]"
+      >
+        <div class="grid grid-cols-5 items-stretch p-4 lg:px-6 lg:py-8">
+          <div
+            class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Titel
+          </div>
+          <div class="col-span-3 border-b border-black">
+            {{ specification.title }}
+          </div>
+          <div
+            class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Jahr
+          </div>
+          <div class="col-span-3 border-b border-black">
+            {{ specification.year }}
+          </div>
+          <div
+            class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Editionen
+          </div>
+          <div class="col-span-3 border-b border-black">
+            {{ specification.number_of_editions }}
+          </div>
+          <div
+            class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Medium
+          </div>
+          <div class="col-span-3 border-b border-black">
+            {{ specification.medium }}
+          </div>
+          <div
+            class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Maße
+          </div>
+          <div class="col-span-3 border-b border-black">
+            {{ "defaults.dimensions-width" | translate | uppercase }}
+            {{ specification.dimensions_width || 0 }}
+            &times;&thinsp;{{
+              "defaults.dimensions-height" | translate | uppercase
+            }}
+            {{ specification.dimensions_height || 0 }}
+            &times;&thinsp;{{
+              "defaults.dimensions-depth" | translate | uppercase
+            }}
+            {{ specification.dimensions_depth || 0 }}&thinsp;cm
+          </div>
+          <div
+            class="col-span-5 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Tags
+            <span
+              class="m-1 inline-block h-4 bg-blue-600 py-1 px-2 text-white rounded-full leading-none text-center text-xxs"
+              >Film/Video</span
+            >
+            <span
+              class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 p-1 text-gray-800 rounded-full leading-none text-center text-xxs"
+              >+</span
+            >
+          </div>
+          <div class="col-span-5 text-gray-800 font-mono uppercase text-xs">
+            Hinweis
+            <span
+              class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 p-1 text-gray-800 rounded-full leading-none text-center text-xxs"
+              >+</span
+            >
+          </div>
+          <div
+            class="col-span-5 mt-6 border-b border-black text-gray-800 font-mono uppercase text-xs"
+          >
+            Beschreibung
+          </div>
+          <div
+            class="col-span-5 py-2"
+            [innerText]="specification.description"
+          ></div>
+        </div>
+      </div>
+      <!-- <div
+        class="absolute bottom-0 inset-x-0 text-right font-mono m-1"
+        *ngIf="(work?.specifications?.length || 0) > 1"
+      >
+        <button
+          class="py-1 px-3 m-1 rounded-xl leading-none"
+          (click)="setCurrentSpecification(index)"
+          *ngFor="let specification of work?.specifications; let index = index"
+          [ngClass]="[
+            (currentSpecificationIndex | async) == index
+              ? 'bg-black text-white'
+              : 'bg-white text-black'
+          ]"
+        >
+          <span
+            class="inline-block"
+            *ngIf="(currentSpecificationIndex | async) == index"
+          >
+            Arbeitsangabe
+          </span>
+          {{ index + 1 }}
+        </button>
+      </div> -->
+    </div>
+  </div>
+</div>
+<div
+  class="pt-2 border-b border-gray-300 mb-12 md:grid grid-cols-2 lg:grid-cols-3"
+>
+  <div
+    class="lg:text-center lg:col-start-2"
+    *ngIf="currentSpecification | async as specification"
+  >
+    <div class="font-mono px-3">{{ specification?.title || "Untitled" }}</div>
+    <ol *ngIf="currentWork | async as work">
+      <li
+        *ngFor="let item of work?.files; let index = index"
+        class="inline-block p-3 mx-1 group"
+        (click)="setCurrentFile(index, $event)"
+        [ngClass]="[
+        (work?.files?.length || 0) > 1
+              ? 'cursor-pointer'
+              : '',]"
+      >
+        <span
+          class="block w-1 h-1 rounded-full ring-1 ring-gray-900 transition-colors"
+          [ngClass]="[
+            (work?.files?.length || 0) > 1
+              ? 'group-hover:ring-blue-600 group-hover:bg-blue-600'
+              : '',
+            (currentFileIndex | async) == index
+              ? 'bg-black ring-black'
+              : 'bg-transparent'
+          ]"
+        ></span>
+      </li>
+    </ol>
+  </div>
+  <div>
+    <div class="text-right font-mono m-1" *ngIf="currentWork | async as work">
+      <button
+        class="py-1 px-3 m-1 rounded-xl leading-none"
+        (click)="setCurrentSpecification(index)"
+        *ngFor="let specification of work?.specifications; let index = index"
+        [ngClass]="[
+          (currentSpecificationIndex | async) == index
+            ? 'bg-black text-white'
+            : 'bg-gray-200 text-black'
+        ]"
+      >
+        <span
+          class="inline-block"
+          *ngIf="(currentSpecificationIndex | async) == index"
+        >
+          Arbeitsangabe
+        </span>
+        <span *ngIf="(work?.specifications?.length || 0) > 1">
+          {{ index + 1 }}
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

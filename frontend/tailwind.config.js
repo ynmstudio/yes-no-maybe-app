@@ -19,6 +19,13 @@ module.exports = {
       ],
     },
     fontSize: {
+      xxs: [
+        "10px",
+        {
+          letterSpacing: "-0.06px",
+          lineHeight: "20px",
+        },
+      ],
       xs: [
         "12px",
         {
@@ -161,6 +168,8 @@ module.exports = {
       opacity: ["disabled"],
       backgroundColor: ["even"],
       backgroundOpacity: ["even"],
+      ringColor: ["hover"],
+      ringWidth: ["hover"],
     },
 
     filter: ["responsive"], // defaults to ['responsive']

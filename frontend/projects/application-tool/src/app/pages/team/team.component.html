@@ -91,35 +91,61 @@
         </div>
       </div>
     </div>
-    <nav class="rounded-xl pointer-events-auto whitespace-nowrap flex">
+    <nav
+      class="rounded-xl pointer-events-auto whitespace-nowrap flex uppercase font-condensed text-sm leading-none"
+    >
       <a
         [routerLink]="['/', 't', 'dashboard']"
-        class="block rounded-tl-xl rounded-bl-xl uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
-        routerLinkActive="bg-black text-white "
+        class="block rounded-tl-xl rounded-bl-xl p-3"
+        routerLinkActive
+        #dashboard="routerLinkActive"
+        [ngClass]="[
+          dashboard.isActive
+            ? 'bg-black text-white'
+            : 'bg-gray-200 hover:bg-gray-300 text-black'
+        ]"
       >
         Dash
       </a>
 
       <a
         [routerLink]="['/', 't', 'applications']"
-        class="block uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
-        routerLinkActive="bg-black text-white "
+        class="block p-3"
+        routerLinkActive
+        #applications="routerLinkActive"
+        [ngClass]="[
+          applications.isActive
+            ? 'bg-black text-white'
+            : 'bg-gray-200 hover:bg-gray-300 text-black'
+        ]"
       >
         Applications
       </a>
 
       <a
         [routerLink]="['/', 't', 'settings']"
-        class="block uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
-        routerLinkActive="bg-black text-white "
+        class="block p-3"
+        routerLinkActive
+        #settings="routerLinkActive"
+        [ngClass]="[
+          settings.isActive
+            ? 'bg-black text-white'
+            : 'bg-gray-200 hover:bg-gray-300 text-black'
+        ]"
       >
         Settings
       </a>
 
       <a
         [routerLink]="['/', 't', 'search']"
-        class="block rounded-tr-xl rounded-br-xl uppercase p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 bg-gray-200 hover:bg-gray-300 text-black"
-        routerLinkActive="bg-black text-white "
+        class="block rounded-tr-xl rounded-br-xl p-3"
+        routerLinkActive
+        #search="routerLinkActive"
+        [ngClass]="[
+          search.isActive
+            ? 'bg-black text-white'
+            : 'bg-gray-200 hover:bg-gray-300 text-black'
+        ]"
       >
         Search
       </a>

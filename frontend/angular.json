@@ -27,7 +27,8 @@
               "subscriptions-transport-ws",
               "graphql-tag",
               "zen-observable",
-              "fast-fuzzy"
+              "fast-fuzzy",
+              "ng2-pdf-viewer"
             ],
             "outputPath": "dist/application-tool",
             "index": "projects/application-tool/src/index.html",

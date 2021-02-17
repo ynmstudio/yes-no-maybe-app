@@ -1,9 +1,59 @@
 <pdf-viewer
-  *ngIf="downloadURL | async; let url"
-  class="block h-full w-full"
+  *ngIf="downloadURL | async; let url; else: loading"
+  class="block h-full w-auto bg-gray-50"
   [src]="url"
+  [show-all]="false"
+  [page]="page"
   [original-size]="false"
   [autoresize]="true"
   [zoom-scale]="'page-fit'"
   (after-load-complete)="afterLoadComplete($event)"
 ></pdf-viewer>
+<ng-template #loading>
+  <div
+    class="flex transition-colors items-center justify-center relative"
+    [ngClass]="[
+      error ? 'bg-red-200 text-red-600' : 'bg-gray-300 text-gray-800',
+    ]"
+  >
+    <div
+      class="spinner transition-opacity"
+      [ngClass]="error ? 'opacity-0' : 'opacity-1'"
+    ></div>
+    <div
+      class="absolute bottom-0 right-0 p-1 text-base font-mono transition-opacity"
+      [ngClass]="error ? 'opacity-1' : 'opacity-0'"
+    >
+      404
+    </div>
+  </div>
+</ng-template>
+<div class="absolute bottom-0 inset-x-0 m-2 flex justify-center" *ngIf="pdf">
+  <button
+    class="p-2 bg-gray-50 hover:bg-gray-200 rounded-tl-xl rounded-bl-xl"
+    (click)="incrementPage(-1)"
+    mat-button
+    type="button"
+  >
+    &larr;
+  </button>
+  <div class="p-2 bg-gray-50">
+    <input
+      class="outline-none border-none focus:outline-none focus:ring-0 bg-transparent p-0 w-6 text-right"
+      type="number"
+      [(ngModel)]="page"
+      min="1"
+      [max]="pdf.numPages"
+    />
+    &thinsp;/&thinsp;
+    <span class="w-6 text-left">{{ pdf.numPages || 1 }}</span>
+  </div>
+  <button
+    class="p-2 bg-gray-50 hover:bg-gray-200 rounded-tr-xl rounded-br-xl"
+    (click)="incrementPage(1)"
+    mat-button
+    type="button"
+  >
+    &rarr;
+  </button>
+</div>

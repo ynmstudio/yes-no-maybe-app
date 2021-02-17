@@ -3,6 +3,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, retryWhen, switchMap } from 'rxjs/operators';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-pdf',
@@ -13,14 +14,14 @@ export class PdfComponent implements OnInit {
   @Input() key!: string;
   @Input() mimetype!: string;
 
-  downloadURL!: Observable<string>;
+  downloadURL!: Promise<string>;
 
   pdf: any;
   outline: any[] = [];
 
   error: boolean = false;
 
-  constructor(private storage: AngularFireStorage) {}
+  constructor(private storageService: StorageService) {}
 
   ngOnInit(): void {
     this.getDownloadUrl();
@@ -29,8 +30,15 @@ export class PdfComponent implements OnInit {
   getDownloadUrl() {
     if (!this.key) return;
 
-    this.downloadURL = this.storage.ref(this.key).getDownloadURL();
+    this.downloadURL = this.storageService
+      .getUrl(this.key, this.mimetype)
+      .catch((_) => {
+        this.error = true;
+        return _;
+      });
   }
+
+  page = 1;
 
   /**
    * Get pdf information after it's loaded
@@ -39,6 +47,7 @@ export class PdfComponent implements OnInit {
   afterLoadComplete(pdf: PDFDocumentProxy) {
     this.pdf = pdf;
 
+    console.log(this.pdf.numPages);
     this.loadOutline();
   }
   /**
@@ -46,5 +55,16 @@ export class PdfComponent implements OnInit {
    */
   async loadOutline() {
     this.outline = await this.pdf.getOutline();
+
+    console.log(this.outline);
+  }
+
+  incrementPage(amount: number) {
+    this.page =
+      this.page + amount < 1
+        ? 1
+        : this.page + amount >= this.pdf.numPages
+        ? this.pdf.numPages
+        : this.page + amount;
   }
 }
