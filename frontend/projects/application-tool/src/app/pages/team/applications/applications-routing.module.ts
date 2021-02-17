@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./detail/detail.module').then((m) => m.DetailModule),
   },
+  {
+    path: ':id/fullscreen',
+    loadChildren: () =>
+      import('./detail/detail.module').then((m) => m.DetailModule),
+  },
 ];
 
 @NgModule({

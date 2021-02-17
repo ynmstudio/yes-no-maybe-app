@@ -1,7 +1,7 @@
 <div
   class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 border-t border-b border-gray-300"
 >
-  <div class="flex">
+  <div class="flex overflow-hidden bg-gray-50">
     <div class="bg-gray-200 w-64 lg:w-80 border-r border-gray-300">
       <div
         class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain transition-colors"
@@ -37,7 +37,14 @@
         </div>
       </div>
     </div>
-    <div class="flex-auto overflow-hidden relative">
+    <div
+      class="flex-auto overflow-hidden relative lg:mx-40 transition-transform transform-gpu origin-right"
+      [ngClass]="[
+        showSpecification || showChat
+          ? 'lg:-translate-x-40'
+          : 'lg:translate-x-0'
+      ]"
+    >
       <div *ngIf="currentWork | async as work">
         <ng-container
           *ngFor="let file of work?.files; let index = index"
@@ -86,9 +93,15 @@
         </ng-container>
       </div>
     </div>
+    <app-chat
+      [application_id]="application_id"
+      class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-transform transform-gpu origin-right"
+      [ngClass]="[showChat ? 'translate-x-0' : 'translate-x-full']"
+    ></app-chat>
     <div
-      class="bg-gray-200 w-64 lg:w-80 border-l border-gray-300 relative"
+      class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-transform transform-gpu origin-right"
       *ngIf="currentWork | async as work"
+      [ngClass]="[showSpecification ? 'translate-x-0' : 'translate-x-full']"
     >
       <div
         class="absolute inset-0 bg-gray-200 overflow-scroll overscroll-contain transform-gpu transition-opacity"
@@ -206,14 +219,14 @@
     </div>
   </div>
 </div>
-<div
-  class="pt-2 border-b border-gray-300 mb-12 md:grid grid-cols-2 lg:grid-cols-3"
->
+<div class="border-b border-gray-300 mb-12 md:grid grid-cols-2 lg:grid-cols-3">
   <div
     class="lg:text-center lg:col-start-2"
     *ngIf="currentSpecification | async as specification"
   >
-    <div class="font-mono px-3">{{ specification?.title || "Untitled" }}</div>
+    <div class="font-mono mt-2 px-3">
+      {{ specification?.title || "Untitled" }}
+    </div>
     <ol *ngIf="currentWork | async as work">
       <li
         *ngFor="let item of work?.files; let index = index"
@@ -238,14 +251,17 @@
       </li>
     </ol>
   </div>
-  <div>
-    <div class="text-right font-mono m-1" *ngIf="currentWork | async as work">
+  <div class="flex justify-between items-center">
+    <div
+      class="font-mono flex items-center space-x-2"
+      *ngIf="currentWork | async as work"
+    >
       <button
-        class="py-1 px-3 m-1 rounded-xl leading-none"
+        class="block h-8 py-1 px-3 rounded-xl leading-none"
         (click)="setCurrentSpecification(index)"
         *ngFor="let specification of work?.specifications; let index = index"
         [ngClass]="[
-          (currentSpecificationIndex | async) == index
+          (currentSpecificationIndex | async) == index && showSpecification
             ? 'bg-black text-white'
             : 'bg-gray-200 text-black'
         ]"
@@ -259,6 +275,38 @@
         <span *ngIf="(work?.specifications?.length || 0) > 1">
           {{ index + 1 }}
         </span>
+      </button>
+      <button
+        class="block h-8 px-3 rounded-xl leading-none"
+        (click)="toggleChat()"
+        [ngClass]="[
+          showChat ? 'bg-black text-white' : 'bg-gray-200 text-black'
+        ]"
+      >
+        <!-- <div class="sr-only">Toggle Chat</div> -->
+        <svg
+          class="inline-block h-5 w-auto"
+          width="25px"
+          height="21px"
+          viewBox="0 0 25 21"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            id="Page-1"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+          >
+            <path
+              d="M1,2.87232347 L1,14.8541978 C1,15.8862995 1.83211783,16.7261893 2.85499785,16.7261893 L4.70966681,16.7261893 L4.70966681,21 L8.94392964,16.7261893 L22.1450021,16.7261893 C23.1675533,16.7261893 24,15.8862995 24,14.8541978 L24,2.87232347 C24,1.84022176 23.1675533,1 22.1450021,1 L2.85499785,1 C1.83211783,1 1,1.84022176 1,2.87232347 Z M18,9 L7,9 M18,6 L7,6 M15,12 L7,12"
+              id="Stroke-2"
+              stroke="currentColor"
+            ></path>
+          </g>
+        </svg>
       </button>
     </div>
   </div>

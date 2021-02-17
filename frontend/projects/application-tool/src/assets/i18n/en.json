@@ -70,6 +70,8 @@
 	"snippets.add-application": "Add new application",
 	"snippets.dont-reveal-name": "Don't reveal your name",
 	"snippets.hide-idenity": "Hide true idenity",
+	"snippets.insert-message": "insert message",
+	"snippets.internal-chat": "internal chat",
 	"snippets.new-alias": "new alias",
 	"snippets.no-applications": "No applications found",
 	"snippets.welcome-user": "Hello {{user}}",

@@ -271,6 +271,76 @@
       filter: {}
 - table:
     schema: public
+    name: messages
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  - name: rating_round
+    using:
+      foreign_key_constraint_on: round_id
+  - name: user
+    using:
+      foreign_key_constraint_on: created_by
+  insert_permissions:
+  - role: jury
+    permission:
+      check: {}
+      set:
+        created_by: x-hasura-User-Id
+      columns:
+      - application_id
+      - round_id
+      - text
+      backend_only: false
+  - role: team
+    permission:
+      check: {}
+      set:
+        created_by: x-hasura-User-Id
+      columns:
+      - application_id
+      - round_id
+      - text
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - round_id
+      - text
+      filter:
+        application_id:
+          _is_null: false
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - round_id
+      - text
+      filter:
+        application_id:
+          _is_null: false
+      allow_aggregations: true
+  delete_permissions:
+  - role: jury
+    permission:
+      filter:
+        created_by:
+          _eq: X-Hasura-User-Id
+  - role: team
+    permission:
+      filter:
+        created_by:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
     name: payments
   object_relationships:
   - name: application
@@ -381,6 +451,24 @@
               _eq: true
         - _not:
             next_round: {}
+  - role: team
+    permission:
+      columns:
+      - id
+      - start_at
+      - end_at
+      - edition_id
+      - goal
+      - prev_round_id
+      - created_at
+      - updated_at
+      filter:
+        _and:
+        - edition:
+            current:
+              _eq: true
+        - _not:
+            next_round: {}
 - table:
     schema: public
     name: ratings
@@ -434,21 +522,27 @@
   - role: jury
     permission:
       columns:
+      - id
+      - last_seen
       - name
       - type
-      - id
-      filter: {}
+      filter:
+        type:
+          _ne: user
   - role: team
     permission:
       columns:
+      - id
+      - last_seen
       - name
       - type
-      - id
       filter: {}
   - role: user
     permission:
       columns:
       - id
+      - last_seen
+      - name
       - type
       filter:
         id:
@@ -456,7 +550,9 @@
   update_permissions:
   - role: jury
     permission:
-      columns: []
+      columns:
+      - last_seen
+      - name
       filter:
         id:
           _eq: X-Hasura-User-Id
@@ -466,6 +562,7 @@
   - role: team
     permission:
       columns:
+      - last_seen
       - name
       - type
       filter: {}
@@ -490,6 +587,9 @@
       filter:
         id:
           _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: users_online
 - table:
     schema: public
     name: wordlist

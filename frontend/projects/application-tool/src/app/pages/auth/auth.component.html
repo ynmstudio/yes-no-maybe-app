@@ -36,26 +36,15 @@
       <div
         class="font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
       >
-        <label for="firstName" class="text-right">Vorname*</label>
+        <label for="displayName" class="text-right">Name*</label>
         <input
           id="first-name"
-          formControlName="firstName"
-          name="firstName"
+          formControlName="displayName"
+          name="displayName"
           type="text"
           autocomplete="name"
           class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
         />
-
-        <label for="lastName" class="text-right">Nachname*</label>
-        <input
-          id="last-name"
-          formControlName="lastName"
-          name="lastName"
-          type="text"
-          autocomplete="family-name"
-          class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-        />
-
         <label for="email-address" class="text-right">E-Mail*</label>
         <input
           id="email-address"
@@ -141,18 +130,11 @@
       </div>
       <div class="px-2 py-4 text-xs font-mono text-red-600 leading-tight">
         <p
-          *ngIf="firstName.touched && firstName.invalid"
+          *ngIf="displayName.touched && displayName.invalid"
           class="mt-2 truncate"
           id="email-error"
         >
-          Bitte Vornamen eingeben.
-        </p>
-        <p
-          *ngIf="lastName.touched && lastName.invalid"
-          class="mt-2 truncate"
-          id="email-error"
-        >
-          Bitte Nachnamen eingeben.
+          Bitte Namen eingeben.
         </p>
         <p
           *ngIf="email.touched && email.invalid"

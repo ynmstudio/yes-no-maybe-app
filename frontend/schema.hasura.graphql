@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Tue Feb 16 2021 15:37:42 GMT+0100 (GMT+01:00)
+# timestamp: Wed Feb 17 2021 12:33:41 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -1087,6 +1087,389 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
+"""
+columns and relationships of "messages"
+"""
+type messages {
+  """An object relationship"""
+  application: applications!
+  application_id: uuid!
+  created_at: timestamp!
+  created_by: String!
+  id: Int!
+
+  """An object relationship"""
+  rating_round: rating_rounds
+  round_id: Int
+  text: String!
+
+  """An object relationship"""
+  user: users!
+}
+
+"""
+aggregated selection of "messages"
+"""
+type messages_aggregate {
+  aggregate: messages_aggregate_fields
+  nodes: [messages!]!
+}
+
+"""
+aggregate fields of "messages"
+"""
+type messages_aggregate_fields {
+  avg: messages_avg_fields
+  count(columns: [messages_select_column!], distinct: Boolean): Int
+  max: messages_max_fields
+  min: messages_min_fields
+  stddev: messages_stddev_fields
+  stddev_pop: messages_stddev_pop_fields
+  stddev_samp: messages_stddev_samp_fields
+  sum: messages_sum_fields
+  var_pop: messages_var_pop_fields
+  var_samp: messages_var_samp_fields
+  variance: messages_variance_fields
+}
+
+"""
+order by aggregate values of table "messages"
+"""
+input messages_aggregate_order_by {
+  avg: messages_avg_order_by
+  count: order_by
+  max: messages_max_order_by
+  min: messages_min_order_by
+  stddev: messages_stddev_order_by
+  stddev_pop: messages_stddev_pop_order_by
+  stddev_samp: messages_stddev_samp_order_by
+  sum: messages_sum_order_by
+  var_pop: messages_var_pop_order_by
+  var_samp: messages_var_samp_order_by
+  variance: messages_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "messages"
+"""
+input messages_arr_rel_insert_input {
+  data: [messages_insert_input!]!
+  on_conflict: messages_on_conflict
+}
+
+"""aggregate avg on columns"""
+type messages_avg_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by avg() on columns of table "messages"
+"""
+input messages_avg_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "messages". All fields are combined with a logical 'AND'.
+"""
+input messages_bool_exp {
+  _and: [messages_bool_exp]
+  _not: messages_bool_exp
+  _or: [messages_bool_exp]
+  application: applications_bool_exp
+  application_id: uuid_comparison_exp
+  created_at: timestamp_comparison_exp
+  created_by: String_comparison_exp
+  id: Int_comparison_exp
+  rating_round: rating_rounds_bool_exp
+  round_id: Int_comparison_exp
+  text: String_comparison_exp
+  user: users_bool_exp
+}
+
+"""
+unique or primary key constraints on table "messages"
+"""
+enum messages_constraint {
+  """unique or primary key constraint"""
+  messages_pkey
+}
+
+"""
+input type for incrementing integer column in table "messages"
+"""
+input messages_inc_input {
+  id: Int
+  round_id: Int
+}
+
+"""
+input type for inserting data into table "messages"
+"""
+input messages_insert_input {
+  application: applications_obj_rel_insert_input
+  application_id: uuid
+  created_at: timestamp
+  created_by: String
+  id: Int
+  rating_round: rating_rounds_obj_rel_insert_input
+  round_id: Int
+  text: String
+  user: users_obj_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type messages_max_fields {
+  application_id: uuid
+  created_at: timestamp
+  created_by: String
+  id: Int
+  round_id: Int
+  text: String
+}
+
+"""
+order by max() on columns of table "messages"
+"""
+input messages_max_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  round_id: order_by
+  text: order_by
+}
+
+"""aggregate min on columns"""
+type messages_min_fields {
+  application_id: uuid
+  created_at: timestamp
+  created_by: String
+  id: Int
+  round_id: Int
+  text: String
+}
+
+"""
+order by min() on columns of table "messages"
+"""
+input messages_min_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  round_id: order_by
+  text: order_by
+}
+
+"""
+response of any mutation on the table "messages"
+"""
+type messages_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [messages!]!
+}
+
+"""
+input type for inserting object relation for remote table "messages"
+"""
+input messages_obj_rel_insert_input {
+  data: messages_insert_input!
+  on_conflict: messages_on_conflict
+}
+
+"""
+on conflict condition type for table "messages"
+"""
+input messages_on_conflict {
+  constraint: messages_constraint!
+  update_columns: [messages_update_column!]!
+  where: messages_bool_exp
+}
+
+"""
+ordering options when selecting data from "messages"
+"""
+input messages_order_by {
+  application: applications_order_by
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  rating_round: rating_rounds_order_by
+  round_id: order_by
+  text: order_by
+  user: users_order_by
+}
+
+"""
+primary key columns input for table: "messages"
+"""
+input messages_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "messages"
+"""
+enum messages_select_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by
+
+  """column name"""
+  id
+
+  """column name"""
+  round_id
+
+  """column name"""
+  text
+}
+
+"""
+input type for updating data in table "messages"
+"""
+input messages_set_input {
+  application_id: uuid
+  created_at: timestamp
+  created_by: String
+  id: Int
+  round_id: Int
+  text: String
+}
+
+"""aggregate stddev on columns"""
+type messages_stddev_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by stddev() on columns of table "messages"
+"""
+input messages_stddev_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type messages_stddev_pop_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "messages"
+"""
+input messages_stddev_pop_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type messages_stddev_samp_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "messages"
+"""
+input messages_stddev_samp_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""aggregate sum on columns"""
+type messages_sum_fields {
+  id: Int
+  round_id: Int
+}
+
+"""
+order by sum() on columns of table "messages"
+"""
+input messages_sum_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""
+update columns of table "messages"
+"""
+enum messages_update_column {
+  """column name"""
+  application_id
+
+  """column name"""
+  created_at
+
+  """column name"""
+  created_by
+
+  """column name"""
+  id
+
+  """column name"""
+  round_id
+
+  """column name"""
+  text
+}
+
+"""aggregate var_pop on columns"""
+type messages_var_pop_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by var_pop() on columns of table "messages"
+"""
+input messages_var_pop_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type messages_var_samp_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by var_samp() on columns of table "messages"
+"""
+input messages_var_samp_order_by {
+  id: order_by
+  round_id: order_by
+}
+
+"""aggregate variance on columns"""
+type messages_variance_fields {
+  id: Float
+  round_id: Float
+}
+
+"""
+order by variance() on columns of table "messages"
+"""
+input messages_variance_order_by {
+  id: order_by
+  round_id: order_by
+}
+
 """mutation root"""
 type mutation_root {
   """
@@ -1114,6 +1497,19 @@ type mutation_root {
   delete single row from the table: "editions"
   """
   delete_editions_by_pk(id: Int!): editions
+
+  """
+  delete data from the table: "messages"
+  """
+  delete_messages(
+    """filter the rows which have to be deleted"""
+    where: messages_bool_exp!
+  ): messages_mutation_response
+
+  """
+  delete single row from the table: "messages"
+  """
+  delete_messages_by_pk(id: Int!): messages
 
   """
   delete data from the table: "payments"
@@ -1192,6 +1588,14 @@ type mutation_root {
   delete single row from the table: "users"
   """
   delete_users_by_pk(id: String!): users
+
+  """
+  delete data from the table: "users_online"
+  """
+  delete_users_online(
+    """filter the rows which have to be deleted"""
+    where: users_online_bool_exp!
+  ): users_online_mutation_response
 
   """
   delete data from the table: "wordlist"
@@ -1288,6 +1692,28 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: editions_on_conflict
   ): editions
+
+  """
+  insert data into the table: "messages"
+  """
+  insert_messages(
+    """the rows to be inserted"""
+    objects: [messages_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: messages_on_conflict
+  ): messages_mutation_response
+
+  """
+  insert a single row into the table: "messages"
+  """
+  insert_messages_one(
+    """the row to be inserted"""
+    object: messages_insert_input!
+
+    """on conflict condition"""
+    on_conflict: messages_on_conflict
+  ): messages
 
   """
   insert data into the table: "payments"
@@ -1420,6 +1846,22 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: users_on_conflict
   ): users
+
+  """
+  insert data into the table: "users_online"
+  """
+  insert_users_online(
+    """the rows to be inserted"""
+    objects: [users_online_insert_input!]!
+  ): users_online_mutation_response
+
+  """
+  insert a single row into the table: "users_online"
+  """
+  insert_users_online_one(
+    """the row to be inserted"""
+    object: users_online_insert_input!
+  ): users_online
 
   """
   insert data into the table: "wordlist"
@@ -1560,6 +2002,32 @@ type mutation_root {
     _set: editions_set_input
     pk_columns: editions_pk_columns_input!
   ): editions
+
+  """
+  update data of the table: "messages"
+  """
+  update_messages(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: messages_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: messages_set_input
+
+    """filter the rows which have to be updated"""
+    where: messages_bool_exp!
+  ): messages_mutation_response
+
+  """
+  update single row of the table: "messages"
+  """
+  update_messages_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: messages_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: messages_set_input
+    pk_columns: messages_pk_columns_input!
+  ): messages
 
   """
   update data of the table: "payments"
@@ -1710,6 +2178,17 @@ type mutation_root {
     _set: users_set_input
     pk_columns: users_pk_columns_input!
   ): users
+
+  """
+  update data of the table: "users_online"
+  """
+  update_users_online(
+    """sets the columns of the filtered rows to the given values"""
+    _set: users_online_set_input
+
+    """filter the rows which have to be updated"""
+    where: users_online_bool_exp!
+  ): users_online_mutation_response
 
   """
   update data of the table: "wordlist"
@@ -2315,6 +2794,49 @@ type query_root {
   editions_by_pk(id: Int!): editions
 
   """
+  fetch data from the table: "messages"
+  """
+  messages(
+    """distinct select on columns"""
+    distinct_on: [messages_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [messages_order_by!]
+
+    """filter the rows returned"""
+    where: messages_bool_exp
+  ): [messages!]!
+
+  """
+  fetch aggregated fields from the table: "messages"
+  """
+  messages_aggregate(
+    """distinct select on columns"""
+    distinct_on: [messages_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [messages_order_by!]
+
+    """filter the rows returned"""
+    where: messages_bool_exp
+  ): messages_aggregate!
+
+  """fetch data from the table: "messages" using primary key columns"""
+  messages_by_pk(id: Int!): messages
+
+  """
   fetch data from the table: "payments"
   """
   payments(
@@ -2571,6 +3093,46 @@ type query_root {
 
   """fetch data from the table: "users" using primary key columns"""
   users_by_pk(id: String!): users
+
+  """
+  fetch data from the table: "users_online"
+  """
+  users_online(
+    """distinct select on columns"""
+    distinct_on: [users_online_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_online_order_by!]
+
+    """filter the rows returned"""
+    where: users_online_bool_exp
+  ): [users_online!]!
+
+  """
+  fetch aggregated fields from the table: "users_online"
+  """
+  users_online_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_online_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_online_order_by!]
+
+    """filter the rows returned"""
+    where: users_online_bool_exp
+  ): users_online_aggregate!
 
   """
   fetch data from the table: "wordlist"
@@ -3692,6 +4254,49 @@ type subscription_root {
   editions_by_pk(id: Int!): editions
 
   """
+  fetch data from the table: "messages"
+  """
+  messages(
+    """distinct select on columns"""
+    distinct_on: [messages_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [messages_order_by!]
+
+    """filter the rows returned"""
+    where: messages_bool_exp
+  ): [messages!]!
+
+  """
+  fetch aggregated fields from the table: "messages"
+  """
+  messages_aggregate(
+    """distinct select on columns"""
+    distinct_on: [messages_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [messages_order_by!]
+
+    """filter the rows returned"""
+    where: messages_bool_exp
+  ): messages_aggregate!
+
+  """fetch data from the table: "messages" using primary key columns"""
+  messages_by_pk(id: Int!): messages
+
+  """
   fetch data from the table: "payments"
   """
   payments(
@@ -3950,6 +4555,46 @@ type subscription_root {
   users_by_pk(id: String!): users
 
   """
+  fetch data from the table: "users_online"
+  """
+  users_online(
+    """distinct select on columns"""
+    distinct_on: [users_online_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_online_order_by!]
+
+    """filter the rows returned"""
+    where: users_online_bool_exp
+  ): [users_online!]!
+
+  """
+  fetch aggregated fields from the table: "users_online"
+  """
+  users_online_aggregate(
+    """distinct select on columns"""
+    distinct_on: [users_online_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [users_online_order_by!]
+
+    """filter the rows returned"""
+    where: users_online_bool_exp
+  ): users_online_aggregate!
+
+  """
   fetch data from the table: "wordlist"
   """
   wordlist(
@@ -4122,6 +4767,23 @@ type subscription_root {
   fetch data from the table: "works_specifications" using primary key columns
   """
   works_specifications_by_pk(id: uuid!): works_specifications
+}
+
+scalar timestamp
+
+"""
+expression to compare columns of type timestamp. All fields are combined with logical 'AND'.
+"""
+input timestamp_comparison_exp {
+  _eq: timestamp
+  _gt: timestamp
+  _gte: timestamp
+  _in: [timestamp!]
+  _is_null: Boolean
+  _lt: timestamp
+  _lte: timestamp
+  _neq: timestamp
+  _nin: [timestamp!]
 }
 
 scalar timestamptz
@@ -4817,9 +5479,6 @@ unique or primary key constraints on table "users"
 """
 enum users_constraint {
   """unique or primary key constraint"""
-  users_name_key
-
-  """unique or primary key constraint"""
   users_pkey
 }
 
@@ -4896,6 +5555,163 @@ input users_on_conflict {
   constraint: users_constraint!
   update_columns: [users_update_column!]!
   where: users_bool_exp
+}
+
+"""
+columns and relationships of "users_online"
+"""
+type users_online {
+  id: String
+  last_seen: timestamptz
+  name: String
+  type: String
+}
+
+"""
+aggregated selection of "users_online"
+"""
+type users_online_aggregate {
+  aggregate: users_online_aggregate_fields
+  nodes: [users_online!]!
+}
+
+"""
+aggregate fields of "users_online"
+"""
+type users_online_aggregate_fields {
+  count(columns: [users_online_select_column!], distinct: Boolean): Int
+  max: users_online_max_fields
+  min: users_online_min_fields
+}
+
+"""
+order by aggregate values of table "users_online"
+"""
+input users_online_aggregate_order_by {
+  count: order_by
+  max: users_online_max_order_by
+  min: users_online_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "users_online"
+"""
+input users_online_arr_rel_insert_input {
+  data: [users_online_insert_input!]!
+}
+
+"""
+Boolean expression to filter rows from the table "users_online". All fields are combined with a logical 'AND'.
+"""
+input users_online_bool_exp {
+  _and: [users_online_bool_exp]
+  _not: users_online_bool_exp
+  _or: [users_online_bool_exp]
+  id: String_comparison_exp
+  last_seen: timestamptz_comparison_exp
+  name: String_comparison_exp
+  type: String_comparison_exp
+}
+
+"""
+input type for inserting data into table "users_online"
+"""
+input users_online_insert_input {
+  id: String
+  last_seen: timestamptz
+  name: String
+  type: String
+}
+
+"""aggregate max on columns"""
+type users_online_max_fields {
+  id: String
+  last_seen: timestamptz
+  name: String
+  type: String
+}
+
+"""
+order by max() on columns of table "users_online"
+"""
+input users_online_max_order_by {
+  id: order_by
+  last_seen: order_by
+  name: order_by
+  type: order_by
+}
+
+"""aggregate min on columns"""
+type users_online_min_fields {
+  id: String
+  last_seen: timestamptz
+  name: String
+  type: String
+}
+
+"""
+order by min() on columns of table "users_online"
+"""
+input users_online_min_order_by {
+  id: order_by
+  last_seen: order_by
+  name: order_by
+  type: order_by
+}
+
+"""
+response of any mutation on the table "users_online"
+"""
+type users_online_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [users_online!]!
+}
+
+"""
+input type for inserting object relation for remote table "users_online"
+"""
+input users_online_obj_rel_insert_input {
+  data: users_online_insert_input!
+}
+
+"""
+ordering options when selecting data from "users_online"
+"""
+input users_online_order_by {
+  id: order_by
+  last_seen: order_by
+  name: order_by
+  type: order_by
+}
+
+"""
+select columns of table "users_online"
+"""
+enum users_online_select_column {
+  """column name"""
+  id
+
+  """column name"""
+  last_seen
+
+  """column name"""
+  name
+
+  """column name"""
+  type
+}
+
+"""
+input type for updating data in table "users_online"
+"""
+input users_online_set_input {
+  id: String
+  last_seen: timestamptz
+  name: String
+  type: String
 }
 
 """

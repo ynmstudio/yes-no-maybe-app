@@ -22,8 +22,7 @@ export class AuthComponent implements OnInit {
   mode: AuthMode = 'login';
 
   form: FormGroup;
-  firstName = new FormControl('');
-  lastName = new FormControl('');
+  displayName = new FormControl('');
   email = new FormControl('', [Validators.required, Validators.email]);
   password = new FormControl('', Validators.required);
   confirmPassword = new FormControl('', Validators.required);
@@ -36,8 +35,7 @@ export class AuthComponent implements OnInit {
   ) {
     this.form = this.fb.group(
       {
-        firstName: this.firstName,
-        lastName: this.lastName,
+        displayName: this.displayName,
         email: this.email,
         password: this.password,
         confirmPassword: this.confirmPassword,
@@ -52,8 +50,9 @@ export class AuthComponent implements OnInit {
       switch (params['type'] as AuthMode) {
         case 'register':
           this.mode = 'register';
-          this.form.controls['firstName'].setValidators([Validators.required]);
-          this.form.controls['lastName'].setValidators([Validators.required]);
+          this.form.controls['displayName'].setValidators([
+            Validators.required,
+          ]);
           this.form.controls['password'].setValidators([
             Validators.required,
             Validators.minLength(6),
@@ -72,8 +71,7 @@ export class AuthComponent implements OnInit {
           break;
         case 'forgot':
           this.mode = 'forgot';
-          this.form.controls['firstName'].setValidators([]);
-          this.form.controls['lastName'].setValidators([]);
+          this.form.controls['displayName'].setValidators([]);
           this.form.controls['password'].setValidators([]);
           this.form.controls['password'].setValue('');
           this.form.controls['confirmPassword'].setValidators([]);
@@ -84,8 +82,7 @@ export class AuthComponent implements OnInit {
           break;
         default:
           this.mode = 'login';
-          this.form.controls['firstName'].setValidators([]);
-          this.form.controls['lastName'].setValidators([]);
+          this.form.controls['displayName'].setValidators([]);
           this.form.controls['password'].setValidators([Validators.required]);
           this.form.controls['password'].setValue('');
           this.form.controls['confirmPassword'].setValidators([]);
@@ -95,8 +92,7 @@ export class AuthComponent implements OnInit {
           this.form.setValidators([]);
           break;
       }
-      this.form.controls['firstName'].updateValueAndValidity();
-      this.form.controls['lastName'].updateValueAndValidity();
+      this.form.controls['displayName'].updateValueAndValidity();
       this.form.controls['password'].updateValueAndValidity();
       this.form.controls['confirmPassword'].updateValueAndValidity();
       this.form.controls['confirmPrivacy'].updateValueAndValidity();
@@ -123,8 +119,7 @@ export class AuthComponent implements OnInit {
       return;
     }
     this.authService.register(
-      this.form.value.firstName,
-      this.form.value.lastName,
+      this.form.value.displayName,
       this.form.value.email,
       this.form.value.password
     );

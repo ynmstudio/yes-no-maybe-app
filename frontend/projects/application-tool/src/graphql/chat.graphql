@@ -1,0 +1,47 @@
+fragment Message on messages {
+  id
+  text
+  user {
+    name
+  }
+  created_at
+  application_id
+  round_id
+}
+
+mutation SendMessage($text: String!, $application_id: uuid!, $round_id: Int) {
+  insert_messages_one(
+    object: {
+      application_id: $application_id
+      text: $text
+      round_id: $round_id
+    }
+  ) {
+    ...Message
+  }
+}
+
+query GetMessages(
+  $application_id: uuid!
+  $last_received_id: Int
+  $last_received_ts: timestamp
+) {
+  messages(
+    where: {
+      _and: {
+        application_id: { _eq: $application_id }
+        id: { _neq: $last_received_id }
+        created_at: { _gte: $last_received_ts }
+      }
+    }
+    order_by: { created_at: asc }
+  ) {
+    ...Message
+  }
+}
+
+subscription GetLatestMessageLive($application_id: uuid!) {
+  messages(order_by: { id: desc }, limit: 1) {
+    ...Message
+  }
+}

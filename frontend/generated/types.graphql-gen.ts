@@ -13,6 +13,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   numeric: any;
+  timestamp: any;
   timestamptz: any;
   uuid: any;
 };
@@ -909,6 +910,343 @@ export type Int_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
+/** columns and relationships of "messages" */
+export type Messages = {
+  __typename?: 'messages';
+  /** An object relationship */
+  application: Applications;
+  application_id: Scalars['uuid'];
+  created_at: Scalars['timestamp'];
+  created_by: Scalars['String'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  rating_round?: Maybe<Rating_Rounds>;
+  round_id?: Maybe<Scalars['Int']>;
+  text: Scalars['String'];
+  /** An object relationship */
+  user: Users;
+};
+
+/** aggregated selection of "messages" */
+export type Messages_Aggregate = {
+  __typename?: 'messages_aggregate';
+  aggregate?: Maybe<Messages_Aggregate_Fields>;
+  nodes: Array<Messages>;
+};
+
+/** aggregate fields of "messages" */
+export type Messages_Aggregate_Fields = {
+  __typename?: 'messages_aggregate_fields';
+  avg?: Maybe<Messages_Avg_Fields>;
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Messages_Max_Fields>;
+  min?: Maybe<Messages_Min_Fields>;
+  stddev?: Maybe<Messages_Stddev_Fields>;
+  stddev_pop?: Maybe<Messages_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Messages_Stddev_Samp_Fields>;
+  sum?: Maybe<Messages_Sum_Fields>;
+  var_pop?: Maybe<Messages_Var_Pop_Fields>;
+  var_samp?: Maybe<Messages_Var_Samp_Fields>;
+  variance?: Maybe<Messages_Variance_Fields>;
+};
+
+
+/** aggregate fields of "messages" */
+export type Messages_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Messages_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "messages" */
+export type Messages_Aggregate_Order_By = {
+  avg?: Maybe<Messages_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Messages_Max_Order_By>;
+  min?: Maybe<Messages_Min_Order_By>;
+  stddev?: Maybe<Messages_Stddev_Order_By>;
+  stddev_pop?: Maybe<Messages_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Messages_Stddev_Samp_Order_By>;
+  sum?: Maybe<Messages_Sum_Order_By>;
+  var_pop?: Maybe<Messages_Var_Pop_Order_By>;
+  var_samp?: Maybe<Messages_Var_Samp_Order_By>;
+  variance?: Maybe<Messages_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "messages" */
+export type Messages_Arr_Rel_Insert_Input = {
+  data: Array<Messages_Insert_Input>;
+  on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Messages_Avg_Fields = {
+  __typename?: 'messages_avg_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "messages" */
+export type Messages_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "messages". All fields are combined with a logical 'AND'. */
+export type Messages_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Messages_Bool_Exp>>>;
+  _not?: Maybe<Messages_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Messages_Bool_Exp>>>;
+  application?: Maybe<Applications_Bool_Exp>;
+  application_id?: Maybe<Uuid_Comparison_Exp>;
+  created_at?: Maybe<Timestamp_Comparison_Exp>;
+  created_by?: Maybe<String_Comparison_Exp>;
+  id?: Maybe<Int_Comparison_Exp>;
+  rating_round?: Maybe<Rating_Rounds_Bool_Exp>;
+  round_id?: Maybe<Int_Comparison_Exp>;
+  text?: Maybe<String_Comparison_Exp>;
+  user?: Maybe<Users_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "messages" */
+export enum Messages_Constraint {
+  /** unique or primary key constraint */
+  MessagesPkey = 'messages_pkey'
+}
+
+/** input type for incrementing integer column in table "messages" */
+export type Messages_Inc_Input = {
+  id?: Maybe<Scalars['Int']>;
+  round_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "messages" */
+export type Messages_Insert_Input = {
+  application?: Maybe<Applications_Obj_Rel_Insert_Input>;
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  created_by?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  rating_round?: Maybe<Rating_Rounds_Obj_Rel_Insert_Input>;
+  round_id?: Maybe<Scalars['Int']>;
+  text?: Maybe<Scalars['String']>;
+  user?: Maybe<Users_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Messages_Max_Fields = {
+  __typename?: 'messages_max_fields';
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  created_by?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  round_id?: Maybe<Scalars['Int']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "messages" */
+export type Messages_Max_Order_By = {
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+  text?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Messages_Min_Fields = {
+  __typename?: 'messages_min_fields';
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  created_by?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  round_id?: Maybe<Scalars['Int']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "messages" */
+export type Messages_Min_Order_By = {
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+  text?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "messages" */
+export type Messages_Mutation_Response = {
+  __typename?: 'messages_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Messages>;
+};
+
+/** input type for inserting object relation for remote table "messages" */
+export type Messages_Obj_Rel_Insert_Input = {
+  data: Messages_Insert_Input;
+  on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+/** on conflict condition type for table "messages" */
+export type Messages_On_Conflict = {
+  constraint: Messages_Constraint;
+  update_columns: Array<Messages_Update_Column>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+/** ordering options when selecting data from "messages" */
+export type Messages_Order_By = {
+  application?: Maybe<Applications_Order_By>;
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  rating_round?: Maybe<Rating_Rounds_Order_By>;
+  round_id?: Maybe<Order_By>;
+  text?: Maybe<Order_By>;
+  user?: Maybe<Users_Order_By>;
+};
+
+/** primary key columns input for table: "messages" */
+export type Messages_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "messages" */
+export enum Messages_Select_Column {
+  /** column name */
+  ApplicationId = 'application_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  RoundId = 'round_id',
+  /** column name */
+  Text = 'text'
+}
+
+/** input type for updating data in table "messages" */
+export type Messages_Set_Input = {
+  application_id?: Maybe<Scalars['uuid']>;
+  created_at?: Maybe<Scalars['timestamp']>;
+  created_by?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['Int']>;
+  round_id?: Maybe<Scalars['Int']>;
+  text?: Maybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Messages_Stddev_Fields = {
+  __typename?: 'messages_stddev_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "messages" */
+export type Messages_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Messages_Stddev_Pop_Fields = {
+  __typename?: 'messages_stddev_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "messages" */
+export type Messages_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Messages_Stddev_Samp_Fields = {
+  __typename?: 'messages_stddev_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "messages" */
+export type Messages_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Messages_Sum_Fields = {
+  __typename?: 'messages_sum_fields';
+  id?: Maybe<Scalars['Int']>;
+  round_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "messages" */
+export type Messages_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** update columns of table "messages" */
+export enum Messages_Update_Column {
+  /** column name */
+  ApplicationId = 'application_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedBy = 'created_by',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  RoundId = 'round_id',
+  /** column name */
+  Text = 'text'
+}
+
+/** aggregate var_pop on columns */
+export type Messages_Var_Pop_Fields = {
+  __typename?: 'messages_var_pop_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "messages" */
+export type Messages_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Messages_Var_Samp_Fields = {
+  __typename?: 'messages_var_samp_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "messages" */
+export type Messages_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Messages_Variance_Fields = {
+  __typename?: 'messages_variance_fields';
+  id?: Maybe<Scalars['Float']>;
+  round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "messages" */
+export type Messages_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
@@ -920,6 +1258,10 @@ export type Mutation_Root = {
   delete_editions?: Maybe<Editions_Mutation_Response>;
   /** delete single row from the table: "editions" */
   delete_editions_by_pk?: Maybe<Editions>;
+  /** delete data from the table: "messages" */
+  delete_messages?: Maybe<Messages_Mutation_Response>;
+  /** delete single row from the table: "messages" */
+  delete_messages_by_pk?: Maybe<Messages>;
   /** delete data from the table: "payments" */
   delete_payments?: Maybe<Payments_Mutation_Response>;
   /** delete single row from the table: "payments" */
@@ -944,6 +1286,8 @@ export type Mutation_Root = {
   delete_users?: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
   delete_users_by_pk?: Maybe<Users>;
+  /** delete data from the table: "users_online" */
+  delete_users_online?: Maybe<Users_Online_Mutation_Response>;
   /** delete data from the table: "wordlist" */
   delete_wordlist?: Maybe<Wordlist_Mutation_Response>;
   /** delete single row from the table: "wordlist" */
@@ -968,6 +1312,10 @@ export type Mutation_Root = {
   insert_editions?: Maybe<Editions_Mutation_Response>;
   /** insert a single row into the table: "editions" */
   insert_editions_one?: Maybe<Editions>;
+  /** insert data into the table: "messages" */
+  insert_messages?: Maybe<Messages_Mutation_Response>;
+  /** insert a single row into the table: "messages" */
+  insert_messages_one?: Maybe<Messages>;
   /** insert data into the table: "payments" */
   insert_payments?: Maybe<Payments_Mutation_Response>;
   /** insert a single row into the table: "payments" */
@@ -992,6 +1340,10 @@ export type Mutation_Root = {
   insert_users?: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one?: Maybe<Users>;
+  /** insert data into the table: "users_online" */
+  insert_users_online?: Maybe<Users_Online_Mutation_Response>;
+  /** insert a single row into the table: "users_online" */
+  insert_users_online_one?: Maybe<Users_Online>;
   /** insert data into the table: "wordlist" */
   insert_wordlist?: Maybe<Wordlist_Mutation_Response>;
   /** insert a single row into the table: "wordlist" */
@@ -1016,6 +1368,10 @@ export type Mutation_Root = {
   update_editions?: Maybe<Editions_Mutation_Response>;
   /** update single row of the table: "editions" */
   update_editions_by_pk?: Maybe<Editions>;
+  /** update data of the table: "messages" */
+  update_messages?: Maybe<Messages_Mutation_Response>;
+  /** update single row of the table: "messages" */
+  update_messages_by_pk?: Maybe<Messages>;
   /** update data of the table: "payments" */
   update_payments?: Maybe<Payments_Mutation_Response>;
   /** update single row of the table: "payments" */
@@ -1040,6 +1396,8 @@ export type Mutation_Root = {
   update_users?: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
   update_users_by_pk?: Maybe<Users>;
+  /** update data of the table: "users_online" */
+  update_users_online?: Maybe<Users_Online_Mutation_Response>;
   /** update data of the table: "wordlist" */
   update_wordlist?: Maybe<Wordlist_Mutation_Response>;
   /** update single row of the table: "wordlist" */
@@ -1079,6 +1437,18 @@ export type Mutation_RootDelete_EditionsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Editions_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_MessagesArgs = {
+  where: Messages_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Messages_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -1156,6 +1526,12 @@ export type Mutation_RootDelete_Users_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Users_OnlineArgs = {
+  where: Users_Online_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_WordlistArgs = {
   where: Wordlist_Bool_Exp;
 };
@@ -1228,6 +1604,20 @@ export type Mutation_RootInsert_EditionsArgs = {
 export type Mutation_RootInsert_Editions_OneArgs = {
   object: Editions_Insert_Input;
   on_conflict?: Maybe<Editions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_MessagesArgs = {
+  objects: Array<Messages_Insert_Input>;
+  on_conflict?: Maybe<Messages_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Messages_OneArgs = {
+  object: Messages_Insert_Input;
+  on_conflict?: Maybe<Messages_On_Conflict>;
 };
 
 
@@ -1316,6 +1706,18 @@ export type Mutation_RootInsert_Users_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Users_OnlineArgs = {
+  objects: Array<Users_Online_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Users_Online_OneArgs = {
+  object: Users_Online_Insert_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_WordlistArgs = {
   objects: Array<Wordlist_Insert_Input>;
   on_conflict?: Maybe<Wordlist_On_Conflict>;
@@ -1400,6 +1802,22 @@ export type Mutation_RootUpdate_Editions_By_PkArgs = {
   _inc?: Maybe<Editions_Inc_Input>;
   _set?: Maybe<Editions_Set_Input>;
   pk_columns: Editions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_MessagesArgs = {
+  _inc?: Maybe<Messages_Inc_Input>;
+  _set?: Maybe<Messages_Set_Input>;
+  where: Messages_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Messages_By_PkArgs = {
+  _inc?: Maybe<Messages_Inc_Input>;
+  _set?: Maybe<Messages_Set_Input>;
+  pk_columns: Messages_Pk_Columns_Input;
 };
 
 
@@ -1494,6 +1912,13 @@ export type Mutation_RootUpdate_UsersArgs = {
 export type Mutation_RootUpdate_Users_By_PkArgs = {
   _set?: Maybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Users_OnlineArgs = {
+  _set?: Maybe<Users_Online_Set_Input>;
+  where: Users_Online_Bool_Exp;
 };
 
 
@@ -1930,6 +2355,12 @@ export type Query_Root = {
   editions_aggregate: Editions_Aggregate;
   /** fetch data from the table: "editions" using primary key columns */
   editions_by_pk?: Maybe<Editions>;
+  /** fetch data from the table: "messages" */
+  messages: Array<Messages>;
+  /** fetch aggregated fields from the table: "messages" */
+  messages_aggregate: Messages_Aggregate;
+  /** fetch data from the table: "messages" using primary key columns */
+  messages_by_pk?: Maybe<Messages>;
   /** fetch data from the table: "payments" */
   payments: Array<Payments>;
   /** fetch aggregated fields from the table: "payments" */
@@ -1966,6 +2397,10 @@ export type Query_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+  /** fetch data from the table: "users_online" */
+  users_online: Array<Users_Online>;
+  /** fetch aggregated fields from the table: "users_online" */
+  users_online_aggregate: Users_Online_Aggregate;
   /** fetch data from the table: "wordlist" */
   wordlist: Array<Wordlist>;
   /** fetch aggregated fields from the table: "wordlist" */
@@ -2041,6 +2476,32 @@ export type Query_RootEditions_AggregateArgs = {
 
 /** query root */
 export type Query_RootEditions_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** query root */
+export type Query_RootMessagesArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootMessages_AggregateArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootMessages_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -2198,6 +2659,26 @@ export type Query_RootUsers_AggregateArgs = {
 /** query root */
 export type Query_RootUsers_By_PkArgs = {
   id: Scalars['String'];
+};
+
+
+/** query root */
+export type Query_RootUsers_OnlineArgs = {
+  distinct_on?: Maybe<Array<Users_Online_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Users_Online_Order_By>>;
+  where?: Maybe<Users_Online_Bool_Exp>;
+};
+
+
+/** query root */
+export type Query_RootUsers_Online_AggregateArgs = {
+  distinct_on?: Maybe<Array<Users_Online_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Users_Online_Order_By>>;
+  where?: Maybe<Users_Online_Bool_Exp>;
 };
 
 
@@ -3074,6 +3555,12 @@ export type Subscription_Root = {
   editions_aggregate: Editions_Aggregate;
   /** fetch data from the table: "editions" using primary key columns */
   editions_by_pk?: Maybe<Editions>;
+  /** fetch data from the table: "messages" */
+  messages: Array<Messages>;
+  /** fetch aggregated fields from the table: "messages" */
+  messages_aggregate: Messages_Aggregate;
+  /** fetch data from the table: "messages" using primary key columns */
+  messages_by_pk?: Maybe<Messages>;
   /** fetch data from the table: "payments" */
   payments: Array<Payments>;
   /** fetch aggregated fields from the table: "payments" */
@@ -3110,6 +3597,10 @@ export type Subscription_Root = {
   users_aggregate: Users_Aggregate;
   /** fetch data from the table: "users" using primary key columns */
   users_by_pk?: Maybe<Users>;
+  /** fetch data from the table: "users_online" */
+  users_online: Array<Users_Online>;
+  /** fetch aggregated fields from the table: "users_online" */
+  users_online_aggregate: Users_Online_Aggregate;
   /** fetch data from the table: "wordlist" */
   wordlist: Array<Wordlist>;
   /** fetch aggregated fields from the table: "wordlist" */
@@ -3185,6 +3676,32 @@ export type Subscription_RootEditions_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootEditions_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** subscription root */
+export type Subscription_RootMessagesArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootMessages_AggregateArgs = {
+  distinct_on?: Maybe<Array<Messages_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Messages_Order_By>>;
+  where?: Maybe<Messages_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootMessages_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -3346,6 +3863,26 @@ export type Subscription_RootUsers_By_PkArgs = {
 
 
 /** subscription root */
+export type Subscription_RootUsers_OnlineArgs = {
+  distinct_on?: Maybe<Array<Users_Online_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Users_Online_Order_By>>;
+  where?: Maybe<Users_Online_Bool_Exp>;
+};
+
+
+/** subscription root */
+export type Subscription_RootUsers_Online_AggregateArgs = {
+  distinct_on?: Maybe<Array<Users_Online_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Users_Online_Order_By>>;
+  where?: Maybe<Users_Online_Bool_Exp>;
+};
+
+
+/** subscription root */
 export type Subscription_RootWordlistArgs = {
   distinct_on?: Maybe<Array<Wordlist_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3446,6 +3983,20 @@ export type Subscription_RootWorks_Specifications_AggregateArgs = {
 /** subscription root */
 export type Subscription_RootWorks_Specifications_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** expression to compare columns of type timestamp. All fields are combined with logical 'AND'. */
+export type Timestamp_Comparison_Exp = {
+  _eq?: Maybe<Scalars['timestamp']>;
+  _gt?: Maybe<Scalars['timestamp']>;
+  _gte?: Maybe<Scalars['timestamp']>;
+  _in?: Maybe<Array<Scalars['timestamp']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['timestamp']>;
+  _lte?: Maybe<Scalars['timestamp']>;
+  _neq?: Maybe<Scalars['timestamp']>;
+  _nin?: Maybe<Array<Scalars['timestamp']>>;
 };
 
 
@@ -4051,8 +4602,6 @@ export type Users_Bool_Exp = {
 /** unique or primary key constraints on table "users" */
 export enum Users_Constraint {
   /** unique or primary key constraint */
-  UsersNameKey = 'users_name_key',
-  /** unique or primary key constraint */
   UsersPkey = 'users_pkey'
 }
 
@@ -4119,6 +4668,144 @@ export type Users_On_Conflict = {
   constraint: Users_Constraint;
   update_columns: Array<Users_Update_Column>;
   where?: Maybe<Users_Bool_Exp>;
+};
+
+/** columns and relationships of "users_online" */
+export type Users_Online = {
+  __typename?: 'users_online';
+  id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "users_online" */
+export type Users_Online_Aggregate = {
+  __typename?: 'users_online_aggregate';
+  aggregate?: Maybe<Users_Online_Aggregate_Fields>;
+  nodes: Array<Users_Online>;
+};
+
+/** aggregate fields of "users_online" */
+export type Users_Online_Aggregate_Fields = {
+  __typename?: 'users_online_aggregate_fields';
+  count?: Maybe<Scalars['Int']>;
+  max?: Maybe<Users_Online_Max_Fields>;
+  min?: Maybe<Users_Online_Min_Fields>;
+};
+
+
+/** aggregate fields of "users_online" */
+export type Users_Online_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Users_Online_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "users_online" */
+export type Users_Online_Aggregate_Order_By = {
+  count?: Maybe<Order_By>;
+  max?: Maybe<Users_Online_Max_Order_By>;
+  min?: Maybe<Users_Online_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "users_online" */
+export type Users_Online_Arr_Rel_Insert_Input = {
+  data: Array<Users_Online_Insert_Input>;
+};
+
+/** Boolean expression to filter rows from the table "users_online". All fields are combined with a logical 'AND'. */
+export type Users_Online_Bool_Exp = {
+  _and?: Maybe<Array<Maybe<Users_Online_Bool_Exp>>>;
+  _not?: Maybe<Users_Online_Bool_Exp>;
+  _or?: Maybe<Array<Maybe<Users_Online_Bool_Exp>>>;
+  id?: Maybe<String_Comparison_Exp>;
+  last_seen?: Maybe<Timestamptz_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  type?: Maybe<String_Comparison_Exp>;
+};
+
+/** input type for inserting data into table "users_online" */
+export type Users_Online_Insert_Input = {
+  id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Users_Online_Max_Fields = {
+  __typename?: 'users_online_max_fields';
+  id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "users_online" */
+export type Users_Online_Max_Order_By = {
+  id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  type?: Maybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Users_Online_Min_Fields = {
+  __typename?: 'users_online_min_fields';
+  id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "users_online" */
+export type Users_Online_Min_Order_By = {
+  id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  type?: Maybe<Order_By>;
+};
+
+/** response of any mutation on the table "users_online" */
+export type Users_Online_Mutation_Response = {
+  __typename?: 'users_online_mutation_response';
+  /** number of affected rows by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data of the affected rows by the mutation */
+  returning: Array<Users_Online>;
+};
+
+/** input type for inserting object relation for remote table "users_online" */
+export type Users_Online_Obj_Rel_Insert_Input = {
+  data: Users_Online_Insert_Input;
+};
+
+/** ordering options when selecting data from "users_online" */
+export type Users_Online_Order_By = {
+  id?: Maybe<Order_By>;
+  last_seen?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  type?: Maybe<Order_By>;
+};
+
+/** select columns of table "users_online" */
+export enum Users_Online_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LastSeen = 'last_seen',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Type = 'type'
+}
+
+/** input type for updating data in table "users_online" */
+export type Users_Online_Set_Input = {
+  id?: Maybe<Scalars['String']>;
+  last_seen?: Maybe<Scalars['timestamptz']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
 };
 
 /** ordering options when selecting data from "users" */
@@ -5890,6 +6577,71 @@ export type BaseQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type BaseQuery = { __typename: 'query_root' };
 
+export type UpdateUsernameMutationVariables = Exact<{
+  name: Scalars['String'];
+}>;
+
+
+export type UpdateUsernameMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_users_one?: Maybe<(
+    { __typename?: 'users' }
+    & Pick<Users, 'id' | 'last_seen' | 'name' | 'type'>
+  )> }
+);
+
+export type MessageFragment = (
+  { __typename?: 'messages' }
+  & Pick<Messages, 'id' | 'text' | 'created_at' | 'application_id' | 'round_id'>
+  & { user: (
+    { __typename?: 'users' }
+    & Pick<Users, 'name'>
+  ) }
+);
+
+export type SendMessageMutationVariables = Exact<{
+  text: Scalars['String'];
+  application_id: Scalars['uuid'];
+  round_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type SendMessageMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_messages_one?: Maybe<(
+    { __typename?: 'messages' }
+    & MessageFragment
+  )> }
+);
+
+export type GetMessagesQueryVariables = Exact<{
+  application_id: Scalars['uuid'];
+  last_received_id?: Maybe<Scalars['Int']>;
+  last_received_ts?: Maybe<Scalars['timestamp']>;
+}>;
+
+
+export type GetMessagesQuery = (
+  { __typename?: 'query_root' }
+  & { messages: Array<(
+    { __typename?: 'messages' }
+    & MessageFragment
+  )> }
+);
+
+export type GetLatestMessageLiveSubscriptionVariables = Exact<{
+  application_id: Scalars['uuid'];
+}>;
+
+
+export type GetLatestMessageLiveSubscription = (
+  { __typename?: 'subscription_root' }
+  & { messages: Array<(
+    { __typename?: 'messages' }
+    & MessageFragment
+  )> }
+);
+
 export type EditionFragment = (
   { __typename?: 'editions' }
   & Pick<Editions, 'id' | 'name' | 'current' | 'application_end' | 'application_start'>
@@ -6303,6 +7055,18 @@ export const ApplicationFragmentDoc = gql`
   }
 }
     ${PaymentFragmentDoc}`;
+export const MessageFragmentDoc = gql`
+    fragment Message on messages {
+  id
+  text
+  user {
+    name
+  }
+  created_at
+  application_id
+  round_id
+}
+    `;
 export const EditionFragmentDoc = gql`
     fragment Edition on editions {
   id
@@ -6629,6 +7393,89 @@ export const BaseDocument = gql`
   })
   export class BaseGQL extends Apollo.Query<BaseQuery, BaseQueryVariables> {
     document = BaseDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateUsernameDocument = gql`
+    mutation UpdateUsername($name: String!) {
+  insert_users_one(
+    object: {name: $name}
+    on_conflict: {constraint: users_pkey, update_columns: [last_seen, name]}
+  ) {
+    id
+    last_seen
+    name
+    type
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateUsernameGQL extends Apollo.Mutation<UpdateUsernameMutation, UpdateUsernameMutationVariables> {
+    document = UpdateUsernameDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const SendMessageDocument = gql`
+    mutation SendMessage($text: String!, $application_id: uuid!, $round_id: Int) {
+  insert_messages_one(
+    object: {application_id: $application_id, text: $text, round_id: $round_id}
+  ) {
+    ...Message
+  }
+}
+    ${MessageFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SendMessageGQL extends Apollo.Mutation<SendMessageMutation, SendMessageMutationVariables> {
+    document = SendMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetMessagesDocument = gql`
+    query GetMessages($application_id: uuid!, $last_received_id: Int, $last_received_ts: timestamp) {
+  messages(
+    where: {_and: {application_id: {_eq: $application_id}, id: {_neq: $last_received_id}, created_at: {_gte: $last_received_ts}}}
+    order_by: {created_at: asc}
+  ) {
+    ...Message
+  }
+}
+    ${MessageFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetMessagesGQL extends Apollo.Query<GetMessagesQuery, GetMessagesQueryVariables> {
+    document = GetMessagesDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetLatestMessageLiveDocument = gql`
+    subscription GetLatestMessageLive($application_id: uuid!) {
+  messages(order_by: {id: desc}, limit: 1) {
+    ...Message
+  }
+}
+    ${MessageFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetLatestMessageLiveGQL extends Apollo.Subscription<GetLatestMessageLiveSubscription, GetLatestMessageLiveSubscriptionVariables> {
+    document = GetLatestMessageLiveDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

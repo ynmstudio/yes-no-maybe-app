@@ -16,7 +16,6 @@ import { ConnectionService } from 'ng-connection-service';
 import { environment } from '../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { take } from 'rxjs/operators';
-import { env } from 'process';
 
 // This should be in sync with update information inside ngsw-config.json file
 export const SCHEMA_VERSION = '0.0.0'; // Must be a string.
@@ -26,7 +25,7 @@ const uri = environment.hasura.graphql; // <-- add the URL of the GraphQL server
 const websocket = environment.hasura.websocket; // <-- add the URL of the GraphQL server here
 
 const localHeaders = (
-  role: string = 'user',
+  role: string = 'team',
   id: string = 'yFVIqlR8dNKzhgubUYy9uYwb3fVR'
 ) => {
   return {
@@ -88,10 +87,12 @@ export function createApollo(
     options: {
       reconnect: true,
       lazy: true,
+      reconnectionAttempts: 10,
       connectionParams: async ({ headers }: any) => {
         // @TODO Check why Websocket Link is not working
-        const token = await auth.idToken.pipe(take(1)).toPromise();
-
+        alert('HERE');
+        // const token = await auth.idToken.pipe(take(1)).toPromise();
+        const token = 'hello';
         if (token) {
           let devHeaders = {};
           if (!environment.production) {
@@ -160,8 +161,8 @@ export function createApollo(
           }
         });
       if (networkError) {
-        console.log(`[Network error]: ${networkError}`);
-        console.error(networkError);
+        console.error(`[Network error]: ${networkError.message}`);
+        // console.error(networkError);
         // alert("New network error. Check console");
       }
     }),

@@ -12,6 +12,7 @@ import { switchMap, withLatestFrom } from 'rxjs/operators';
   styleUrls: ['./gallery.component.scss'],
 })
 export class GalleryComponent implements OnInit {
+  @Input() application_id!: string;
   @Input() works!: WorkFragment[];
 
   private _currentWorkIndex: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -71,7 +72,20 @@ export class GalleryComponent implements OnInit {
         : this._currentFileIndex.value + amount
     );
   }
+  showSpecification: boolean = false;
   setCurrentSpecification(index: number) {
+    if (this._currentSpecificationIndex.value === index) {
+      this.showSpecification = !this.showSpecification;
+    } else {
+      this.showSpecification = true;
+    }
     this._currentSpecificationIndex.next(index);
+    this.showChat = false;
+  }
+
+  showChat: boolean = true;
+  toggleChat() {
+    this.showSpecification = false;
+    this.showChat = !this.showChat;
   }
 }

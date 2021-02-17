@@ -10,6 +10,7 @@
   >
     <app-gallery
       *ngIf="works$ | async as worksObject"
+      [application_id]="application_id"
       [works]="worksObject.data.works"
     ></app-gallery>
     <div class="lg:flex items-baseline">

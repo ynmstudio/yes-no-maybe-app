@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { fuzzy } from 'fast-fuzzy';
+import { HasuraService } from './hasura.service';
 
 export interface User {
   loginName: string;
@@ -31,6 +32,7 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private afDatabase: AngularFireDatabase,
     private appService: AppService,
+    private hasuraService: HasuraService,
     private router: Router
   ) {
     this.afAuth.onAuthStateChanged(async (user) => {
@@ -58,6 +60,7 @@ export class AuthService {
             console.warn(token);
           });
         }
+
         // Set Email Verification Banner
         this.emailVerified.next(user.emailVerified);
       } else {
@@ -67,27 +70,28 @@ export class AuthService {
     });
   }
 
-  async register(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string
-  ) {
+  async register(displayName: string, email: string, password: string) {
     try {
+      if (!displayName) {
+        throw new Error('Trying to register with no displayName');
+      }
       const result = await this.afAuth.createUserWithEmailAndPassword(
         email,
         password
       );
-      if (!result.user?.emailVerified) result.user?.sendEmailVerification();
+
+      // if (!result.user?.emailVerified) result.user?.sendEmailVerification();
 
       console.log('AuthService >> register > user', result);
 
       const user = await this.afAuth.currentUser;
       await user?.updateProfile({
-        displayName: `${firstName} ${lastName}`,
+        displayName,
       });
 
       const idTokenResult = await result.user?.getIdTokenResult(true);
+
+      await this.hasuraService.updateUsername(displayName || 'Anonymous');
 
       if (idTokenResult) {
         switch (idTokenResult.claims['role']) {

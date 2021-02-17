@@ -70,6 +70,8 @@
 	"snippets.add-application": "Neue Einreichung anlegen",
 	"snippets.dont-reveal-name": "Bitte keine Namen",
 	"snippets.hide-idenity": "Namen verbergen",
+	"snippets.insert-message": "Nachricht eingeben",
+	"snippets.internal-chat": "Interner Chat",
 	"snippets.new-alias": "Neues Alias",
 	"snippets.no-applications": "Keine Einreichungen vorhanden",
 	"snippets.welcome-user": "Hallo {{user}}",

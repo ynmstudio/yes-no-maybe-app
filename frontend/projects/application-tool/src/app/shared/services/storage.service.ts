@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { Observable, of, throwError } from 'rxjs';
-import {
-  catchError,
-  delay,
-  mergeMap,
-  retryWhen,
-  switchMap,
-} from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
