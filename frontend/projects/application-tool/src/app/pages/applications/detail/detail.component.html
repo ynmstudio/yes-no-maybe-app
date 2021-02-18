@@ -10,7 +10,7 @@
   >
     <div id="gallery">
       <div
-        class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 border-t border-b border-gray-300"
+        class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 xl:aspect-w-3 xl:aspect-h-1 border-t border-b border-gray-300"
       >
         <div class="flex overflow-hidden bg-gray-50">
           <div
@@ -111,8 +111,12 @@
             </div>
           </div>
           <div
-            class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-transform transform-gpu origin-right"
-            [ngClass]="[showChat ? 'translate-x-0' : 'translate-x-full']"
+            class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-all transform-gpu origin-right"
+            [ngClass]="[
+              showChat
+                ? 'translate-x-0  opacity-100'
+                : 'translate-x-full opacity-0'
+            ]"
           >
             <app-chat
               *ngIf="chatLoaded"
@@ -121,10 +125,12 @@
             ></app-chat>
           </div>
           <div
-            class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-transform transform-gpu origin-right"
+            class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-all transform-gpu origin-right"
             *ngIf="currentWork | async as work"
             [ngClass]="[
-              showSpecification ? 'translate-x-0' : 'translate-x-full'
+              showSpecification
+                ? 'translate-x-0 opacity-100'
+                : 'translate-x-full opacity-0'
             ]"
           >
             <app-specification

@@ -1,42 +1,42 @@
 <div class="grid grid-cols-5 items-stretch p-4 lg:px-6 lg:py-8">
   <div
-    class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Titel
   </div>
-  <div class="col-span-3 border-b border-black">
+  <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.title }}
   </div>
   <div
-    class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Jahr
   </div>
-  <div class="col-span-3 border-b border-black">
+  <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.year }}
   </div>
   <div
-    class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Editionen
   </div>
-  <div class="col-span-3 border-b border-black">
+  <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.number_of_editions }}
   </div>
   <div
-    class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Medium
   </div>
-  <div class="col-span-3 border-b border-black">
+  <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.medium }}
   </div>
   <div
-    class="col-span-2 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Maße
   </div>
-  <div class="col-span-3 border-b border-black">
+  <div class="col-span-3 border-b border-black dark:border-white">
     {{ "defaults.dimensions-width" | translate | uppercase }}
     {{ specification.dimensions_width || 0 }}
     &times;&thinsp;{{ "defaults.dimensions-height" | translate | uppercase }}
@@ -45,7 +45,7 @@
     {{ specification.dimensions_depth || 0 }}&thinsp;cm
   </div>
   <div
-    class="col-span-5 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-5 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Tags
     <span
@@ -53,19 +53,21 @@
       >Film/Video</span
     >
     <span
-      class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 p-1 text-gray-800 rounded-full leading-none text-center text-xxs"
-      >+</span
-    >
-  </div>
-  <div class="col-span-5 text-gray-800 font-mono uppercase text-xs">
-    Hinweis
-    <span
-      class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 p-1 text-gray-800 rounded-full leading-none text-center text-xxs"
+      class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
       >+</span
     >
   </div>
   <div
-    class="col-span-5 mt-6 border-b border-black text-gray-800 font-mono uppercase text-xs"
+    class="col-span-5 text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
+  >
+    Hinweis
+    <span
+      class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
+      >+</span
+    >
+  </div>
+  <div
+    class="col-span-5 mt-6 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
     Beschreibung
   </div>

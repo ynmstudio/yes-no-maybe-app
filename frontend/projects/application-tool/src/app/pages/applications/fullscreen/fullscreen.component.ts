@@ -95,33 +95,31 @@ export class FullscreenComponent implements OnInit {
   }
   toggleSpecifications() {
     this.chatLoaded = true;
-    this.showSpecification = false;
-    this.showChat = !this.showChat;
+    this.showChat = false;
+    this.showOverview = false;
+    this.showStatement = false;
+    this.showSpecification = !this.showSpecification;
   }
 
   chatLoaded: boolean = false;
   showChat: boolean = false;
   toggleChat() {
     this.chatLoaded = true;
-    this.showSpecification = false;
+    this.showStatement = false;
+    this.showOverview = false;
     this.showChat = !this.showChat;
   }
 
   showOverview: boolean = true;
   toggleOverview() {
+    this.showChat = false;
+    this.showStatement = false;
     this.showOverview = !this.showOverview;
   }
   showStatement: boolean = false;
   toggleStatement() {
+    this.showChat = false;
+    this.showOverview = false;
     this.showStatement = !this.showStatement;
-  }
-
-  // ADMIN ONLY
-  async createNewAlias() {
-    await this.teamService.createNewAlias(this.application_id);
-  }
-  anonymous: boolean = true;
-  toggleAnonymity() {
-    this.anonymous = !this.anonymous;
   }
 }

@@ -1,5 +1,5 @@
 <div
-  class="font-mono text-xs border-b border-black mx-2 pt-2 pb-1"
+  class="font-mono text-xs border-b border-black dark:border-white mx-2 pt-2 pb-1"
   [innerText]="'snippets.internal-chat' | translate | uppercase"
 ></div>
 <div
@@ -15,8 +15,8 @@
     [ngClass]="[
       user?.uid === message.user.id
         ? 'bg-blue-600 text-white ml-12 text-right'
-        : 'bg-white text-blue-600 mr-12',
-      message.rating ? 'ring-1 ring-blue-500' : ''
+        : 'bg-white dark:bg-gray-700 text-blue-600 dark:text-white mr-12',
+      message.rating ? 'ring-1 ring-blue-500 dark:ring-blue-300' : ''
     ]"
   >
     <div
@@ -47,17 +47,21 @@
     <button
       *ngIf="user?.uid === message.user.id && last"
       (click)="deleteMessage(message.id)"
-      class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+      class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute -top-1 -right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
     >
       X
     </button>
   </div>
   <div class="h-24"></div>
 </div>
-<div
-  class="absolute bottom-0 inset-x-0 m-4 shadow-md bg-blue-600 text-white pt-1 pb-3 pl-2"
->
-  <form class="flex items-center" (ngSubmit)="sendMessage()">
+<div class="absolute bottom-0 inset-x-0">
+  <div
+    class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-400 dark:from-black to-transparent opacity-50 h-24 pointer-events-none"
+  ></div>
+  <form
+    class="relative flex items-center m-4 bg-blue-600 text-white pt-1 pb-3 pl-2"
+    (ngSubmit)="sendMessage()"
+  >
     <input
       type="text"
       [placeholder]="'snippets.insert-message' | translate"
