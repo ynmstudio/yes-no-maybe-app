@@ -920,6 +920,8 @@ export type Messages = {
   created_by: Scalars['String'];
   id: Scalars['Int'];
   /** An object relationship */
+  rating?: Maybe<Ratings>;
+  /** An object relationship */
   rating_round?: Maybe<Rating_Rounds>;
   round_id?: Maybe<Scalars['Int']>;
   text: Scalars['String'];
@@ -1001,6 +1003,7 @@ export type Messages_Bool_Exp = {
   created_at?: Maybe<Timestamp_Comparison_Exp>;
   created_by?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  rating?: Maybe<Ratings_Bool_Exp>;
   rating_round?: Maybe<Rating_Rounds_Bool_Exp>;
   round_id?: Maybe<Int_Comparison_Exp>;
   text?: Maybe<String_Comparison_Exp>;
@@ -1026,6 +1029,7 @@ export type Messages_Insert_Input = {
   created_at?: Maybe<Scalars['timestamp']>;
   created_by?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  rating?: Maybe<Ratings_Obj_Rel_Insert_Input>;
   rating_round?: Maybe<Rating_Rounds_Obj_Rel_Insert_Input>;
   round_id?: Maybe<Scalars['Int']>;
   text?: Maybe<Scalars['String']>;
@@ -1103,6 +1107,7 @@ export type Messages_Order_By = {
   created_at?: Maybe<Order_By>;
   created_by?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  rating?: Maybe<Ratings_Order_By>;
   rating_round?: Maybe<Rating_Rounds_Order_By>;
   round_id?: Maybe<Order_By>;
   text?: Maybe<Order_By>;
@@ -3187,10 +3192,17 @@ export type Rating_Rounds_Variance_Order_By = {
 /** columns and relationships of "ratings" */
 export type Ratings = {
   __typename?: 'ratings';
+  /** An object relationship */
+  application: Applications;
   application_id: Scalars['uuid'];
   created_at: Scalars['timestamptz'];
-  created_by: Scalars['uuid'];
+  created_by: Scalars['String'];
   id: Scalars['uuid'];
+  /** An object relationship */
+  message: Messages;
+  message_id: Scalars['Int'];
+  /** An object relationship */
+  rating_round: Rating_Rounds;
   round_id: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
   value: Scalars['Int'];
@@ -3250,12 +3262,14 @@ export type Ratings_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Ratings_Avg_Fields = {
   __typename?: 'ratings_avg_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "ratings" */
 export type Ratings_Avg_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3265,10 +3279,14 @@ export type Ratings_Bool_Exp = {
   _and?: Maybe<Array<Maybe<Ratings_Bool_Exp>>>;
   _not?: Maybe<Ratings_Bool_Exp>;
   _or?: Maybe<Array<Maybe<Ratings_Bool_Exp>>>;
+  application?: Maybe<Applications_Bool_Exp>;
   application_id?: Maybe<Uuid_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
-  created_by?: Maybe<Uuid_Comparison_Exp>;
+  created_by?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
+  message?: Maybe<Messages_Bool_Exp>;
+  message_id?: Maybe<Int_Comparison_Exp>;
+  rating_round?: Maybe<Rating_Rounds_Bool_Exp>;
   round_id?: Maybe<Int_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   value?: Maybe<Int_Comparison_Exp>;
@@ -3277,6 +3295,8 @@ export type Ratings_Bool_Exp = {
 /** unique or primary key constraints on table "ratings" */
 export enum Ratings_Constraint {
   /** unique or primary key constraint */
+  RatingsMessageIdKey = 'ratings_message_id_key',
+  /** unique or primary key constraint */
   RatingsPkey = 'ratings_pkey',
   /** unique or primary key constraint */
   RatingsRoundIdApplicationIdCreatedByKey = 'ratings_round_id_application_id_created_by_key'
@@ -3284,16 +3304,21 @@ export enum Ratings_Constraint {
 
 /** input type for incrementing integer column in table "ratings" */
 export type Ratings_Inc_Input = {
+  message_id?: Maybe<Scalars['Int']>;
   round_id?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "ratings" */
 export type Ratings_Insert_Input = {
+  application?: Maybe<Applications_Obj_Rel_Insert_Input>;
   application_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  created_by?: Maybe<Scalars['uuid']>;
+  created_by?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  message?: Maybe<Messages_Obj_Rel_Insert_Input>;
+  message_id?: Maybe<Scalars['Int']>;
+  rating_round?: Maybe<Rating_Rounds_Obj_Rel_Insert_Input>;
   round_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['Int']>;
@@ -3304,8 +3329,9 @@ export type Ratings_Max_Fields = {
   __typename?: 'ratings_max_fields';
   application_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  created_by?: Maybe<Scalars['uuid']>;
+  created_by?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  message_id?: Maybe<Scalars['Int']>;
   round_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['Int']>;
@@ -3317,6 +3343,7 @@ export type Ratings_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   created_by?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
@@ -3327,8 +3354,9 @@ export type Ratings_Min_Fields = {
   __typename?: 'ratings_min_fields';
   application_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  created_by?: Maybe<Scalars['uuid']>;
+  created_by?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  message_id?: Maybe<Scalars['Int']>;
   round_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['Int']>;
@@ -3340,6 +3368,7 @@ export type Ratings_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   created_by?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
@@ -3369,10 +3398,14 @@ export type Ratings_On_Conflict = {
 
 /** ordering options when selecting data from "ratings" */
 export type Ratings_Order_By = {
+  application?: Maybe<Applications_Order_By>;
   application_id?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   created_by?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  message?: Maybe<Messages_Order_By>;
+  message_id?: Maybe<Order_By>;
+  rating_round?: Maybe<Rating_Rounds_Order_By>;
   round_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
@@ -3394,6 +3427,8 @@ export enum Ratings_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  MessageId = 'message_id',
+  /** column name */
   RoundId = 'round_id',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -3405,8 +3440,9 @@ export enum Ratings_Select_Column {
 export type Ratings_Set_Input = {
   application_id?: Maybe<Scalars['uuid']>;
   created_at?: Maybe<Scalars['timestamptz']>;
-  created_by?: Maybe<Scalars['uuid']>;
+  created_by?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
+  message_id?: Maybe<Scalars['Int']>;
   round_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   value?: Maybe<Scalars['Int']>;
@@ -3415,12 +3451,14 @@ export type Ratings_Set_Input = {
 /** aggregate stddev on columns */
 export type Ratings_Stddev_Fields = {
   __typename?: 'ratings_stddev_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "ratings" */
 export type Ratings_Stddev_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3428,12 +3466,14 @@ export type Ratings_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Ratings_Stddev_Pop_Fields = {
   __typename?: 'ratings_stddev_pop_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "ratings" */
 export type Ratings_Stddev_Pop_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3441,12 +3481,14 @@ export type Ratings_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Ratings_Stddev_Samp_Fields = {
   __typename?: 'ratings_stddev_samp_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "ratings" */
 export type Ratings_Stddev_Samp_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3454,12 +3496,14 @@ export type Ratings_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Ratings_Sum_Fields = {
   __typename?: 'ratings_sum_fields';
+  message_id?: Maybe<Scalars['Int']>;
   round_id?: Maybe<Scalars['Int']>;
   value?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "ratings" */
 export type Ratings_Sum_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3475,6 +3519,8 @@ export enum Ratings_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  MessageId = 'message_id',
+  /** column name */
   RoundId = 'round_id',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -3485,12 +3531,14 @@ export enum Ratings_Update_Column {
 /** aggregate var_pop on columns */
 export type Ratings_Var_Pop_Fields = {
   __typename?: 'ratings_var_pop_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "ratings" */
 export type Ratings_Var_Pop_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3498,12 +3546,14 @@ export type Ratings_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Ratings_Var_Samp_Fields = {
   __typename?: 'ratings_var_samp_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "ratings" */
 export type Ratings_Var_Samp_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -3511,12 +3561,14 @@ export type Ratings_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Ratings_Variance_Fields = {
   __typename?: 'ratings_variance_fields';
+  message_id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
   value?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "ratings" */
 export type Ratings_Variance_Order_By = {
+  message_id?: Maybe<Order_By>;
   round_id?: Maybe<Order_By>;
   value?: Maybe<Order_By>;
 };
@@ -6595,8 +6647,11 @@ export type MessageFragment = (
   & Pick<Messages, 'id' | 'text' | 'created_at' | 'application_id' | 'round_id'>
   & { user: (
     { __typename?: 'users' }
-    & Pick<Users, 'name'>
-  ) }
+    & Pick<Users, 'id' | 'name'>
+  ), rating?: Maybe<(
+    { __typename?: 'ratings' }
+    & Pick<Ratings, 'value' | 'created_at'>
+  )> }
 );
 
 export type SendMessageMutationVariables = Exact<{
@@ -6611,6 +6666,19 @@ export type SendMessageMutation = (
   & { insert_messages_one?: Maybe<(
     { __typename?: 'messages' }
     & MessageFragment
+  )> }
+);
+
+export type DeleteMessageMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteMessageMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_messages_by_pk?: Maybe<(
+    { __typename?: 'messages' }
+    & Pick<Messages, 'id'>
   )> }
 );
 
@@ -6767,6 +6835,22 @@ export type DisableEditionsMutation = (
   & { update_editions?: Maybe<(
     { __typename?: 'editions_mutation_response' }
     & Pick<Editions_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
+export type AddRatingMutationVariables = Exact<{
+  application_id: Scalars['uuid'];
+  round_id: Scalars['Int'];
+  value: Scalars['Int'];
+  reason: Scalars['String'];
+}>;
+
+
+export type AddRatingMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_ratings_one?: Maybe<(
+    { __typename?: 'ratings' }
+    & Pick<Ratings, 'id'>
   )> }
 );
 
@@ -7060,11 +7144,16 @@ export const MessageFragmentDoc = gql`
   id
   text
   user {
+    id
     name
   }
   created_at
   application_id
   round_id
+  rating {
+    value
+    created_at
+  }
 }
     `;
 export const EditionFragmentDoc = gql`
@@ -7442,6 +7531,24 @@ export const SendMessageDocument = gql`
       super(apollo);
     }
   }
+export const DeleteMessageDocument = gql`
+    mutation DeleteMessage($id: Int!) {
+  delete_messages_by_pk(id: $id) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteMessageGQL extends Apollo.Mutation<DeleteMessageMutation, DeleteMessageMutationVariables> {
+    document = DeleteMessageDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetMessagesDocument = gql`
     query GetMessages($application_id: uuid!, $last_received_id: Int, $last_received_ts: timestamp) {
   messages(
@@ -7637,6 +7744,26 @@ export const DisableEditionsDocument = gql`
   })
   export class DisableEditionsGQL extends Apollo.Mutation<DisableEditionsMutation, DisableEditionsMutationVariables> {
     document = DisableEditionsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const AddRatingDocument = gql`
+    mutation AddRating($application_id: uuid!, $round_id: Int!, $value: Int!, $reason: String!) {
+  insert_ratings_one(
+    object: {application_id: $application_id, round_id: $round_id, value: $value, message: {data: {text: $reason, application_id: $application_id}}}
+  ) {
+    id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class AddRatingGQL extends Apollo.Mutation<AddRatingMutation, AddRatingMutationVariables> {
+    document = AddRatingDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

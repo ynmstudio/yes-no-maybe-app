@@ -3,7 +3,7 @@ module.exports = {
   purge: {
     content: ["./projects/application-tool/src/**/*.{html,ts}"],
   },
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "class", // or 'media' or 'false'
   theme: {
     fontFamily: {
       sans: ["IBM Plex Sans", "Arial", "sans-serif", "system-ui"],

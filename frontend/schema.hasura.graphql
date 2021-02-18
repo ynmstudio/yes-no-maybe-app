@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Thu Feb 18 2021 07:15:58 GMT+0100 (GMT+01:00)
+# timestamp: Thu Feb 18 2021 13:30:26 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -1099,6 +1099,9 @@ type messages {
   id: Int!
 
   """An object relationship"""
+  rating: ratings
+
+  """An object relationship"""
   rating_round: rating_rounds
   round_id: Int
   text: String!
@@ -1183,6 +1186,7 @@ input messages_bool_exp {
   created_at: timestamp_comparison_exp
   created_by: String_comparison_exp
   id: Int_comparison_exp
+  rating: ratings_bool_exp
   rating_round: rating_rounds_bool_exp
   round_id: Int_comparison_exp
   text: String_comparison_exp
@@ -1214,6 +1218,7 @@ input messages_insert_input {
   created_at: timestamp
   created_by: String
   id: Int
+  rating: ratings_obj_rel_insert_input
   rating_round: rating_rounds_obj_rel_insert_input
   round_id: Int
   text: String
@@ -1301,6 +1306,7 @@ input messages_order_by {
   created_at: order_by
   created_by: order_by
   id: order_by
+  rating: ratings_order_by
   rating_round: rating_rounds_order_by
   round_id: order_by
   text: order_by
@@ -3764,10 +3770,19 @@ input rating_rounds_variance_order_by {
 columns and relationships of "ratings"
 """
 type ratings {
+  """An object relationship"""
+  application: applications!
   application_id: uuid!
   created_at: timestamptz!
-  created_by: uuid!
+  created_by: String!
   id: uuid!
+
+  """An object relationship"""
+  message: messages!
+  message_id: Int!
+
+  """An object relationship"""
+  rating_round: rating_rounds!
   round_id: Int!
   updated_at: timestamptz!
   value: Int!
@@ -3825,6 +3840,7 @@ input ratings_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type ratings_avg_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -3833,6 +3849,7 @@ type ratings_avg_fields {
 order by avg() on columns of table "ratings"
 """
 input ratings_avg_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
@@ -3844,10 +3861,14 @@ input ratings_bool_exp {
   _and: [ratings_bool_exp]
   _not: ratings_bool_exp
   _or: [ratings_bool_exp]
+  application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
-  created_by: uuid_comparison_exp
+  created_by: String_comparison_exp
   id: uuid_comparison_exp
+  message: messages_bool_exp
+  message_id: Int_comparison_exp
+  rating_round: rating_rounds_bool_exp
   round_id: Int_comparison_exp
   updated_at: timestamptz_comparison_exp
   value: Int_comparison_exp
@@ -3857,6 +3878,9 @@ input ratings_bool_exp {
 unique or primary key constraints on table "ratings"
 """
 enum ratings_constraint {
+  """unique or primary key constraint"""
+  ratings_message_id_key
+
   """unique or primary key constraint"""
   ratings_pkey
 
@@ -3868,6 +3892,7 @@ enum ratings_constraint {
 input type for incrementing integer column in table "ratings"
 """
 input ratings_inc_input {
+  message_id: Int
   round_id: Int
   value: Int
 }
@@ -3876,10 +3901,14 @@ input ratings_inc_input {
 input type for inserting data into table "ratings"
 """
 input ratings_insert_input {
+  application: applications_obj_rel_insert_input
   application_id: uuid
   created_at: timestamptz
-  created_by: uuid
+  created_by: String
   id: uuid
+  message: messages_obj_rel_insert_input
+  message_id: Int
+  rating_round: rating_rounds_obj_rel_insert_input
   round_id: Int
   updated_at: timestamptz
   value: Int
@@ -3889,8 +3918,9 @@ input ratings_insert_input {
 type ratings_max_fields {
   application_id: uuid
   created_at: timestamptz
-  created_by: uuid
+  created_by: String
   id: uuid
+  message_id: Int
   round_id: Int
   updated_at: timestamptz
   value: Int
@@ -3904,6 +3934,7 @@ input ratings_max_order_by {
   created_at: order_by
   created_by: order_by
   id: order_by
+  message_id: order_by
   round_id: order_by
   updated_at: order_by
   value: order_by
@@ -3913,8 +3944,9 @@ input ratings_max_order_by {
 type ratings_min_fields {
   application_id: uuid
   created_at: timestamptz
-  created_by: uuid
+  created_by: String
   id: uuid
+  message_id: Int
   round_id: Int
   updated_at: timestamptz
   value: Int
@@ -3928,6 +3960,7 @@ input ratings_min_order_by {
   created_at: order_by
   created_by: order_by
   id: order_by
+  message_id: order_by
   round_id: order_by
   updated_at: order_by
   value: order_by
@@ -3965,10 +3998,14 @@ input ratings_on_conflict {
 ordering options when selecting data from "ratings"
 """
 input ratings_order_by {
+  application: applications_order_by
   application_id: order_by
   created_at: order_by
   created_by: order_by
   id: order_by
+  message: messages_order_by
+  message_id: order_by
+  rating_round: rating_rounds_order_by
   round_id: order_by
   updated_at: order_by
   value: order_by
@@ -3998,6 +4035,9 @@ enum ratings_select_column {
   id
 
   """column name"""
+  message_id
+
+  """column name"""
   round_id
 
   """column name"""
@@ -4013,8 +4053,9 @@ input type for updating data in table "ratings"
 input ratings_set_input {
   application_id: uuid
   created_at: timestamptz
-  created_by: uuid
+  created_by: String
   id: uuid
+  message_id: Int
   round_id: Int
   updated_at: timestamptz
   value: Int
@@ -4022,6 +4063,7 @@ input ratings_set_input {
 
 """aggregate stddev on columns"""
 type ratings_stddev_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -4030,12 +4072,14 @@ type ratings_stddev_fields {
 order by stddev() on columns of table "ratings"
 """
 input ratings_stddev_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type ratings_stddev_pop_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -4044,12 +4088,14 @@ type ratings_stddev_pop_fields {
 order by stddev_pop() on columns of table "ratings"
 """
 input ratings_stddev_pop_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type ratings_stddev_samp_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -4058,12 +4104,14 @@ type ratings_stddev_samp_fields {
 order by stddev_samp() on columns of table "ratings"
 """
 input ratings_stddev_samp_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
 
 """aggregate sum on columns"""
 type ratings_sum_fields {
+  message_id: Int
   round_id: Int
   value: Int
 }
@@ -4072,6 +4120,7 @@ type ratings_sum_fields {
 order by sum() on columns of table "ratings"
 """
 input ratings_sum_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
@@ -4093,6 +4142,9 @@ enum ratings_update_column {
   id
 
   """column name"""
+  message_id
+
+  """column name"""
   round_id
 
   """column name"""
@@ -4104,6 +4156,7 @@ enum ratings_update_column {
 
 """aggregate var_pop on columns"""
 type ratings_var_pop_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -4112,12 +4165,14 @@ type ratings_var_pop_fields {
 order by var_pop() on columns of table "ratings"
 """
 input ratings_var_pop_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
 
 """aggregate var_samp on columns"""
 type ratings_var_samp_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -4126,12 +4181,14 @@ type ratings_var_samp_fields {
 order by var_samp() on columns of table "ratings"
 """
 input ratings_var_samp_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }
 
 """aggregate variance on columns"""
 type ratings_variance_fields {
+  message_id: Float
   round_id: Float
   value: Float
 }
@@ -4140,6 +4197,7 @@ type ratings_variance_fields {
 order by variance() on columns of table "ratings"
 """
 input ratings_variance_order_by {
+  message_id: order_by
   round_id: order_by
   value: order_by
 }

@@ -276,6 +276,14 @@
   - name: application
     using:
       foreign_key_constraint_on: application_id
+  - name: rating
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: ratings
+        column_mapping:
+          id: message_id
   - name: rating_round
     using:
       foreign_key_constraint_on: round_id
@@ -472,6 +480,54 @@
 - table:
     schema: public
     name: ratings
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  - name: message
+    using:
+      foreign_key_constraint_on: message_id
+  - name: rating_round
+    using:
+      foreign_key_constraint_on: round_id
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      set:
+        created_by: x-hasura-User-Id
+      columns:
+      - application_id
+      - round_id
+      - value
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - message_id
+      - round_id
+      - value
+      - created_at
+      - updated_at
+      - application_id
+      - created_by
+      - id
+      filter: {}
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - id
+      - created_at
+      - updated_at
+      - round_id
+      - application_id
+      - created_by
+      - value
+      - message_id
+      filter: {}
+      allow_aggregations: true
 - table:
     schema: public
     name: types_medium

@@ -2,11 +2,16 @@ fragment Message on messages {
   id
   text
   user {
+    id
     name
   }
   created_at
   application_id
   round_id
+  rating {
+    value
+    created_at
+  }
 }
 
 mutation SendMessage($text: String!, $application_id: uuid!, $round_id: Int) {
@@ -18,6 +23,11 @@ mutation SendMessage($text: String!, $application_id: uuid!, $round_id: Int) {
     }
   ) {
     ...Message
+  }
+}
+mutation DeleteMessage($id: Int!) {
+  delete_messages_by_pk(id: $id) {
+    id
   }
 }
 

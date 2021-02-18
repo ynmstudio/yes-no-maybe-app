@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: ':id/fullscreen',
     loadChildren: () =>
-      import('./detail/detail.module').then((m) => m.DetailModule),
+      import('./fullscreen/fullscreen.module').then((m) => m.FullscreenModule),
   },
 ];
 

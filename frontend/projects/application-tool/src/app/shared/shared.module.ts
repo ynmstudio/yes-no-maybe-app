@@ -17,9 +17,9 @@ import { UploadTaskModule } from './components/upload-task/upload-task.module';
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { ImageModule } from './components/image/image.module';
 import { PdfModule } from './components/pdf/pdf.module';
-import { GalleryModule } from './components/gallery/gallery.module';
 import { StorageService } from './services/storage.service';
 import { ChatModule } from './components/chat/chat.module';
+import { SpecificationModule } from './components/specification/specification.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -32,8 +32,8 @@ const MODULES = [
   UploadTaskModule,
   ImageModule,
   PdfModule,
-  GalleryModule,
   ChatModule,
+  SpecificationModule,
 ];
 
 const PIPES: any = [

@@ -1,18 +1,67 @@
 <div
-  class="font-mono text-xs border-b border-black pb-1"
+  class="font-mono text-xs border-b border-black mx-2 pt-2 pb-1"
   [innerText]="'snippets.internal-chat' | translate | uppercase"
 ></div>
-<div class="h-full overflow-scroll overscroll-contain pb-24">
-  <div *ngFor="let message of (messages$ | async)?.data?.messages">
-    {{ message.text }}
+<div
+  *ngIf="authState | async as user"
+  class="h-full overflow-scroll overscroll-contain p-4"
+  #scrollMe
+>
+  <div
+    class="my-4 rounded-3xl relative group"
+    *ngFor="let message of (messages$ | async)?.data?.messages; let last = last"
+    @messageTrigger
+    (@messageTrigger.start)="scrollToBottom()"
+    [ngClass]="[
+      user?.uid === message.user.id
+        ? 'bg-blue-600 text-white ml-12 text-right'
+        : 'bg-white text-blue-600 mr-12',
+      message.rating ? 'ring-1 ring-blue-500' : ''
+    ]"
+  >
+    <div
+      class="text-xxs font-mono pt-5 px-4 flex-wrap flex leading-tight"
+      [ngClass]="[
+        user?.uid === message.user.id ? 'justify-end' : 'justify-start'
+      ]"
+    >
+      <div
+        class="whitespace-nowrap"
+        [innerText]="message.created_at | date: 'short'"
+        [ngClass]="[user?.uid === message.user.id ? 'order-1' : 'order-3']"
+      ></div>
+      <div class="order-2">&thinsp;–&thinsp;</div>
+      <div
+        class="whitespace-nowrap"
+        [innerText]="user?.uid === message.user.id ? 'You' : message.user.name"
+        [ngClass]="[user?.uid === message.user.id ? 'order-3' : 'order-1']"
+      ></div>
+    </div>
+    <div
+      *ngIf="message.rating"
+      class="inline-block rounded-full mx-2 mt-2 py-1 px-3 leading-none bg-blue-600 text-white font-medium text-xxs uppercase"
+    >
+      New rating: {{ message.rating?.value }}
+    </div>
+    <div class="px-4 pt-4 pb-6" [innerText]="message.text"></div>
+    <button
+      *ngIf="user?.uid === message.user.id && last"
+      (click)="deleteMessage(message.id)"
+      class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+    >
+      X
+    </button>
   </div>
+  <div class="h-24"></div>
 </div>
-<div class="absolute bottom-0 inset-x-0 bg-blue-600 text-white pt-1 pb-3 pl-2">
+<div
+  class="absolute bottom-0 inset-x-0 m-4 shadow-md bg-blue-600 text-white pt-1 pb-3 pl-2"
+>
   <form class="flex items-center" (ngSubmit)="sendMessage()">
     <input
       type="text"
       [placeholder]="'snippets.insert-message' | translate"
-      class="appearance-none px-0 rounded-none relative block w-full p-2 border-0 border-b border-white font-mono bg-transparent placeholder-blue-300 text-white focus:outline-none focus:border-white focus:z-10 text-sm"
+      class="appearance-none px-0 rounded-none relative block w-full p-2 border-0 border-b border-white font-mono bg-transparent placeholder-white placeholder-opacity-50 text-white focus:outline-none focus:border-white focus:z-10 text-sm"
       name="newMessage"
       [(ngModel)]="newMessage"
     />

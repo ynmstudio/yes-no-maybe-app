@@ -1,9 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  AfterViewChecked,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Query, QueryRef } from 'apollo-angular';
 import {
   GetMessagesGQL,
   SendMessageGQL,
+  DeleteMessageGQL,
   GetMessagesQuery,
   GetLatestMessageLiveGQL,
   Exact,
@@ -16,9 +25,29 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
+  animations: [
+    trigger('messageTrigger', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translate3d(0,0.5rem,0)' }),
+        animate(
+          '150ms ease-out',
+          style({ opacity: 1, transform: 'translate3d(0,0,0)' })
+        ),
+      ]),
+
+      transition(':leave', [
+        animate(
+          '150ms ease-in',
+          style({ opacity: 0, transform: 'translate3d(0,-0.5rem,0)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ChatComponent implements OnInit {
   @Input() application_id!: string;
+
+  @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
   messagesQuery$!: QueryRef<
     GetMessagesQuery,
@@ -38,6 +67,7 @@ export class ChatComponent implements OnInit {
   constructor(
     private getMessagesGQL: GetMessagesGQL,
     private sendMessagesGQL: SendMessageGQL,
+    private deleteMessageGQL: DeleteMessageGQL,
     private getMessagesLiveGQL: GetLatestMessageLiveGQL,
     private authService: AuthService
   ) {}
@@ -74,6 +104,8 @@ export class ChatComponent implements OnInit {
     );
 
     this.messages$ = this.messagesQuery$.valueChanges;
+
+    this.scrollToBottom();
   }
 
   onLoadMore() {
@@ -100,7 +132,25 @@ export class ChatComponent implements OnInit {
         .toPromise();
       this.newMessage = '';
     } catch (err) {
+      console.error(err);
+    }
+  }
+  async deleteMessage(id: number) {
+    if (!id) return;
+    try {
+      await this.deleteMessageGQL
+        .mutate({
+          id,
+        })
+        .toPromise();
+    } catch (err) {
       console.log(err);
     }
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 }

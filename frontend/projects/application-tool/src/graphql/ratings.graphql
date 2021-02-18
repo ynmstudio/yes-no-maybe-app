@@ -1,0 +1,17 @@
+mutation AddRating(
+  $application_id: uuid!
+  $round_id: Int!
+  $value: Int!
+  $reason: String!
+) {
+  insert_ratings_one(
+    object: {
+      application_id: $application_id
+      round_id: $round_id
+      value: $value
+      message: { data: { text: $reason, application_id: $application_id } }
+    }
+  ) {
+    id
+  }
+}
