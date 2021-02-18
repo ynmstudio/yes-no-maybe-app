@@ -2,7 +2,7 @@
   class="font-mono text-xs border-b border-black pb-1"
   [innerText]="'snippets.internal-chat' | translate | uppercase"
 ></div>
-<div>
+<div class="h-full overflow-scroll overscroll-contain pb-24">
   <div *ngFor="let message of (messages$ | async)?.data?.messages">
     {{ message.text }}
   </div>

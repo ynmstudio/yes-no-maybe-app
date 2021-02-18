@@ -7465,7 +7465,11 @@ export const GetMessagesDocument = gql`
   }
 export const GetLatestMessageLiveDocument = gql`
     subscription GetLatestMessageLive($application_id: uuid!) {
-  messages(order_by: {id: desc}, limit: 1) {
+  messages(
+    order_by: {id: desc}
+    limit: 1
+    where: {application_id: {_eq: $application_id}}
+  ) {
     ...Message
   }
 }

@@ -176,16 +176,6 @@ export function createApollo(
 
   const cache = new InMemoryCache({
     possibleTypes: introspectionResult.possibleTypes,
-    typePolicies: {
-      Query: {
-        fields: {
-          messages: {
-            // Short for always preferring incoming over existing data.
-            merge: false,
-          },
-        },
-      },
-    },
   });
 
   // await before instantiating ApolloClient, else queries might run before the cache is persisted

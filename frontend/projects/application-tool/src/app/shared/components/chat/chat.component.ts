@@ -1,12 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { Query, QueryRef } from 'apollo-angular';
 import {
   GetMessagesGQL,
   SendMessageGQL,
   GetMessagesQuery,
   GetLatestMessageLiveGQL,
+  Exact,
 } from 'generated/types.graphql-gen';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -17,10 +20,18 @@ import { AuthService } from '../../services/auth.service';
 export class ChatComponent implements OnInit {
   @Input() application_id!: string;
 
+  messagesQuery$!: QueryRef<
+    GetMessagesQuery,
+    Exact<{
+      application_id: any;
+      last_received_id?: number | null | undefined;
+      last_received_ts?: any;
+    }>
+  >;
   messages$!: Observable<ApolloQueryResult<GetMessagesQuery>>;
 
-  last_received_id: number = -1;
-  last_received_ts: string = '1987-04-10T00:00:000.000000';
+  private last_received_id: number = -1;
+  private last_received_ts: string = '1987-04-10T00:00:000.000000';
 
   newMessage = '';
 
@@ -40,21 +51,39 @@ export class ChatComponent implements OnInit {
       console.error('No Application ID provided');
       return;
     }
+    this.getMessagesLiveGQL
+      .subscribe({ application_id: this.application_id })
+      .pipe(switchMap(() => this.messages$))
+      .subscribe((messages) => {
+        if (messages.data.messages.length > 0) {
+          const lastMessage =
+            messages.data.messages[messages.data.messages.length - 1];
+          this.last_received_id = lastMessage.id;
+          this.last_received_ts = lastMessage.created_at;
+          this.onLoadMore();
+        }
+      });
 
-    this.messages$ = this.getMessagesGQL.watch(
+    this.messagesQuery$ = this.getMessagesGQL.watch(
       {
         application_id: this.application_id,
         last_received_id: this.last_received_id,
         last_received_ts: this.last_received_ts,
       },
       { fetchPolicy: 'network-only' }
-    ).valueChanges;
+    );
 
-    this.getMessagesLiveGQL
-      .subscribe({ application_id: this.application_id })
-      .subscribe((message) => {
-        console.log(message);
-      });
+    this.messages$ = this.messagesQuery$.valueChanges;
+  }
+
+  onLoadMore() {
+    this.messagesQuery$.fetchMore({
+      variables: {
+        application_id: this.application_id,
+        last_received_id: this.last_received_id,
+        last_received_ts: this.last_received_ts,
+      },
+    });
   }
 
   async sendMessage() {
