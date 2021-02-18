@@ -23,7 +23,6 @@
 	"application-form.has-no-influence-on-the-jury": "hat keinen Einfluss auf die Entscheidung der Jury",
 	"application-form.name-of-artist-or-group": "Name Künstler:in oder Gruppe",
 	"application-form.new-application": "Neue Einreichung",
-	"application-form.statement": "Artist Statement",
 	"application-state.complete": "Einreichung vollständig",
 	"application-state.no-files": "Keine Dateien hochgeladen",
 	"application-state.no-specifications": "Werksangaben fehlen",
@@ -74,6 +73,7 @@
 	"snippets.internal-chat": "Interner Chat",
 	"snippets.new-alias": "Neues Alias",
 	"snippets.no-applications": "Keine Einreichungen vorhanden",
+	"snippets.statement": "Artist Statement",
 	"snippets.welcome-user": "Hallo {{user}}",
 	"statistics.top-ten": "Top 10 {{type}}"
 }

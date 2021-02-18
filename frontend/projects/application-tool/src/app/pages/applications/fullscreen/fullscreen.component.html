@@ -276,7 +276,11 @@
       ]"
     >
       <div
-        class="font-mono text-base max-w-3xl"
+        class="font-mono text-xs border-b border-black dark:border-white mx-4 pt-4 pb-1"
+        [innerText]="'snippets.statement' | translate | uppercase"
+      ></div>
+      <div
+        class="text-base p-4"
         [innerText]="applicationObject.data?.applications_by_pk?.statement"
       ></div>
     </div>

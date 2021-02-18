@@ -23,7 +23,6 @@
 	"application-form.has-no-influence-on-the-jury": "has no influence on the jury",
 	"application-form.name-of-artist-or-group": "Name of artist or group",
 	"application-form.new-application": "New application",
-	"application-form.statement": "Artist Statement",
 	"application-state.complete": "Application is ready",
 	"application-state.no-files": "There are no files uploaded",
 	"application-state.no-specifications": "missing work-specifications",
@@ -74,6 +73,7 @@
 	"snippets.internal-chat": "internal chat",
 	"snippets.new-alias": "new alias",
 	"snippets.no-applications": "No applications found",
+	"snippets.statement": "Artist Statement",
 	"snippets.welcome-user": "Hello {{user}}",
 	"statistics.top-ten": "Top 10 {{type}}"
 }
