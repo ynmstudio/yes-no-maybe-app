@@ -88,11 +88,8 @@ export function createApollo(
       reconnect: true,
       lazy: true,
       reconnectionAttempts: 10,
-      connectionParams: async ({ headers }: any) => {
-        // @TODO Check why Websocket Link is not working
-        alert('HERE');
-        // const token = await auth.idToken.pipe(take(1)).toPromise();
-        const token = 'hello';
+      connectionParams: async () => {
+        const token = await auth.idToken.pipe(take(1)).toPromise();
         if (token) {
           let devHeaders = {};
           if (!environment.production) {
@@ -107,7 +104,6 @@ export function createApollo(
           // Return the headers as usual
           return {
             headers: {
-              ...headers,
               ...devHeaders,
               Authorization: token ? `Bearer ${token}` : '',
             },
@@ -115,7 +111,6 @@ export function createApollo(
         } else {
           return {
             headers: {
-              ...headers,
               ...(environment.production ? {} : localHeaders()),
             },
           };
