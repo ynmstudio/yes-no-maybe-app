@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Sat Feb 20 2021 09:49:20 GMT+0100 (GMT+01:00)
+# timestamp: Sat Feb 20 2021 10:32:30 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -786,6 +786,11 @@ type editions {
     """filter the rows returned"""
     where: rating_rounds_bool_exp
   ): rating_rounds_aggregate!
+
+  """
+  A computed field, executes function "edition_state"
+  """
+  state: String
 
   """An object relationship"""
   winner: applications

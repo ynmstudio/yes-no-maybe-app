@@ -1,9 +1,9 @@
 <div class="lg:flex max-w-full">
-  <ng-container [ngSwitch]="phase">
+  <ng-container [ngSwitch]="state$ | async">
     <!-- STATISTICS -->
     <div
       id="statistics"
-      *ngSwitchCase="'application'"
+      *ngSwitchCase="'submission'"
       class="container--default flex-auto w-full md:flex-shrink"
     >
       <div
@@ -377,7 +377,7 @@
         </div>
       </div>
     </div>
-    <div *ngSwitchDefault>missing layout for {{ phase }}</div>
+    <div *ngSwitchDefault>missing layout for {{ state$ | async }}</div>
   </ng-container>
 
   <!-- STATUS AND UPDATES -->

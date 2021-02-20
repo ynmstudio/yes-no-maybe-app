@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AlertService } from '../../../shared/components/alert/alert.service';
-import { AuthService } from '../../../shared/services/auth.service';
-import { TeamService } from '../team.service';
 
-type Phase = 'stale' | 'application' | 'rating';
+import { TeamService } from '../team.service';
 
 @Component({
   selector: 'app-team-dashboard',
@@ -13,12 +9,11 @@ type Phase = 'stale' | 'application' | 'rating';
 })
 export class DashboardComponent implements OnInit {
   statistic$;
-
-  // DEV
-  phase: Phase = 'rating';
+  state$;
 
   constructor(private teamService: TeamService) {
     this.statistic$ = this.teamService.getStatistic();
+    this.state$ = this.teamService.getState();
   }
 
   ngOnInit(): void {}

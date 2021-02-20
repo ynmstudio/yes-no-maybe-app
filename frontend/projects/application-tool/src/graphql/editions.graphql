@@ -2,6 +2,7 @@ fragment Edition on editions {
   id
   name
   current
+  state
   application_end
   application_start
   applications_aggregate {
@@ -19,7 +20,7 @@ query GetEdition {
 
 # Admin
 query GetAllEditions {
-  editions {
+  editions(order_by: { application_start: asc }) {
     ...Edition
   }
 }
@@ -30,6 +31,9 @@ query GetEditionStatistic($id: Int!) {
     aggregate {
       count
     }
+    nodes {
+      state
+    }
   }
   applications_untouched: applications_aggregate(
     where: {
@@ -37,7 +41,9 @@ query GetEditionStatistic($id: Int!) {
         edition: { id: { _eq: $id } }
         _and: [
           { disclaimer: { _eq: false } }
+          { statement: { _eq: "" } }
           { _not: { files: {} } }
+          { _not: { works: {} } }
           { _not: { specifications: {} } }
           { _not: { payment: {} } }
         ]
@@ -47,6 +53,9 @@ query GetEditionStatistic($id: Int!) {
     aggregate {
       count
     }
+    nodes {
+      state
+    }
   }
   applications_edited: applications_aggregate(
     where: {
@@ -54,15 +63,30 @@ query GetEditionStatistic($id: Int!) {
         edition: { id: { _eq: $id } }
         _or: [
           { disclaimer: { _eq: true } }
+          { statement: { _neq: "" } }
           { files: {} }
+          { works: {} }
           { specifications: {} }
           { payment: {} }
         ]
+        _not: {
+          _and: [
+            { disclaimer: { _eq: true } }
+            { statement: { _neq: "" } }
+            { files: {} }
+            { works: {} }
+            { specifications: {} }
+            { payment: {} }
+          ]
+        }
       }
     }
   ) {
     aggregate {
       count
+    }
+    nodes {
+      state
     }
   }
   applications_ready: applications_aggregate(
@@ -71,7 +95,9 @@ query GetEditionStatistic($id: Int!) {
         edition: { id: { _eq: $id } }
         _and: [
           { disclaimer: { _eq: true } }
+          { statement: { _neq: "" } }
           { files: {} }
+          { works: {} }
           { specifications: {} }
           { payment: {} }
         ]
@@ -80,6 +106,9 @@ query GetEditionStatistic($id: Int!) {
   ) {
     aggregate {
       count
+    }
+    nodes {
+      state
     }
   }
   payments_aggregate(
@@ -108,6 +137,18 @@ mutation SetCurrentEdition($id: Int!) {
   }
   update_editions_by_pk(pk_columns: { id: $id }, _set: { current: true }) {
     ...Edition
+  }
+}
+mutation SetEditionWinner($id: Int!, $application_id: uuid) {
+  update_editions_by_pk(
+    _set: { winner_id: $application_id }
+    pk_columns: { id: $id }
+  ) {
+    ...Edition
+    winner {
+      id
+      name
+    }
   }
 }
 mutation DisableEditions {

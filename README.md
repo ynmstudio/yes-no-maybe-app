@@ -80,3 +80,32 @@ Firebase config data will be extracted via REST-API before publishing the projec
 3. `firebase init emulators`
 4. `firebase functions:config:get > .runtimeconfig.json`
 5. `npm start`
+
+### REQUIRED JSON API MIGRATIONS
+
+#### FOR "rated_by_user" FIELD
+
+`http://localhost:8080/v1/query`
+
+```json
+{
+  "type": "add_computed_field",
+  "args": {
+    "table": {
+      "name": "applications",
+      "schema": "public"
+    },
+    "name": "rated_by_user",
+    "definition": {
+      "function": {
+        "name": "application_rated_by_user",
+        "schema": "public"
+      },
+      "table_argument": "application_row",
+      "session_argument": "hasura_session"
+    }
+  }
+}
+```
+
+see https://hasura.io/docs/1.0/graphql/core/schema/computed-fields.html#accessing-hasura-session-variables-in-computed-fields

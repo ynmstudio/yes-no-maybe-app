@@ -79,6 +79,13 @@
         schema: public
         name: application_is_winner
     comment: ""
+  - name: rated_by_user
+    definition:
+      function:
+        schema: public
+        name: application_rated_by_user
+      session_argument: hasura_session
+      table_argument: application_row
   insert_permissions:
   - role: user
     permission:
@@ -112,6 +119,7 @@
       - statement
       - updated_at
       computed_fields:
+      - rated_by_user
       - ready
       - state
       - winner
@@ -137,6 +145,7 @@
       - statement
       - updated_at
       computed_fields:
+      - rated_by_user
       - ready
       - state
       - winner
@@ -238,6 +247,13 @@
         table:
           schema: public
           name: rating_rounds
+  computed_fields:
+  - name: state
+    definition:
+      function:
+        schema: public
+        name: edition_state
+    comment: ""
   insert_permissions:
   - role: team
     permission:
@@ -257,6 +273,9 @@
       - current
       - id
       - name
+      - winner_id
+      computed_fields:
+      - state
       filter:
         current:
           _eq: true
@@ -264,12 +283,15 @@
   - role: team
     permission:
       columns:
-      - current
-      - id
-      - name
       - application_end
       - application_start
       - created_at
+      - current
+      - id
+      - name
+      - winner_id
+      computed_fields:
+      - state
       filter: {}
       allow_aggregations: true
   - role: user
@@ -280,6 +302,8 @@
       - current
       - id
       - name
+      computed_fields:
+      - state
       filter:
         current:
           _eq: true
@@ -292,8 +316,14 @@
       - application_start
       - current
       - name
+      - winner_id
       filter: {}
-      check: null
+      check:
+        _or:
+        - winner_id:
+            _is_null: true
+        - application_end:
+            _lt: now()
   delete_permissions:
   - role: team
     permission:

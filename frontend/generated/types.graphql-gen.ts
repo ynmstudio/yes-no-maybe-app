@@ -598,6 +598,8 @@ export type Editions = {
   rating_rounds: Array<Rating_Rounds>;
   /** An aggregated array relationship */
   rating_rounds_aggregate: Rating_Rounds_Aggregate;
+  /** A computed field, executes function "edition_state" */
+  state?: Maybe<Scalars['String']>;
   /** An object relationship */
   winner?: Maybe<Applications>;
   winner_id?: Maybe<Scalars['uuid']>;
@@ -7204,7 +7206,23 @@ export type GetAdminApplicationsByEditionQuery = (
     & { elimination?: Maybe<(
       { __typename?: 'eliminations' }
       & EliminationFragment
-    )> }
+    )>, ratings_aggregate: (
+      { __typename?: 'ratings_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'ratings_aggregate_fields' }
+        & Pick<Ratings_Aggregate_Fields, 'count'>
+        & { stddev_samp?: Maybe<(
+          { __typename?: 'ratings_stddev_samp_fields' }
+          & Pick<Ratings_Stddev_Samp_Fields, 'value'>
+        )>, var_samp?: Maybe<(
+          { __typename?: 'ratings_var_samp_fields' }
+          & Pick<Ratings_Var_Samp_Fields, 'value'>
+        )>, avg?: Maybe<(
+          { __typename?: 'ratings_avg_fields' }
+          & Pick<Ratings_Avg_Fields, 'value'>
+        )> }
+      )> }
+    ) }
     & ApplicationFragment
   )>, applications_aggregate: (
     { __typename?: 'applications_aggregate' }
@@ -7363,7 +7381,7 @@ export type GetLatestMessageLiveSubscription = (
 
 export type EditionFragment = (
   { __typename?: 'editions' }
-  & Pick<Editions, 'id' | 'name' | 'current' | 'application_end' | 'application_start'>
+  & Pick<Editions, 'id' | 'name' | 'current' | 'state' | 'application_end' | 'application_start'>
   & { applications_aggregate: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
@@ -7407,24 +7425,36 @@ export type GetEditionStatisticQuery = (
     & { aggregate?: Maybe<(
       { __typename?: 'applications_aggregate_fields' }
       & Pick<Applications_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'applications' }
+      & Pick<Applications, 'state'>
     )> }
   ), applications_untouched: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
       { __typename?: 'applications_aggregate_fields' }
       & Pick<Applications_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'applications' }
+      & Pick<Applications, 'state'>
     )> }
   ), applications_edited: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
       { __typename?: 'applications_aggregate_fields' }
       & Pick<Applications_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'applications' }
+      & Pick<Applications, 'state'>
     )> }
   ), applications_ready: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
       { __typename?: 'applications_aggregate_fields' }
       & Pick<Applications_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'applications' }
+      & Pick<Applications, 'state'>
     )> }
   ), payments_aggregate: (
     { __typename?: 'payments_aggregate' }
@@ -7474,6 +7504,24 @@ export type SetCurrentEditionMutation = (
     & Pick<Editions_Mutation_Response, 'affected_rows'>
   )>, update_editions_by_pk?: Maybe<(
     { __typename?: 'editions' }
+    & EditionFragment
+  )> }
+);
+
+export type SetEditionWinnerMutationVariables = Exact<{
+  id: Scalars['Int'];
+  application_id?: Maybe<Scalars['uuid']>;
+}>;
+
+
+export type SetEditionWinnerMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_editions_by_pk?: Maybe<(
+    { __typename?: 'editions' }
+    & { winner?: Maybe<(
+      { __typename?: 'applications' }
+      & Pick<Applications, 'id' | 'name'>
+    )> }
     & EditionFragment
   )> }
 );
@@ -7822,6 +7870,7 @@ export const EditionFragmentDoc = gql`
   id
   name
   current
+  state
   application_end
   application_start
   applications_aggregate {
@@ -8077,6 +8126,20 @@ export const GetAdminApplicationsByEditionDocument = gql`
     elimination {
       ...Elimination
     }
+    ratings_aggregate {
+      aggregate {
+        count
+        stddev_samp {
+          value
+        }
+        var_samp {
+          value
+        }
+        avg {
+          value
+        }
+      }
+    }
   }
   applications_aggregate {
     aggregate {
@@ -8323,7 +8386,7 @@ export const GetEditionDocument = gql`
   }
 export const GetAllEditionsDocument = gql`
     query GetAllEditions {
-  editions {
+  editions(order_by: {application_start: asc}) {
     ...Edition
   }
 }
@@ -8345,26 +8408,38 @@ export const GetEditionStatisticDocument = gql`
     aggregate {
       count
     }
+    nodes {
+      state
+    }
   }
   applications_untouched: applications_aggregate(
-    where: {_and: {edition: {id: {_eq: $id}}, _and: [{disclaimer: {_eq: false}}, {_not: {files: {}}}, {_not: {specifications: {}}}, {_not: {payment: {}}}]}}
+    where: {_and: {edition: {id: {_eq: $id}}, _and: [{disclaimer: {_eq: false}}, {statement: {_eq: ""}}, {_not: {files: {}}}, {_not: {works: {}}}, {_not: {specifications: {}}}, {_not: {payment: {}}}]}}
   ) {
     aggregate {
       count
+    }
+    nodes {
+      state
     }
   }
   applications_edited: applications_aggregate(
-    where: {_and: {edition: {id: {_eq: $id}}, _or: [{disclaimer: {_eq: true}}, {files: {}}, {specifications: {}}, {payment: {}}]}}
+    where: {_and: {edition: {id: {_eq: $id}}, _or: [{disclaimer: {_eq: true}}, {statement: {_neq: ""}}, {files: {}}, {works: {}}, {specifications: {}}, {payment: {}}], _not: {_and: [{disclaimer: {_eq: true}}, {statement: {_neq: ""}}, {files: {}}, {works: {}}, {specifications: {}}, {payment: {}}]}}}
   ) {
     aggregate {
       count
     }
+    nodes {
+      state
+    }
   }
   applications_ready: applications_aggregate(
-    where: {_and: {edition: {id: {_eq: $id}}, _and: [{disclaimer: {_eq: true}}, {files: {}}, {specifications: {}}, {payment: {}}]}}
+    where: {_and: {edition: {id: {_eq: $id}}, _and: [{disclaimer: {_eq: true}}, {statement: {_neq: ""}}, {files: {}}, {works: {}}, {specifications: {}}, {payment: {}}]}}
   ) {
     aggregate {
       count
+    }
+    nodes {
+      state
     }
   }
   payments_aggregate(where: {application: {edition: {id: {_eq: $id}}}}) {
@@ -8437,6 +8512,28 @@ export const SetCurrentEditionDocument = gql`
   })
   export class SetCurrentEditionGQL extends Apollo.Mutation<SetCurrentEditionMutation, SetCurrentEditionMutationVariables> {
     document = SetCurrentEditionDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const SetEditionWinnerDocument = gql`
+    mutation SetEditionWinner($id: Int!, $application_id: uuid) {
+  update_editions_by_pk(_set: {winner_id: $application_id}, pk_columns: {id: $id}) {
+    ...Edition
+    winner {
+      id
+      name
+    }
+  }
+}
+    ${EditionFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class SetEditionWinnerGQL extends Apollo.Mutation<SetEditionWinnerMutation, SetEditionWinnerMutationVariables> {
+    document = SetEditionWinnerDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

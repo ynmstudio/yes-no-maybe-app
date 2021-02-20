@@ -163,6 +163,20 @@ query GetAdminApplicationsByEdition($edition_id: Int!) {
     elimination {
       ...Elimination
     }
+    ratings_aggregate {
+      aggregate {
+        count
+        stddev_samp {
+          value
+        }
+        var_samp {
+          value
+        }
+        avg {
+          value
+        }
+      }
+    }
   }
   applications_aggregate {
     aggregate {
@@ -204,6 +218,7 @@ mutation EliminateApplication(
     ...Elimination
   }
 }
+
 query SearchApplications($search: String!, $edition_id: Int!) {
   search_applications(
     where: { edition_id: { _eq: $edition_id }, _not: { elimination: {} } }

@@ -49,11 +49,17 @@ export class TeamService {
           {
             id: edition?.id!,
           },
-          { fetchPolicy: 'cache-and-network' }
+          { fetchPolicy: 'cache-and-network', pollInterval: 60000 }
         ).valueChanges;
       })
     );
   }
+  getState() {
+    return this.selectedEdition.pipe(
+      map((edition) => edition?.state || 'unknown')
+    );
+  }
+
   getAdminApplicationsByEdition() {
     return this.selectedEdition.pipe(
       switchMap((edition) => {

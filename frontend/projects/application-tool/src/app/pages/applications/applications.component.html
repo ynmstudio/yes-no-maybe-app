@@ -33,12 +33,25 @@
         {{ "snippets.application-eliminated" | translate }}
         <span *ngIf="elimination.reason">: {{ elimination.reason }}</span>
       </div>
-      <div class="text-center">[Maybe]</div>
+      <div
+        class="text-center"
+        *ngIf="application.ratings_aggregate?.aggregate?.avg?.value as rating"
+        [ngSwitch]="true"
+        [ngClass]="[
+          application.ratings_aggregate?.aggregate?.stddev_samp?.value > 5
+            ? 'text-red-800'
+            : ''
+        ]"
+      >
+        <div *ngSwitchCase="rating > 5" class="text-blue-700">[Yes]</div>
+        <div *ngSwitchCase="rating === 5">[Maybe]</div>
+        <div *ngSwitchCase="rating < 5">[No]</div>
+        <div *ngSwitchDefault>–</div>
+      </div>
       <div
         class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
-      >
-        4
-      </div>
+        [innerText]="application.ratings_aggregate?.aggregate?.count || 0"
+      ></div>
       <div class="hover:text-blue-600">
         <svg
           width="25px"
