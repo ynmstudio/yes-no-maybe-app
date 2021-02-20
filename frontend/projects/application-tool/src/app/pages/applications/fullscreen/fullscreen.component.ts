@@ -1,11 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { ApolloQueryResult } from '@apollo/client/core';
+import {
+  GetAdminApplicationQuery,
+  GetWorksQuery,
+  SearchApplicationsQuery,
   WorkFragment,
   WorkSpecificationFragment,
 } from 'generated/types.graphql-gen';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { debounce, debounceTime, delay, switchMap, tap } from 'rxjs/operators';
 import { TeamService } from '../../team/team.service';
 
 @Component({
@@ -14,11 +26,19 @@ import { TeamService } from '../../team/team.service';
   styleUrls: ['./fullscreen.component.scss'],
 })
 export class FullscreenComponent implements OnInit {
-  application$;
-  works$;
+  application$: Observable<ApolloQueryResult<GetAdminApplicationQuery>>;
+  works$: Observable<ApolloQueryResult<GetWorksQuery>>;
 
+  @ViewChild('searchInput') searchInput!: ElementRef;
+  searchResults$: Observable<ApolloQueryResult<SearchApplicationsQuery>>;
+
+  application_id$: Observable<string>;
+  private _application_id = this.route.snapshot.params['id'];
+  set application_id(id: string) {
+    this._application_id = id;
+  }
   get application_id() {
-    return this.route.snapshot.params['id'];
+    return this._application_id;
   }
 
   private _currentWorkIndex: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -36,11 +56,40 @@ export class FullscreenComponent implements OnInit {
 
   currentSpecification: Observable<WorkSpecificationFragment | null> = of(null);
 
-  constructor(private route: ActivatedRoute, private teamService: TeamService) {
-    this.application$ = this.teamService.getAdminApplication(
-      this.application_id
+  constructor(
+    private route: ActivatedRoute,
+    private teamService: TeamService,
+    private cdRef: ChangeDetectorRef
+  ) {
+    this.application_id$ = this.route.params.pipe(
+      tap((_) => {
+        this._currentWorkIndex.next(0);
+        this._currentFileIndex.next(0);
+        this._currentSpecificationIndex.next(0);
+        this.showOverview = false;
+        this.showStatement = false;
+        this.chatLoaded = false;
+        this.showChat = false;
+        this.showSpecification = false;
+      }),
+      delay(200),
+      switchMap((params) => of(params['id']))
     );
-    this.works$ = this.teamService.getWorks(this.application_id);
+    this.application$ = this.application_id$.pipe(
+      switchMap((id) => this.teamService.getAdminApplication(id))
+    );
+    this.works$ = this.application_id$.pipe(
+      switchMap((id) => {
+        return this.teamService.getWorks(id);
+      })
+    );
+
+    this.searchResults$ = this.searchTerm$.valueChanges.pipe(
+      debounceTime(200),
+      switchMap((term) => {
+        return this.teamService.searchApplications(term);
+      })
+    );
 
     this.currentWork = combineLatest([this.works$, this.currentWorkIndex]).pipe(
       switchMap(([works, index]) => {
@@ -83,6 +132,7 @@ export class FullscreenComponent implements OnInit {
         : this._currentFileIndex.value + amount
     );
   }
+
   showSpecification: boolean = false;
   setCurrentSpecification(index: number) {
     if (this._currentSpecificationIndex.value === index) {
@@ -110,7 +160,7 @@ export class FullscreenComponent implements OnInit {
     this.showChat = !this.showChat;
   }
 
-  showOverview: boolean = true;
+  showOverview: boolean = false;
   toggleOverview() {
     this.showChat = false;
     this.showStatement = false;
@@ -121,5 +171,17 @@ export class FullscreenComponent implements OnInit {
     this.showChat = false;
     this.showOverview = false;
     this.showStatement = !this.showStatement;
+  }
+  // Search
+
+  searchActive: boolean = false;
+  searchTerm$ = new FormControl('');
+  searchApplications(search: string) {
+    this.searchTerm$.setValue(search);
+  }
+  toggleSearch() {
+    this.searchActive = !this.searchActive;
+    this.cdRef.detectChanges();
+    if (this.searchActive) this.searchInput.nativeElement.focus();
   }
 }

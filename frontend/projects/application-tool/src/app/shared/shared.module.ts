@@ -20,6 +20,7 @@ import { PdfModule } from './components/pdf/pdf.module';
 import { StorageService } from './services/storage.service';
 import { ChatModule } from './components/chat/chat.module';
 import { SpecificationModule } from './components/specification/specification.module';
+import { AlertModule } from './components/alert/alert.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -34,6 +35,7 @@ const MODULES = [
   PdfModule,
   ChatModule,
   SpecificationModule,
+  AlertModule,
 ];
 
 const PIPES: any = [

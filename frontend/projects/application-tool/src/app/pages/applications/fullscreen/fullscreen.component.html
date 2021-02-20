@@ -6,7 +6,7 @@
     <div class="flex items-center space-x-8">
       <a
         [routerLink]="['..']"
-        class="block py-3 px-4 rounded-xl leading-none bg-gray-200 dark:bg-gray-800"
+        class="block py-3 px-4 rounded-xl leading-none bg-gray-200 dark:bg-gray-900"
       >
         <span
           class="sr-only"
@@ -42,7 +42,7 @@
           [ngClass]="[
             showOverview
               ? 'bg-black text-white dark:bg-gray-400 dark:text-black'
-              : 'bg-gray-200  dark:bg-gray-800 '
+              : 'bg-gray-200  dark:bg-gray-900 '
           ]"
         >
           <svg
@@ -83,12 +83,12 @@
           </svg>
         </button>
         <button
-          class="block py-2 px-6 border-l border-r border-gray-50 dark:border-gray-900 leading-none"
+          class="block py-2 px-6 border-l border-r border-gray-50 dark:border-gray-950 leading-none"
           (click)="toggleChat()"
           [ngClass]="[
             showChat
               ? 'bg-black text-white dark:bg-gray-400 dark:text-black'
-              : 'bg-gray-200  dark:bg-gray-800 '
+              : 'bg-gray-200  dark:bg-gray-900 '
           ]"
         >
           <!-- <div class="sr-only">Toggle Chat</div> -->
@@ -122,7 +122,7 @@
           [ngClass]="[
             showStatement
               ? 'bg-black text-white dark:bg-gray-400 dark:text-black'
-              : 'bg-gray-200  dark:bg-gray-800 '
+              : 'bg-gray-200  dark:bg-gray-900 '
           ]"
         >
           <!-- <div class="sr-only">Toggle Chat</div> -->
@@ -131,11 +131,78 @@
       </div>
     </div>
 
-    <div>
-      <h1
-        class="capitalize lg:whitespace-nowrap"
-        [innerText]="applicationObject.data?.applications_by_pk?.internal_name"
-      ></h1>
+    <div class="flex items-center">
+      <button
+        class="block py-2 px-6 rounded-tl-xl rounded-bl-xl leading-none bg-gray-200 dark:bg-gray-900"
+      >
+        <span class="text-2xl leading-none font-mono font-light">&larr;</span>
+      </button>
+      <div
+        class="block h-10 w-80 px-6 whitespace-nowrap bg-gray-200 dark:bg-gray-900 leading-10 border-l border-r border-gray-950 font-mono capitalize lg:whitespace-nowrap"
+      >
+        <button
+          class="capitalize"
+          *ngIf="!searchActive"
+          (click)="toggleSearch()"
+          [innerText]="
+            applicationObject.data?.applications_by_pk?.internal_name
+          "
+        ></button>
+        <div *ngIf="searchActive" class="relative">
+          <input
+            tabindex="0"
+            #searchInput
+            class="appearance-none px-0 py-1 text-sm bg-transparent border-0 border-b border-white w-full focus:ring-0"
+            type="text"
+            [formControl]="searchTerm$"
+            [placeholder]="'snippets.insert-internal-name' | translate"
+          />
+          <div
+            class="absolute top-full -left-4 origin-top-left w-80 mt-4 bg-white dark:bg-gray-700 rounded-xl shadow-lg"
+            [ngClass]="[
+              ((searchResults$ | async)?.data?.search_applications?.length ||
+                0) > 0
+                ? 'transition ease-out duration-100'
+                : 'transition ease-in duration-75',
+              ((searchResults$ | async)?.data?.search_applications?.length ||
+                0) > 0
+                ? 'transform opacity-100 scale-100'
+                : 'transform opacity-0 scale-95',
+              ((searchResults$ | async)?.data?.search_applications?.length ||
+                0) > 0
+                ? 'pointer-events-auto'
+                : 'pointer-events-none'
+            ]"
+          >
+            <a
+              (click)="toggleSearch()"
+              class="block p-4 font-sans hover:underline text-sm"
+              *ngFor="
+                let result of (searchResults$ | async)?.data
+                  ?.search_applications
+              "
+              [routerLink]="['../..', result.id, 'fullscreen']"
+              routerLinkActive="font-medium"
+              [innerText]="result.internal_name"
+            ></a>
+          </div>
+        </div>
+      </div>
+      <button
+        class="block py-2 px-6 border-r border-gray-950 leading-none bg-gray-200 dark:bg-gray-900"
+      >
+        <span class="text-2xl leading-none font-mono font-light">&rarr;</span>
+      </button>
+      <a
+        [routerLink]="['..']"
+        class="block py-2 px-6 rounded-tr-xl rounded-br-xl leading-none bg-gray-200 dark:bg-gray-900"
+      >
+        <span
+          class="sr-only"
+          [innerText]="'screen-reader.back-to-overview' | translate"
+        ></span>
+        <span class="text-2xl leading-none font-mono font-light">&times;</span>
+      </a>
     </div>
   </div>
   <div class="flex-auto container--default-x relative">
@@ -177,15 +244,61 @@
       <ng-container *ngIf="(work?.files?.length || 0) > 1">
         <button
           (click)="incrementFileIndex(-1, work?.files?.length || 0)"
-          class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 text-3xl"
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 p-4 text-blue-600 hover:text-blue-400 rounded-tr-xl rounded-br-xl dark:hover:bg-gray-900 dark:hover:text-gray-200 focus:outline-none focus:ring-0"
         >
-          &larr;
+          <svg
+            width="57px"
+            height="95px"
+            viewBox="0 0 57 95"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <title>Path 7</title>
+            <g
+              id="Page-1"
+              stroke="none"
+              stroke-width="1"
+              fill="none"
+              fill-rule="evenodd"
+            >
+              <polyline
+                id="Path-7"
+                stroke="currentColor"
+                transform="translate(28.500000, 47.500000) scale(-1, 1) rotate(-360.000000) translate(-28.500000, -47.500000) "
+                points="-1.86627047e-10 1 57 47.5 -1.86627047e-10 94"
+              ></polyline>
+            </g>
+          </svg>
         </button>
         <button
           (click)="incrementFileIndex(1, work?.files?.length || 0)"
-          class="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 text-3xl"
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 p-4 text-blue-600 hover:text-blue-400 rounded-tl-xl rounded-bl-xl dark:hover:bg-gray-900 dark:hover:text-gray-200 focus:outline-none focus:ring-0"
         >
-          &rarr;
+          <svg
+            width="57px"
+            height="95px"
+            viewBox="0 0 57 95"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <title>Path 7</title>
+            <g
+              id="Page-1"
+              stroke="none"
+              stroke-width="1"
+              fill="none"
+              fill-rule="evenodd"
+            >
+              <polyline
+                id="Path-7"
+                stroke="currentColor"
+                transform="translate(28.500000, 47.500000) rotate(-360.000000) translate(-28.500000, -47.500000) "
+                points="-1.86627047e-10 1 57 47.5 -1.86627047e-10 94"
+              ></polyline>
+            </g>
+          </svg>
         </button>
       </ng-container>
     </div>
@@ -194,9 +307,7 @@
       class="absolute bottom-0 inset-x-0 container--default grid grid-cols-3"
       *ngIf="currentSpecification | async as specification"
     >
-      <div class="font-mono px-3">
-        {{ specification?.title || "Untitled" }}
-      </div>
+      <div class="px-3" [innerText]="specification?.title || 'Untitled'"></div>
       <ol class="text-center" *ngIf="currentWork | async as work">
         <li
           *ngFor="let item of work?.files; let index = index"
@@ -222,7 +333,7 @@
       </ol>
     </div>
     <div
-      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-800 transition-all transform-gpu origin-right"
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showOverview
           ? 'translate-x-0 opacity-100'
@@ -238,13 +349,13 @@
         "
         [ngClass]="[
           (currentWorkIndex | async) == indexW
-            ? 'bg-gray-900 '
+            ? 'bg-gray-950 bg-opacity-90'
             : 'hover:bg-gray-300 cursor-pointer'
         ]"
         (click)="setCurrentWork(indexW)"
       >
         <div
-          class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow"
+          class="inline-block h-32 w-auto mr-2 ring-blue-500 transition-shadow"
           (click)="setCurrentFile(indexF, $event, indexW)"
           *ngFor="let file of work?.files; let indexF = index"
           [ngClass]="[
@@ -261,14 +372,14 @@
           <app-image
             [key]="file.key"
             [mimetype]="file.mimetype"
-            size="_200x200"
+            size="_600x600"
             [title]="file.originalname"
           ></app-image>
         </div>
       </div>
     </div>
     <div
-      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-800 transition-all transform-gpu origin-right"
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showStatement
           ? 'translate-x-0 opacity-100'
@@ -283,14 +394,24 @@
         class="text-base p-4"
         [innerText]="applicationObject.data?.applications_by_pk?.statement"
       ></div>
+      <div class="">
+        <div
+          *ngFor="
+            let result of (searchResults$ | async)?.data?.search_applications
+          "
+        >
+          {{ result | json }}
+        </div>
+      </div>
     </div>
     <div
-      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-800 transition-all transform-gpu origin-right"
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showChat
           ? 'translate-x-0 opacity-100'
           : '-translate-x-full opacity-0  pointer-events-none'
       ]"
+      *ngIf="application_id$ | async as application_id"
     >
       <app-chat
         *ngIf="chatLoaded"
@@ -299,47 +420,25 @@
       ></app-chat>
     </div>
     <div
-      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 right-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-800 transition-all transform-gpu origin-right"
-      *ngIf="currentWork | async as work"
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 right-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showSpecification
           ? 'translate-x-0 opacity-100'
           : 'translate-x-full opacity-0 pointer-events-none'
       ]"
     >
-      <app-specification
-        *ngFor="let specification of work?.specifications; let index = index"
-        [specification]="specification"
-        class="absolute inset-0 bg-gray-200 dark:bg-gray-800 overflow-scroll overscroll-contain transform-gpu transition-opacity"
-        [ngClass]="[
-          (currentSpecificationIndex | async) == index
-            ? 'opacity-100'
-            : 'opacity-0 pointer-events-none'
-        ]"
-      ></app-specification>
-      <!-- <div
-      class="absolute bottom-0 inset-x-0 text-right font-mono m-1"
-      *ngIf="(work?.specifications?.length || 0) > 1"
-    >
-      <button
-        class="py-1 px-3 m-1 rounded-xl leading-none"
-        (click)="setCurrentSpecification(index)"
-        *ngFor="let specification of work?.specifications; let index = index"
-        [ngClass]="[
-          (currentSpecificationIndex | async) == index
-            ? 'bg-black text-white'
-            : 'bg-white text-black'
-        ]"
-      >
-        <span
-          class="inline-block"
-          *ngIf="(currentSpecificationIndex | async) == index"
-        >
-          Arbeitsangabe
-        </span>
-        {{ index + 1 }}
-      </button>
-    </div> -->
+      <ng-container *ngIf="currentWork | async as work">
+        <app-specification
+          *ngFor="let specification of work?.specifications; let index = index"
+          [specification]="specification"
+          class="absolute inset-0 bg-gray-200 dark:bg-gray-900 overflow-scroll overscroll-contain transform-gpu transition-opacity"
+          [ngClass]="[
+            (currentSpecificationIndex | async) == index
+              ? 'opacity-100'
+              : 'opacity-0 pointer-events-none'
+          ]"
+        ></app-specification>
+      </ng-container>
     </div>
     <div
       class="absolute bottom-0 right-0 container--default flex justify-between items-center"
@@ -354,8 +453,8 @@
           *ngFor="let specification of work?.specifications; let index = index"
           [ngClass]="[
             (currentSpecificationIndex | async) == index && showSpecification
-              ? 'bg-black text-white'
-              : 'bg-gray-200 text-black'
+              ? 'bg-black text-white dark:bg-gray-400 dark:text-black'
+              : 'bg-gray-200 text-black dark:bg-gray-800 dark:text-gray-200'
           ]"
         >
           <span

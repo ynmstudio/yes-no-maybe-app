@@ -16,6 +16,8 @@ import { ConnectionService } from 'ng-connection-service';
 import { environment } from '../environments/environment';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { take } from 'rxjs/operators';
+import { AppService } from './shared/services/app.service';
+import { AlertService } from './shared/components/alert/alert.service';
 
 // This should be in sync with update information inside ngsw-config.json file
 export const SCHEMA_VERSION = '0.0.0'; // Must be a string.
@@ -71,7 +73,8 @@ const authCtx = (auth: AngularFireAuth) =>
 export function createApollo(
   httpLink: HttpLink,
   auth: AngularFireAuth,
-  connectionService: ConnectionService
+  connectionService: ConnectionService,
+  alertService: AlertService
 ) {
   // Read the current schema version from AsyncStorage.
   const currentVersion = localStorage.getItem(SCHEMA_VERSION_KEY);
@@ -136,11 +139,13 @@ export function createApollo(
     onError(({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${extensions?.code}`
-          );
+          alertService.error(message);
+          // console.debug(
+          //   `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${extensions?.code}`
+          // );
           switch (extensions?.code) {
             case 'invalid-jwt':
+              alertService.error('JWT is inavlid');
               // const oldHeaders = operation.getContext().headers;
               // operation.setContext({
               //   headers: {
@@ -156,7 +161,8 @@ export function createApollo(
           }
         });
       if (networkError) {
-        console.error(`[Network error]: ${networkError.message}`);
+        console.debug(`[Network error]: ${networkError.message}`);
+        alertService.warn(networkError.message);
         // console.error(networkError);
         // alert("New network error. Check console");
       }
@@ -211,7 +217,7 @@ export function createApollo(
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink, AngularFireAuth, ConnectionService],
+      deps: [HttpLink, AngularFireAuth, ConnectionService, AlertService],
     },
   ],
 })

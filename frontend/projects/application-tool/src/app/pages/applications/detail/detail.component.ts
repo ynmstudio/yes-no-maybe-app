@@ -115,4 +115,8 @@ export class DetailComponent implements OnInit {
   toggleAnonymity() {
     this.anonymous = !this.anonymous;
   }
+
+  async eliminateApplication(reason: string = '') {
+    this.teamService.eliminateApplication(this.application_id, reason);
+  }
 }

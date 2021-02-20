@@ -41,6 +41,16 @@ fragment Application on applications {
     }
   }
 }
+
+fragment Elimination on eliminations {
+  created_at
+  round_id
+  eliminated_by {
+    name
+  }
+  reason
+}
+
 # User
 
 query GetApplications {
@@ -143,10 +153,16 @@ mutation DeletePayment($id: uuid!, $application_id: uuid!) {
 query GetAdminApplicationsByEdition($edition_id: Int!) {
   applications(
     where: { edition_id: { _eq: $edition_id } }
-    order_by: { created_at: asc_nulls_first }
+    order_by: {
+      elimination: { created_at: asc_nulls_first }
+      created_at: asc_nulls_first
+    }
   ) {
     ...Application
     internal_name
+    elimination {
+      ...Elimination
+    }
   }
   applications_aggregate {
     aggregate {
@@ -158,6 +174,9 @@ query GetAdminApplication($id: uuid!) {
   applications_by_pk(id: $id) {
     ...Application
     internal_name
+    elimination {
+      ...Elimination
+    }
   }
 }
 mutation CreateNewAlias($id: uuid!) {
@@ -167,6 +186,30 @@ mutation CreateNewAlias($id: uuid!) {
   ) {
     id
     updated_at
+    internal_name
+  }
+}
+mutation EliminateApplication(
+  $application_id: uuid!
+  $reason: String!
+  $round_id: Int
+) {
+  insert_eliminations_one(
+    object: {
+      application_id: $application_id
+      reason: $reason
+      round_id: $round_id
+    }
+  ) {
+    ...Elimination
+  }
+}
+query SearchApplications($search: String!, $edition_id: Int!) {
+  search_applications(
+    where: { edition_id: { _eq: $edition_id }, _not: { elimination: {} } }
+    args: { search: $search }
+  ) {
+    id
     internal_name
   }
 }

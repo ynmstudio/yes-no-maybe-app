@@ -5,5 +5,25 @@ query GetCurrentRound {
     }
   ) {
     id
+    # prev_round {
+    #   ratings_aggregate {
+    #     aggregate {
+    #       count
+    #     }
+    #   }
+    # }
   }
 }
+
+# query GetUnratedApplications($id: Int!) {
+#   applications(
+#     where: {
+#       _and: [
+#         { edition: { current: { _eq: true } } }
+#         { _not: { ratings: { round_id: { _eq: $id } } } }
+#       ]
+#     }
+#   ) {
+#     id
+#   }
+# }

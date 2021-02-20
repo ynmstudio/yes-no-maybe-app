@@ -1,5 +1,5 @@
 <div
-  class="font-mono text-xs border-b border-black dark:border-white mx-2 pt-2 pb-1"
+  class="font-mono text-xs border-b border-black dark:border-white mx-4 pt-4 pb-1"
   [innerText]="'snippets.internal-chat' | translate | uppercase"
 ></div>
 <div
@@ -56,10 +56,10 @@
 </div>
 <div class="absolute bottom-0 inset-x-0">
   <div
-    class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-400 dark:from-black to-transparent opacity-50 h-24 pointer-events-none"
+    class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-400 dark:from-gray-950 to-transparent opacity-75 h-24 pointer-events-none"
   ></div>
   <form
-    class="relative flex items-center m-4 bg-blue-600 text-white pt-1 pb-3 pl-2"
+    class="relative flex items-center m-4 mb-8 bg-blue-600 text-white pt-1 pb-3 pl-2"
     (ngSubmit)="sendMessage()"
   >
     <input

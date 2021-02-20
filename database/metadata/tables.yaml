@@ -5,6 +5,14 @@
   - name: edition
     using:
       foreign_key_constraint_on: edition_id
+  - name: elimination
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: eliminations
+        column_mapping:
+          id: application_id
   - name: payment
     using:
       manual_configuration:
@@ -24,6 +32,13 @@
         table:
           schema: public
           name: works_files
+  - name: messages
+    using:
+      foreign_key_constraint_on:
+        column: application_id
+        table:
+          schema: public
+          name: messages
   - name: ratings
     using:
       foreign_key_constraint_on:
@@ -58,6 +73,12 @@
         schema: public
         name: application_state
     comment: ""
+  - name: winner
+    definition:
+      function:
+        schema: public
+        name: application_is_winner
+    comment: ""
   insert_permissions:
   - role: user
     permission:
@@ -83,11 +104,17 @@
       - created_at
       - created_by
       - edition_id
+      - eliminated
       - group
       - id
       - internal_name
+      - locked
       - statement
       - updated_at
+      computed_fields:
+      - ready
+      - state
+      - winner
       filter:
         edition:
           current:
@@ -112,10 +139,8 @@
       computed_fields:
       - ready
       - state
-      filter:
-        edition:
-          current:
-            _eq: true
+      - winner
+      filter: {}
       allow_aggregations: true
   - role: user
     permission:
@@ -194,6 +219,10 @@
 - table:
     schema: public
     name: editions
+  object_relationships:
+  - name: winner
+    using:
+      foreign_key_constraint_on: winner_id
   array_relationships:
   - name: applications
     using:
@@ -269,6 +298,65 @@
   - role: team
     permission:
       filter: {}
+- table:
+    schema: public
+    name: eliminations
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  - name: eliminated_by
+    using:
+      foreign_key_constraint_on: created_by
+  - name: rating_round
+    using:
+      foreign_key_constraint_on: round_id
+  insert_permissions:
+  - role: team
+    permission:
+      check:
+        application:
+          _and:
+          - edition:
+              current:
+                _eq: true
+      set:
+        created_by: x-hasura-User-Id
+      columns:
+      - application_id
+      - reason
+      - round_id
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - round_id
+      - created_by
+      - reason
+      - created_at
+      - application_id
+      filter: {}
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - round_id
+      - created_by
+      - reason
+      - created_at
+      - application_id
+      filter: {}
+      allow_aggregations: true
+  delete_permissions:
+  - role: team
+    permission:
+      filter:
+        application:
+          _and:
+          - edition:
+              current:
+                _eq: true
 - table:
     schema: public
     name: messages
@@ -440,6 +528,21 @@
   - name: prev_round
     using:
       foreign_key_constraint_on: prev_round_id
+  array_relationships:
+  - name: ratings
+    using:
+      foreign_key_constraint_on:
+        column: round_id
+        table:
+          schema: public
+          name: ratings
+  computed_fields:
+  - name: active
+    definition:
+      function:
+        schema: public
+        name: rating_round_state
+    comment: ""
   select_permissions:
   - role: jury
     permission:
@@ -452,6 +555,8 @@
       - prev_round_id
       - created_at
       - updated_at
+      computed_fields:
+      - active
       filter:
         _and:
         - edition:
@@ -470,6 +575,8 @@
       - prev_round_id
       - created_at
       - updated_at
+      computed_fields:
+      - active
       filter:
         _and:
         - edition:

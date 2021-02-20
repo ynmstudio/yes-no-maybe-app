@@ -7,6 +7,8 @@ import {
   GetAdminApplicationGQL,
   CreateNewAliasGQL,
   GetWorksGQL,
+  SearchApplicationsGQL,
+  EliminateApplicationGQL,
 } from 'generated/types.graphql-gen';
 import { ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -25,7 +27,9 @@ export class TeamService {
     private getAdminApplicationsByEditionGQL: GetAdminApplicationsByEditionGQL,
     private getAdminApplicationGQL: GetAdminApplicationGQL,
     private createNewAliasGQL: CreateNewAliasGQL,
-    private getWorksGQL: GetWorksGQL
+    private getWorksGQL: GetWorksGQL,
+    private searchApplicationsGQL: SearchApplicationsGQL,
+    private eliminateApplicationGQL: EliminateApplicationGQL
   ) {
     this.currentEdition
       .pipe(first())
@@ -106,5 +110,31 @@ export class TeamService {
     if (edition) {
       this._selectedEdition.next(edition);
     }
+  }
+  searchApplications(search: string) {
+    return this.selectedEdition.pipe(
+      switchMap((edition) => {
+        return this.searchApplicationsGQL.watch(
+          {
+            search,
+            edition_id: edition?.id!,
+          },
+          { fetchPolicy: 'cache-and-network' }
+        ).valueChanges;
+      })
+    );
+  }
+  async eliminateApplication(
+    application_id: string,
+    reason: string,
+    round_id?: number
+  ) {
+    await this.eliminateApplicationGQL
+      .mutate({
+        application_id,
+        reason,
+        round_id,
+      })
+      .toPromise();
   }
 }

@@ -8,6 +8,11 @@
     <div
       *ngFor="let application of (applications$ | async)?.data.applications"
       class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-300 even:bg-gray-200 even:bg-opacity-25 hover:bg-gray-50 hover:bg-opacity-100 relative"
+      [ngClass]="[
+        application.elimination
+          ? 'text-gray-400 hover:text-black transition-colors'
+          : ''
+      ]"
     >
       <div
         class="flex-auto font-mono"
@@ -18,10 +23,22 @@
             : application.name || 'Untitled Application'
         "
       ></div>
+      <div
+        class="text-xxs bg-red-600 text-white px-2 rounded-full font-condensed font-medium uppercase"
+        *ngIf="application.elimination as elimination"
+        title="Eliminated
+        {{ elimination.created_at | timePassed }} ago by
+        {{ elimination.eliminated_by.name }}"
+      >
+        {{ "snippets.application-eliminated" | translate }}
+        <span *ngIf="elimination.reason">: {{ elimination.reason }}</span>
+      </div>
       <div class="text-center">[Maybe]</div>
       <div
         class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
-      ></div>
+      >
+        4
+      </div>
       <div class="hover:text-blue-600">
         <svg
           width="25px"
