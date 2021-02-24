@@ -19,7 +19,7 @@
       (click)="close()"
       aria-hidden="true"
     >
-      <div class="absolute inset-0 bg-gray-800 opacity-40"></div>
+      <div class="absolute inset-0 bg-gray-950 opacity-90"></div>
     </div>
 
     <!-- This element is to trick the browser into centering the modal contents. -->
@@ -39,12 +39,15 @@
         To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     -->
     <div
-      [ngClass]="
+      [ngClass]="[
+        boxed
+          ? 'inline-block align-bottom bg-white px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6'
+          : '',
         display
           ? 'opacity-100 translate-y-0 sm:scale-100'
           : 'opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
-      "
-      class="inline-block align-bottom bg-white px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"
+      ]"
+      class="inline-block"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-headline"

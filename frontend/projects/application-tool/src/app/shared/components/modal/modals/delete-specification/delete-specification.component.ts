@@ -1,12 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   DeletePortfolioSpecificationGQL,
-  DeleteWorkGQL,
-  GetPortfolioWorksDocument,
-  GetSingleWorksDocument,
   WorkFragmentDoc,
 } from 'generated/types.graphql-gen';
-import { UserService } from 'projects/application-tool/src/app/pages/user/user.service';
 import { ModalComponent } from '../../modal.component';
 
 @Component({
@@ -35,12 +31,12 @@ export class DeleteSpecificationComponent implements OnInit {
           update: (store, { data: { ...deletedSpecification } }) => {
             const variables = {
               application_id:
-                deletedSpecification.delete_works_specifications_by_pk
+                deletedSpecification.delete_work_specifications_by_pk
                   ?.application_id,
             };
 
             let { ...data }: any = store.readFragment({
-              id: `works:${deletedSpecification.delete_works_specifications_by_pk?.work_id}`,
+              id: `works:${deletedSpecification.delete_work_specifications_by_pk?.work_id}`,
               fragment: WorkFragmentDoc,
               fragmentName: 'Work',
             });
@@ -50,14 +46,14 @@ export class DeleteSpecificationComponent implements OnInit {
               ...data.specifications.filter(
                 (specification: any) =>
                   specification.id !==
-                  deletedSpecification.delete_works_specifications_by_pk?.id
+                  deletedSpecification.delete_work_specifications_by_pk?.id
               ),
             ];
 
             console.log(data);
             // Write our data back to the cache.
             store.writeFragment({
-              id: `works:${deletedSpecification.delete_works_specifications_by_pk?.work_id}`,
+              id: `works:${deletedSpecification.delete_work_specifications_by_pk?.work_id}`,
               fragment: WorkFragmentDoc,
               fragmentName: 'Work',
               data,

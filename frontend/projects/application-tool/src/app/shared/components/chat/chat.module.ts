@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ChatComponent } from './chat.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
+import { GetScorePipeModule } from '../../pipes/get-score/get-score.module';
 
 @NgModule({
   declarations: [ChatComponent],
   exports: [ChatComponent],
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [CommonModule, FormsModule, TranslateModule, GetScorePipeModule],
 })
 export class ChatModule {}

@@ -17,6 +17,11 @@ query GetEdition {
     ...Edition
   }
 }
+subscription EditionState {
+  editions(where: { current: { _eq: true } }) {
+    state
+  }
+}
 
 # Admin
 query GetAllEditions {
@@ -24,6 +29,13 @@ query GetAllEditions {
     ...Edition
   }
 }
+
+subscription GetEditionStateAdmin($id: Int!) {
+  editions_by_pk(id: $id) {
+    state
+  }
+}
+
 query GetEditionStatistic($id: Int!) {
   applications_total: applications_aggregate(
     where: { edition: { id: { _eq: $id } } }

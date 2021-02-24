@@ -115,7 +115,14 @@
                 </div>
               </div>
               <div class="flex justify-end mt-6 space-x-4 items-center">
-                <ng-container *ngIf="!application.locked; else locked">
+                <ng-container
+                  *ngIf="
+                    !application.locked &&
+                      ((editionState$ | async)?.data?.editions | last)
+                        ?.state === 'submission';
+                    else locked
+                  "
+                >
                   <a
                     [routerLink]="['/', 'u', 'applications', application.id]"
                     class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
@@ -129,6 +136,10 @@
                 </ng-container>
                 <ng-template #locked>
                   <button
+                    *ngIf="
+                      ((editionState$ | async)?.data?.editions | last)
+                        ?.state === 'submission'
+                    "
                     class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-base leading-none py-3 px-6 rounded-xl"
                     (click)="unlockApplication(application.id)"
                     [innerText]="'defaults.unlock' | translate"
@@ -148,6 +159,10 @@
         </ng-template>
       </div>
       <button
+        *ngIf="
+          ((editionState$ | async)?.data?.editions | last)?.state ===
+          'submission'
+        "
         (click)="addApplication()"
         class="bg-black text-white font-mono text-base leading-none mt-8 py-3 px-6 w-full rounded-xl"
         [innerText]="'snippets.add-application' | translate"
@@ -156,8 +171,30 @@
     <!-- STATUS AND UPDATES -->
     <div class="container--default flex-auto max-w-full md:flex-shrink-0">
       <!-- STATUS -->
-      <div id="status" class="md:w-80 lg:w-96">
+      <div
+        *ngIf="
+          ((editionState$ | async)?.data?.editions | last)
+            ?.state as editionState
+        "
+        id="status"
+        class="md:w-80 lg:w-96 mb-16"
+        [ngSwitch]="editionState"
+      >
         <div
+          *ngSwitchCase="'open'"
+          class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+        >
+          <div
+            class="text-headline"
+            [innerText]="
+              'edition.status--application-starts-in'
+                | translate
+                  : { time: (edition$ | async)?.application_start | timePassed }
+            "
+          ></div>
+        </div>
+        <div
+          *ngSwitchCase="'submission'"
           class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div
@@ -175,9 +212,40 @@
           >
           <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
         </div>
+
+        <div
+          *ngSwitchCase="'rating'"
+          class="relative group cursor-pointer z-0 bg-orange-400 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+        >
+          <div
+            class="text-headline"
+            [innerText]="'edition.status--rating' | translate"
+          ></div>
+        </div>
+        <div
+          *ngSwitchCase="'closed'"
+          class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+        >
+          <div
+            class="text-headline"
+            [innerText]="'edition.status--closed' | translate"
+          ></div>
+        </div>
+        <div
+          *ngSwitchDefault
+          class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+        >
+          <div
+            class="text-headline"
+            [innerText]="
+              'edition.current-state'
+                | translate: { state: editionState | titlecase }
+            "
+          ></div>
+        </div>
       </div>
       <!-- UPDATES -->
-      <div id="updates" class="mt-16 md:w-80 lg:w-96">
+      <div id="updates" class="md:w-80 lg:w-96">
         <div
           class="updates--header border-b border-gray-300 flex items-center pb-3 space-x-2"
         >
@@ -218,28 +286,9 @@
           <div
             class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
           >
-            <div class="text-headline">Jury 2021 steht fest!</div>
-            <a
-              class="inline-block mt-4 font-mono text-black text-opacity-60"
-              [routerLink]="[]"
-              ><span class="group-hover:underline">Mehr dazu</span> &rarr;</a
-            >
-          </div>
-        </div>
-        <!-- SINGLE UPDATE -->
-        <div class="update mt-4">
-          <div
-            class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
-          >
-            <span>{{
-              "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short"
-            }}</span>
-            <a [routerLink]="[]">X</a>
-          </div>
-          <div
-            class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
-          >
-            <div class="text-headline">Jury 2021 steht fest!</div>
+            <div class="text-headline">
+              Einreichungen können ab jetzt eingesendet werden.
+            </div>
             <a
               class="inline-block mt-4 font-mono text-black text-opacity-60"
               [routerLink]="[]"

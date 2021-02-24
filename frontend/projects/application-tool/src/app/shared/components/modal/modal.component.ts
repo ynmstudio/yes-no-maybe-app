@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { ModalService } from './modal.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { ModalService } from './modal.service';
 })
 export class ModalComponent<T> implements AfterViewInit {
   display = false;
+
+  @Input() boxed: boolean = true;
 
   constructor(private modalService: ModalService<T>) {}
 

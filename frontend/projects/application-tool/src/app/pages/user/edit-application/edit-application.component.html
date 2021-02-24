@@ -102,7 +102,7 @@
     <div class="container--default-x py-8 lg:py-0">
       <!-- WORKS -->
       <div class="lg:flex lg:space-x-6 xl:space-x-8">
-        <div class="flex-auto">
+        <div class="flex-auto w-1/2">
           <div
             *ngIf="
               (portfolioWorks$ | async)?.data?.works?.length! > 0;
@@ -124,6 +124,7 @@
                 [files]="work.files"
                 [application_id]="application_id"
                 [work_id]="work.id"
+                (pendingUploads)="pendingUploads = $event"
               ></app-work-portfolio>
               <div
                 cdkDropList
@@ -216,7 +217,7 @@
           class="h-px lg:h-auto lg:w-px my-8 lg:my-0 flex-none bg-gray-200"
         ></div>
         <div
-          class="flex-auto"
+          class="flex-auto w-1/2"
           *ngIf="singleWorks$ | async as singleWorksObject"
         >
           <div
@@ -251,8 +252,8 @@
                 [files]="work.files"
                 [application_id]="application_id"
                 [work_id]="work.id"
+                (pendingUploads)="pendingUploads = $event"
               ></app-work-files>
-
               <app-work-specification
                 *ngFor="
                   let specification of work.specifications;
@@ -618,9 +619,14 @@
         </div>
       </div>
     </div>
-    <div class="my-8 p-4 text-center text-gray-400" *ngIf="updated_at?.value">
-      Last updated {{ updated_at?.value | timePassed }} ago
-    </div>
+    <div
+      class="my-8 p-4 text-center text-gray-400"
+      *ngIf="updated_at?.value"
+      [innerText]="
+        'snippets.updated-some-time-ago'
+          | translate: { time: updated_at?.value | timePassed }
+      "
+    ></div>
   </form>
 
   <pre class="p-1 bg-red-50 text-xs overflow-hidden">

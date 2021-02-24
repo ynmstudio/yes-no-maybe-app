@@ -1,0 +1,1 @@
+CREATE TABLE "public"."works_mediums"("specification_id" uuid NOT NULL, "medium_id" uuid NOT NULL, PRIMARY KEY ("specification_id","medium_id") , FOREIGN KEY ("specification_id") REFERENCES "public"."works_specifications"("id") ON UPDATE cascade ON DELETE cascade, FOREIGN KEY ("medium_id") REFERENCES "public"."category_mediums"("id") ON UPDATE cascade ON DELETE cascade);

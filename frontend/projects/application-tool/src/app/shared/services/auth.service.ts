@@ -12,6 +12,7 @@ import {
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { fuzzy } from 'fast-fuzzy';
 import { HasuraService } from './hasura.service';
+import { AlertService } from '../components/alert/alert.service';
 
 export interface User {
   loginName: string;
@@ -32,6 +33,7 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private afDatabase: AngularFireDatabase,
     private appService: AppService,
+    private alertService: AlertService,
     private hasuraService: HasuraService,
     private router: Router
   ) {
@@ -115,9 +117,9 @@ export class AuthService {
       const errorMessage = error.message;
 
       if (errorCode == 'auth/weak-password') {
-        this.appService.message('The password is too weak.');
+        this.alertService.info('The password is too weak.');
       } else {
-        this.appService.message(error);
+        this.alertService.error(error);
       }
     }
   }
@@ -126,8 +128,8 @@ export class AuthService {
     await this.afAuth.useDeviceLanguage();
     await this.afAuth
       .sendPasswordResetEmail(email)
-      .then(() => this.appService.message('Please check your inbox', 'success'))
-      .catch((error) => this.appService.message(error));
+      .then(() => this.alertService.info('Please check your inbox', 'success'))
+      .catch((error) => this.alertService.error(error));
   }
 
   async login(email: string, password: string) {
@@ -157,7 +159,7 @@ export class AuthService {
         }
       }
     } catch (error) {
-      this.appService.message(error);
+      this.alertService.error(error);
     }
   }
 
@@ -165,7 +167,7 @@ export class AuthService {
     this.afAuth.useDeviceLanguage();
     await this.afAuth
       .onAuthStateChanged((user) => user?.sendEmailVerification())
-      .catch((error) => this.appService.message(error));
+      .catch((error) => this.alertService.error(error));
   }
   async logout() {
     await this.afAuth.signOut();

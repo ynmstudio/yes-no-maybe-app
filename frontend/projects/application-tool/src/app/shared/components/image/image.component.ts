@@ -1,7 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { delay, mergeMap, retryWhen, switchMap } from 'rxjs/operators';
 import { StorageService } from '../../services/storage.service';
 
 @Component({
@@ -13,6 +10,7 @@ export class ImageComponent implements OnInit {
   @Input() key!: string;
   @Input() mimetype!: string;
   @Input() size: string = '';
+  @Input() showControls: boolean = false;
 
   video: boolean = false;
   pdf: boolean = false;

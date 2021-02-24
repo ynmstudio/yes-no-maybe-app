@@ -1,5 +1,11 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -38,6 +44,11 @@ import { AuthService } from '../../../shared/services/auth.service';
   styleUrls: ['./edit-application.component.scss'],
 })
 export class EditApplicationComponent implements OnInit {
+  @HostListener('window:beforeunload')
+  canDeactivate(): boolean {
+    return !this.form.dirty && !this.pendingUploads;
+  }
+
   form: FormGroup;
 
   isNew: boolean = false;
@@ -72,6 +83,14 @@ export class EditApplicationComponent implements OnInit {
 
   get application_id() {
     return this.route.snapshot.params['id'];
+  }
+
+  private _pendingUploads: boolean = false;
+  set pendingUploads(state: boolean) {
+    this._pendingUploads = state;
+  }
+  get pendingUploads() {
+    return this._pendingUploads;
   }
 
   singleWorks$;
@@ -389,14 +408,14 @@ export class EditApplicationComponent implements OnInit {
           },
           {
             optimisticResponse: {
-              insert_works_specifications: {
-                __typename: 'works_specifications_mutation_response',
+              insert_work_specifications: {
+                __typename: 'work_specifications_mutation_response',
                 returning: [
                   ...objects.map((object) => {
                     return {
                       id: object.id,
                       order: object.order,
-                      __typename: 'works_specifications',
+                      __typename: 'work_specifications',
                     };
                   }),
                 ] as any,
@@ -414,7 +433,7 @@ export class EditApplicationComponent implements OnInit {
               // Update objects
               data.specifications = data.specifications.map(
                 (specification: any) => {
-                  let updatedSpecification = updatedSpecifications?.insert_works_specifications?.returning.find(
+                  let updatedSpecification = updatedSpecifications?.insert_work_specifications?.returning.find(
                     (updatedSpecification) =>
                       updatedSpecification.id === specification.id
                   );
@@ -436,11 +455,11 @@ export class EditApplicationComponent implements OnInit {
                 data,
               });
 
-              updatedSpecifications?.insert_works_specifications?.returning.forEach(
+              updatedSpecifications?.insert_work_specifications?.returning.forEach(
                 (updatedSpecification: any) => {
                   // Read the data from our cache for this query.
                   let { ...data }: any = store.readFragment({
-                    id: `works_specifications:${updatedSpecification.id}`,
+                    id: `work_specifications:${updatedSpecification.id}`,
                     fragment: WorkSpecificationFragmentDoc,
                     fragmentName: 'WorkSpecification',
                     optimistic: true,
@@ -449,7 +468,7 @@ export class EditApplicationComponent implements OnInit {
                   data = { ...data, order: updatedSpecification.order };
                   // Write our data back to the cache.
                   store.writeFragment({
-                    id: `works_specifications:${updatedSpecification.id}`,
+                    id: `work_specifications:${updatedSpecification.id}`,
                     fragment: WorkSpecificationFragmentDoc,
                     fragmentName: 'WorkSpecification',
                     data,

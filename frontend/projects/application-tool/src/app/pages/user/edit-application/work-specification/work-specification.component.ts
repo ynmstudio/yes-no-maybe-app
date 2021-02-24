@@ -3,7 +3,6 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChange,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -14,11 +13,8 @@ import {
   NgForm,
   Validators,
 } from '@angular/forms';
-import { ApolloCache } from '@apollo/client/core';
 import {
-  ApplicationFragmentDoc,
   UpdateSpecificationGQL,
-  UpdateSpecificationMutation,
   WorkSpecificationFragment,
 } from 'generated/types.graphql-gen';
 import { AuthService } from 'projects/application-tool/src/app/shared/services/auth.service';
@@ -44,6 +40,9 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
 
   get title() {
     return this.form.get('title');
+  }
+  get video_url() {
+    return this.form.get('video_url');
   }
   get year() {
     return this.form.get('year');
@@ -77,6 +76,13 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
       dimensions_width: new FormControl(''),
       dimensions_height: new FormControl(''),
       dimensions_depth: new FormControl(''),
+      video_url: new FormControl(
+        '',
+        Validators.pattern(
+          /^(http:\/\/|https:\/\/)(vimeo\.com|youtu\.be|www\.youtube\.com)\/([\w\/]+)([\?].*)?$/
+        )
+      ),
+      video_password: new FormControl(''),
       description: new FormControl('', {
         validators: Validators.maxLength(this.descriptionMaxLength * 1.05),
         asyncValidators: Validators.composeAsync([
@@ -112,7 +118,14 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
           control.setValue(specifications[key]);
           control.updateValueAndValidity();
         } else {
-          console.info('Missing form field :', key);
+          // console.info('Missing form field :', key);
+        }
+        if (
+          key == 'video_url' &&
+          specifications[key] &&
+          specifications[key] !== ''
+        ) {
+          this.showVideoFields = true;
         }
       }
     }
@@ -133,6 +146,8 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
       dimensions_width: this.form.get('dimensions_width')?.value || null,
       dimensions_height: this.form.get('dimensions_height')?.value || null,
       dimensions_depth: this.form.get('dimensions_depth')?.value || null,
+      video_url: this.form.get('video_url')?.value || null,
+      video_password: this.form.get('video_password')?.value || null,
       description: this.form.get('description')?.value || '',
     } as WorkSpecificationFragment;
 
@@ -158,5 +173,10 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
       .toPromise();
 
     this.form.markAsPristine();
+  }
+
+  showVideoFields: boolean = false;
+  toggleOptionalVideoFields() {
+    this.showVideoFields = !this.showVideoFields;
   }
 }

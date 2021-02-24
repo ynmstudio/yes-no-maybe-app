@@ -5,6 +5,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 @Pipe({
   name: 'timePassed',
   pure: false,
@@ -13,7 +14,8 @@ export class TimePassedPipe implements PipeTransform, OnDestroy {
   private timer: number | null = null;
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private translateService: TranslateService
   ) {}
   transform(value: string) {
     this.removeTimer();
@@ -39,28 +41,48 @@ export class TimePassedPipe implements PipeTransform, OnDestroy {
     if (Number.isNaN(seconds)) {
       return '';
     } else if (seconds <= 45) {
-      return 'a few seconds';
+      return (
+        this.translateService.instant('time-passed.few-seconds') ||
+        'a few seconds'
+      );
     } else if (seconds <= 90) {
-      return 'a minute';
+      return (
+        this.translateService.instant('time-passed.a-minute') || 'a minute'
+      );
     } else if (minutes <= 45) {
-      return minutes + ' minutes';
+      return (
+        this.translateService.instant('time-passed.minutes', { minutes }) ||
+        minutes + ' minutes'
+      );
     } else if (minutes <= 90) {
-      return 'an hour';
+      return this.translateService.instant('time-passed.an-hour') || 'an hour';
     } else if (hours <= 22) {
-      return hours + ' hours';
+      return (
+        this.translateService.instant('time-passed.hours', { hours }) ||
+        hours + ' hours'
+      );
     } else if (hours <= 36) {
-      return 'a day';
+      return this.translateService.instant('time-passed.a-day') || 'a day';
     } else if (days <= 25) {
-      return days + ' days';
+      return (
+        this.translateService.instant('time-passed.days', { days }) ||
+        days + ' days'
+      );
     } else if (days <= 45) {
-      return 'a month';
+      return this.translateService.instant('time-passed.a-month') || 'a month';
     } else if (days <= 345) {
-      return months + ' months';
+      return (
+        this.translateService.instant('time-passed.months', { months }) ||
+        months + ' months'
+      );
     } else if (days <= 545) {
-      return 'a year';
+      return this.translateService.instant('time-passed.a-year') || 'a year';
     } else {
       // (days > 545)
-      return years + ' years';
+      return (
+        this.translateService.instant('time-passed.years', { years }) ||
+        years + ' years'
+      );
     }
   }
   ngOnDestroy(): void {

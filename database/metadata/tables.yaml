@@ -31,7 +31,7 @@
         column: application_id
         table:
           schema: public
-          name: works_files
+          name: work_files
   - name: messages
     using:
       foreign_key_constraint_on:
@@ -52,7 +52,7 @@
         column: application_id
         table:
           schema: public
-          name: works_specifications
+          name: work_specifications
   - name: works
     using:
       foreign_key_constraint_on:
@@ -205,8 +205,6 @@
                 _eq: true
             - application_start:
                 _lte: now()
-            - application_end:
-                _gte: now()
       check: null
   delete_permissions:
   - role: user
@@ -225,6 +223,104 @@
                 _gte: now()
         - locked:
             _eq: false
+- table:
+    schema: public
+    name: category_mediums
+  array_relationships:
+  - name: specifications
+    using:
+      foreign_key_constraint_on:
+        column: medium_id
+        table:
+          schema: public
+          name: work_specification_mediums
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      columns:
+      - name_de
+      - name_en
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - name_de
+      - name_en
+      - id
+      filter: {}
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - name_de
+      - name_en
+      - id
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - name_de
+      - name_en
+      - id
+      filter: {}
+  update_permissions:
+  - role: team
+    permission:
+      columns:
+      - name_de
+      - name_en
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: category_tags
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      columns: []
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - id
+      - name_en
+      - name_de
+      filter: {}
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - name_de
+      - name_en
+      - id
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - name_de
+      - name_en
+      - id
+      filter: {}
+  update_permissions:
+  - role: team
+    permission:
+      columns: []
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: team
+    permission:
+      filter: {}
 - table:
     schema: public
     name: editions
@@ -573,6 +669,17 @@
         schema: public
         name: rating_round_state
     comment: ""
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      columns:
+      - edition_id
+      - end_at
+      - goal
+      - prev_round_id
+      - start_at
+      backend_only: false
   select_permissions:
   - role: jury
     permission:
@@ -614,6 +721,9 @@
               _eq: true
         - _not:
             next_round: {}
+- table:
+    schema: public
+    name: rating_rounds_sorted
 - table:
     schema: public
     name: ratings
@@ -667,10 +777,67 @@
       allow_aggregations: true
 - table:
     schema: public
-    name: types_medium
-- table:
-    schema: public
-    name: types_tags
+    name: ratings_by_application
+  object_relationships:
+  - name: application
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: applications
+        column_mapping:
+          id: id
+  - name: edition
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: editions
+        column_mapping:
+          edition_id: id
+  - name: rating_round
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: rating_rounds
+        column_mapping:
+          round_id: id
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - avg
+      - avg_total
+      - count
+      - edition_id
+      - id
+      - round_id
+      filter:
+        _and:
+        - rating_round:
+            _not:
+              next_round: {}
+        - edition:
+            current:
+              _eq: true
+  - role: team
+    permission:
+      columns:
+      - avg
+      - avg_total
+      - count
+      - edition_id
+      - id
+      - round_id
+      filter:
+        _and:
+        - rating_round:
+            _not:
+              next_round: {}
+        - edition:
+            current:
+              _eq: true
 - table:
     schema: public
     name: users
@@ -788,116 +955,7 @@
     name: wordlist
 - table:
     schema: public
-    name: works
-  object_relationships:
-  - name: application
-    using:
-      foreign_key_constraint_on: application_id
-  array_relationships:
-  - name: files
-    using:
-      foreign_key_constraint_on:
-        column: work_id
-        table:
-          schema: public
-          name: works_files
-  - name: specifications
-    using:
-      foreign_key_constraint_on:
-        column: work_id
-        table:
-          schema: public
-          name: works_specifications
-  insert_permissions:
-  - role: user
-    permission:
-      check:
-        application:
-          _and:
-          - created_by:
-              _eq: X-Hasura-User-Id
-          - edition:
-              _and:
-              - current:
-                  _eq: true
-              - application_start:
-                  _lte: now()
-              - application_end:
-                  _gte: now()
-      columns:
-      - application_id
-      - id
-      - order
-      - portfolio
-      backend_only: false
-  select_permissions:
-  - role: team
-    permission:
-      columns:
-      - id
-      - created_at
-      - updated_at
-      - application_id
-      - portfolio
-      - order
-      filter: {}
-      allow_aggregations: true
-  - role: user
-    permission:
-      columns:
-      - application_id
-      - created_at
-      - id
-      - order
-      - portfolio
-      - updated_at
-      filter:
-        application:
-          _and:
-          - created_by:
-              _eq: X-Hasura-User-Id
-          - edition:
-              current:
-                _eq: true
-      allow_aggregations: true
-  update_permissions:
-  - role: user
-    permission:
-      columns:
-      - order
-      filter:
-        application:
-          _and:
-          - created_by:
-              _eq: X-Hasura-User-Id
-          - edition:
-              _and:
-              - current:
-                  _eq: true
-              - application_start:
-                  _lte: now()
-              - application_end:
-                  _gte: now()
-      check: null
-  delete_permissions:
-  - role: user
-    permission:
-      filter:
-        application:
-          _and:
-          - created_by:
-              _eq: X-Hasura-User-Id
-          - edition:
-              _and:
-              - current:
-                  _eq: true
-              - application_start:
-                  _lte: now()
-              - application_end:
-                  _gte: now()
-- table:
-    schema: public
-    name: works_files
+    name: work_files
   object_relationships:
   - name: application
     using:
@@ -1038,7 +1096,104 @@
       value_from_env: FIREBASE_SHARED_SECRET
 - table:
     schema: public
-    name: works_specifications
+    name: work_specification_mediums
+  object_relationships:
+  - name: category_medium
+    using:
+      foreign_key_constraint_on: medium_id
+  - name: works_specification
+    using:
+      foreign_key_constraint_on: specification_id
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        works_specification:
+          application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+      columns:
+      - specification_id
+      - medium_id
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - medium_id
+      - specification_id
+      filter: {}
+  - role: team
+    permission:
+      columns:
+      - medium_id
+      - specification_id
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - medium_id
+      - specification_id
+      filter: {}
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        works_specification:
+          application:
+            _and:
+            - created_by:
+                _eq: X-Hasura-User-Id
+            - edition:
+                _and:
+                - current:
+                    _eq: true
+                - application_start:
+                    _lte: now()
+                - application_end:
+                    _gte: now()
+- table:
+    schema: public
+    name: work_specification_tags
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      columns:
+      - specification_id
+      - tag_id
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - specification_id
+      - tag_id
+      filter: {}
+      allow_aggregations: true
+  - role: team
+    permission:
+      columns:
+      - specification_id
+      - tag_id
+      filter: {}
+      allow_aggregations: true
+  delete_permissions:
+  - role: team
+    permission:
+      filter: {}
+- table:
+    schema: public
+    name: work_specifications
   object_relationships:
   - name: application
     using:
@@ -1046,6 +1201,14 @@
   - name: work
     using:
       foreign_key_constraint_on: work_id
+  array_relationships:
+  - name: mediums
+    using:
+      foreign_key_constraint_on:
+        column: specification_id
+        table:
+          schema: public
+          name: work_specification_mediums
   insert_permissions:
   - role: user
     permission:
@@ -1078,6 +1241,8 @@
       - number_of_editions
       - order
       - title
+      - video_password
+      - video_url
       - work_id
       - year
       backend_only: false
@@ -1085,39 +1250,43 @@
   - role: team
     permission:
       columns:
-      - id
+      - application_id
       - created_at
-      - updated_at
-      - work_id
-      - order
-      - title
-      - number_of_editions
-      - medium
+      - description
+      - dimensions_depth
       - dimensions_height
       - dimensions_width
-      - dimensions_depth
-      - description
-      - application_id
+      - id
+      - medium
+      - number_of_editions
+      - order
+      - title
+      - updated_at
+      - video_password
+      - video_url
+      - work_id
       - year
       filter: {}
       allow_aggregations: true
   - role: user
     permission:
       columns:
-      - id
+      - application_id
       - created_at
-      - updated_at
-      - work_id
-      - order
-      - title
-      - year
-      - number_of_editions
-      - medium
+      - description
+      - dimensions_depth
       - dimensions_height
       - dimensions_width
-      - dimensions_depth
-      - description
-      - application_id
+      - id
+      - medium
+      - number_of_editions
+      - order
+      - title
+      - updated_at
+      - video_password
+      - video_url
+      - work_id
+      - year
       filter:
         _and:
         - application:
@@ -1144,6 +1313,8 @@
       - number_of_editions
       - order
       - title
+      - video_password
+      - video_url
       - year
       filter:
         _and:
@@ -1185,3 +1356,112 @@
             application:
               created_by:
                 _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: works
+  object_relationships:
+  - name: application
+    using:
+      foreign_key_constraint_on: application_id
+  array_relationships:
+  - name: files
+    using:
+      foreign_key_constraint_on:
+        column: work_id
+        table:
+          schema: public
+          name: work_files
+  - name: specifications
+    using:
+      foreign_key_constraint_on:
+        column: work_id
+        table:
+          schema: public
+          name: work_specifications
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              _and:
+              - current:
+                  _eq: true
+              - application_start:
+                  _lte: now()
+              - application_end:
+                  _gte: now()
+      columns:
+      - application_id
+      - id
+      - order
+      - portfolio
+      backend_only: false
+  select_permissions:
+  - role: team
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - order
+      - portfolio
+      - updated_at
+      filter: {}
+      allow_aggregations: true
+  - role: user
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - order
+      - portfolio
+      - updated_at
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              current:
+                _eq: true
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - order
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              _and:
+              - current:
+                  _eq: true
+              - application_start:
+                  _lte: now()
+              - application_end:
+                  _gte: now()
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        application:
+          _and:
+          - created_by:
+              _eq: X-Hasura-User-Id
+          - edition:
+              _and:
+              - current:
+                  _eq: true
+              - application_start:
+                  _lte: now()
+              - application_end:
+                  _gte: now()

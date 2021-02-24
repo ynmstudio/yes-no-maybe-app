@@ -9,7 +9,9 @@ import {
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { SubscriptionResult } from 'apollo-angular';
 import {
+  GetAdminApplicationLiveSubscription,
   GetAdminApplicationQuery,
   GetWorksQuery,
   SearchApplicationsQuery,
@@ -17,7 +19,17 @@ import {
   WorkSpecificationFragment,
 } from 'generated/types.graphql-gen';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { debounce, debounceTime, delay, switchMap, tap } from 'rxjs/operators';
+import {
+  debounce,
+  debounceTime,
+  delay,
+  first,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
+import { AlertService } from '../../../shared/components/alert/alert.service';
+import { ModalService } from '../../../shared/components/modal/modal.service';
+import { RateApplicationComponent } from '../../../shared/components/modal/modals/rate-application/rate-application.component';
 import { TeamService } from '../../team/team.service';
 
 @Component({
@@ -27,7 +39,12 @@ import { TeamService } from '../../team/team.service';
 })
 export class FullscreenComponent implements OnInit {
   application$: Observable<ApolloQueryResult<GetAdminApplicationQuery>>;
+  application_live$: Observable<
+    SubscriptionResult<GetAdminApplicationLiveSubscription>
+  >;
   works$: Observable<ApolloQueryResult<GetWorksQuery>>;
+  state$;
+  currentRoundID$;
 
   @ViewChild('searchInput') searchInput!: ElementRef;
   searchResults$: Observable<ApolloQueryResult<SearchApplicationsQuery>>;
@@ -59,7 +76,9 @@ export class FullscreenComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private teamService: TeamService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private rateApplicationModal: ModalService<RateApplicationComponent>,
+    private alertService: AlertService
   ) {
     this.application_id$ = this.route.params.pipe(
       tap((_) => {
@@ -77,6 +96,9 @@ export class FullscreenComponent implements OnInit {
     );
     this.application$ = this.application_id$.pipe(
       switchMap((id) => this.teamService.getAdminApplication(id))
+    );
+    this.application_live$ = this.application_id$.pipe(
+      switchMap((id) => this.teamService.getAdminApplicationLive(id))
     );
     this.works$ = this.application_id$.pipe(
       switchMap((id) => {
@@ -106,6 +128,8 @@ export class FullscreenComponent implements OnInit {
         return of(specification);
       })
     );
+    this.state$ = this.teamService.getState();
+    this.currentRoundID$ = this.teamService.getCurrentRoundId();
   }
 
   ngOnInit(): void {}
@@ -183,5 +207,22 @@ export class FullscreenComponent implements OnInit {
     this.searchActive = !this.searchActive;
     this.cdRef.detectChanges();
     if (this.searchActive) this.searchInput.nativeElement.focus();
+  }
+
+  // Rating
+
+  async showRating() {
+    const roundID = await this.currentRoundID$.pipe(first()).toPromise();
+    if (!roundID) {
+      this.alertService.error('No Round found');
+      return;
+    }
+    const { RateApplicationComponent } = await import(
+      './../../../shared/components/modal/modals/rate-application/rate-application.component'
+    );
+    await this.rateApplicationModal.open(RateApplicationComponent, {
+      application_id: this.application_id,
+      round_id: roundID,
+    });
   }
 }

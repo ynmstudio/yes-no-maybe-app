@@ -9,20 +9,20 @@ fragment Work on works {
     ...WorkSpecification
   }
 }
-fragment File on works_files {
+fragment File on work_files {
   id
   mimetype
   key
   originalname
   size
 }
-fragment WorkFile on works_files {
+fragment WorkFile on work_files {
   work_id
   application_id
   order
   ...File
 }
-fragment WorkSpecification on works_specifications {
+fragment WorkSpecification on work_specifications {
   id
   work_id
   application_id
@@ -35,6 +35,8 @@ fragment WorkSpecification on works_specifications {
   dimensions_width
   dimensions_height
   dimensions_depth
+  video_url
+  video_password
 }
 
 # User
@@ -62,7 +64,7 @@ mutation AddPortfolioSpecification(
   $work_id: uuid!
   $order: Int!
 ) {
-  insert_works_specifications_one(
+  insert_work_specifications_one(
     object: {
       application_id: $application_id
       work_id: $work_id
@@ -73,7 +75,7 @@ mutation AddPortfolioSpecification(
   }
 }
 mutation DeletePortfolioSpecification($id: uuid!) {
-  delete_works_specifications_by_pk(id: $id) {
+  delete_work_specifications_by_pk(id: $id) {
     id
     work_id
     application_id
@@ -97,7 +99,7 @@ mutation AddWorkFile(
     id
     updated_at
   }
-  insert_works_files_one(
+  insert_work_files_one(
     object: {
       id: $id
       application_id: $application_id
@@ -120,7 +122,7 @@ mutation DeleteWorkFile($id: uuid!, $application_id: uuid!) {
     id
     updated_at
   }
-  delete_works_files_by_pk(id: $id) {
+  delete_work_files_by_pk(id: $id) {
     id
     work_id
   }
@@ -159,7 +161,7 @@ query GetPortfolioWorks($application_id: uuid!) {
 
 mutation UpdateSpecification(
   $id: uuid!
-  $set: works_specifications_set_input!
+  $set: work_specifications_set_input!
   $application_id: uuid!
 ) {
   update_applications_by_pk(
@@ -169,7 +171,7 @@ mutation UpdateSpecification(
     id
     updated_at
   }
-  update_works_specifications_by_pk(pk_columns: { id: $id }, _set: $set) {
+  update_work_specifications_by_pk(pk_columns: { id: $id }, _set: $set) {
     ...WorkSpecification
   }
 }
@@ -186,9 +188,9 @@ mutation UpdateWorksOrder($objects: [works_insert_input!]!) {
   }
 }
 mutation UpdateSpecificationsOrder(
-  $objects: [works_specifications_insert_input!]!
+  $objects: [work_specifications_insert_input!]!
 ) {
-  insert_works_specifications(
+  insert_work_specifications(
     objects: $objects
     on_conflict: {
       constraint: works_specifications_pkey
@@ -201,10 +203,10 @@ mutation UpdateSpecificationsOrder(
     }
   }
 }
-mutation UpdateWorkFilesOrder($objects: [works_files_insert_input!]!) {
-  insert_works_files(
+mutation UpdateWorkFilesOrder($objects: [work_files_insert_input!]!) {
+  insert_work_files(
     objects: $objects
-    on_conflict: { constraint: works_files_pkey, update_columns: [order] }
+    on_conflict: { constraint: work_files_pkey, update_columns: [order] }
   ) {
     returning {
       id

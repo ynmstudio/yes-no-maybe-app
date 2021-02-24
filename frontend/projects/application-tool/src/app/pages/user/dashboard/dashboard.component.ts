@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit {
   edition$: Observable<EditionFragment>;
   applications$;
 
+  editionState$;
+
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -49,6 +51,7 @@ export class DashboardComponent implements OnInit {
     ).valueChanges;
 
     this.user$ = this.authService.authState;
+    this.editionState$ = this.userService.getEditionState();
   }
 
   ngOnInit(): void {

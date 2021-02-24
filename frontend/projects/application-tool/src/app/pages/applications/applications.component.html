@@ -1,10 +1,18 @@
-<div>
+<div class="container--default">
   <ng-container
     *ngIf="
       (applications$ | async)?.data?.applications?.length > 0;
       else noApplications
     "
   >
+    <div
+      class="container--default-x flex items-center py-2 space-x-8 border-b border-gray-300 even:bg-gray-200 even:bg-opacity-25 hover:bg-gray-50 hover:bg-opacity-100 relative text-xxs uppercase font-mono"
+    >
+      <div class="flex-auto">Künstler:in-Alias</div>
+      <div>Bewertungen</div>
+      <div>Stimmen</div>
+      <div>Chat</div>
+    </div>
     <div
       *ngFor="let application of (applications$ | async)?.data.applications"
       class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-300 even:bg-gray-200 even:bg-opacity-25 hover:bg-gray-50 hover:bg-opacity-100 relative"

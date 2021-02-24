@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SubmissionIsOpenGuard } from '../../shared/guards/submission-is-open.guard';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       import('./edit-application/edit-application.module').then(
         (m) => m.EditApplicationModule
       ),
+    canActivate: [SubmissionIsOpenGuard],
   },
   {
     path: 'applications',

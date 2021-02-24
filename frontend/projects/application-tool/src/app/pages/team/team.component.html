@@ -21,7 +21,8 @@
           <div [innerText]="(selectedEdition$ | async)?.name"></div>
           <!-- Heroicon name: solid/chevron-down -->
           <svg
-            class="-mr-1 ml-2 h-4 w-4"
+            class="-mr-1 ml-2 h-4 w-4 transform-gpu transition-transform"
+            [ngClass]="[showEditions ? '-scale-y-100' : 'scale-y-100']"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 18 18"
             fill="currentColor"
@@ -52,6 +53,7 @@
           showEditions
             ? 'transition ease-out duration-100'
             : 'transition ease-in duration-75',
+
           showEditions
             ? 'transform opacity-100 scale-100'
             : 'transform opacity-0 scale-95',

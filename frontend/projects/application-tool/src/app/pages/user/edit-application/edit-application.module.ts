@@ -7,6 +7,7 @@ import { EditApplicationComponent } from './edit-application.component';
 import { WorkSpecificationComponent } from './work-specification/work-specification.component';
 import { WorkFilesComponent } from './work-files/work-files.component';
 import { WorkPortfolioComponent } from './work-portfolio/work-portfolio.component';
+import { MediumSelectorModule } from '../../../shared/components/medium-selector/medium-selector.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,11 @@ import { WorkPortfolioComponent } from './work-portfolio/work-portfolio.componen
     WorkFilesComponent,
     WorkPortfolioComponent,
   ],
-  imports: [SharedModule, EditApplicationRoutingModule, DragDropModule],
+  imports: [
+    SharedModule,
+    EditApplicationRoutingModule,
+    MediumSelectorModule,
+    DragDropModule,
+  ],
 })
 export class EditApplicationModule {}

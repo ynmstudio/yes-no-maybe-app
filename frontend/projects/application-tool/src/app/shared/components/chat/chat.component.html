@@ -41,7 +41,7 @@
       *ngIf="message.rating"
       class="inline-block rounded-full mx-2 mt-2 py-1 px-3 leading-none bg-blue-600 text-white font-medium text-xxs uppercase"
     >
-      New rating: {{ message.rating?.value }}
+      … voted with [{{ (message.rating?.value | getScore).i18n | translate }}]
     </div>
     <div class="px-4 pt-4 pb-6" [innerText]="message.text"></div>
     <button
@@ -52,7 +52,7 @@
       X
     </button>
   </div>
-  <div class="h-24"></div>
+  <div class="h-28"></div>
 </div>
 <div class="absolute bottom-0 inset-x-0">
   <div

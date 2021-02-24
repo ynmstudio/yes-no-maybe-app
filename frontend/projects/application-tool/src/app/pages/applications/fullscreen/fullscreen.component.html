@@ -129,6 +129,21 @@
           <span class="text-2xl leading-none font-mono font-light">i</span>
         </button>
       </div>
+      <div>
+        <button
+          *ngIf="
+            !(application_live$ | async)?.data?.applications_by_pk
+              ?.rated_by_user &&
+            (state$ | async) === 'rating' &&
+            (currentRoundID$ | async)
+          "
+          class="block px-6 rounded-xl leading-10 bg-blue-600 text-white"
+          (click)="showRating()"
+        >
+          <!-- <div class="sr-only">Toggle Chat</div> -->
+          <span class="leading-none font-mono font-light">Bewerten</span>
+        </button>
+      </div>
     </div>
 
     <div class="flex items-center">
@@ -239,6 +254,7 @@
               ? 'opacity-100'
               : 'opacity-0 pointer-events-none'
           ]"
+          [showControls]="true"
         ></app-image>
       </ng-container>
       <ng-container *ngIf="(work?.files?.length || 0) > 1">

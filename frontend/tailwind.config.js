@@ -18,6 +18,35 @@ module.exports = {
         "system-ui",
       ],
     },
+    scale: {
+      "-100": "-1",
+      0: "0",
+      5: ".05",
+      10: ".1",
+      15: ".15",
+      20: ".20",
+      25: ".25",
+      30: ".30",
+      35: ".35",
+      40: ".40",
+      45: ".45",
+      50: ".5",
+      55: ".55",
+      60: ".6",
+      65: ".65",
+      70: ".7",
+      75: ".75",
+      80: ".8",
+      85: ".85",
+      90: ".9",
+      95: ".95",
+      100: "1",
+      105: "1.05",
+      110: "1.1",
+      125: "1.25",
+      150: "1.5",
+      200: "2",
+    },
     fontSize: {
       xxs: [
         "10px",
@@ -61,6 +90,13 @@ module.exports = {
           lineHeight: "1",
         },
       ],
+      extreme: [
+        "12vw",
+        {
+          letterSpacing: "-0.05em",
+          lineHeight: "1",
+        },
+      ],
     },
     filter: {
       // defaults to {}
@@ -99,6 +135,7 @@ module.exports = {
         application: "auto 3fr 2fr",
         specifications: "auto auto auto auto",
       },
+
       colors: {
         gray: {
           50: "#FBFBFB",

@@ -41,6 +41,13 @@ fragment Application on applications {
     }
   }
 }
+fragment AdminApplication on applications {
+  internal_name
+  rated_by_user
+  elimination {
+    ...Elimination
+  }
+}
 
 fragment Elimination on eliminations {
   created_at
@@ -159,10 +166,7 @@ query GetAdminApplicationsByEdition($edition_id: Int!) {
     }
   ) {
     ...Application
-    internal_name
-    elimination {
-      ...Elimination
-    }
+    ...AdminApplication
     ratings_aggregate {
       aggregate {
         count
@@ -187,10 +191,12 @@ query GetAdminApplicationsByEdition($edition_id: Int!) {
 query GetAdminApplication($id: uuid!) {
   applications_by_pk(id: $id) {
     ...Application
-    internal_name
-    elimination {
-      ...Elimination
-    }
+    ...AdminApplication
+  }
+}
+subscription GetAdminApplicationLive($id: uuid!) {
+  applications_by_pk(id: $id) {
+    rated_by_user
   }
 }
 mutation CreateNewAlias($id: uuid!) {

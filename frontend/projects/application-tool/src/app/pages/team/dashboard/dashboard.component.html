@@ -1,5 +1,18 @@
-<div class="lg:flex max-w-full">
-  <ng-container [ngSwitch]="state$ | async">
+<div class="lg:flex max-w-full" *ngIf="state$ | async as state">
+  <ng-container [ngSwitch]="state">
+    <!-- BEFORE SUBMISSION STARTS -->
+    <div
+      id="before-application"
+      *ngSwitchCase="'open'"
+      class="container--default flex-auto w-full md:flex-shrink"
+    >
+      <div class="flex items-center justify-center bg-gray-100 h-80">
+        <div
+          class="text-gray-300"
+          [innerText]="'snippets.no-data' | translate"
+        ></div>
+      </div>
+    </div>
     <!-- STATISTICS -->
     <div
       id="statistics"
@@ -70,6 +83,7 @@
           <div class="flex justify-between px-4 lg:px-6 xl:pl-16 pb-2">
             <div
               class="font-mono text-xs"
+              [title]="'defaults.medium-multi' | translate"
               [innerText]="
                 'statistics.top-ten'
                   | translate: { type: ('defaults.medium-multi' | translate) }
@@ -78,7 +92,7 @@
             ></div>
             <div
               class="font-mono text-xs text-right"
-              [innerText]="'defaults.percent-single' | translate | uppercase"
+              [innerText]="'defaults.count' | translate | uppercase"
             ></div>
           </div>
           <div class="flex-auto bg-gray-100 p-4 lg:p-6 xl:pl-16">
@@ -86,31 +100,31 @@
               class="flex justify-between items-center border-b border-black pb-4 mb-4"
             >
               <div class="font-mono">Konzeptkunst</div>
-              <div class="text-3xl text-green-600">36%</div>
+              <div class="text-3xl">242</div>
             </div>
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4"
             >
-              <div class="font-mono">Konzeptkunst</div>
-              <div class="text-3xl text-green-600">36%</div>
+              <div class="font-mono">Performance</div>
+              <div class="text-3xl">120</div>
             </div>
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4"
             >
-              <div class="font-mono">Konzeptkunst</div>
-              <div class="text-3xl text-green-600">36%</div>
+              <div class="font-mono">Film / Video</div>
+              <div class="text-3xl">73</div>
             </div>
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4"
             >
-              <div class="font-mono">Konzeptkunst</div>
-              <div class="text-3xl text-green-600">36%</div>
+              <div class="font-mono">Malerei</div>
+              <div class="text-3xl">64</div>
             </div>
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4"
             >
-              <div class="font-mono">Konzeptkunst</div>
-              <div class="text-3xl text-green-600">36%</div>
+              <div class="font-mono">Architektur</div>
+              <div class="text-3xl">2</div>
             </div>
           </div>
         </div>
@@ -218,14 +232,14 @@
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
             >
-              <div class="flex-auto">Julieta Aranda</div>
+              <div class="flex-auto">Krist Gruijthuijsen</div>
               <div
                 class="flex-auto mx-4 mb-3 border border-black w-24 h-3 relative"
               >
                 <div
-                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-75"
+                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-50"
                 ></div>
-                <div class="absolute top-full left-0 text-xs">75%</div>
+                <div class="absolute top-full left-0 text-xs">50%</div>
               </div>
               <div>
                 <svg
@@ -255,14 +269,14 @@
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
             >
-              <div class="flex-auto">Julieta Aranda</div>
+              <div class="flex-auto">Käthe Kruse</div>
               <div
                 class="flex-auto mx-4 mb-3 border border-black w-24 h-3 relative"
               >
                 <div
-                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-75"
+                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-90"
                 ></div>
-                <div class="absolute top-full left-0 text-xs">75%</div>
+                <div class="absolute top-full left-0 text-xs">90%</div>
               </div>
               <div>
                 <svg
@@ -292,14 +306,14 @@
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
             >
-              <div class="flex-auto">Julieta Aranda</div>
+              <div class="flex-auto">Henrike Naumann</div>
               <div
                 class="flex-auto mx-4 mb-3 border border-black w-24 h-3 relative"
               >
                 <div
-                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-75"
+                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-30"
                 ></div>
-                <div class="absolute top-full left-0 text-xs">75%</div>
+                <div class="absolute top-full left-0 text-xs">30%</div>
               </div>
               <div>
                 <svg
@@ -329,14 +343,14 @@
             <div
               class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
             >
-              <div class="flex-auto">Julieta Aranda</div>
+              <div class="flex-auto">Laurie Rojas</div>
               <div
                 class="flex-auto mx-4 mb-3 border border-black w-24 h-3 relative"
               >
                 <div
-                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-75"
+                  class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-25"
                 ></div>
-                <div class="absolute top-full left-0 text-xs">75%</div>
+                <div class="absolute top-full left-0 text-xs">25%</div>
               </div>
               <div>
                 <svg
@@ -383,24 +397,69 @@
   <!-- STATUS AND UPDATES -->
   <div class="container--default flex-auto max-w-full md:flex-shrink-0">
     <!-- STATUS -->
-    <div class="md:w-80 lg:w-96">
+    <div id="status" class="md:w-80 lg:w-96 mb-16" [ngSwitch]="state">
       <div
+        *ngSwitchCase="'open'"
         class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
       >
-        <!-- <div
-              class="text-headline"
-              [innerText]="
-                'edition.status--application-ends-in'
-                  | translate
-                    : { time: (edition$ | async)?.application_end | timePassed }
-              "
-            ></div> -->
+        <div
+          class="text-headline"
+          [innerText]="
+            'edition.status--application-starts-in'
+              | translate
+                : { time: (edition$ | async)?.application_start | timePassed }
+          "
+        ></div>
         <a
           class="inline-block mt-4 font-mono text-black text-opacity-70"
-          [routerLink]="[]"
+          [routerLink]="['..', 'settings']"
           ><span class="group-hover:underline">Einstellungen</span> &rarr;</a
         >
         <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
+      </div>
+      <div
+        *ngSwitchCase="'submission'"
+        class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerText]="
+            'edition.status--application-ends-in'
+              | translate
+                : { time: (edition$ | async)?.application_end | timePassed }
+          "
+        ></div>
+        <a
+          class="inline-block mt-4 font-mono text-black text-opacity-70"
+          [routerLink]="['..', 'settings']"
+          ><span class="group-hover:underline">Einstellungen</span> &rarr;</a
+        >
+        <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
+      </div>
+
+      <div
+        *ngSwitchCase="'rating'"
+        class="relative group cursor-pointer z-0 bg-orange-400 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerText]="'edition.status--rating' | translate"
+        ></div>
+      </div>
+      <div
+        *ngSwitchCase="'closed'"
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerText]="'edition.status--closed' | translate"
+        ></div>
+      </div>
+      <div
+        *ngSwitchDefault
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div class="text-headline animate-pulse">…</div>
       </div>
     </div>
   </div>

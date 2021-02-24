@@ -9,8 +9,11 @@ import {
   GetWorksGQL,
   SearchApplicationsGQL,
   EliminateApplicationGQL,
+  GetAdminApplicationLiveGQL,
+  GetEditionStateAdminGQL,
+  GetCurrentRoundGQL,
 } from 'generated/types.graphql-gen';
-import { ReplaySubject } from 'rxjs';
+import { of, ReplaySubject } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 
 @Injectable({
@@ -23,13 +26,16 @@ export class TeamService {
 
   constructor(
     private getAllEditionsGQL: GetAllEditionsGQL,
+    private getEditionStateAdminGQL: GetEditionStateAdminGQL,
     private getEditionStatisticGQL: GetEditionStatisticGQL,
     private getAdminApplicationsByEditionGQL: GetAdminApplicationsByEditionGQL,
     private getAdminApplicationGQL: GetAdminApplicationGQL,
+    private getAdminApplicationLiveGQL: GetAdminApplicationLiveGQL,
     private createNewAliasGQL: CreateNewAliasGQL,
     private getWorksGQL: GetWorksGQL,
     private searchApplicationsGQL: SearchApplicationsGQL,
-    private eliminateApplicationGQL: EliminateApplicationGQL
+    private eliminateApplicationGQL: EliminateApplicationGQL,
+    private getCurrentRoundGQL: GetCurrentRoundGQL
   ) {
     this.currentEdition
       .pipe(first())
@@ -56,7 +62,28 @@ export class TeamService {
   }
   getState() {
     return this.selectedEdition.pipe(
-      map((edition) => edition?.state || 'unknown')
+      switchMap((edition) => {
+        const id = edition?.id;
+        if (id) {
+          return this.getEditionStateAdminGQL.subscribe({ id });
+        } else {
+          return of(null);
+        }
+      }),
+      map((state) => state?.data?.editions_by_pk?.state || 'unknown')
+    );
+  }
+  getCurrentRoundId() {
+    return this.getCurrentRoundGQL.subscribe().pipe(
+      map((roundObject) => {
+        const length = roundObject.data?.rating_rounds?.length || 0;
+        if (length > 0) {
+          const currentRound = roundObject.data?.rating_rounds[length - 1];
+          return currentRound?.id;
+        } else {
+          return undefined;
+        }
+      })
     );
   }
 
@@ -79,6 +106,9 @@ export class TeamService {
       },
       { fetchPolicy: 'cache-and-network' }
     ).valueChanges;
+  }
+  getAdminApplicationLive(id: string) {
+    return this.getAdminApplicationLiveGQL.subscribe({ id });
   }
   getWorks(application_id: string) {
     return this.getWorksGQL.watch(

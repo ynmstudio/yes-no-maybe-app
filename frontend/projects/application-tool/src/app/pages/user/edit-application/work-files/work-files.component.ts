@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import {
   FileFragment,
   WorkFileFragment,
@@ -18,6 +18,8 @@ export class WorkFilesComponent implements OnInit {
   @Input() application_id: string = '';
   @Input() work_id: string = '';
   @Input() files: Array<WorkFileFragment> = [];
+
+  @Output() pendingUploads: EventEmitter<boolean> = new EventEmitter();
 
   maxFiles: number = 5;
 
@@ -43,7 +45,10 @@ export class WorkFilesComponent implements OnInit {
     console.log(files);
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
-      if (file) this.filesToUpload.push(file);
+      if (file) {
+        this.filesToUpload.push(file);
+        this.pendingUploads.next(true);
+      }
     }
   }
   onFileSelect(fileInput: any) {
@@ -62,6 +67,7 @@ export class WorkFilesComponent implements OnInit {
     );
 
     filesToUpload.splice(index, 1);
+    this.pendingUploads.next(filesToUpload.length > 0);
   }
 
   async deleteFile(id: string) {
@@ -114,14 +120,14 @@ export class WorkFilesComponent implements OnInit {
           },
           {
             optimisticResponse: {
-              insert_works_files: {
-                __typename: 'works_files_mutation_response',
+              insert_work_files: {
+                __typename: 'work_files_mutation_response',
                 returning: [
                   ...objects.map((object) => {
                     return {
                       id: object.id,
                       order: object.order,
-                      __typename: 'works_files',
+                      __typename: 'work_files',
                     };
                   }),
                 ] as any,
@@ -137,7 +143,7 @@ export class WorkFilesComponent implements OnInit {
               });
               // Update objects
               data.files = data.files.map((file: any) => {
-                let updatedFile = updatedFiles?.insert_works_files?.returning.find(
+                let updatedFile = updatedFiles?.insert_work_files?.returning.find(
                   (updatedFile) => updatedFile.id === file.id
                 );
                 if (updatedFile) {
@@ -157,11 +163,11 @@ export class WorkFilesComponent implements OnInit {
                 data,
               });
 
-              updatedFiles?.insert_works_files?.returning.forEach(
+              updatedFiles?.insert_work_files?.returning.forEach(
                 (updatedFile: any) => {
                   // Read the data from our cache for this query.
                   let { ...data }: any = store.readFragment({
-                    id: `works_files:${updatedFile.id}`,
+                    id: `work_files:${updatedFile.id}`,
                     fragment: WorkFileFragmentDoc,
                     fragmentName: 'WorkFile',
                     optimistic: true,
@@ -171,7 +177,7 @@ export class WorkFilesComponent implements OnInit {
 
                   // Write our data back to the cache.
                   store.writeFragment({
-                    id: `works_files:${updatedFile.id}`,
+                    id: `work_files:${updatedFile.id}`,
                     fragment: WorkFileFragmentDoc,
                     fragmentName: 'WorkFile',
                     data,

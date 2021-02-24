@@ -8,7 +8,8 @@ import { AuthService } from './services/auth.service';
 import { HasuraService } from './services/hasura.service';
 import { MultilangService } from './services/multilang.service';
 
-import { TimePassedPipe } from './pipes/time-passed.pipe';
+import { GetScorePipeModule } from './pipes/get-score/get-score.module';
+import { LastPipeModule } from './pipes/last/last.module';
 
 import { ModalModule } from './components/modal/modal.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -21,13 +22,14 @@ import { StorageService } from './services/storage.service';
 import { ChatModule } from './components/chat/chat.module';
 import { SpecificationModule } from './components/specification/specification.module';
 import { AlertModule } from './components/alert/alert.module';
+import { TimePassedPipeModule } from './pipes/time-passed/time-passed.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
   CommonModule,
+  NgxFilesizeModule,
   FormsModule,
   ReactiveFormsModule,
-  NgxFilesizeModule,
   ModalModule,
   TranslateModule,
   UploadTaskModule,
@@ -36,11 +38,13 @@ const MODULES = [
   ChatModule,
   SpecificationModule,
   AlertModule,
+  GetScorePipeModule,
+  LastPipeModule,
+  TimePassedPipeModule,
 ];
 
 const PIPES: any = [
   // put pipes here
-  TimePassedPipe,
 ];
 
 const COMPONENTS: any = [

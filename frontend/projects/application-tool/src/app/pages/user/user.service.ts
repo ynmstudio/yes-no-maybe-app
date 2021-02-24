@@ -10,6 +10,7 @@ import {
   DeletePaymentGQL,
   UnlockApplicationGQL,
   LockApplicationGQL,
+  EditionStateGQL,
 } from 'generated/types.graphql-gen';
 
 @Injectable({
@@ -22,8 +23,13 @@ export class UserService {
     private addPaymentGQL: AddPaymentGQL,
     private deletePaymentGQL: DeletePaymentGQL,
     private lockApplicationGQL: LockApplicationGQL,
-    private unlockApplicationGQL: UnlockApplicationGQL
+    private unlockApplicationGQL: UnlockApplicationGQL,
+    private editionStateGQL: EditionStateGQL
   ) {}
+
+  getEditionState() {
+    return this.editionStateGQL.subscribe();
+  }
 
   updateApplicationFragment(
     store: ApolloCache<any>,
@@ -151,7 +157,7 @@ export class UserService {
             data.files = [
               ...data.files.filter(
                 (file: any) =>
-                  file.id !== deletedFile.delete_works_files_by_pk?.id
+                  file.id !== deletedFile.delete_work_files_by_pk?.id
               ),
             ];
             console.log(data);

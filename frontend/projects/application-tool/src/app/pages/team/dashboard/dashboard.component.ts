@@ -10,10 +10,12 @@ import { TeamService } from '../team.service';
 export class DashboardComponent implements OnInit {
   statistic$;
   state$;
+  edition$;
 
   constructor(private teamService: TeamService) {
     this.statistic$ = this.teamService.getStatistic();
     this.state$ = this.teamService.getState();
+    this.edition$ = this.teamService.selectedEdition;
   }
 
   ngOnInit(): void {}

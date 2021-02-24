@@ -1,12 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import {
-  AfterViewChecked,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Query, QueryRef } from 'apollo-angular';
 import {
@@ -17,8 +10,9 @@ import {
   GetLatestMessageLiveGQL,
   Exact,
 } from 'generated/types.graphql-gen';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
+import { HierarchicalScoring, Scoring } from '../../../config/scoring.model';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -49,6 +43,8 @@ export class ChatComponent implements OnInit {
 
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
+  scoring: Scoring = HierarchicalScoring;
+
   messagesQuery$!: QueryRef<
     GetMessagesQuery,
     Exact<{
@@ -76,6 +72,7 @@ export class ChatComponent implements OnInit {
     return this.authService.authState;
   }
 
+  receivedFirstMessage: boolean = false;
   ngOnInit(): void {
     if (!this.application_id) {
       console.error('No Application ID provided');
@@ -83,7 +80,17 @@ export class ChatComponent implements OnInit {
     }
     this.getMessagesLiveGQL
       .subscribe({ application_id: this.application_id })
-      .pipe(switchMap(() => this.messages$))
+      .pipe(
+        tap(
+          (live) =>
+            (this.receivedFirstMessage =
+              (!this.receivedFirstMessage && live.data?.messages.length) ||
+              0 > 0
+                ? true
+                : false)
+        ),
+        switchMap(() => this.messages$)
+      )
       .subscribe((messages) => {
         if (messages.data.messages.length > 0) {
           const lastMessage =
@@ -91,6 +98,8 @@ export class ChatComponent implements OnInit {
           this.last_received_id = lastMessage.id;
           this.last_received_ts = lastMessage.created_at;
           this.onLoadMore();
+        } else {
+          if (this.receivedFirstMessage) this.onLoadMore();
         }
       });
 

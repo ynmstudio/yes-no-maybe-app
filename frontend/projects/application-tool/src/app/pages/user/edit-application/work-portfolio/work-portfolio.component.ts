@@ -1,13 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ApolloCache } from '@apollo/client/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   AddWorkFileGQL,
-  ApplicationFragmentDoc,
   DeleteWorkFileGQL,
   FileFragment,
   WorkFileFragment,
-  WorkFragmentDoc,
 } from 'generated/types.graphql-gen';
+import { TagInputAccessor } from 'ngx-chips/core/accessor';
 import { UserService } from '../../user.service';
 
 @Component({
@@ -20,15 +18,13 @@ export class WorkPortfolioComponent implements OnInit {
   @Input() work_id: string = '';
   @Input() files: Array<WorkFileFragment> = [];
 
+  @Output() pendingUploads: EventEmitter<boolean> = new EventEmitter();
+
   get path_prefix() {
     return `applications/${this.application_id}/portfolio/${this.work_id}`;
   }
 
-  constructor(
-    private addWorkFileGQL: AddWorkFileGQL,
-    private deleteWorkFileGQL: DeleteWorkFileGQL,
-    private userService: UserService
-  ) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {}
 
@@ -44,7 +40,10 @@ export class WorkPortfolioComponent implements OnInit {
       alert('Only single file allowed. Uploading first file.');
     }
     const file = files.item(0);
-    if (file) this.filesToUpload.push(file);
+    if (file) {
+      this.filesToUpload.push(file);
+      this.pendingUploads.next(true);
+    }
   }
   onFileSelect(fileInput: any) {
     if (fileInput.target.files) {
@@ -62,6 +61,7 @@ export class WorkPortfolioComponent implements OnInit {
     );
 
     filesToUpload.splice(index, 1);
+    this.pendingUploads.next(filesToUpload.length > 0);
   }
 
   async deleteFile(id: string) {
