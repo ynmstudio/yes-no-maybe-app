@@ -4,7 +4,7 @@
 ></div>
 <div
   *ngIf="authState | async as user"
-  class="h-full overflow-scroll overscroll-contain p-4"
+  class="h-full overflow-scroll overscroll-contain p-4 no-scrollbar"
   #scrollMe
 >
   <div
@@ -14,9 +14,9 @@
     (@messageTrigger.start)="scrollToBottom()"
     [ngClass]="[
       user?.uid === message.user.id
-        ? 'bg-blue-600 text-white ml-12 text-right'
+        ? 'bg-blue-600 text-white text-right ml-12'
         : 'bg-white dark:bg-gray-700 text-blue-600 dark:text-white mr-12',
-      message.rating ? 'ring-1 ring-blue-500 dark:ring-blue-300' : ''
+      message.rating ? 'ring-2 ring-blue-500 dark:ring-blue-300' : ''
     ]"
   >
     <div
@@ -52,9 +52,14 @@
       X
     </button>
   </div>
-  <div class="h-28"></div>
+  <div
+    *ngIf="!(((messages$ | async)?.data?.messages?.length || 0) > 0)"
+    class="text-center py-16 text-gray-300"
+    [innerText]="'snippets.no-messages' | translate"
+  ></div>
+  <div class="h-28" *ngIf="!readOnly"></div>
 </div>
-<div class="absolute bottom-0 inset-x-0">
+<div class="absolute bottom-0 inset-x-0" *ngIf="!readOnly">
   <div
     class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-400 dark:from-gray-950 to-transparent opacity-75 h-24 pointer-events-none"
   ></div>

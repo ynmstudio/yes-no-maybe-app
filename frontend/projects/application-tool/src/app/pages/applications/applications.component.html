@@ -11,7 +11,7 @@
       <div class="flex-auto">Künstler:in-Alias</div>
       <div>Bewertungen</div>
       <div>Stimmen</div>
-      <div>Chat</div>
+      <div class="w-10 text-right">Notizen</div>
     </div>
     <div
       *ngFor="let application of (applications$ | async)?.data.applications"
@@ -60,8 +60,15 @@
         class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
         [innerText]="application.ratings_aggregate?.aggregate?.count || 0"
       ></div>
-      <div class="hover:text-blue-600">
+      <button
+        class="w-10 text-right hover:text-blue-600 relative z-10 focus:outline-none focus:ring-0"
+        [ngClass]="{
+          'text-blue-600': application.id === visibleChat
+        }"
+        (click)="toggleChat(application.id, $event)"
+      >
         <svg
+          class="inline-block"
           width="25px"
           height="21px"
           viewBox="0 0 25 21"
@@ -83,9 +90,26 @@
             ></path>
           </g>
         </svg>
+      </button>
+      <div
+        *ngIf="application.id === visibleChat"
+        class="absolute z-20 top-12 right-6 w-full md:w-80 h-screen max-h-96 bg-white shadow-md rounded-2xl"
+      >
+        <app-chat
+          [application_id]="application.id"
+          [readOnly]="true"
+          class="absolute inset-0 flex flex-col"
+        ></app-chat>
+        <!-- <div
+          class="absolute -top-2 -right-2 h-6 w-6 flex justify-center items-center bg-black text-white rounded-full"
+          (click)="toggleChat(application.id, $event)"
+        >
+          <span>X</span>
+        </div> -->
       </div>
+
       <a
-        class="absolute inset-0"
+        class="absolute inset-0 z-0"
         [routerLink]="[application.id]"
         routerLinkActive="router-link-active"
       ></a>

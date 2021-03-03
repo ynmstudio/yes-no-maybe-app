@@ -20,4 +20,16 @@ export class ApplicationsComponent implements OnInit {
   toggleAnonymity() {
     this.anonymous = !this.anonymous;
   }
+
+  visibleChat: string = '';
+
+  toggleChat(application_id: string, event: Event) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (this.visibleChat === application_id) {
+      this.visibleChat = '';
+    } else {
+      this.visibleChat = application_id;
+    }
+  }
 }

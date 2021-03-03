@@ -40,6 +40,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ChatComponent implements OnInit {
   @Input() application_id!: string;
+  @Input() readOnly: boolean = false;
 
   @ViewChild('scrollMe') private myScrollContainer!: ElementRef;
 
