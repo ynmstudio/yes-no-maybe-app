@@ -18,7 +18,7 @@
     "gql:codegen:watch": "graphql-codegen --watch",
     "gql:codegen:watch:test": "graphql-codegen --config codegen.yml",
     "i18n:init": "ngx-translate-extract --input ./projects/application-tool/src --output ./projects/application-tool/src/assets/i18n/template.json --key-as-default-value --replace --format json",
-    "i18n:extract": "ngx-translate-extract --input ./projects/application-tool/src --output ./projects/application-tool/src/assets/i18n/{en,de}.json --null-as-default-valu --clean --format json"
+    "i18n:extract": "ngx-translate-extract --input ./projects/application-tool/src --output ./projects/application-tool/src/assets/i18n/{en,de}.json --null-as-default-value --clean --format json"
   },
   "private": true,
   "dependencies": {
