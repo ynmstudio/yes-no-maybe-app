@@ -619,12 +619,13 @@
         </div>
       </div>
     </div>
-    <div class="xl:container container--default mx-auto">
+    <div class="xl:container container--default mx-auto flex justify-center">
       <a
         [routerLink]="['fullscreen']"
-        class="flex items-center justify-between px-12 py-6 rounded-xl whitespace-nowrap bg-black hover:bg-gray-900 text-white leading-10 font-mono lg:whitespace-nowrap"
+        class="flex items-center justify-between px-12 py-8 rounded-3xl whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white leading-10 font-mono lg:whitespace-nowrap"
       >
         <span
+          class="mr-24"
           [innerText]="'application-form.buttons.show-preview' | translate"
         ></span>
         <svg

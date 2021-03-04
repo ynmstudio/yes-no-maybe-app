@@ -9,7 +9,7 @@
     @apply bg-transparent justify-center;
   }
   vg-controls {
-    @apply rounded-full mb-24 lg:mb-4 h-10 max-w-sm md:max-w-xl lg:max-w-4xl xl:max-w-7xl transition-all duration-300 transform-gpu translate-y-0 opacity-100 backdrop-blur;
+    @apply rounded-full mb-24 lg:mb-4 h-10 max-w-sm md:max-w-xl lg:max-w-4xl xl:max-w-7xl w-11/12 transition-all duration-300 transform-gpu translate-y-0 opacity-100 backdrop-blur;
     &.hide {
       @apply bottom-0 translate-y-36 lg:translate-y-14 opacity-0;
     }

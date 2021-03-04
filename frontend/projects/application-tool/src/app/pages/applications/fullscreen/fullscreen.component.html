@@ -358,7 +358,7 @@
       ]"
     >
       <div
-        class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain transition-colors"
+        class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain no-scrollbar transition-colors"
         *ngFor="
           let work of (works$ | async)?.data?.works;
           let indexW = index;
@@ -448,7 +448,7 @@
         <app-specification
           *ngFor="let specification of work?.specifications; let index = index"
           [specification]="specification"
-          class="absolute inset-0 bg-gray-200 dark:bg-gray-900 overflow-scroll overscroll-contain transform-gpu transition-opacity"
+          class="absolute inset-0 bg-gray-200 dark:bg-gray-900 overflow-scroll overscroll-contain no-scrollbar transform-gpu transition-opacity"
           [ngClass]="[
             (currentSpecificationIndex | async) == index
               ? 'opacity-100'

@@ -50,6 +50,7 @@
                       : 'opacity-0 pointer-events-none'
                   ]"
                   [showControls]="true"
+                  [active]="(currentFileIndex | async) == index"
                 ></app-image>
               </ng-container>
               <ng-container *ngIf="(work?.files?.length || 0) > 1">
@@ -72,7 +73,7 @@
             class="absolute inset-y-0 left-0 order-1 lg:static bg-gray-200 w-64 lg:w-80 border-r border-gray-300"
           >
             <div
-              class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain transition-colors"
+              class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain no-scrollbar transition-colors"
               *ngFor="
                 let work of (works$ | async)?.data?.works;
                 let indexW = index;
@@ -86,7 +87,7 @@
               (click)="setCurrentWork(indexW)"
             >
               <div
-                class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow"
+                class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow relative"
                 (click)="setCurrentFile(indexF, $event, indexW)"
                 *ngFor="let file of work?.files; let indexF = index"
                 [ngClass]="[
@@ -138,7 +139,7 @@
                 let index = index
               "
               [specification]="specification"
-              class="absolute inset-0 bg-gray-200 overflow-scroll overscroll-contain transform-gpu transition-opacity"
+              class="absolute inset-0 bg-gray-200 overflow-scroll overscroll-contain no-scrollbar transform-gpu transition-opacity"
               [ngClass]="[
                 (currentSpecificationIndex | async) == index
                   ? 'opacity-100'
@@ -471,7 +472,7 @@
           ></button>
           <button
             (click)="eliminateApplication()"
-            class="inline-block mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+            class="inline-block ml-4 mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
           >
             Einreichung disqualifizieren
           </button>
