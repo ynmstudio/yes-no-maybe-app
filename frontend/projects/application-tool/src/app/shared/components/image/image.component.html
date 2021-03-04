@@ -27,7 +27,7 @@
     >
       Your browser does not support the video tag.
     </video>
-    <vg-player *ngIf="showControls">
+    <vg-player *ngIf="showControls" (onPlayerReady)="onPlayerReady($event)">
       <vg-controls [vgAutohide]="true" [vgAutohideTime]="3">
         <vg-play-pause></vg-play-pause>
         <vg-playback-button></vg-playback-button>

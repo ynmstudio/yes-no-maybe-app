@@ -1,21 +1,30 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { StorageService } from '../../services/storage.service';
-
+import { VgApiService } from '@videogular/ngx-videogular/core';
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
   styleUrls: ['./image.component.scss'],
 })
-export class ImageComponent implements OnInit {
+export class ImageComponent implements OnInit, OnChanges {
   @Input() key!: string;
   @Input() mimetype!: string;
   @Input() size: string = '';
   @Input() showControls: boolean = false;
+  @Input() active: boolean = false;
 
   video: boolean = false;
   pdf: boolean = false;
 
   downloadURL!: Promise<string>;
+
+  videoApi!: VgApiService;
 
   error: boolean = false;
 
@@ -23,6 +32,11 @@ export class ImageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDownloadUrl();
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.active && this.videoApi) {
+      if (!changes.active.currentValue) this.videoApi.pause();
+    }
   }
 
   getDownloadUrl() {
@@ -37,5 +51,9 @@ export class ImageComponent implements OnInit {
         this.error = true;
         return _;
       });
+  }
+
+  onPlayerReady(event: VgApiService) {
+    this.videoApi = event;
   }
 }
