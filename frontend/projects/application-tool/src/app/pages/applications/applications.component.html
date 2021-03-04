@@ -6,6 +6,32 @@
     "
   >
     <div
+      id="preview"
+      *ngIf="previews"
+      class="container--default-margin absolute inset-0 pointer-events-none"
+    >
+      <div
+        class="absolute inset-0 transform-gpu transition-opacity duration-500"
+        [ngClass]="[
+          application.id === visiblePreview
+            ? 'opacity-100 ease-out'
+            : 'opacity-0 ease-in'
+        ]"
+        *ngFor="let application of (applications$ | async)?.data.applications"
+      >
+        <ng-container
+          *ngFor="let file of application?.files; let index = index"
+        >
+          <app-image
+            class="absolute inset-0"
+            [key]="file.key"
+            [mimetype]="file.mimetype"
+            size="_1440x1200"
+          ></app-image>
+        </ng-container>
+      </div>
+    </div>
+    <div
       class="container--default-x flex items-center py-2 space-x-8 border-b bg-white border-gray-300 relative z-10 text-xxs uppercase font-mono"
     >
       <div class="flex-auto">Künstler:in-Alias</div>
@@ -16,7 +42,7 @@
     <div
       (mouseleave)="showPreview('')"
       *ngFor="let application of (applications$ | async)?.data.applications"
-      class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-300 even:bg-gray-200 even:bg-opacity-25 hover:bg-gray-50 hover:bg-opacity-100 relative z-10"
+      class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-300 even:bg-gray-200 even:bg-opacity-25 hover:bg-gray-50 hover:bg-opacity-100 relative"
       [ngClass]="[
         application.elimination
           ? 'text-gray-400 hover:text-black transition-colors'
@@ -115,32 +141,6 @@
         [routerLink]="[application.id]"
         routerLinkActive="router-link-active"
       ></a>
-    </div>
-    <div
-      id="preview"
-      *ngIf="previews"
-      class="container--default-margin absolute inset-0 z-0 pointer-events-none"
-    >
-      <div
-        class="absolute inset-0 transform-gpu transition-opacity duration-500"
-        [ngClass]="[
-          application.id === visiblePreview
-            ? 'opacity-100 ease-out'
-            : 'opacity-0 ease-in'
-        ]"
-        *ngFor="let application of (applications$ | async)?.data.applications"
-      >
-        <ng-container
-          *ngFor="let file of application?.files; let index = index"
-        >
-          <app-image
-            class="absolute inset-0"
-            [key]="file.key"
-            [mimetype]="file.mimetype"
-            size="_1440x1200"
-          ></app-image>
-        </ng-container>
-      </div>
     </div>
   </ng-container>
   <ng-template #noApplications>
