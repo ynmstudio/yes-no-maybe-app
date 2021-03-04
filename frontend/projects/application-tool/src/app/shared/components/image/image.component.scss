@@ -33,3 +33,9 @@
   }
   /* stylelint-enable */
 }
+:host-context(#preview) {
+  img,
+  video {
+    @apply w-full h-full object-cover;
+  }
+}

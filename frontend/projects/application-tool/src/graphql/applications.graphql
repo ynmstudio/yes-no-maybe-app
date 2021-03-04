@@ -47,6 +47,9 @@ fragment AdminApplication on applications {
   elimination {
     ...Elimination
   }
+  files(limit: 1, order_by: { order: asc_nulls_last }) {
+    ...WorkFile
+  }
 }
 
 fragment Elimination on eliminations {

@@ -20,6 +20,15 @@ export class ApplicationsComponent implements OnInit {
   toggleAnonymity() {
     this.anonymous = !this.anonymous;
   }
+  previews: boolean = true;
+  togglePreviews() {
+    this.previews = !this.previews;
+  }
+  visiblePreview: string = '';
+  showPreview(application_id: string) {
+    this.visiblePreview = application_id;
+    console.log(this.visiblePreview);
+  }
 
   visibleChat: string = '';
 

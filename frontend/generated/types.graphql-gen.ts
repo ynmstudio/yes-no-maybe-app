@@ -8200,6 +8200,9 @@ export type AdminApplicationFragment = (
   & { elimination?: Maybe<(
     { __typename?: 'eliminations' }
     & EliminationFragment
+  )>, files: Array<(
+    { __typename?: 'work_files' }
+    & WorkFileFragment
   )> }
 );
 
@@ -9089,6 +9092,23 @@ export const EliminationFragmentDoc = gql`
   reason
 }
     `;
+export const FileFragmentDoc = gql`
+    fragment File on work_files {
+  id
+  mimetype
+  key
+  originalname
+  size
+}
+    `;
+export const WorkFileFragmentDoc = gql`
+    fragment WorkFile on work_files {
+  work_id
+  application_id
+  order
+  ...File
+}
+    ${FileFragmentDoc}`;
 export const AdminApplicationFragmentDoc = gql`
     fragment AdminApplication on applications {
   internal_name
@@ -9096,8 +9116,12 @@ export const AdminApplicationFragmentDoc = gql`
   elimination {
     ...Elimination
   }
+  files(limit: 1, order_by: {order: asc_nulls_last}) {
+    ...WorkFile
+  }
 }
-    ${EliminationFragmentDoc}`;
+    ${EliminationFragmentDoc}
+${WorkFileFragmentDoc}`;
 export const MediumFragmentDoc = gql`
     fragment Medium on category_mediums {
   id
@@ -9137,23 +9161,6 @@ export const EditionFragmentDoc = gql`
   }
 }
     `;
-export const FileFragmentDoc = gql`
-    fragment File on work_files {
-  id
-  mimetype
-  key
-  originalname
-  size
-}
-    `;
-export const WorkFileFragmentDoc = gql`
-    fragment WorkFile on work_files {
-  work_id
-  application_id
-  order
-  ...File
-}
-    ${FileFragmentDoc}`;
 export const WorkSpecificationFragmentDoc = gql`
     fragment WorkSpecification on work_specifications {
   id

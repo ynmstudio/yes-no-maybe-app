@@ -2,7 +2,7 @@
   <ng-container *ngIf="!video">
     <pdf-viewer
       *ngIf="pdf"
-      class="block h-full w-auto"
+      class="block h-full w-auto object-contain"
       [src]="url"
       [show-all]="false"
       [page]="1"
@@ -12,7 +12,7 @@
     ></pdf-viewer>
     <img
       *ngIf="!pdf"
-      class="h-full w-auto inline-block"
+      class="h-full w-auto inline-block object-contain"
       [src]="url"
       [attr.type]="mimetype"
     />
@@ -20,7 +20,7 @@
   <ng-container *ngIf="video">
     <video
       *ngIf="!showControls"
-      class="h-full w-auto inline-block"
+      class="h-full w-auto inline-block object-contain"
       preload="metadata"
       [src]="url"
       [controls]="showControls"

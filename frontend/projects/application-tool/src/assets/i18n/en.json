@@ -51,6 +51,7 @@
 	"defaults.password-single": "Password",
 	"defaults.payment-single": "payment",
 	"defaults.percent-single": "percent",
+	"defaults.preview": "Preview",
 	"defaults.profile-single": "profile",
 	"defaults.residency-single": "residency",
 	"defaults.title-single": "title",

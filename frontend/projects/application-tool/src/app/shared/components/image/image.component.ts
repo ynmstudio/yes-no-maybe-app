@@ -33,6 +33,7 @@ export class ImageComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.getDownloadUrl();
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.active && this.videoApi) {
       if (!changes.active.currentValue) this.videoApi.pause();
