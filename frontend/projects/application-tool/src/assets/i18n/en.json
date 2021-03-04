@@ -84,6 +84,8 @@
 	"snippets.no-applications": "No applications found",
 	"snippets.no-data": "No data available",
 	"snippets.no-messages": "No notes yet",
+	"snippets.rating-by": "Rated by {{name}}",
+	"snippets.rating-by-you": "Your Rating",
 	"snippets.statement": "Artist Statement",
 	"snippets.updated-some-time-ago": "Last updated {{ time }} ago",
 	"snippets.welcome-user": "Hello {{user}}",

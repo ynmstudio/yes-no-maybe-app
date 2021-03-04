@@ -4,19 +4,20 @@
 ></div>
 <div
   *ngIf="authState | async as user"
-  class="h-full overflow-scroll overscroll-contain p-4 no-scrollbar"
+  class="h-full overflow-scroll overscroll-contain no-scrollbar"
   #scrollMe
 >
   <div
-    class="my-4 rounded-3xl relative group"
+    class="my-4 relative group"
     *ngFor="let message of (messages$ | async)?.data?.messages; let last = last"
     @messageTrigger
     (@messageTrigger.start)="scrollToBottom()"
     [ngClass]="[
-      user?.uid === message.user.id
-        ? 'bg-blue-600 text-white text-right ml-12'
-        : 'bg-white dark:bg-gray-700 text-blue-600 dark:text-white mr-12',
-      message.rating ? 'ring-2 ring-blue-500 dark:ring-blue-300' : ''
+      message.rating
+        ? ''
+        : user?.uid === message.user.id
+        ? 'rounded-3xl bg-blue-600 text-white text-right ml-12 mr-4'
+        : 'rounded-3xl bg-white dark:bg-gray-700 text-blue-600 dark:text-white ml-4 mr-12'
     ]"
   >
     <div
@@ -32,18 +33,36 @@
       ></div>
       <div class="order-2">&thinsp;–&thinsp;</div>
       <div
+        *ngIf="message.rating"
+        [innerText]="
+          (user?.uid === message.user.id
+            ? 'snippets.rating-by-you'
+            : 'snippets.rating-by'
+          )
+            | translate
+              : {
+                  name: message.user.name
+                }
+        "
+        [ngClass]="[user?.uid === message.user.id ? 'order-3' : 'order-1']"
+      ></div>
+      <div
+        *ngIf="!message.rating"
         class="whitespace-nowrap"
         [innerText]="user?.uid === message.user.id ? 'You' : message.user.name"
         [ngClass]="[user?.uid === message.user.id ? 'order-3' : 'order-1']"
       ></div>
     </div>
-    <div
-      *ngIf="message.rating"
-      class="inline-block rounded-full mx-2 mt-2 py-1 px-3 leading-none bg-blue-600 text-white font-medium text-xxs uppercase"
-    >
-      … voted with [{{ (message.rating?.value | getScore).i18n | translate }}]
+    <div [ngClass]="[message.rating ? 'bg-black text-white mt-1' : '']">
+      <div
+        *ngIf="message.rating"
+        class="block mx-4 pt-4 pb-2 text-xs leading-none border-b border-current text-white font-mono uppercase"
+      >
+        [{{ (message.rating?.value | getScore).i18n | translate }}]
+      </div>
+      <div class="px-4 pt-4 pb-6" [innerText]="message.text"></div>
     </div>
-    <div class="px-4 pt-4 pb-6" [innerText]="message.text"></div>
+
     <button
       *ngIf="user?.uid === message.user.id && last"
       (click)="deleteMessage(message.id)"
@@ -61,7 +80,7 @@
 </div>
 <div class="absolute bottom-0 inset-x-0" *ngIf="!readOnly">
   <div
-    class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-400 dark:from-gray-950 to-transparent opacity-75 h-24 pointer-events-none"
+    class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-300 dark:from-gray-950 to-transparent opacity-75 h-24 pointer-events-none"
   ></div>
   <form
     class="relative flex items-center m-4 mb-8 bg-blue-600 text-white pt-1 pb-3 pl-2"

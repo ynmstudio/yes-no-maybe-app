@@ -19,8 +19,7 @@ export class ImageComponent implements OnInit, OnChanges {
   @Input() showControls: boolean = false;
   @Input() active: boolean = false;
 
-  video: boolean = false;
-  pdf: boolean = false;
+  type: string = 'image';
 
   downloadURL!: Promise<string>;
 
@@ -43,8 +42,9 @@ export class ImageComponent implements OnInit, OnChanges {
   getDownloadUrl() {
     if (!this.key) return;
 
-    if (this.mimetype.startsWith('video/')) this.video = true;
-    if (this.mimetype.startsWith('application/pdf')) this.pdf = true;
+    if (this.mimetype.startsWith('video/')) this.type = 'video';
+    if (this.mimetype.startsWith('audio/')) this.type = 'audio';
+    if (this.mimetype.startsWith('application/pdf')) this.type = 'pdf';
 
     this.downloadURL = this.storageService
       .getUrl(this.key, this.mimetype, this.size)

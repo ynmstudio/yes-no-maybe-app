@@ -57,14 +57,15 @@ export class UploadTaskComponent implements OnInit {
         ? this.file.type !== 'application/pdf'
         : this.file.type.split('/')[0] !== 'image' &&
           this.file.type !== 'video/mp4' &&
-          this.file.type !== 'video/quicktime'
+          this.file.type !== 'video/quicktime' &&
+          this.file.type.split('/')[0] !== 'audio'
     ) {
       this.asset.next();
       alert(
         `Dieser Dateityp wird nicht unterstützt. Bitte nur ${
           this.pdf
             ? 'eine einzelne PDF Datei'
-            : 'Videos (.mp4/.mov) oder Bilder'
+            : 'Videos (.mp4/.mov), Audio (.mp3/.wav) oder Bilder'
         } hochladen.`
       );
       return;

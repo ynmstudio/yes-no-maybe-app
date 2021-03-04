@@ -84,6 +84,8 @@
 	"snippets.no-applications": "Keine Einreichungen vorhanden",
 	"snippets.no-data": "Keine Daten verfügbar",
 	"snippets.no-messages": "Keine Notizen",
+	"snippets.rating-by": "Bewertung von {{name}}",
+	"snippets.rating-by-you": "Deine Bewertung",
 	"snippets.statement": "Artist Statement",
 	"snippets.updated-some-time-ago": "Änderungen gespeichert vor {{time}}",
 	"snippets.welcome-user": "Hallo {{user}}",
