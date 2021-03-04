@@ -44,28 +44,30 @@
     &times;&thinsp;{{ "defaults.dimensions-depth" | translate | uppercase }}
     {{ specification.dimensions_depth || 0 }}&thinsp;cm
   </div>
-  <div
-    class="col-span-5 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Tags
-    <span
-      class="m-1 inline-block h-4 bg-blue-600 py-1 px-2 text-white rounded-full leading-none text-center text-xxs"
-      >Film/Video</span
+  <ng-container *ngIf="!userPreview">
+    <div
+      class="col-span-5 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
     >
-    <span
-      class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
-      >+</span
+      Tags
+      <span
+        class="m-1 inline-block h-4 bg-blue-600 py-1 px-2 text-white rounded-full leading-none text-center text-xxs"
+        >Film/Video</span
+      >
+      <span
+        class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
+        >+</span
+      >
+    </div>
+    <div
+      class="col-span-5 text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
     >
-  </div>
-  <div
-    class="col-span-5 text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Hinweis
-    <span
-      class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
-      >+</span
-    >
-  </div>
+      Hinweis
+      <span
+        class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
+        >+</span
+      >
+    </div>
+  </ng-container>
   <div
     class="col-span-5 mt-6 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >

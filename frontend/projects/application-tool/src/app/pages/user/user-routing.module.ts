@@ -22,6 +22,13 @@ const routes: Routes = [
     canActivate: [SubmissionIsOpenGuard],
   },
   {
+    path: 'applications/:id/fullscreen',
+    loadChildren: () =>
+      import('./preview-application/preview-application.module').then(
+        (m) => m.PreviewApplicationModule
+      ),
+  },
+  {
     path: 'applications',
     redirectTo: 'dashboard',
     pathMatch: 'full',

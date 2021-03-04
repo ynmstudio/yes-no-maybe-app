@@ -5,7 +5,7 @@
     <div class="flex items-center space-x-4">
       <button
         (click)="saveAndClose()"
-        class="py-3 px-4 rounded-xl leading-none bg-gray-200"
+        class="px-4 rounded-xl h-10 leading-none bg-gray-200"
       >
         <span
           class="sr-only"
@@ -35,14 +35,13 @@
       </button>
 
       <div
-        class="text-headline"
-        *ngIf="isNew"
-        [innerText]="('application-form.new-application' | translate) + ':'"
-      ></div>
-      <div
-        class="text-headline"
-        *ngIf="!isNew"
-        [innerText]="('application-form.edit-application' | translate) + ':'"
+        class="text-headline h-10 leading-10"
+        [innerText]="
+          ((isNew
+            ? 'application-form.new-application'
+            : 'application-form.edit-application'
+          ) | translate) + ':'
+        "
       ></div>
     </div>
   </div>
@@ -319,6 +318,7 @@
         </div>
       </div>
     </div>
+
     <div class="xl:container container--default mx-auto">
       <div
         class="flex-auto font-mono text-sm grid grid-cols-1 lg:grid-cols-application items-baseline gap-x-4 gap-y-3 sm:gap-y-5 lg:gap-y-7"
@@ -619,6 +619,83 @@
         </div>
       </div>
     </div>
+    <div class="xl:container container--default mx-auto">
+      <a
+        [routerLink]="['fullscreen']"
+        class="flex items-center justify-between px-12 py-6 rounded-xl whitespace-nowrap bg-black hover:bg-gray-900 text-white leading-10 font-mono lg:whitespace-nowrap"
+      >
+        <span
+          [innerText]="'application-form.buttons.show-preview' | translate"
+        ></span>
+        <svg
+          width="40px"
+          height="40px"
+          viewBox="0 0 40 40"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            id="Page-1"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+          >
+            <g
+              id="Group"
+              transform="translate(1.000000, 1.000000)"
+              stroke="currentColor"
+            >
+              <line x1="38" y1="0" x2="27.5" y2="10.5" id="Stroke-1"></line>
+              <line
+                x1="38"
+                y1="27"
+                x2="27.5"
+                y2="37.5"
+                id="Stroke-1-Copy"
+                transform="translate(32.500000, 32.500000) scale(1, -1) translate(-32.500000, -32.500000) "
+              ></line>
+              <line
+                x1="10.5"
+                y1="0.5"
+                x2="0"
+                y2="11"
+                id="Stroke-1"
+                transform="translate(5.500000, 5.500000) scale(1, -1) translate(-5.500000, -5.500000) "
+              ></line>
+              <line
+                x1="10.5"
+                y1="27.5"
+                x2="0"
+                y2="38"
+                id="Stroke-1-Copy-2"
+              ></line>
+              <polyline
+                id="Stroke-3"
+                points="29 0.327721866 38 0 37.6722781 9"
+              ></polyline>
+              <polyline
+                id="Stroke-5"
+                points="9 37.6722781 0 38 0.327721866 29"
+              ></polyline>
+              <polyline
+                id="Stroke-9"
+                points="0.327721866 9 0 0 9 0.327721866"
+              ></polyline>
+              <polyline
+                id="Stroke-11"
+                points="37.6722781 29 38 38 29 37.6722781"
+              ></polyline>
+              <polygon
+                id="Stroke-15"
+                points="10 28 28 28 28 10 10 10"
+              ></polygon>
+            </g>
+          </g>
+        </svg>
+      </a>
+    </div>
     <div
       class="my-8 p-4 text-center text-gray-400"
       *ngIf="updated_at?.value"
@@ -629,11 +706,11 @@
     ></div>
   </form>
 
-  <pre class="p-1 bg-red-50 text-xs overflow-hidden">
+  <!-- <pre class="p-1 bg-red-50 text-xs overflow-hidden">
     {{ form.value | json }}
     {{ form.valid | json }}
     {{ name?.errors | json }}
-  </pre>
+  </pre> -->
 
   <footer
     class="container--default flex items-end md:items-baseline justify-between"

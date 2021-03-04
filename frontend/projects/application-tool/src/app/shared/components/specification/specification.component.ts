@@ -9,6 +9,8 @@ import { WorkSpecificationFragment } from 'generated/types.graphql-gen';
 export class SpecificationComponent implements OnInit {
   @Input() specification!: WorkSpecificationFragment;
 
+  @Input() userPreview: boolean = false;
+
   constructor() {}
 
   ngOnInit(): void {}
