@@ -105,10 +105,19 @@
     </div>
     <div class="flex items-center">
       <div
-        class="block h-10 lg:w-80 px-6 rounded-tl-xl rounded-bl-xl whitespace-nowrap bg-gray-200 dark:bg-gray-900 leading-10 border-r border-gray-950 font-mono capitalize lg:whitespace-nowrap"
+        class="block h-10 px-6 rounded-tl-xl rounded-bl-xl whitespace-nowrap bg-gray-200 dark:bg-gray-900 leading-10 border-r border-gray-950 font-mono capitalize lg:whitespace-nowrap"
       >
         <div
-          class="capitalize"
+          class="uppercase font-mono"
+          [innerText]="
+            applicationObject.data?.applications_by_pk?.id | slice: 0:5
+          "
+        ></div>
+      </div>
+      <div
+        class="block h-10 lg:w-80 px-6 whitespace-nowrap bg-gray-200 dark:bg-gray-900 leading-10 border-l border-r border-gray-950 font-mono capitalize lg:whitespace-nowrap"
+      >
+        <div
           [innerText]="applicationObject.data?.applications_by_pk?.name"
         ></div>
       </div>
