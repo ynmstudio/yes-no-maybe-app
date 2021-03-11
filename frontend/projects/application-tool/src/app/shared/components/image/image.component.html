@@ -62,8 +62,6 @@
       *ngIf="showControls"
       (onPlayerReady)="onPlayerReady($event)"
     >
-      <vg-overlay-play></vg-overlay-play>
-
       <vg-controls
         [vgAutohide]="true"
         [ngClass]="{ hidden: !active }"
@@ -92,6 +90,7 @@
       <video [vgMedia]="$any(media)" [id]="key" #media preload="auto">
         <source [src]="url" [attr.type]="mimetype" />
       </video>
+      <vg-overlay-play></vg-overlay-play>
     </vg-player>
   </ng-container>
   <ng-container *ngSwitchCase="'audio'">
@@ -132,7 +131,6 @@
       *ngIf="showControls"
       (onPlayerReady)="onPlayerReady($event)"
     >
-      <vg-overlay-play></vg-overlay-play>
       <vg-controls
         [vgAutohide]="true"
         [ngClass]="{ hidden: !active }"
@@ -160,6 +158,7 @@
       <audio [vgMedia]="$any(media)" #media [id]="key" preload="auto">
         <source [src]="url" [attr.type]="mimetype" />
       </audio>
+      <vg-overlay-play></vg-overlay-play>
     </vg-player>
   </ng-container>
   <div class="h-full w-20 flex items-center justify-center" *ngSwitchDefault>
