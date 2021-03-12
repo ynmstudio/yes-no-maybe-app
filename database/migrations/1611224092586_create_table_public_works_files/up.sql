@@ -1,2 +1,0 @@
-CREATE EXTENSION IF NOT EXISTS pgcrypto;
-CREATE TABLE "public"."works_files"("id" uuid NOT NULL DEFAULT gen_random_uuid(), "created_at" timestamptz NOT NULL DEFAULT now(), "key" text NOT NULL, "mimetype" text NOT NULL, "originalname" text NOT NULL, "work_id" uuid NOT NULL, "order" integer NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("work_id") REFERENCES "public"."works"("id") ON UPDATE cascade ON DELETE cascade);

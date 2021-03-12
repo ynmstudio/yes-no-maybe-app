@@ -7,7 +7,7 @@
     "config": "ts-node set-env.ts",
     "start": "npm run config && npm run gql:update-schema && run-p run:tool gql:codegen:watch",
     "run:tool": "ng serve --project application-tool",
-    "build": "npm run config && ng build",
+    "build": "npm run config && ng build --project application-tool --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

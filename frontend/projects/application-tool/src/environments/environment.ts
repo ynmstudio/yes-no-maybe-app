@@ -1,9 +1,9 @@
 export const environment = {
-  production: false,
+  production: true,
   hasura: {
-    graphql: 'http://localhost:8080/v1/graphql',
-    websocket: 'ws://localhost:8080/v1/graphql',
-    secret_key: 'myadminsecretkey'
+    graphql: 'https://berlin-art-prize--application.herokuapp.com/v1/graphql',
+    websocket: 'wss://berlin-art-prize--application.herokuapp.com/v1/graphql',
+    secret_key: 'TT6aZCQA66cNnmFQwTgLkMxQxvhc6UD6zKBKnNpP7miRiGmqRwe7odJQiuoDh6sx'
   },
   firebase: {
     apiKey: 'AIzaSyDDlFmixa4iLYYIEdja_MsWiyn-7qSe6mg',

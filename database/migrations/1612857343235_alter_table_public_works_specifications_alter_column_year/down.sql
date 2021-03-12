@@ -1,1 +1,0 @@
-ALTER TABLE "public"."works_specifications" ALTER COLUMN "year" SET NOT NULL;

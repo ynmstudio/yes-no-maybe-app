@@ -22,5 +22,19 @@
     "ui": {
       "enabled": true
     }
+  },
+  "hosting": {
+    "public": "frontend/dist/application-tool",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
