@@ -840,6 +840,73 @@
               _eq: true
 - table:
     schema: public
+    name: updates
+  object_relationships:
+  - name: edition
+    using:
+      foreign_key_constraint_on: edition_id
+  insert_permissions:
+  - role: team
+    permission:
+      check: {}
+      columns:
+      - edition_id
+      - text_de
+      - text_en
+      - url
+      backend_only: false
+  select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - created_at
+      - edition_id
+      - id
+      - text_de
+      - text_en
+      - url
+      filter:
+        edition:
+          current:
+            _eq: true
+  - role: team
+    permission:
+      columns:
+      - created_at
+      - edition_id
+      - id
+      - text_de
+      - text_en
+      - url
+      filter: {}
+  - role: user
+    permission:
+      columns:
+      - created_at
+      - edition_id
+      - id
+      - text_de
+      - text_en
+      - url
+      filter:
+        edition:
+          current:
+            _eq: true
+  update_permissions:
+  - role: team
+    permission:
+      columns:
+      - text_de
+      - text_en
+      - url
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: team
+    permission:
+      filter: {}
+- table:
+    schema: public
     name: users
   array_relationships:
   - name: applications
@@ -1143,7 +1210,11 @@
       columns:
       - medium_id
       - specification_id
-      filter: {}
+      filter:
+        works_specification:
+          application:
+            created_by:
+              _eq: X-Hasura-User-Id
   delete_permissions:
   - role: user
     permission:
@@ -1237,12 +1308,10 @@
       - dimensions_height
       - dimensions_width
       - id
-      - medium
+      - material
       - number_of_editions
       - order
       - title
-      - video_password
-      - video_url
       - work_id
       - year
       backend_only: false
@@ -1257,7 +1326,7 @@
       - dimensions_height
       - dimensions_width
       - id
-      - medium
+      - material
       - number_of_editions
       - order
       - title
@@ -1278,7 +1347,7 @@
       - dimensions_height
       - dimensions_width
       - id
-      - medium
+      - material
       - number_of_editions
       - order
       - title
@@ -1309,7 +1378,7 @@
       - dimensions_depth
       - dimensions_height
       - dimensions_width
-      - medium
+      - material
       - number_of_editions
       - order
       - title

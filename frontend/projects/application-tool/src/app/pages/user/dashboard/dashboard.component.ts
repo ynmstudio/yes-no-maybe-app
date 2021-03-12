@@ -10,6 +10,7 @@ import {
   EditionFragment,
   UnlockApplicationGQL,
   ApplicationFragmentDoc,
+  GetUpdatesGQL,
 } from 'generated/types.graphql-gen';
 import { Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
@@ -17,6 +18,7 @@ import { Router } from '@angular/router';
 import { ModalService } from '../../../shared/components/modal/modal.service';
 import { DeleteApplicationComponent as DeleteApplicationComponentType } from '../../../shared/components/modal/modals/delete-application/delete-application.component';
 import { AuthService } from '../../../shared/services/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -28,9 +30,12 @@ export class DashboardComponent implements OnInit {
   edition$: Observable<EditionFragment>;
   applications$;
 
+  updates$;
+
   editionState$;
 
   constructor(
+    public translateService: TranslateService,
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
@@ -38,7 +43,8 @@ export class DashboardComponent implements OnInit {
     private addApplicationGQL: AddApplicationGQL,
     private getEditionGQL: GetEditionGQL,
     private modalService: ModalService<DeleteApplicationComponentType>,
-    private unlockApplicationGQL: UnlockApplicationGQL
+    private unlockApplicationGQL: UnlockApplicationGQL,
+    private getUpdatesGQL: GetUpdatesGQL
   ) {
     this.edition$ = this.getEditionGQL
       .watch({}, { fetchPolicy: 'cache-and-network' })
@@ -49,6 +55,10 @@ export class DashboardComponent implements OnInit {
       {},
       { fetchPolicy: 'cache-and-network' }
     ).valueChanges;
+    this.updates$ = this.getUpdatesGQL.subscribe(
+      {},
+      { fetchPolicy: 'network-only' }
+    );
 
     this.user$ = this.authService.authState;
     this.editionState$ = this.userService.getEditionState();

@@ -44,9 +44,21 @@ query GetMessages(
         created_at: { _gte: $last_received_ts }
       }
     }
-    order_by: { created_at: asc }
+    order_by: { id: desc }
   ) {
     ...Message
+  }
+}
+
+subscription GetMessagesCountLive($application_id: uuid!) {
+  messages_aggregate(
+    where: { application_id: { _eq: $application_id } }
+
+    order_by: { id: desc }
+  ) {
+    aggregate {
+      count
+    }
   }
 }
 

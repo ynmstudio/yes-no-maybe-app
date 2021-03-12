@@ -1,16 +1,12 @@
 <tag-input
-  [(ngModel)]="itemsAsObjects"
+  [(ngModel)]="mediumsAsObjects"
   [onlyFromAutocomplete]="true"
-  identifyBy="category_medium.id"
-  [displayBy]="
-    translateService.currentLang == 'de'
-      ? 'category_medium.name_de'
-      : 'category_medium.name_en'
-  "
+  identifyBy="id"
+  [displayBy]="translateService.currentLang == 'de' ? 'name_de' : 'name_en'"
   [theme]="'application-theme'"
   #input
-  (onAdd)="updateMediums($event)"
-  (onRemove)="updateMediums($event)"
+  (onAdd)="addMedium($event)"
+  (onRemove)="removeMedium($event)"
 >
   <!-- <ng-template let-item="item" let-index="index">
   <span class="text-xxs uppercase font-condensed">
@@ -23,7 +19,7 @@
     [focusFirstElement]="true"
     identifyBy="id"
     [displayBy]="translateService.currentLang == 'de' ? 'name_de' : 'name_en'"
-    [autocompleteItems]="(allCategories$ | async)?.data?.category_mediums || []"
+    [autocompleteItems]="(allMediums$ | async)?.data?.category_mediums || []"
   >
     <!-- <ng-template let-item="item" let-index="index">
       ({{ index }}) {{ item.id }}: {{ item.value }}

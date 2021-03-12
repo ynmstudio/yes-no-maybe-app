@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Mar 08 2021 09:36:41 GMT+0100 (GMT+01:00)
+# timestamp: Fri Mar 12 2021 13:41:43 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -2515,6 +2515,19 @@ type mutation_root {
   delete_ratings_by_pk(id: uuid!): ratings
 
   """
+  delete data from the table: "updates"
+  """
+  delete_updates(
+    """filter the rows which have to be deleted"""
+    where: updates_bool_exp!
+  ): updates_mutation_response
+
+  """
+  delete single row from the table: "updates"
+  """
+  delete_updates_by_pk(id: Int!): updates
+
+  """
   delete data from the table: "users"
   """
   delete_users(
@@ -2810,6 +2823,28 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: ratings_on_conflict
   ): ratings
+
+  """
+  insert data into the table: "updates"
+  """
+  insert_updates(
+    """the rows to be inserted"""
+    objects: [updates_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: updates_on_conflict
+  ): updates_mutation_response
+
+  """
+  insert a single row into the table: "updates"
+  """
+  insert_updates_one(
+    """the row to be inserted"""
+    object: updates_insert_input!
+
+    """on conflict condition"""
+    on_conflict: updates_on_conflict
+  ): updates
 
   """
   insert data into the table: "users"
@@ -3202,6 +3237,32 @@ type mutation_root {
     _set: ratings_set_input
     pk_columns: ratings_pk_columns_input!
   ): ratings
+
+  """
+  update data of the table: "updates"
+  """
+  update_updates(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: updates_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: updates_set_input
+
+    """filter the rows which have to be updated"""
+    where: updates_bool_exp!
+  ): updates_mutation_response
+
+  """
+  update single row of the table: "updates"
+  """
+  update_updates_by_pk(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: updates_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: updates_set_input
+    pk_columns: updates_pk_columns_input!
+  ): updates
 
   """
   update data of the table: "users"
@@ -4309,6 +4370,49 @@ type query_root {
     """filter the rows returned"""
     where: applications_bool_exp
   ): applications_aggregate!
+
+  """
+  fetch data from the table: "updates"
+  """
+  updates(
+    """distinct select on columns"""
+    distinct_on: [updates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [updates_order_by!]
+
+    """filter the rows returned"""
+    where: updates_bool_exp
+  ): [updates!]!
+
+  """
+  fetch aggregated fields from the table: "updates"
+  """
+  updates_aggregate(
+    """distinct select on columns"""
+    distinct_on: [updates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [updates_order_by!]
+
+    """filter the rows returned"""
+    where: updates_bool_exp
+  ): updates_aggregate!
+
+  """fetch data from the table: "updates" using primary key columns"""
+  updates_by_pk(id: Int!): updates
 
   """
   fetch data from the table: "users"
@@ -6775,6 +6879,49 @@ type subscription_root {
   ): applications_aggregate!
 
   """
+  fetch data from the table: "updates"
+  """
+  updates(
+    """distinct select on columns"""
+    distinct_on: [updates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [updates_order_by!]
+
+    """filter the rows returned"""
+    where: updates_bool_exp
+  ): [updates!]!
+
+  """
+  fetch aggregated fields from the table: "updates"
+  """
+  updates_aggregate(
+    """distinct select on columns"""
+    distinct_on: [updates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [updates_order_by!]
+
+    """filter the rows returned"""
+    where: updates_bool_exp
+  ): updates_aggregate!
+
+  """fetch data from the table: "updates" using primary key columns"""
+  updates_by_pk(id: Int!): updates
+
+  """
   fetch data from the table: "users"
   """
   users(
@@ -7154,6 +7301,378 @@ input timestamptz_comparison_exp {
   _lte: timestamptz
   _neq: timestamptz
   _nin: [timestamptz!]
+}
+
+"""
+columns and relationships of "updates"
+"""
+type updates {
+  created_at: timestamptz!
+
+  """An object relationship"""
+  edition: editions!
+  edition_id: Int!
+  id: Int!
+  text_de: String
+  text_en: String
+  url: String
+}
+
+"""
+aggregated selection of "updates"
+"""
+type updates_aggregate {
+  aggregate: updates_aggregate_fields
+  nodes: [updates!]!
+}
+
+"""
+aggregate fields of "updates"
+"""
+type updates_aggregate_fields {
+  avg: updates_avg_fields
+  count(columns: [updates_select_column!], distinct: Boolean): Int
+  max: updates_max_fields
+  min: updates_min_fields
+  stddev: updates_stddev_fields
+  stddev_pop: updates_stddev_pop_fields
+  stddev_samp: updates_stddev_samp_fields
+  sum: updates_sum_fields
+  var_pop: updates_var_pop_fields
+  var_samp: updates_var_samp_fields
+  variance: updates_variance_fields
+}
+
+"""
+order by aggregate values of table "updates"
+"""
+input updates_aggregate_order_by {
+  avg: updates_avg_order_by
+  count: order_by
+  max: updates_max_order_by
+  min: updates_min_order_by
+  stddev: updates_stddev_order_by
+  stddev_pop: updates_stddev_pop_order_by
+  stddev_samp: updates_stddev_samp_order_by
+  sum: updates_sum_order_by
+  var_pop: updates_var_pop_order_by
+  var_samp: updates_var_samp_order_by
+  variance: updates_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "updates"
+"""
+input updates_arr_rel_insert_input {
+  data: [updates_insert_input!]!
+  on_conflict: updates_on_conflict
+}
+
+"""aggregate avg on columns"""
+type updates_avg_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by avg() on columns of table "updates"
+"""
+input updates_avg_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "updates". All fields are combined with a logical 'AND'.
+"""
+input updates_bool_exp {
+  _and: [updates_bool_exp]
+  _not: updates_bool_exp
+  _or: [updates_bool_exp]
+  created_at: timestamptz_comparison_exp
+  edition: editions_bool_exp
+  edition_id: Int_comparison_exp
+  id: Int_comparison_exp
+  text_de: String_comparison_exp
+  text_en: String_comparison_exp
+  url: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "updates"
+"""
+enum updates_constraint {
+  """unique or primary key constraint"""
+  updates_pkey
+}
+
+"""
+input type for incrementing integer column in table "updates"
+"""
+input updates_inc_input {
+  edition_id: Int
+  id: Int
+}
+
+"""
+input type for inserting data into table "updates"
+"""
+input updates_insert_input {
+  created_at: timestamptz
+  edition: editions_obj_rel_insert_input
+  edition_id: Int
+  id: Int
+  text_de: String
+  text_en: String
+  url: String
+}
+
+"""aggregate max on columns"""
+type updates_max_fields {
+  created_at: timestamptz
+  edition_id: Int
+  id: Int
+  text_de: String
+  text_en: String
+  url: String
+}
+
+"""
+order by max() on columns of table "updates"
+"""
+input updates_max_order_by {
+  created_at: order_by
+  edition_id: order_by
+  id: order_by
+  text_de: order_by
+  text_en: order_by
+  url: order_by
+}
+
+"""aggregate min on columns"""
+type updates_min_fields {
+  created_at: timestamptz
+  edition_id: Int
+  id: Int
+  text_de: String
+  text_en: String
+  url: String
+}
+
+"""
+order by min() on columns of table "updates"
+"""
+input updates_min_order_by {
+  created_at: order_by
+  edition_id: order_by
+  id: order_by
+  text_de: order_by
+  text_en: order_by
+  url: order_by
+}
+
+"""
+response of any mutation on the table "updates"
+"""
+type updates_mutation_response {
+  """number of affected rows by the mutation"""
+  affected_rows: Int!
+
+  """data of the affected rows by the mutation"""
+  returning: [updates!]!
+}
+
+"""
+input type for inserting object relation for remote table "updates"
+"""
+input updates_obj_rel_insert_input {
+  data: updates_insert_input!
+  on_conflict: updates_on_conflict
+}
+
+"""
+on conflict condition type for table "updates"
+"""
+input updates_on_conflict {
+  constraint: updates_constraint!
+  update_columns: [updates_update_column!]!
+  where: updates_bool_exp
+}
+
+"""
+ordering options when selecting data from "updates"
+"""
+input updates_order_by {
+  created_at: order_by
+  edition: editions_order_by
+  edition_id: order_by
+  id: order_by
+  text_de: order_by
+  text_en: order_by
+  url: order_by
+}
+
+"""
+primary key columns input for table: "updates"
+"""
+input updates_pk_columns_input {
+  id: Int!
+}
+
+"""
+select columns of table "updates"
+"""
+enum updates_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  edition_id
+
+  """column name"""
+  id
+
+  """column name"""
+  text_de
+
+  """column name"""
+  text_en
+
+  """column name"""
+  url
+}
+
+"""
+input type for updating data in table "updates"
+"""
+input updates_set_input {
+  created_at: timestamptz
+  edition_id: Int
+  id: Int
+  text_de: String
+  text_en: String
+  url: String
+}
+
+"""aggregate stddev on columns"""
+type updates_stddev_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by stddev() on columns of table "updates"
+"""
+input updates_stddev_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type updates_stddev_pop_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "updates"
+"""
+input updates_stddev_pop_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type updates_stddev_samp_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by stddev_samp() on columns of table "updates"
+"""
+input updates_stddev_samp_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""aggregate sum on columns"""
+type updates_sum_fields {
+  edition_id: Int
+  id: Int
+}
+
+"""
+order by sum() on columns of table "updates"
+"""
+input updates_sum_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""
+update columns of table "updates"
+"""
+enum updates_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  edition_id
+
+  """column name"""
+  id
+
+  """column name"""
+  text_de
+
+  """column name"""
+  text_en
+
+  """column name"""
+  url
+}
+
+"""aggregate var_pop on columns"""
+type updates_var_pop_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by var_pop() on columns of table "updates"
+"""
+input updates_var_pop_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""aggregate var_samp on columns"""
+type updates_var_samp_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by var_samp() on columns of table "updates"
+"""
+input updates_var_samp_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
+"""aggregate variance on columns"""
+type updates_variance_fields {
+  edition_id: Float
+  id: Float
+}
+
+"""
+order by variance() on columns of table "updates"
+"""
+input updates_variance_order_by {
+  edition_id: order_by
+  id: order_by
 }
 
 """
@@ -8648,7 +9167,7 @@ type work_specifications {
   dimensions_height: Int
   dimensions_width: Int
   id: uuid!
-  medium: String
+  material: String
 
   """An array relationship"""
   mediums(
@@ -8695,7 +9214,7 @@ type work_specifications {
   """An object relationship"""
   work: works!
   work_id: uuid!
-  year: Int
+  year: String
 }
 
 """
@@ -8755,7 +9274,6 @@ type work_specifications_avg_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -8767,7 +9285,6 @@ input work_specifications_avg_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """
@@ -8785,7 +9302,7 @@ input work_specifications_bool_exp {
   dimensions_height: Int_comparison_exp
   dimensions_width: Int_comparison_exp
   id: uuid_comparison_exp
-  medium: String_comparison_exp
+  material: String_comparison_exp
   mediums: work_specification_mediums_bool_exp
   number_of_editions: Int_comparison_exp
   order: Int_comparison_exp
@@ -8795,7 +9312,7 @@ input work_specifications_bool_exp {
   video_url: String_comparison_exp
   work: works_bool_exp
   work_id: uuid_comparison_exp
-  year: Int_comparison_exp
+  year: String_comparison_exp
 }
 
 """
@@ -8815,7 +9332,6 @@ input work_specifications_inc_input {
   dimensions_width: Int
   number_of_editions: Int
   order: Int
-  year: Int
 }
 
 """
@@ -8830,7 +9346,7 @@ input work_specifications_insert_input {
   dimensions_height: Int
   dimensions_width: Int
   id: uuid
-  medium: String
+  material: String
   mediums: work_specification_mediums_arr_rel_insert_input
   number_of_editions: Int
   order: Int
@@ -8840,7 +9356,7 @@ input work_specifications_insert_input {
   video_url: String
   work: works_obj_rel_insert_input
   work_id: uuid
-  year: Int
+  year: String
 }
 
 """aggregate max on columns"""
@@ -8852,7 +9368,7 @@ type work_specifications_max_fields {
   dimensions_height: Int
   dimensions_width: Int
   id: uuid
-  medium: String
+  material: String
   number_of_editions: Int
   order: Int
   title: String
@@ -8860,7 +9376,7 @@ type work_specifications_max_fields {
   video_password: String
   video_url: String
   work_id: uuid
-  year: Int
+  year: String
 }
 
 """
@@ -8874,7 +9390,7 @@ input work_specifications_max_order_by {
   dimensions_height: order_by
   dimensions_width: order_by
   id: order_by
-  medium: order_by
+  material: order_by
   number_of_editions: order_by
   order: order_by
   title: order_by
@@ -8894,7 +9410,7 @@ type work_specifications_min_fields {
   dimensions_height: Int
   dimensions_width: Int
   id: uuid
-  medium: String
+  material: String
   number_of_editions: Int
   order: Int
   title: String
@@ -8902,7 +9418,7 @@ type work_specifications_min_fields {
   video_password: String
   video_url: String
   work_id: uuid
-  year: Int
+  year: String
 }
 
 """
@@ -8916,7 +9432,7 @@ input work_specifications_min_order_by {
   dimensions_height: order_by
   dimensions_width: order_by
   id: order_by
-  medium: order_by
+  material: order_by
   number_of_editions: order_by
   order: order_by
   title: order_by
@@ -8967,7 +9483,7 @@ input work_specifications_order_by {
   dimensions_height: order_by
   dimensions_width: order_by
   id: order_by
-  medium: order_by
+  material: order_by
   mediums_aggregate: work_specification_mediums_aggregate_order_by
   number_of_editions: order_by
   order: order_by
@@ -9013,7 +9529,7 @@ enum work_specifications_select_column {
   id
 
   """column name"""
-  medium
+  material
 
   """column name"""
   number_of_editions
@@ -9051,7 +9567,7 @@ input work_specifications_set_input {
   dimensions_height: Int
   dimensions_width: Int
   id: uuid
-  medium: String
+  material: String
   number_of_editions: Int
   order: Int
   title: String
@@ -9059,7 +9575,7 @@ input work_specifications_set_input {
   video_password: String
   video_url: String
   work_id: uuid
-  year: Int
+  year: String
 }
 
 """aggregate stddev on columns"""
@@ -9069,7 +9585,6 @@ type work_specifications_stddev_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -9081,7 +9596,6 @@ input work_specifications_stddev_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """aggregate stddev_pop on columns"""
@@ -9091,7 +9605,6 @@ type work_specifications_stddev_pop_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -9103,7 +9616,6 @@ input work_specifications_stddev_pop_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -9113,7 +9625,6 @@ type work_specifications_stddev_samp_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -9125,7 +9636,6 @@ input work_specifications_stddev_samp_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """aggregate sum on columns"""
@@ -9135,7 +9645,6 @@ type work_specifications_sum_fields {
   dimensions_width: Int
   number_of_editions: Int
   order: Int
-  year: Int
 }
 
 """
@@ -9147,7 +9656,6 @@ input work_specifications_sum_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """
@@ -9176,7 +9684,7 @@ enum work_specifications_update_column {
   id
 
   """column name"""
-  medium
+  material
 
   """column name"""
   number_of_editions
@@ -9210,7 +9718,6 @@ type work_specifications_var_pop_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -9222,7 +9729,6 @@ input work_specifications_var_pop_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """aggregate var_samp on columns"""
@@ -9232,7 +9738,6 @@ type work_specifications_var_samp_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -9244,7 +9749,6 @@ input work_specifications_var_samp_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """aggregate variance on columns"""
@@ -9254,7 +9758,6 @@ type work_specifications_variance_fields {
   dimensions_width: Float
   number_of_editions: Float
   order: Float
-  year: Float
 }
 
 """
@@ -9266,7 +9769,6 @@ input work_specifications_variance_order_by {
   dimensions_width: order_by
   number_of_editions: order_by
   order: order_by
-  year: order_by
 }
 
 """
@@ -9353,6 +9855,8 @@ type works {
     where: work_specifications_bool_exp
   ): work_specifications_aggregate!
   updated_at: timestamptz!
+  video_password: String
+  video_url: String
 }
 
 """
@@ -9433,6 +9937,8 @@ input works_bool_exp {
   portfolio: Boolean_comparison_exp
   specifications: work_specifications_bool_exp
   updated_at: timestamptz_comparison_exp
+  video_password: String_comparison_exp
+  video_url: String_comparison_exp
 }
 
 """
@@ -9466,6 +9972,8 @@ input works_insert_input {
   portfolio: Boolean
   specifications: work_specifications_arr_rel_insert_input
   updated_at: timestamptz
+  video_password: String
+  video_url: String
 }
 
 """aggregate max on columns"""
@@ -9475,6 +9983,8 @@ type works_max_fields {
   id: uuid
   order: numeric
   updated_at: timestamptz
+  video_password: String
+  video_url: String
 }
 
 """
@@ -9486,6 +9996,8 @@ input works_max_order_by {
   id: order_by
   order: order_by
   updated_at: order_by
+  video_password: order_by
+  video_url: order_by
 }
 
 """aggregate min on columns"""
@@ -9495,6 +10007,8 @@ type works_min_fields {
   id: uuid
   order: numeric
   updated_at: timestamptz
+  video_password: String
+  video_url: String
 }
 
 """
@@ -9506,6 +10020,8 @@ input works_min_order_by {
   id: order_by
   order: order_by
   updated_at: order_by
+  video_password: order_by
+  video_url: order_by
 }
 
 """
@@ -9549,6 +10065,8 @@ input works_order_by {
   portfolio: order_by
   specifications_aggregate: work_specifications_aggregate_order_by
   updated_at: order_by
+  video_password: order_by
+  video_url: order_by
 }
 
 """
@@ -9579,6 +10097,12 @@ enum works_select_column {
 
   """column name"""
   updated_at
+
+  """column name"""
+  video_password
+
+  """column name"""
+  video_url
 }
 
 """
@@ -9591,6 +10115,8 @@ input works_set_input {
   order: numeric
   portfolio: Boolean
   updated_at: timestamptz
+  video_password: String
+  video_url: String
 }
 
 """aggregate stddev on columns"""
@@ -9662,6 +10188,12 @@ enum works_update_column {
 
   """column name"""
   updated_at
+
+  """column name"""
+  video_password
+
+  """column name"""
+  video_url
 }
 
 """aggregate var_pop on columns"""

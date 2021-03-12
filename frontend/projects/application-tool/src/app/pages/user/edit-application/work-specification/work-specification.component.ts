@@ -36,8 +36,6 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
 
   descriptionMaxLength = 600;
 
-  currentYear = new Date().getFullYear();
-
   get title() {
     return this.form.get('title');
   }
@@ -65,14 +63,10 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
         ]),
       }),
       year: new FormControl(null, {
-        validators: [
-          Validators.required,
-          Validators.min(1900),
-          Validators.max(this.currentYear + 10),
-        ],
+        validators: [Validators.required],
       }),
       number_of_editions: new FormControl(null),
-      medium: new FormControl(''),
+      material: new FormControl(''),
       dimensions_width: new FormControl(''),
       dimensions_height: new FormControl(''),
       dimensions_depth: new FormControl(''),
@@ -142,7 +136,7 @@ export class WorkSpecificationComponent implements OnInit, OnChanges {
       title: this.form.get('title')?.value || '',
       year: this.form.get('year')?.value || null,
       number_of_editions: this.form.get('number_of_editions')?.value || null,
-      medium: this.form.get('medium')?.value || '',
+      material: this.form.get('material')?.value || '',
       dimensions_width: this.form.get('dimensions_width')?.value || null,
       dimensions_height: this.form.get('dimensions_height')?.value || null,
       dimensions_depth: this.form.get('dimensions_depth')?.value || null,

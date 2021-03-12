@@ -117,33 +117,42 @@
               <div class="flex justify-end mt-6 space-x-4 items-center">
                 <ng-container
                   *ngIf="
-                    !application.locked &&
-                      ((editionState$ | async)?.data?.editions | last)
-                        ?.state === 'submission';
-                    else locked
+                    (editionState$ | async)?.data?.editions
+                      | last as editionState;
+                    else editionStateLoading
                   "
                 >
-                  <a
-                    [routerLink]="['/', 'u', 'applications', application.id]"
-                    class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-                    [innerText]="'defaults.edit' | translate"
-                  ></a>
-                  <button
-                    class="underline font-mono leading-none"
-                    (click)="deleteApplication(application.id)"
-                    [innerText]="'defaults.delete' | translate"
-                  ></button>
-                </ng-container>
-                <ng-template #locked>
-                  <button
+                  <ng-container
                     *ngIf="
-                      ((editionState$ | async)?.data?.editions | last)
-                        ?.state === 'submission'
+                      !application.locked &&
+                        editionState?.state === 'submission';
+                      else locked
                     "
-                    class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-base leading-none py-3 px-6 rounded-xl"
-                    (click)="unlockApplication(application.id)"
-                    [innerText]="'defaults.unlock' | translate"
-                  ></button>
+                  >
+                    <a
+                      [routerLink]="['/', 'u', 'applications', application.id]"
+                      class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
+                      [innerText]="'defaults.edit' | translate"
+                    ></a>
+                    <button
+                      class="underline font-mono leading-none"
+                      (click)="deleteApplication(application.id)"
+                      [innerText]="'defaults.delete' | translate"
+                    ></button>
+                  </ng-container>
+                  <ng-template #locked>
+                    <button
+                      *ngIf="editionState?.state === 'submission'"
+                      class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-base leading-none py-3 px-6 rounded-xl"
+                      (click)="unlockApplication(application.id)"
+                      [innerText]="'defaults.unlock' | translate"
+                    ></button>
+                  </ng-template>
+                </ng-container>
+                <ng-template #editionStateLoading>
+                  <div
+                    class="text-black bg-gray-200 bg-opacity-50 h-10 w-32 animate-pulse font-mono text-base leading-none py-3 px-6 rounded-xl"
+                  ></div>
                 </ng-template>
               </div>
             </div>
@@ -174,10 +183,11 @@
       <div
         *ngIf="
           ((editionState$ | async)?.data?.editions | last)
-            ?.state as editionState
+            ?.state as editionState;
+          else stateLoading
         "
         id="status"
-        class="md:w-80 lg:w-96 mb-16"
+        class="md:w-80 lg:w-96 mb-16 h-32"
         [ngSwitch]="editionState"
       >
         <div
@@ -205,11 +215,11 @@
                   : { time: (edition$ | async)?.application_end | timePassed }
             "
           ></div>
-          <a
+          <!-- <a
             class="inline-block mt-4 font-mono text-black text-opacity-70"
             [routerLink]="[]"
             ><span class="group-hover:underline">Einstellungen</span> &rarr;</a
-          >
+          > -->
           <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
         </div>
 
@@ -245,56 +255,66 @@
           ></div>
         </div>
       </div>
+
+      <ng-template #stateLoading>
+        <div class="md:w-80 lg:w-96 mb-16">
+          <div
+            class="relative h-32 group z-0 bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+          >
+            <div class="animate-pulse space-y-2">
+              <div class="h-6 md:h-8 bg-gray-300 rounded"></div>
+              <div class="h-6 md:h-8 bg-gray-300 rounded w-5/6"></div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
       <!-- UPDATES -->
       <div id="updates" class="md:w-80 lg:w-96">
         <div
           class="updates--header border-b border-gray-300 flex items-center pb-3 space-x-2"
         >
           <span>&darr;</span>
-          <h3 class="font-mono bg-gray-100 py-2 px-4">Updates</h3>
+          <h3
+            class="font-mono bg-gray-100 py-2 px-4"
+            [innerText]="'snippets.updates' | translate"
+          ></h3>
         </div>
-        <!-- SINGLE UPDATE -->
-        <div class="update mt-4">
-          <div
-            class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
-          >
-            <span>{{
-              "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short"
-            }}</span>
-            <a [routerLink]="[]">X</a>
-          </div>
-          <div
-            class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
-          >
-            <div class="text-headline">Jury 2021 steht fest!</div>
-            <a
-              class="inline-block mt-4 font-mono text-black text-opacity-60"
-              [routerLink]="[]"
-              ><span class="group-hover:underline">Mehr dazu</span> &rarr;</a
+        <div *ngIf="updates$ | async as updates">
+          <!-- SINGLE UPDATE -->
+          <div class="update mt-4" *ngFor="let update of updates.data?.updates">
+            <div
+              class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
             >
-          </div>
-        </div>
-        <!-- SINGLE UPDATE -->
-        <div class="update mt-4">
-          <div
-            class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
-          >
-            <span>{{
-              "Fri Jan 29 2021 16:29:07 GMT+0100" | date: "short"
-            }}</span>
-            <a [routerLink]="[]">X</a>
-          </div>
-          <div
-            class="relative group cursor-pointer bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
-          >
-            <div class="text-headline">
-              Einreichungen können ab jetzt eingesendet werden.
+              <span [innerText]="update.created_at | date: 'short'"></span>
             </div>
-            <a
-              class="inline-block mt-4 font-mono text-black text-opacity-60"
-              [routerLink]="[]"
-              ><span class="group-hover:underline">Mehr dazu</span> &rarr;</a
+            <div
+              class="relative group bg-gray-100 hover:bg-gray-200 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
             >
+              <div
+                class="text-headline"
+                [innerHTML]="
+                  translateService.currentLang == 'de'
+                    ? update.text_de || update.text_en
+                    : update.text_en || update.text_de
+                "
+              ></div>
+              <a
+                *ngIf="update.url"
+                class="inline-block mt-4 font-mono text-black text-opacity-60"
+                [href]="update.url"
+                target="_blank"
+                ><span
+                  class="group-hover:underline"
+                  [innerText]="'actions.read-more' | translate"
+                ></span>
+                &rarr;</a
+              >
+              <a
+                class="absolute cursor-pointer inset-0 z-0"
+                [href]="update.url"
+                target="_blank"
+              ></a>
+            </div>
           </div>
         </div>
       </div>

@@ -26,7 +26,13 @@ fragment WorkSpecification on work_specifications {
   id
   work_id
   application_id
-  medium
+  material
+  mediums {
+    specification_id
+    category_medium {
+      ...Medium
+    }
+  }
   year
   title
   order
@@ -129,7 +135,10 @@ mutation DeleteWorkFile($id: uuid!, $application_id: uuid!) {
 }
 query GetWorks($application_id: uuid!) {
   works(
-    where: { application_id: { _eq: $application_id } }
+    where: {
+      application_id: { _eq: $application_id }
+      _or: [{ files: {} }, { specifications: { video_url: { _neq: "" } } }]
+    }
     order_by: { portfolio: asc_nulls_last, order: asc_nulls_last }
   ) {
     ...Work

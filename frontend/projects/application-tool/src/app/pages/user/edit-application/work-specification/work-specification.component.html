@@ -103,9 +103,7 @@
     id="year-{{ specification?.id }}"
     formControlName="year"
     name="year"
-    type="number"
-    min="0"
-    [max]="currentYear"
+    type="text"
     class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
     [ngClass]="{
       'ring-1 ring-red-500': year?.invalid
@@ -125,20 +123,10 @@
     class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
   />
   <!-- @TODO Add Medium Tag List -->
-  <!-- <label
-    for="medium-{{ specification?.id }}"
-    [innerText]="('defaults.medium-single' | translate | titlecase) + ':'"
-  ></label>
-  <input
-    id="medium-{{ specification?.id }}"
-    formControlName="medium"
-    name="medium"
-    type="text"
-    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-  /> -->
+
   <label
-    for="medium-{{ specification?.id }}"
-    [innerText]="('defaults.medium-single' | translate | titlecase) + ':'"
+    for="mediums-{{ specification?.id }}"
+    [innerText]="('defaults.medium-multi' | translate | titlecase) + ':'"
   ></label>
   <app-medium-selector
     class="col-span-3"
@@ -146,6 +134,7 @@
     [application_id]="application_id"
     [work_id]="work_id"
   ></app-medium-selector>
+
   <label
     [innerText]="('defaults.dimensions' | translate | titlecase) + ':'"
   ></label>
@@ -188,8 +177,19 @@
       min="0"
       class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
     />
-    <span>cm</span>
+    <span>cm/px</span>
   </div>
+  <label
+    for="material-{{ specification?.id }}"
+    [innerText]="('defaults.material-single' | translate | titlecase) + ':'"
+  ></label>
+  <input
+    id="material-{{ specification?.id }}"
+    formControlName="material"
+    name="material"
+    type="text"
+    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+  />
   <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
     <div
       [innerText]="

@@ -21,8 +21,8 @@ query GetMediumsOfSpecification($id: uuid!) {
   }
 }
 mutation UpdateMediumsOfSpecification(
-  $medium_id: uuid = ""
-  $specification_id: uuid = ""
+  $medium_id: uuid!
+  $specification_id: uuid!
 ) {
   insert_work_specification_mediums(
     objects: { specification_id: $specification_id, medium_id: $medium_id }
@@ -33,5 +33,17 @@ mutation UpdateMediumsOfSpecification(
         ...Medium
       }
     }
+  }
+}
+mutation DeleteMediumOfSpecification(
+  $medium_id: uuid!
+  $specification_id: uuid!
+) {
+  delete_work_specification_mediums_by_pk(
+    medium_id: $medium_id
+    specification_id: $specification_id
+  ) {
+    medium_id
+    specification_id
   }
 }

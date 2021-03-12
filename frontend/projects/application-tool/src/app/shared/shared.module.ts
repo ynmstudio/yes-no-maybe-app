@@ -23,6 +23,7 @@ import { ChatModule } from './components/chat/chat.module';
 import { SpecificationModule } from './components/specification/specification.module';
 import { AlertModule } from './components/alert/alert.module';
 import { TimePassedPipeModule } from './pipes/time-passed/time-passed.module';
+import { EmbedService } from './services/embed.service';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -56,6 +57,7 @@ const PROVIDERS: any = [
   // put services etc here
   AppService,
   AuthService,
+  EmbedService,
   HasuraService,
   MultilangService,
   StorageService,

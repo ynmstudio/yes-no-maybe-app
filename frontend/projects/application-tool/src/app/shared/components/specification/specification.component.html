@@ -23,13 +23,22 @@
   <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.number_of_editions }}
   </div>
+
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
   >
-    Medium
+    Medien
   </div>
-  <div class="col-span-3 border-b border-black dark:border-white">
-    {{ specification.medium }}
+  <div class="col-span-3 border-b border-black dark:border-white py-1">
+    <span
+      class="mr-1 bg-blue-600 px-2 text-white rounded-full shadow-none focus:shadow-none leading-6 text-center text-xxs font-medium uppercase font-condensed"
+      *ngFor="let medium of specification.mediums"
+      [innerText]="
+        translateService.currentLang == 'de'
+          ? medium.category_medium.name_de
+          : medium.category_medium.name_en
+      "
+    ></span>
   </div>
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
@@ -42,7 +51,15 @@
     &times;&thinsp;{{ "defaults.dimensions-height" | translate | uppercase }}
     {{ specification.dimensions_height || 0 }}
     &times;&thinsp;{{ "defaults.dimensions-depth" | translate | uppercase }}
-    {{ specification.dimensions_depth || 0 }}&thinsp;cm
+    {{ specification.dimensions_depth || 0 }}&thinsp;cm/px
+  </div>
+  <div
+    class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
+  >
+    Material
+  </div>
+  <div class="col-span-3 border-b border-black dark:border-white">
+    {{ specification.material }}
   </div>
   <ng-container *ngIf="!userPreview">
     <div

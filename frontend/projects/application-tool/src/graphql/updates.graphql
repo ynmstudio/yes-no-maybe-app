@@ -1,0 +1,30 @@
+fragment Update on updates {
+  id
+  created_at
+  text_en
+  text_de
+  url
+}
+
+# User
+
+subscription GetUpdates {
+  updates(order_by: { created_at: desc }) {
+    ...Update
+  }
+}
+
+# Admin
+mutation AddUpdate(
+  $object: updates_insert_input = { text_de: "", text_en: "", url: "" }
+) {
+  insert_updates_one(object: $object) {
+    ...Update
+  }
+}
+
+mutation EditUpdate($id: Int!, $_set: updates_set_input = {}) {
+  update_updates_by_pk(pk_columns: { id: $id }, _set: $_set) {
+    ...Update
+  }
+}
