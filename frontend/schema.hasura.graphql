@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Mar 15 2021 13:04:15 GMT+0100 (GMT+01:00)
+# timestamp: Mon Mar 15 2021 14:36:56 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -9225,8 +9225,6 @@ type work_specifications {
   order: Int
   title: String
   updated_at: timestamptz!
-  video_password: String
-  video_url: String
 
   """An object relationship"""
   work: works!
@@ -9325,8 +9323,6 @@ input work_specifications_bool_exp {
   order: Int_comparison_exp
   title: String_comparison_exp
   updated_at: timestamptz_comparison_exp
-  video_password: String_comparison_exp
-  video_url: String_comparison_exp
   work: works_bool_exp
   work_id: uuid_comparison_exp
   year: String_comparison_exp
@@ -9369,8 +9365,6 @@ input work_specifications_insert_input {
   order: Int
   title: String
   updated_at: timestamptz
-  video_password: String
-  video_url: String
   work: works_obj_rel_insert_input
   work_id: uuid
   year: String
@@ -9390,8 +9384,6 @@ type work_specifications_max_fields {
   order: Int
   title: String
   updated_at: timestamptz
-  video_password: String
-  video_url: String
   work_id: uuid
   year: String
 }
@@ -9412,8 +9404,6 @@ input work_specifications_max_order_by {
   order: order_by
   title: order_by
   updated_at: order_by
-  video_password: order_by
-  video_url: order_by
   work_id: order_by
   year: order_by
 }
@@ -9432,8 +9422,6 @@ type work_specifications_min_fields {
   order: Int
   title: String
   updated_at: timestamptz
-  video_password: String
-  video_url: String
   work_id: uuid
   year: String
 }
@@ -9454,8 +9442,6 @@ input work_specifications_min_order_by {
   order: order_by
   title: order_by
   updated_at: order_by
-  video_password: order_by
-  video_url: order_by
   work_id: order_by
   year: order_by
 }
@@ -9506,8 +9492,6 @@ input work_specifications_order_by {
   order: order_by
   title: order_by
   updated_at: order_by
-  video_password: order_by
-  video_url: order_by
   work: works_order_by
   work_id: order_by
   year: order_by
@@ -9561,12 +9545,6 @@ enum work_specifications_select_column {
   updated_at
 
   """column name"""
-  video_password
-
-  """column name"""
-  video_url
-
-  """column name"""
   work_id
 
   """column name"""
@@ -9589,8 +9567,6 @@ input work_specifications_set_input {
   order: Int
   title: String
   updated_at: timestamptz
-  video_password: String
-  video_url: String
   work_id: uuid
   year: String
 }
@@ -9714,12 +9690,6 @@ enum work_specifications_update_column {
 
   """column name"""
   updated_at
-
-  """column name"""
-  video_password
-
-  """column name"""
-  video_url
 
   """column name"""
   work_id

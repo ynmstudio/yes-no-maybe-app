@@ -133,7 +133,7 @@
         <p
           *ngIf="displayName.touched && displayName.invalid"
           class="mt-2 truncate"
-          id="email-error"
+          id="name-error"
         >
           Bitte Namen eingeben.
         </p>
@@ -147,12 +147,20 @@
         <p
           *ngIf="password.touched && password.invalid"
           class="mt-2 truncate"
-          id="email-error"
+          id="password-too-short"
         >
           Bitte Kennwort mit 6 oder mehr Zeichen eingeben.
         </p>
-        <p>
-          {{ form.errors | json }}
+        <p
+          *ngIf="
+            password.touched &&
+            confirmPassword.touched &&
+            form.errors?.mustMatch
+          "
+          class="mt-2 truncate"
+          id="password-not-matching"
+        >
+          Kennwörter stimmen nicht überein.
         </p>
       </div>
     </div>

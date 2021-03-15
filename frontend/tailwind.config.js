@@ -213,7 +213,9 @@ module.exports = {
     filter: ["responsive"], // defaults to ['responsive']
     backdropFilter: ["responsive"], // defaults to ['responsive']
   },
-
+  corePlugins: {
+    float: false,
+  },
   plugins: [
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),

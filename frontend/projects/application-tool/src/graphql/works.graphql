@@ -136,10 +136,7 @@ mutation DeleteWorkFile($id: uuid!, $application_id: uuid!) {
 }
 query GetWorks($application_id: uuid!) {
   works(
-    where: {
-      application_id: { _eq: $application_id }
-      _or: [{ files: {} }, { specifications: { video_url: { _neq: "" } } }]
-    }
+    where: { application_id: { _eq: $application_id }, files: {} }
     order_by: { portfolio: asc_nulls_last, order: asc_nulls_last }
   ) {
     ...Work

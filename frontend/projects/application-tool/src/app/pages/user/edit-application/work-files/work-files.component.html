@@ -23,7 +23,8 @@
       <app-image
         [key]="file.key"
         [mimetype]="file.mimetype"
-        size="_200x200"
+        [width]="200"
+        [height]="200"
         [title]="file.originalname"
       ></app-image>
       <button
@@ -87,3 +88,78 @@
     {{ "defaults.file-multi" | translate }}
   </div>
 </div>
+
+<form
+  [formGroup]="form"
+  (ngSubmit)="addVideo()"
+  class="relative font-mono text-sm"
+>
+  <div class="col-span-4">
+    <button
+      (click)="toggleOptionalVideoFields()"
+      class="text-left appearance-none text-xs uppercase leading-none text-gray-800 py-2 flex items-center justify-end"
+    >
+      <span
+        class="px-4"
+        [innerText]="'snippets.add-optional-video-url' | translate"
+      >
+      </span>
+      <svg
+        class="ml-4 transition-transform transform-gpu"
+        [ngClass]="[
+          showVideoFields ? 'text-blue-600 scale-y-100' : '-scale-y-100'
+        ]"
+        width="16px"
+        height="8px"
+        viewBox="0 0 16 8"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <title>Path 7</title>
+        <g
+          id="Page-1"
+          stroke="none"
+          stroke-width="1"
+          fill="none"
+          fill-rule="evenodd"
+        >
+          <polyline
+            id="Path-7"
+            stroke="currentColor"
+            transform="translate(8.000000, 4.000000) rotate(-90.000000) translate(-8.000000, -4.000000) "
+            points="4 -3 12 4 4 11"
+          ></polyline>
+        </g>
+      </svg>
+    </button>
+  </div>
+  <div
+    class="flex items-center space-x-1 bg-gray-800 p-1 rounded-full mb-4"
+    [ngClass]="{ hidden: !showVideoFields }"
+  >
+    <input
+      id="video_url-{{ work_id }}"
+      formControlName="video_url"
+      name="video_url"
+      type="text"
+      [placeholder]="'defaults.url-single' | translate | titlecase"
+      class="appearance-none rounded-tl-full rounded-bl-full relative block w-full py-2 px-4 border-solid bg-white border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      [ngClass]="{
+        'ring-1 ring-red-500': video_url?.invalid
+      }"
+    />
+
+    <input
+      id="video_password-{{ work_id }}"
+      formControlName="video_password"
+      name="video_password"
+      type="text"
+      [placeholder]="'defaults.password-single' | translate | titlecase"
+      class="appearance-none rounded-tr-full rounded-br-full relative block w-full py-2 px-4 border-solid bg-white border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    />
+    <button class="text-headline leading-none px-2 text-white" type="submit">
+      +
+    </button>
+  </div>
+</form>

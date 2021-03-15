@@ -7722,8 +7722,6 @@ export type Work_Specifications = {
   order?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
-  video_password?: Maybe<Scalars['String']>;
-  video_url?: Maybe<Scalars['String']>;
   /** An object relationship */
   work: Works;
   work_id: Scalars['uuid'];
@@ -7839,8 +7837,6 @@ export type Work_Specifications_Bool_Exp = {
   order?: Maybe<Int_Comparison_Exp>;
   title?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
-  video_password?: Maybe<String_Comparison_Exp>;
-  video_url?: Maybe<String_Comparison_Exp>;
   work?: Maybe<Works_Bool_Exp>;
   work_id?: Maybe<Uuid_Comparison_Exp>;
   year?: Maybe<String_Comparison_Exp>;
@@ -7877,8 +7873,6 @@ export type Work_Specifications_Insert_Input = {
   order?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  video_password?: Maybe<Scalars['String']>;
-  video_url?: Maybe<Scalars['String']>;
   work?: Maybe<Works_Obj_Rel_Insert_Input>;
   work_id?: Maybe<Scalars['uuid']>;
   year?: Maybe<Scalars['String']>;
@@ -7899,8 +7893,6 @@ export type Work_Specifications_Max_Fields = {
   order?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  video_password?: Maybe<Scalars['String']>;
-  video_url?: Maybe<Scalars['String']>;
   work_id?: Maybe<Scalars['uuid']>;
   year?: Maybe<Scalars['String']>;
 };
@@ -7919,8 +7911,6 @@ export type Work_Specifications_Max_Order_By = {
   order?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
-  video_password?: Maybe<Order_By>;
-  video_url?: Maybe<Order_By>;
   work_id?: Maybe<Order_By>;
   year?: Maybe<Order_By>;
 };
@@ -7940,8 +7930,6 @@ export type Work_Specifications_Min_Fields = {
   order?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  video_password?: Maybe<Scalars['String']>;
-  video_url?: Maybe<Scalars['String']>;
   work_id?: Maybe<Scalars['uuid']>;
   year?: Maybe<Scalars['String']>;
 };
@@ -7960,8 +7948,6 @@ export type Work_Specifications_Min_Order_By = {
   order?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
-  video_password?: Maybe<Order_By>;
-  video_url?: Maybe<Order_By>;
   work_id?: Maybe<Order_By>;
   year?: Maybe<Order_By>;
 };
@@ -8004,8 +7990,6 @@ export type Work_Specifications_Order_By = {
   order?: Maybe<Order_By>;
   title?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
-  video_password?: Maybe<Order_By>;
-  video_url?: Maybe<Order_By>;
   work?: Maybe<Works_Order_By>;
   work_id?: Maybe<Order_By>;
   year?: Maybe<Order_By>;
@@ -8043,10 +8027,6 @@ export enum Work_Specifications_Select_Column {
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
-  VideoPassword = 'video_password',
-  /** column name */
-  VideoUrl = 'video_url',
-  /** column name */
   WorkId = 'work_id',
   /** column name */
   Year = 'year'
@@ -8066,8 +8046,6 @@ export type Work_Specifications_Set_Input = {
   order?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  video_password?: Maybe<Scalars['String']>;
-  video_url?: Maybe<Scalars['String']>;
   work_id?: Maybe<Scalars['uuid']>;
   year?: Maybe<Scalars['String']>;
 };
@@ -8174,10 +8152,6 @@ export enum Work_Specifications_Update_Column {
   Title = 'title',
   /** column name */
   UpdatedAt = 'updated_at',
-  /** column name */
-  VideoPassword = 'video_password',
-  /** column name */
-  VideoUrl = 'video_url',
   /** column name */
   WorkId = 'work_id',
   /** column name */
@@ -10777,7 +10751,7 @@ export const DeleteWorkFileDocument = gql`
 export const GetWorksDocument = gql`
     query GetWorks($application_id: uuid!) {
   works(
-    where: {application_id: {_eq: $application_id}, _or: [{files: {}}, {specifications: {video_url: {_neq: ""}}}]}
+    where: {application_id: {_eq: $application_id}, files: {}}
     order_by: {portfolio: asc_nulls_last, order: asc_nulls_last}
   ) {
     ...Work
