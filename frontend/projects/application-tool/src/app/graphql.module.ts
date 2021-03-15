@@ -18,6 +18,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { take } from 'rxjs/operators';
 import { AppService } from './shared/services/app.service';
 import { AlertService } from './shared/components/alert/alert.service';
+import { getParseErrors } from '@angular/compiler';
 
 // This should be in sync with update information inside ngsw-config.json file
 export const SCHEMA_VERSION = '0.0.0'; // Must be a string.
@@ -90,7 +91,6 @@ export function createApollo(
     options: {
       reconnect: true,
       lazy: true,
-      reconnectionAttempts: 10,
       connectionParams: async () => {
         const token = await auth.idToken.pipe(take(1)).toPromise();
         if (token) {
@@ -136,9 +136,10 @@ export function createApollo(
     authCtx(auth),
     retryLink,
     offlineLink as any,
-    onError(({ graphQLErrors, networkError, operation, forward }) => {
+    onError(({ graphQLErrors, networkError, response, operation, forward }) => {
       if (graphQLErrors)
         graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+          let oldHeaders: any;
           alertService.error(message);
           // console.debug(
           //   `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}, Code: ${extensions?.code}`
@@ -146,16 +147,81 @@ export function createApollo(
           switch (extensions?.code) {
             case 'invalid-jwt':
               alertService.error('JWT is inavlid');
-              // const oldHeaders = operation.getContext().headers;
-              // operation.setContext({
-              //   headers: {
-              //     ...oldHeaders,
-              //     authorization: getNewToken(),
-              //   },
-              // });
-              // // retry the request, returning the new observable
-              // return forward(operation);
+
               break;
+            case 'jwt-invalid-claims':
+              alertService.error('JWT has invalid claims');
+              oldHeaders = operation.getContext().headers;
+              operation.setContext(async () => {
+                // Grab token if there is one in storage or hasn't expired
+                const token = await auth.idToken.pipe(take(1)).toPromise();
+                if (token) {
+                  let devHeaders = {};
+                  if (!environment.production) {
+                    const tokenResult = await auth.idTokenResult
+                      .pipe(take(1))
+                      .toPromise();
+                    devHeaders = localHeaders(
+                      tokenResult?.claims['role'],
+                      tokenResult?.claims['user_id']
+                    );
+                  }
+                  // Return the headers as usual
+                  return {
+                    headers: {
+                      ...oldHeaders,
+                      ...devHeaders,
+                      Authorization: token ? `Bearer ${token}` : '',
+                    },
+                  };
+                } else {
+                  return {
+                    headers: {
+                      ...oldHeaders,
+                      ...(environment.production ? {} : localHeaders()),
+                    },
+                  };
+                }
+              });
+              // retry the request, returning the new observable
+              break;
+            case 'not-found':
+              alertService.error('Headers not found');
+              oldHeaders = operation.getContext().headers;
+              operation.setContext(async () => {
+                // Grab token if there is one in storage or hasn't expired
+                const token = await auth.idToken.pipe(take(1)).toPromise();
+                if (token) {
+                  let devHeaders = {};
+                  if (!environment.production) {
+                    const tokenResult = await auth.idTokenResult
+                      .pipe(take(1))
+                      .toPromise();
+                    devHeaders = localHeaders(
+                      tokenResult?.claims['role'],
+                      tokenResult?.claims['user_id']
+                    );
+                  }
+                  // Return the headers as usual
+                  return {
+                    headers: {
+                      ...oldHeaders,
+                      ...devHeaders,
+                      Authorization: token ? `Bearer ${token}` : '',
+                    },
+                  };
+                } else {
+                  return {
+                    headers: {
+                      ...oldHeaders,
+                      ...(environment.production ? {} : localHeaders()),
+                    },
+                  };
+                }
+              });
+              // retry the request, returning the new observable
+              break;
+
             default:
               break;
           }
@@ -166,6 +232,7 @@ export function createApollo(
         // console.error(networkError);
         // alert("New network error. Check console");
       }
+      return forward(operation);
     }),
     split(
       // split based on operation type

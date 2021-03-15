@@ -93,23 +93,33 @@ export class AuthService {
 
       const idTokenResult = await result.user?.getIdTokenResult(true);
 
-      await this.hasuraService.updateUsername(displayName || 'Anonymous');
+      if (idTokenResult && idTokenResult?.claims['role']) {
+        await new Promise((r) => setTimeout(r, 150));
 
-      if (idTokenResult) {
-        switch (idTokenResult.claims['role']) {
-          case 'user':
-            this.router.navigate(['u', 'dashboard']);
-            break;
-          case 'jury':
-            this.router.navigate(['j', 'dashboard']);
-            break;
-          case 'team':
-            this.router.navigate(['t', 'dashboard']);
-            break;
-          default:
-            this.router.navigate(['u', 'dashboard']);
-            break;
-        }
+        await this.hasuraService.updateUsername(displayName || 'Anonymous');
+        this.redirectToDashboard(idTokenResult?.claims['role']);
+      } else {
+        // Check if refresh is required.
+        const metadataRef = this.afDatabase.object(
+          'metadata/' + user?.uid + '/refreshTime'
+        );
+        const subscription = metadataRef
+          .valueChanges()
+          .subscribe(async (data: any) => {
+            if (!data) return;
+
+            // Force refresh to pick up the latest custom claims changes.
+            const idTokenResult = await user?.getIdTokenResult(true);
+
+            if (!idTokenResult?.claims['role']) return;
+            await new Promise((r) => setTimeout(r, 150));
+            console.log(idTokenResult?.claims['role']);
+
+            await this.hasuraService.updateUsername(displayName || 'Anonymous');
+
+            this.redirectToDashboard(idTokenResult?.claims['role']);
+            subscription.unsubscribe();
+          });
       }
     } catch (error) {
       // Handle Errors here.
@@ -143,20 +153,7 @@ export class AuthService {
       const idTokenResult = await result.user?.getIdTokenResult(true);
 
       if (idTokenResult) {
-        switch (idTokenResult.claims['role']) {
-          case 'user':
-            this.router.navigate(['u', 'dashboard']);
-            break;
-          case 'jury':
-            this.router.navigate(['j', 'dashboard']);
-            break;
-          case 'team':
-            this.router.navigate(['t', 'dashboard']);
-            break;
-          default:
-            this.router.navigate(['u', 'dashboard']);
-            break;
-        }
+        this.redirectToDashboard(idTokenResult.claims['role']);
       }
     } catch (error) {
       this.alertService.error(error);
@@ -172,6 +169,23 @@ export class AuthService {
   async logout() {
     await this.afAuth.signOut();
     this.router.navigate(['/auth']);
+  }
+
+  redirectToDashboard(role: string) {
+    switch (role) {
+      case 'user':
+        this.router.navigate(['u', 'dashboard']);
+        break;
+      case 'jury':
+        this.router.navigate(['j', 'dashboard']);
+        break;
+      case 'team':
+        this.router.navigate(['t', 'dashboard']);
+        break;
+      default:
+        this.router.navigate(['u', 'dashboard']);
+        break;
+    }
   }
 
   // Reactive Form Validator
