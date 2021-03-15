@@ -30,6 +30,10 @@
   vg-mute {
     @apply hidden md:flex;
   }
+
+  ::ng-deep iframe {
+    @apply absolute inset-0 w-full h-full;
+  }
   /* stylelint-enable */
 }
 :host-context(#preview) {

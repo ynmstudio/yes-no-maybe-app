@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Mar 15 2021 09:05:32 GMT+0100 (GMT+01:00)
+# timestamp: Mon Mar 15 2021 13:04:15 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -8389,6 +8389,9 @@ type work_files {
   mimetype: String!
   order: Int!
   originalname: String!
+
+  """Password for Vimeo/YouTube Videos"""
+  password: String
   size: numeric!
 
   """An object relationship"""
@@ -8475,6 +8478,7 @@ input work_files_bool_exp {
   mimetype: String_comparison_exp
   order: Int_comparison_exp
   originalname: String_comparison_exp
+  password: String_comparison_exp
   size: numeric_comparison_exp
   work: works_bool_exp
   work_id: uuid_comparison_exp
@@ -8508,6 +8512,7 @@ input work_files_insert_input {
   mimetype: String
   order: Int
   originalname: String
+  password: String
   size: numeric
   work: works_obj_rel_insert_input
   work_id: uuid
@@ -8522,6 +8527,7 @@ type work_files_max_fields {
   mimetype: String
   order: Int
   originalname: String
+  password: String
   size: numeric
   work_id: uuid
 }
@@ -8537,6 +8543,7 @@ input work_files_max_order_by {
   mimetype: order_by
   order: order_by
   originalname: order_by
+  password: order_by
   size: order_by
   work_id: order_by
 }
@@ -8550,6 +8557,7 @@ type work_files_min_fields {
   mimetype: String
   order: Int
   originalname: String
+  password: String
   size: numeric
   work_id: uuid
 }
@@ -8565,6 +8573,7 @@ input work_files_min_order_by {
   mimetype: order_by
   order: order_by
   originalname: order_by
+  password: order_by
   size: order_by
   work_id: order_by
 }
@@ -8609,6 +8618,7 @@ input work_files_order_by {
   mimetype: order_by
   order: order_by
   originalname: order_by
+  password: order_by
   size: order_by
   work: works_order_by
   work_id: order_by
@@ -8647,6 +8657,9 @@ enum work_files_select_column {
   originalname
 
   """column name"""
+  password
+
+  """column name"""
   size
 
   """column name"""
@@ -8664,6 +8677,7 @@ input work_files_set_input {
   mimetype: String
   order: Int
   originalname: String
+  password: String
   size: numeric
   work_id: uuid
 }
@@ -8748,6 +8762,9 @@ enum work_files_update_column {
 
   """column name"""
   originalname
+
+  """column name"""
+  password
 
   """column name"""
   size

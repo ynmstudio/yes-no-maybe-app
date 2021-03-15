@@ -43,7 +43,8 @@
                   class="absolute inset-0 text-center transform-gpu transition-opacity"
                   [key]="file.key"
                   [mimetype]="file.mimetype"
-                  size="_1440x1200"
+                  [width]="1440"
+                  [height]="1200"
                   [ngClass]="[
                     (currentFileIndex | async) == index
                       ? 'opacity-100'
@@ -104,7 +105,8 @@
                 <app-image
                   [key]="file.key"
                   [mimetype]="file.mimetype"
-                  size="_200x200"
+                  [width]="200"
+                  [height]="200"
                   [title]="file.originalname"
                 ></app-image>
               </div>

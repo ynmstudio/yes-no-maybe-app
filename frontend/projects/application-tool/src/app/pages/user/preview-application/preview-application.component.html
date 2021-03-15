@@ -162,7 +162,8 @@
           [key]="file.key"
           [mimetype]="file.mimetype"
           [title]="file.originalname"
-          size="_1440x1200"
+          [width]="1440"
+          [height]="1200"
           [ngClass]="[
             (currentFileIndex | async) == index
               ? 'opacity-100'
@@ -303,7 +304,8 @@
           <app-image
             [key]="file.key"
             [mimetype]="file.mimetype"
-            size="_600x600"
+            [width]="600"
+            [height]="600"
             [title]="file.originalname"
           ></app-image>
         </div>

@@ -1,6 +1,12 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
   FileFragment,
   WorkFileFragment,
   WorkFragmentDoc,
@@ -8,6 +14,7 @@ import {
   UpdateWorkFilesOrderGQL,
 } from 'generated/types.graphql-gen';
 import { UserService } from '../../user.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-work-files',
@@ -21,16 +28,33 @@ export class WorkFilesComponent implements OnInit {
 
   @Output() pendingUploads: EventEmitter<boolean> = new EventEmitter();
 
+  form: FormGroup;
+
   maxFiles: number = 5;
 
   get path_prefix() {
     return `applications/${this.application_id}/works/${this.work_id}`;
   }
+  get video_url() {
+    return this.form.get('video_url');
+  }
 
   constructor(
+    private fb: FormBuilder,
+
     private userService: UserService,
     private updateWorkFilesOrderGQL: UpdateWorkFilesOrderGQL
-  ) {}
+  ) {
+    this.form = this.fb.group({
+      video_url: new FormControl(
+        '',
+        Validators.pattern(
+          /^(http:\/\/|https:\/\/)(vimeo\.com|youtu\.be|www\.youtube\.com)\/([\w\/]+)([\?].*)?$/
+        )
+      ),
+      video_password: new FormControl(''),
+    });
+  }
 
   ngOnInit(): void {}
 
@@ -76,6 +100,30 @@ export class WorkFilesComponent implements OnInit {
       this.work_id,
       this.application_id
     );
+  }
+
+  showVideoFields: boolean = false;
+  toggleOptionalVideoFields() {
+    this.showVideoFields = !this.showVideoFields;
+  }
+
+  async addVideo() {
+    if (this.form.pristine || !this.form.valid) return;
+    const asset: FileFragment = {
+      id: uuidv4(),
+      key: this.form.get('video_url')?.value,
+      mimetype: 'text/html',
+      originalname: this.form.get('video_url')?.value,
+      size: 0,
+      password: this.form.get('video_password')?.value,
+    };
+    await this.userService.addWorkFile(
+      asset,
+      this.files.length,
+      this.work_id,
+      this.application_id
+    );
+    this.form.reset();
   }
 
   trackByKeyFn(index: number, item: any) {

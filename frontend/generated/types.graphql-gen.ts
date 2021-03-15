@@ -7026,6 +7026,8 @@ export type Work_Files = {
   mimetype: Scalars['String'];
   order: Scalars['Int'];
   originalname: Scalars['String'];
+  /** Password for Vimeo/YouTube Videos */
+  password?: Maybe<Scalars['String']>;
   size: Scalars['numeric'];
   /** An object relationship */
   work: Works;
@@ -7109,6 +7111,7 @@ export type Work_Files_Bool_Exp = {
   mimetype?: Maybe<String_Comparison_Exp>;
   order?: Maybe<Int_Comparison_Exp>;
   originalname?: Maybe<String_Comparison_Exp>;
+  password?: Maybe<String_Comparison_Exp>;
   size?: Maybe<Numeric_Comparison_Exp>;
   work?: Maybe<Works_Bool_Exp>;
   work_id?: Maybe<Uuid_Comparison_Exp>;
@@ -7136,6 +7139,7 @@ export type Work_Files_Insert_Input = {
   mimetype?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   originalname?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['numeric']>;
   work?: Maybe<Works_Obj_Rel_Insert_Input>;
   work_id?: Maybe<Scalars['uuid']>;
@@ -7151,6 +7155,7 @@ export type Work_Files_Max_Fields = {
   mimetype?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   originalname?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['numeric']>;
   work_id?: Maybe<Scalars['uuid']>;
 };
@@ -7164,6 +7169,7 @@ export type Work_Files_Max_Order_By = {
   mimetype?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
   originalname?: Maybe<Order_By>;
+  password?: Maybe<Order_By>;
   size?: Maybe<Order_By>;
   work_id?: Maybe<Order_By>;
 };
@@ -7178,6 +7184,7 @@ export type Work_Files_Min_Fields = {
   mimetype?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   originalname?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['numeric']>;
   work_id?: Maybe<Scalars['uuid']>;
 };
@@ -7191,6 +7198,7 @@ export type Work_Files_Min_Order_By = {
   mimetype?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
   originalname?: Maybe<Order_By>;
+  password?: Maybe<Order_By>;
   size?: Maybe<Order_By>;
   work_id?: Maybe<Order_By>;
 };
@@ -7227,6 +7235,7 @@ export type Work_Files_Order_By = {
   mimetype?: Maybe<Order_By>;
   order?: Maybe<Order_By>;
   originalname?: Maybe<Order_By>;
+  password?: Maybe<Order_By>;
   size?: Maybe<Order_By>;
   work?: Maybe<Works_Order_By>;
   work_id?: Maybe<Order_By>;
@@ -7254,6 +7263,8 @@ export enum Work_Files_Select_Column {
   /** column name */
   Originalname = 'originalname',
   /** column name */
+  Password = 'password',
+  /** column name */
   Size = 'size',
   /** column name */
   WorkId = 'work_id'
@@ -7268,6 +7279,7 @@ export type Work_Files_Set_Input = {
   mimetype?: Maybe<Scalars['String']>;
   order?: Maybe<Scalars['Int']>;
   originalname?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
   size?: Maybe<Scalars['numeric']>;
   work_id?: Maybe<Scalars['uuid']>;
 };
@@ -7340,6 +7352,8 @@ export enum Work_Files_Update_Column {
   Order = 'order',
   /** column name */
   Originalname = 'originalname',
+  /** column name */
+  Password = 'password',
   /** column name */
   Size = 'size',
   /** column name */
@@ -9349,7 +9363,7 @@ export type WorkFragment = (
 
 export type FileFragment = (
   { __typename?: 'work_files' }
-  & Pick<Work_Files, 'id' | 'mimetype' | 'key' | 'originalname' | 'size'>
+  & Pick<Work_Files, 'id' | 'mimetype' | 'key' | 'originalname' | 'size' | 'password'>
 );
 
 export type WorkFileFragment = (
@@ -9360,7 +9374,7 @@ export type WorkFileFragment = (
 
 export type WorkSpecificationFragment = (
   { __typename?: 'work_specifications' }
-  & Pick<Work_Specifications, 'id' | 'work_id' | 'application_id' | 'material' | 'year' | 'title' | 'order' | 'number_of_editions' | 'description' | 'dimensions_width' | 'dimensions_height' | 'dimensions_depth' | 'video_url' | 'video_password'>
+  & Pick<Work_Specifications, 'id' | 'work_id' | 'application_id' | 'material' | 'year' | 'title' | 'order' | 'number_of_editions' | 'description' | 'dimensions_width' | 'dimensions_height' | 'dimensions_depth'>
   & { mediums: Array<(
     { __typename?: 'work_specification_mediums' }
     & Pick<Work_Specification_Mediums, 'specification_id'>
@@ -9435,6 +9449,7 @@ export type AddWorkFileMutationVariables = Exact<{
   mimetype: Scalars['String'];
   originalname: Scalars['String'];
   size: Scalars['numeric'];
+  password?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -9634,6 +9649,7 @@ export const FileFragmentDoc = gql`
   key
   originalname
   size
+  password
 }
     `;
 export const WorkFileFragmentDoc = gql`
@@ -9725,8 +9741,6 @@ export const WorkSpecificationFragmentDoc = gql`
   dimensions_width
   dimensions_height
   dimensions_depth
-  video_url
-  video_password
 }
     ${MediumFragmentDoc}`;
 export const WorkFragmentDoc = gql`
@@ -10708,7 +10722,7 @@ export const DeletePortfolioSpecificationDocument = gql`
     }
   }
 export const AddWorkFileDocument = gql`
-    mutation AddWorkFile($id: uuid!, $application_id: uuid!, $work_id: uuid!, $order: Int!, $key: String!, $mimetype: String!, $originalname: String!, $size: numeric!) {
+    mutation AddWorkFile($id: uuid!, $application_id: uuid!, $work_id: uuid!, $order: Int!, $key: String!, $mimetype: String!, $originalname: String!, $size: numeric!, $password: String = "") {
   update_applications_by_pk(
     pk_columns: {id: $application_id}
     _set: {updated_at: "now()"}
@@ -10717,7 +10731,7 @@ export const AddWorkFileDocument = gql`
     updated_at
   }
   insert_work_files_one(
-    object: {id: $id, application_id: $application_id, key: $key, mimetype: $mimetype, order: $order, originalname: $originalname, size: $size, work_id: $work_id}
+    object: {id: $id, application_id: $application_id, key: $key, mimetype: $mimetype, order: $order, originalname: $originalname, size: $size, work_id: $work_id, password: $password}
   ) {
     ...WorkFile
   }

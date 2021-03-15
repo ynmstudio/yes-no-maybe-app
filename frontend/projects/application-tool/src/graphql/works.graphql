@@ -15,6 +15,7 @@ fragment File on work_files {
   key
   originalname
   size
+  password
 }
 fragment WorkFile on work_files {
   work_id
@@ -41,8 +42,6 @@ fragment WorkSpecification on work_specifications {
   dimensions_width
   dimensions_height
   dimensions_depth
-  video_url
-  video_password
 }
 
 # User
@@ -97,6 +96,7 @@ mutation AddWorkFile(
   $mimetype: String!
   $originalname: String!
   $size: numeric!
+  $password: String = ""
 ) {
   update_applications_by_pk(
     pk_columns: { id: $application_id }
@@ -115,6 +115,7 @@ mutation AddWorkFile(
       originalname: $originalname
       size: $size
       work_id: $work_id
+      password: $password
     }
   ) {
     ...WorkFile

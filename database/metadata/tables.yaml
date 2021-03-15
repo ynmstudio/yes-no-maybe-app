@@ -1053,6 +1053,7 @@
                 _eq: X-Hasura-User-Id
       columns:
       - application_id
+      - password
       - id
       - key
       - mimetype
@@ -1066,6 +1067,7 @@
     permission:
       columns:
       - application_id
+      - password
       - created_at
       - id
       - key
@@ -1080,6 +1082,7 @@
     permission:
       columns:
       - application_id
+      - password
       - created_at
       - id
       - key
@@ -1331,8 +1334,6 @@
       - order
       - title
       - updated_at
-      - video_password
-      - video_url
       - work_id
       - year
       filter: {}
@@ -1352,8 +1353,6 @@
       - order
       - title
       - updated_at
-      - video_password
-      - video_url
       - work_id
       - year
       filter:
@@ -1382,8 +1381,6 @@
       - number_of_editions
       - order
       - title
-      - video_password
-      - video_url
       - year
       filter:
         _and:

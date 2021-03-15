@@ -161,6 +161,17 @@
       <vg-overlay-play></vg-overlay-play>
     </vg-player>
   </ng-container>
+
+  <div
+    class="h-full w-24 inline-block relative transform-gpu"
+    [ngClass]="[
+      showControls && active ? 'pointer-events-auto' : 'pointer-events-none',
+      showControls ? 'w-11/12' : 'w-24'
+    ]"
+    *ngSwitchCase="'iframe'"
+    [innerHTML]="active ? url : ''"
+  ></div>
+
   <div class="h-full w-20 flex items-center justify-center" *ngSwitchDefault>
     <div class="text-xxs font-condensed" [innerText]="mimetype"></div>
   </div>
