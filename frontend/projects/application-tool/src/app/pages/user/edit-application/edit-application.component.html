@@ -570,7 +570,7 @@
               type="file"
               id="upload-file"
               name="upload-file"
-              accept=".pdf"
+              accept="image/*,.pdf"
               (change)="onPaymentFileSelect($event)"
               #fileInput
             />
@@ -607,7 +607,9 @@
                     font-size="20"
                     alignment-baseline="central"
                   >
-                    <tspan x="25" y="57" class="font-condensed">PDF</tspan>
+                    <tspan x="25" y="57" class="font-condensed uppercase">
+                      {{ payment?.value.originalname | getExtension }}
+                    </tspan>
                   </text>
                 </g>
               </svg>

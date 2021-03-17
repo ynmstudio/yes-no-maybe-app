@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Mar 15 2021 14:36:56 GMT+0100 (GMT+01:00)
+# timestamp: Tue Mar 16 2021 07:34:04 GMT+0100 (GMT+01:00)
 
 schema {
   query: query_root
@@ -42,7 +42,7 @@ type applications {
     where: work_files_bool_exp
   ): [work_files!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   files_aggregate(
     """distinct select on columns"""
     distinct_on: [work_files_select_column!]
@@ -82,7 +82,7 @@ type applications {
     where: messages_bool_exp
   ): [messages!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   messages_aggregate(
     """distinct select on columns"""
     distinct_on: [messages_select_column!]
@@ -127,7 +127,7 @@ type applications {
     where: ratings_bool_exp
   ): [ratings!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   ratings_aggregate(
     """distinct select on columns"""
     distinct_on: [ratings_select_column!]
@@ -169,7 +169,7 @@ type applications {
     where: work_specifications_bool_exp
   ): [work_specifications!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   specifications_aggregate(
     """distinct select on columns"""
     distinct_on: [work_specifications_select_column!]
@@ -220,7 +220,7 @@ type applications {
     where: works_bool_exp
   ): [works!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   works_aggregate(
     """distinct select on columns"""
     distinct_on: [works_select_column!]
@@ -252,7 +252,7 @@ aggregate fields of "applications"
 """
 type applications_aggregate_fields {
   avg: applications_avg_fields
-  count(columns: [applications_select_column!], distinct: Boolean): Int
+  count(columns: [applications_select_column!], distinct: Boolean): Int!
   max: applications_max_fields
   min: applications_min_fields
   stddev: applications_stddev_fields
@@ -286,6 +286,8 @@ input type for inserting array relation for remote table "applications"
 """
 input applications_arr_rel_insert_input {
   data: [applications_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: applications_on_conflict
 }
 
@@ -305,9 +307,9 @@ input applications_avg_order_by {
 Boolean expression to filter rows from the table "applications". All fields are combined with a logical 'AND'.
 """
 input applications_bool_exp {
-  _and: [applications_bool_exp]
+  _and: [applications_bool_exp!]
   _not: applications_bool_exp
-  _or: [applications_bool_exp]
+  _or: [applications_bool_exp!]
   created_at: timestamptz_comparison_exp
   created_by: String_comparison_exp
   database: Boolean_comparison_exp
@@ -345,7 +347,7 @@ enum applications_constraint {
 }
 
 """
-input type for incrementing integer column in table "applications"
+input type for incrementing numeric columns in table "applications"
 """
 input applications_inc_input {
   edition_id: Int
@@ -436,10 +438,10 @@ input applications_min_order_by {
 response of any mutation on the table "applications"
 """
 type applications_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [applications!]!
 }
 
@@ -448,6 +450,8 @@ input type for inserting object relation for remote table "applications"
 """
 input applications_obj_rel_insert_input {
   data: applications_insert_input!
+
+  """on conflict condition"""
   on_conflict: applications_on_conflict
 }
 
@@ -460,9 +464,7 @@ input applications_on_conflict {
   where: applications_bool_exp
 }
 
-"""
-ordering options when selecting data from "applications"
-"""
+"""Ordering options when selecting data from "applications"."""
 input applications_order_by {
   created_at: order_by
   created_by: order_by
@@ -489,9 +491,7 @@ input applications_order_by {
   works_aggregate: works_aggregate_order_by
 }
 
-"""
-primary key columns input for table: "applications"
-"""
+"""primary key columns input for table: applications"""
 input applications_pk_columns_input {
   id: uuid!
 }
@@ -697,7 +697,7 @@ input applications_variance_order_by {
 scalar bigint
 
 """
-expression to compare columns of type bigint. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
 """
 input bigint_comparison_exp {
   _eq: bigint
@@ -712,7 +712,7 @@ input bigint_comparison_exp {
 }
 
 """
-expression to compare columns of type Boolean. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
 input Boolean_comparison_exp {
   _eq: Boolean
@@ -752,7 +752,7 @@ type category_mediums {
     where: work_specification_mediums_bool_exp
   ): [work_specification_mediums!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   specifications_aggregate(
     """distinct select on columns"""
     distinct_on: [work_specification_mediums_select_column!]
@@ -783,35 +783,18 @@ type category_mediums_aggregate {
 aggregate fields of "category_mediums"
 """
 type category_mediums_aggregate_fields {
-  count(columns: [category_mediums_select_column!], distinct: Boolean): Int
+  count(columns: [category_mediums_select_column!], distinct: Boolean): Int!
   max: category_mediums_max_fields
   min: category_mediums_min_fields
-}
-
-"""
-order by aggregate values of table "category_mediums"
-"""
-input category_mediums_aggregate_order_by {
-  count: order_by
-  max: category_mediums_max_order_by
-  min: category_mediums_min_order_by
-}
-
-"""
-input type for inserting array relation for remote table "category_mediums"
-"""
-input category_mediums_arr_rel_insert_input {
-  data: [category_mediums_insert_input!]!
-  on_conflict: category_mediums_on_conflict
 }
 
 """
 Boolean expression to filter rows from the table "category_mediums". All fields are combined with a logical 'AND'.
 """
 input category_mediums_bool_exp {
-  _and: [category_mediums_bool_exp]
+  _and: [category_mediums_bool_exp!]
   _not: category_mediums_bool_exp
-  _or: [category_mediums_bool_exp]
+  _or: [category_mediums_bool_exp!]
   id: uuid_comparison_exp
   name_de: String_comparison_exp
   name_en: String_comparison_exp
@@ -849,15 +832,6 @@ type category_mediums_max_fields {
   name_en: String
 }
 
-"""
-order by max() on columns of table "category_mediums"
-"""
-input category_mediums_max_order_by {
-  id: order_by
-  name_de: order_by
-  name_en: order_by
-}
-
 """aggregate min on columns"""
 type category_mediums_min_fields {
   id: uuid
@@ -866,22 +840,13 @@ type category_mediums_min_fields {
 }
 
 """
-order by min() on columns of table "category_mediums"
-"""
-input category_mediums_min_order_by {
-  id: order_by
-  name_de: order_by
-  name_en: order_by
-}
-
-"""
 response of any mutation on the table "category_mediums"
 """
 type category_mediums_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [category_mediums!]!
 }
 
@@ -890,6 +855,8 @@ input type for inserting object relation for remote table "category_mediums"
 """
 input category_mediums_obj_rel_insert_input {
   data: category_mediums_insert_input!
+
+  """on conflict condition"""
   on_conflict: category_mediums_on_conflict
 }
 
@@ -902,9 +869,7 @@ input category_mediums_on_conflict {
   where: category_mediums_bool_exp
 }
 
-"""
-ordering options when selecting data from "category_mediums"
-"""
+"""Ordering options when selecting data from "category_mediums"."""
 input category_mediums_order_by {
   id: order_by
   name_de: order_by
@@ -912,9 +877,7 @@ input category_mediums_order_by {
   specifications_aggregate: work_specification_mediums_aggregate_order_by
 }
 
-"""
-primary key columns input for table: "category_mediums"
-"""
+"""primary key columns input for table: category_mediums"""
 input category_mediums_pk_columns_input {
   id: uuid!
 }
@@ -977,35 +940,18 @@ type category_tags_aggregate {
 aggregate fields of "category_tags"
 """
 type category_tags_aggregate_fields {
-  count(columns: [category_tags_select_column!], distinct: Boolean): Int
+  count(columns: [category_tags_select_column!], distinct: Boolean): Int!
   max: category_tags_max_fields
   min: category_tags_min_fields
-}
-
-"""
-order by aggregate values of table "category_tags"
-"""
-input category_tags_aggregate_order_by {
-  count: order_by
-  max: category_tags_max_order_by
-  min: category_tags_min_order_by
-}
-
-"""
-input type for inserting array relation for remote table "category_tags"
-"""
-input category_tags_arr_rel_insert_input {
-  data: [category_tags_insert_input!]!
-  on_conflict: category_tags_on_conflict
 }
 
 """
 Boolean expression to filter rows from the table "category_tags". All fields are combined with a logical 'AND'.
 """
 input category_tags_bool_exp {
-  _and: [category_tags_bool_exp]
+  _and: [category_tags_bool_exp!]
   _not: category_tags_bool_exp
-  _or: [category_tags_bool_exp]
+  _or: [category_tags_bool_exp!]
   id: uuid_comparison_exp
   name_de: String_comparison_exp
   name_en: String_comparison_exp
@@ -1041,15 +987,6 @@ type category_tags_max_fields {
   name_en: String
 }
 
-"""
-order by max() on columns of table "category_tags"
-"""
-input category_tags_max_order_by {
-  id: order_by
-  name_de: order_by
-  name_en: order_by
-}
-
 """aggregate min on columns"""
 type category_tags_min_fields {
   id: uuid
@@ -1058,31 +995,14 @@ type category_tags_min_fields {
 }
 
 """
-order by min() on columns of table "category_tags"
-"""
-input category_tags_min_order_by {
-  id: order_by
-  name_de: order_by
-  name_en: order_by
-}
-
-"""
 response of any mutation on the table "category_tags"
 """
 type category_tags_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [category_tags!]!
-}
-
-"""
-input type for inserting object relation for remote table "category_tags"
-"""
-input category_tags_obj_rel_insert_input {
-  data: category_tags_insert_input!
-  on_conflict: category_tags_on_conflict
 }
 
 """
@@ -1094,18 +1014,14 @@ input category_tags_on_conflict {
   where: category_tags_bool_exp
 }
 
-"""
-ordering options when selecting data from "category_tags"
-"""
+"""Ordering options when selecting data from "category_tags"."""
 input category_tags_order_by {
   id: order_by
   name_de: order_by
   name_en: order_by
 }
 
-"""
-primary key columns input for table: "category_tags"
-"""
+"""primary key columns input for table: category_tags"""
 input category_tags_pk_columns_input {
   id: uuid!
 }
@@ -1172,7 +1088,7 @@ type editions {
     where: applications_bool_exp
   ): [applications!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   applications_aggregate(
     """distinct select on columns"""
     distinct_on: [applications_select_column!]
@@ -1212,7 +1128,7 @@ type editions {
     where: rating_rounds_bool_exp
   ): [rating_rounds!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   rating_rounds_aggregate(
     """distinct select on columns"""
     distinct_on: [rating_rounds_select_column!]
@@ -1253,7 +1169,7 @@ aggregate fields of "editions"
 """
 type editions_aggregate_fields {
   avg: editions_avg_fields
-  count(columns: [editions_select_column!], distinct: Boolean): Int
+  count(columns: [editions_select_column!], distinct: Boolean): Int!
   max: editions_max_fields
   min: editions_min_fields
   stddev: editions_stddev_fields
@@ -1265,50 +1181,18 @@ type editions_aggregate_fields {
   variance: editions_variance_fields
 }
 
-"""
-order by aggregate values of table "editions"
-"""
-input editions_aggregate_order_by {
-  avg: editions_avg_order_by
-  count: order_by
-  max: editions_max_order_by
-  min: editions_min_order_by
-  stddev: editions_stddev_order_by
-  stddev_pop: editions_stddev_pop_order_by
-  stddev_samp: editions_stddev_samp_order_by
-  sum: editions_sum_order_by
-  var_pop: editions_var_pop_order_by
-  var_samp: editions_var_samp_order_by
-  variance: editions_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "editions"
-"""
-input editions_arr_rel_insert_input {
-  data: [editions_insert_input!]!
-  on_conflict: editions_on_conflict
-}
-
 """aggregate avg on columns"""
 type editions_avg_fields {
   id: Float
 }
 
 """
-order by avg() on columns of table "editions"
-"""
-input editions_avg_order_by {
-  id: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "editions". All fields are combined with a logical 'AND'.
 """
 input editions_bool_exp {
-  _and: [editions_bool_exp]
+  _and: [editions_bool_exp!]
   _not: editions_bool_exp
-  _or: [editions_bool_exp]
+  _or: [editions_bool_exp!]
   application_end: timestamptz_comparison_exp
   application_start: timestamptz_comparison_exp
   applications: applications_bool_exp
@@ -1336,7 +1220,7 @@ enum editions_constraint {
 }
 
 """
-input type for incrementing integer column in table "editions"
+input type for incrementing numeric columns in table "editions"
 """
 input editions_inc_input {
   id: Int
@@ -1368,18 +1252,6 @@ type editions_max_fields {
   winner_id: uuid
 }
 
-"""
-order by max() on columns of table "editions"
-"""
-input editions_max_order_by {
-  application_end: order_by
-  application_start: order_by
-  created_at: order_by
-  id: order_by
-  name: order_by
-  winner_id: order_by
-}
-
 """aggregate min on columns"""
 type editions_min_fields {
   application_end: timestamptz
@@ -1391,25 +1263,13 @@ type editions_min_fields {
 }
 
 """
-order by min() on columns of table "editions"
-"""
-input editions_min_order_by {
-  application_end: order_by
-  application_start: order_by
-  created_at: order_by
-  id: order_by
-  name: order_by
-  winner_id: order_by
-}
-
-"""
 response of any mutation on the table "editions"
 """
 type editions_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [editions!]!
 }
 
@@ -1418,6 +1278,8 @@ input type for inserting object relation for remote table "editions"
 """
 input editions_obj_rel_insert_input {
   data: editions_insert_input!
+
+  """on conflict condition"""
   on_conflict: editions_on_conflict
 }
 
@@ -1430,9 +1292,7 @@ input editions_on_conflict {
   where: editions_bool_exp
 }
 
-"""
-ordering options when selecting data from "editions"
-"""
+"""Ordering options when selecting data from "editions"."""
 input editions_order_by {
   application_end: order_by
   application_start: order_by
@@ -1446,9 +1306,7 @@ input editions_order_by {
   winner_id: order_by
 }
 
-"""
-primary key columns input for table: "editions"
-"""
+"""primary key columns input for table: editions"""
 input editions_pk_columns_input {
   id: Int!
 }
@@ -1497,23 +1355,9 @@ type editions_stddev_fields {
   id: Float
 }
 
-"""
-order by stddev() on columns of table "editions"
-"""
-input editions_stddev_order_by {
-  id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type editions_stddev_pop_fields {
   id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "editions"
-"""
-input editions_stddev_pop_order_by {
-  id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -1521,23 +1365,9 @@ type editions_stddev_samp_fields {
   id: Float
 }
 
-"""
-order by stddev_samp() on columns of table "editions"
-"""
-input editions_stddev_samp_order_by {
-  id: order_by
-}
-
 """aggregate sum on columns"""
 type editions_sum_fields {
   id: Int
-}
-
-"""
-order by sum() on columns of table "editions"
-"""
-input editions_sum_order_by {
-  id: order_by
 }
 
 """
@@ -1571,35 +1401,14 @@ type editions_var_pop_fields {
   id: Float
 }
 
-"""
-order by var_pop() on columns of table "editions"
-"""
-input editions_var_pop_order_by {
-  id: order_by
-}
-
 """aggregate var_samp on columns"""
 type editions_var_samp_fields {
   id: Float
 }
 
-"""
-order by var_samp() on columns of table "editions"
-"""
-input editions_var_samp_order_by {
-  id: order_by
-}
-
 """aggregate variance on columns"""
 type editions_variance_fields {
   id: Float
-}
-
-"""
-order by variance() on columns of table "editions"
-"""
-input editions_variance_order_by {
-  id: order_by
 }
 
 """
@@ -1635,7 +1444,7 @@ aggregate fields of "eliminations"
 """
 type eliminations_aggregate_fields {
   avg: eliminations_avg_fields
-  count(columns: [eliminations_select_column!], distinct: Boolean): Int
+  count(columns: [eliminations_select_column!], distinct: Boolean): Int!
   max: eliminations_max_fields
   min: eliminations_min_fields
   stddev: eliminations_stddev_fields
@@ -1647,31 +1456,6 @@ type eliminations_aggregate_fields {
   variance: eliminations_variance_fields
 }
 
-"""
-order by aggregate values of table "eliminations"
-"""
-input eliminations_aggregate_order_by {
-  avg: eliminations_avg_order_by
-  count: order_by
-  max: eliminations_max_order_by
-  min: eliminations_min_order_by
-  stddev: eliminations_stddev_order_by
-  stddev_pop: eliminations_stddev_pop_order_by
-  stddev_samp: eliminations_stddev_samp_order_by
-  sum: eliminations_sum_order_by
-  var_pop: eliminations_var_pop_order_by
-  var_samp: eliminations_var_samp_order_by
-  variance: eliminations_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "eliminations"
-"""
-input eliminations_arr_rel_insert_input {
-  data: [eliminations_insert_input!]!
-  on_conflict: eliminations_on_conflict
-}
-
 """aggregate avg on columns"""
 type eliminations_avg_fields {
   id: Float
@@ -1679,20 +1463,12 @@ type eliminations_avg_fields {
 }
 
 """
-order by avg() on columns of table "eliminations"
-"""
-input eliminations_avg_order_by {
-  id: order_by
-  round_id: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "eliminations". All fields are combined with a logical 'AND'.
 """
 input eliminations_bool_exp {
-  _and: [eliminations_bool_exp]
+  _and: [eliminations_bool_exp!]
   _not: eliminations_bool_exp
-  _or: [eliminations_bool_exp]
+  _or: [eliminations_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -1719,7 +1495,7 @@ enum eliminations_constraint {
 }
 
 """
-input type for incrementing integer column in table "eliminations"
+input type for incrementing numeric columns in table "eliminations"
 """
 input eliminations_inc_input {
   id: Int
@@ -1751,18 +1527,6 @@ type eliminations_max_fields {
   round_id: Int
 }
 
-"""
-order by max() on columns of table "eliminations"
-"""
-input eliminations_max_order_by {
-  application_id: order_by
-  created_at: order_by
-  created_by: order_by
-  id: order_by
-  reason: order_by
-  round_id: order_by
-}
-
 """aggregate min on columns"""
 type eliminations_min_fields {
   application_id: uuid
@@ -1774,25 +1538,13 @@ type eliminations_min_fields {
 }
 
 """
-order by min() on columns of table "eliminations"
-"""
-input eliminations_min_order_by {
-  application_id: order_by
-  created_at: order_by
-  created_by: order_by
-  id: order_by
-  reason: order_by
-  round_id: order_by
-}
-
-"""
 response of any mutation on the table "eliminations"
 """
 type eliminations_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [eliminations!]!
 }
 
@@ -1801,6 +1553,8 @@ input type for inserting object relation for remote table "eliminations"
 """
 input eliminations_obj_rel_insert_input {
   data: eliminations_insert_input!
+
+  """on conflict condition"""
   on_conflict: eliminations_on_conflict
 }
 
@@ -1813,9 +1567,7 @@ input eliminations_on_conflict {
   where: eliminations_bool_exp
 }
 
-"""
-ordering options when selecting data from "eliminations"
-"""
+"""Ordering options when selecting data from "eliminations"."""
 input eliminations_order_by {
   application: applications_order_by
   application_id: order_by
@@ -1828,9 +1580,7 @@ input eliminations_order_by {
   round_id: order_by
 }
 
-"""
-primary key columns input for table: "eliminations"
-"""
+"""primary key columns input for table: eliminations"""
 input eliminations_pk_columns_input {
   application_id: uuid!
 }
@@ -1876,26 +1626,10 @@ type eliminations_stddev_fields {
   round_id: Float
 }
 
-"""
-order by stddev() on columns of table "eliminations"
-"""
-input eliminations_stddev_order_by {
-  id: order_by
-  round_id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type eliminations_stddev_pop_fields {
   id: Float
   round_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "eliminations"
-"""
-input eliminations_stddev_pop_order_by {
-  id: order_by
-  round_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -1904,26 +1638,10 @@ type eliminations_stddev_samp_fields {
   round_id: Float
 }
 
-"""
-order by stddev_samp() on columns of table "eliminations"
-"""
-input eliminations_stddev_samp_order_by {
-  id: order_by
-  round_id: order_by
-}
-
 """aggregate sum on columns"""
 type eliminations_sum_fields {
   id: Int
   round_id: Int
-}
-
-"""
-order by sum() on columns of table "eliminations"
-"""
-input eliminations_sum_order_by {
-  id: order_by
-  round_id: order_by
 }
 
 """
@@ -1955,26 +1673,10 @@ type eliminations_var_pop_fields {
   round_id: Float
 }
 
-"""
-order by var_pop() on columns of table "eliminations"
-"""
-input eliminations_var_pop_order_by {
-  id: order_by
-  round_id: order_by
-}
-
 """aggregate var_samp on columns"""
 type eliminations_var_samp_fields {
   id: Float
   round_id: Float
-}
-
-"""
-order by var_samp() on columns of table "eliminations"
-"""
-input eliminations_var_samp_order_by {
-  id: order_by
-  round_id: order_by
 }
 
 """aggregate variance on columns"""
@@ -1984,15 +1686,7 @@ type eliminations_variance_fields {
 }
 
 """
-order by variance() on columns of table "eliminations"
-"""
-input eliminations_variance_order_by {
-  id: order_by
-  round_id: order_by
-}
-
-"""
-expression to compare columns of type Int. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
 input Int_comparison_exp {
   _eq: Int
@@ -2042,7 +1736,7 @@ aggregate fields of "messages"
 """
 type messages_aggregate_fields {
   avg: messages_avg_fields
-  count(columns: [messages_select_column!], distinct: Boolean): Int
+  count(columns: [messages_select_column!], distinct: Boolean): Int!
   max: messages_max_fields
   min: messages_min_fields
   stddev: messages_stddev_fields
@@ -2076,6 +1770,8 @@ input type for inserting array relation for remote table "messages"
 """
 input messages_arr_rel_insert_input {
   data: [messages_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: messages_on_conflict
 }
 
@@ -2097,9 +1793,9 @@ input messages_avg_order_by {
 Boolean expression to filter rows from the table "messages". All fields are combined with a logical 'AND'.
 """
 input messages_bool_exp {
-  _and: [messages_bool_exp]
+  _and: [messages_bool_exp!]
   _not: messages_bool_exp
-  _or: [messages_bool_exp]
+  _or: [messages_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamp_comparison_exp
@@ -2121,7 +1817,7 @@ enum messages_constraint {
 }
 
 """
-input type for incrementing integer column in table "messages"
+input type for incrementing numeric columns in table "messages"
 """
 input messages_inc_input {
   id: Int
@@ -2192,10 +1888,10 @@ input messages_min_order_by {
 response of any mutation on the table "messages"
 """
 type messages_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [messages!]!
 }
 
@@ -2204,6 +1900,8 @@ input type for inserting object relation for remote table "messages"
 """
 input messages_obj_rel_insert_input {
   data: messages_insert_input!
+
+  """on conflict condition"""
   on_conflict: messages_on_conflict
 }
 
@@ -2216,9 +1914,7 @@ input messages_on_conflict {
   where: messages_bool_exp
 }
 
-"""
-ordering options when selecting data from "messages"
-"""
+"""Ordering options when selecting data from "messages"."""
 input messages_order_by {
   application: applications_order_by
   application_id: order_by
@@ -2232,9 +1928,7 @@ input messages_order_by {
   user: users_order_by
 }
 
-"""
-primary key columns input for table: "messages"
-"""
+"""primary key columns input for table: messages"""
 input messages_pk_columns_input {
   id: Int!
 }
@@ -3020,7 +2714,7 @@ type mutation_root {
   update data of the table: "applications"
   """
   update_applications(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: applications_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3034,7 +2728,7 @@ type mutation_root {
   update single row of the table: "applications"
   """
   update_applications_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: applications_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3086,7 +2780,7 @@ type mutation_root {
   update data of the table: "editions"
   """
   update_editions(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: editions_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3100,7 +2794,7 @@ type mutation_root {
   update single row of the table: "editions"
   """
   update_editions_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: editions_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3112,7 +2806,7 @@ type mutation_root {
   update data of the table: "eliminations"
   """
   update_eliminations(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: eliminations_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3126,7 +2820,7 @@ type mutation_root {
   update single row of the table: "eliminations"
   """
   update_eliminations_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: eliminations_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3138,7 +2832,7 @@ type mutation_root {
   update data of the table: "messages"
   """
   update_messages(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: messages_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3152,7 +2846,7 @@ type mutation_root {
   update single row of the table: "messages"
   """
   update_messages_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: messages_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3164,7 +2858,7 @@ type mutation_root {
   update data of the table: "payments"
   """
   update_payments(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: payments_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3178,7 +2872,7 @@ type mutation_root {
   update single row of the table: "payments"
   """
   update_payments_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: payments_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3190,7 +2884,7 @@ type mutation_root {
   update data of the table: "rating_rounds"
   """
   update_rating_rounds(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: rating_rounds_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3204,7 +2898,7 @@ type mutation_root {
   update single row of the table: "rating_rounds"
   """
   update_rating_rounds_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: rating_rounds_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3216,7 +2910,7 @@ type mutation_root {
   update data of the table: "ratings"
   """
   update_ratings(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: ratings_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3230,7 +2924,7 @@ type mutation_root {
   update single row of the table: "ratings"
   """
   update_ratings_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: ratings_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3242,7 +2936,7 @@ type mutation_root {
   update data of the table: "updates"
   """
   update_updates(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: updates_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3256,7 +2950,7 @@ type mutation_root {
   update single row of the table: "updates"
   """
   update_updates_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: updates_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3299,7 +2993,7 @@ type mutation_root {
   update data of the table: "wordlist"
   """
   update_wordlist(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: wordlist_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3313,7 +3007,7 @@ type mutation_root {
   update single row of the table: "wordlist"
   """
   update_wordlist_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: wordlist_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3325,7 +3019,7 @@ type mutation_root {
   update data of the table: "work_files"
   """
   update_work_files(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: work_files_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3339,7 +3033,7 @@ type mutation_root {
   update single row of the table: "work_files"
   """
   update_work_files_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: work_files_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3391,7 +3085,7 @@ type mutation_root {
   update data of the table: "work_specifications"
   """
   update_work_specifications(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: work_specifications_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3405,7 +3099,7 @@ type mutation_root {
   update single row of the table: "work_specifications"
   """
   update_work_specifications_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: work_specifications_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3417,7 +3111,7 @@ type mutation_root {
   update data of the table: "works"
   """
   update_works(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: works_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3431,7 +3125,7 @@ type mutation_root {
   update single row of the table: "works"
   """
   update_works_by_pk(
-    """increments the integer columns with given value of the filtered values"""
+    """increments the numeric columns with given value of the filtered values"""
     _inc: works_inc_input
 
     """sets the columns of the filtered rows to the given values"""
@@ -3443,7 +3137,7 @@ type mutation_root {
 scalar numeric
 
 """
-expression to compare columns of type numeric. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
 """
 input numeric_comparison_exp {
   _eq: numeric
@@ -3459,22 +3153,22 @@ input numeric_comparison_exp {
 
 """column ordering options"""
 enum order_by {
-  """in the ascending order, nulls last"""
+  """in ascending order, nulls last"""
   asc
 
-  """in the ascending order, nulls first"""
+  """in ascending order, nulls first"""
   asc_nulls_first
 
-  """in the ascending order, nulls last"""
+  """in ascending order, nulls last"""
   asc_nulls_last
 
-  """in the descending order, nulls first"""
+  """in descending order, nulls first"""
   desc
 
-  """in the descending order, nulls first"""
+  """in descending order, nulls first"""
   desc_nulls_first
 
-  """in the descending order, nulls last"""
+  """in descending order, nulls last"""
   desc_nulls_last
 }
 
@@ -3506,7 +3200,7 @@ aggregate fields of "payments"
 """
 type payments_aggregate_fields {
   avg: payments_avg_fields
-  count(columns: [payments_select_column!], distinct: Boolean): Int
+  count(columns: [payments_select_column!], distinct: Boolean): Int!
   max: payments_max_fields
   min: payments_min_fields
   stddev: payments_stddev_fields
@@ -3518,50 +3212,18 @@ type payments_aggregate_fields {
   variance: payments_variance_fields
 }
 
-"""
-order by aggregate values of table "payments"
-"""
-input payments_aggregate_order_by {
-  avg: payments_avg_order_by
-  count: order_by
-  max: payments_max_order_by
-  min: payments_min_order_by
-  stddev: payments_stddev_order_by
-  stddev_pop: payments_stddev_pop_order_by
-  stddev_samp: payments_stddev_samp_order_by
-  sum: payments_sum_order_by
-  var_pop: payments_var_pop_order_by
-  var_samp: payments_var_samp_order_by
-  variance: payments_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "payments"
-"""
-input payments_arr_rel_insert_input {
-  data: [payments_insert_input!]!
-  on_conflict: payments_on_conflict
-}
-
 """aggregate avg on columns"""
 type payments_avg_fields {
   size: Float
 }
 
 """
-order by avg() on columns of table "payments"
-"""
-input payments_avg_order_by {
-  size: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "payments". All fields are combined with a logical 'AND'.
 """
 input payments_bool_exp {
-  _and: [payments_bool_exp]
+  _and: [payments_bool_exp!]
   _not: payments_bool_exp
-  _or: [payments_bool_exp]
+  _or: [payments_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -3584,7 +3246,7 @@ enum payments_constraint {
 }
 
 """
-input type for incrementing integer column in table "payments"
+input type for incrementing numeric columns in table "payments"
 """
 input payments_inc_input {
   size: numeric
@@ -3615,19 +3277,6 @@ type payments_max_fields {
   size: numeric
 }
 
-"""
-order by max() on columns of table "payments"
-"""
-input payments_max_order_by {
-  application_id: order_by
-  created_at: order_by
-  id: order_by
-  key: order_by
-  mimetype: order_by
-  originalname: order_by
-  size: order_by
-}
-
 """aggregate min on columns"""
 type payments_min_fields {
   application_id: uuid
@@ -3640,26 +3289,13 @@ type payments_min_fields {
 }
 
 """
-order by min() on columns of table "payments"
-"""
-input payments_min_order_by {
-  application_id: order_by
-  created_at: order_by
-  id: order_by
-  key: order_by
-  mimetype: order_by
-  originalname: order_by
-  size: order_by
-}
-
-"""
 response of any mutation on the table "payments"
 """
 type payments_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [payments!]!
 }
 
@@ -3668,6 +3304,8 @@ input type for inserting object relation for remote table "payments"
 """
 input payments_obj_rel_insert_input {
   data: payments_insert_input!
+
+  """on conflict condition"""
   on_conflict: payments_on_conflict
 }
 
@@ -3680,9 +3318,7 @@ input payments_on_conflict {
   where: payments_bool_exp
 }
 
-"""
-ordering options when selecting data from "payments"
-"""
+"""Ordering options when selecting data from "payments"."""
 input payments_order_by {
   application: applications_order_by
   application_id: order_by
@@ -3694,9 +3330,7 @@ input payments_order_by {
   size: order_by
 }
 
-"""
-primary key columns input for table: "payments"
-"""
+"""primary key columns input for table: payments"""
 input payments_pk_columns_input {
   id: uuid!
 }
@@ -3745,23 +3379,9 @@ type payments_stddev_fields {
   size: Float
 }
 
-"""
-order by stddev() on columns of table "payments"
-"""
-input payments_stddev_order_by {
-  size: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type payments_stddev_pop_fields {
   size: Float
-}
-
-"""
-order by stddev_pop() on columns of table "payments"
-"""
-input payments_stddev_pop_order_by {
-  size: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -3769,23 +3389,9 @@ type payments_stddev_samp_fields {
   size: Float
 }
 
-"""
-order by stddev_samp() on columns of table "payments"
-"""
-input payments_stddev_samp_order_by {
-  size: order_by
-}
-
 """aggregate sum on columns"""
 type payments_sum_fields {
   size: numeric
-}
-
-"""
-order by sum() on columns of table "payments"
-"""
-input payments_sum_order_by {
-  size: order_by
 }
 
 """
@@ -3819,23 +3425,9 @@ type payments_var_pop_fields {
   size: Float
 }
 
-"""
-order by var_pop() on columns of table "payments"
-"""
-input payments_var_pop_order_by {
-  size: order_by
-}
-
 """aggregate var_samp on columns"""
 type payments_var_samp_fields {
   size: Float
-}
-
-"""
-order by var_samp() on columns of table "payments"
-"""
-input payments_var_samp_order_by {
-  size: order_by
 }
 
 """aggregate variance on columns"""
@@ -3843,18 +3435,8 @@ type payments_variance_fields {
   size: Float
 }
 
-"""
-order by variance() on columns of table "payments"
-"""
-input payments_variance_order_by {
-  size: order_by
-}
-
-"""query root"""
 type query_root {
-  """
-  fetch data from the table: "applications"
-  """
+  """An array relationship"""
   applications(
     """distinct select on columns"""
     distinct_on: [applications_select_column!]
@@ -3872,9 +3454,7 @@ type query_root {
     where: applications_bool_exp
   ): [applications!]!
 
-  """
-  fetch aggregated fields from the table: "applications"
-  """
+  """An aggregate relationship"""
   applications_aggregate(
     """distinct select on columns"""
     distinct_on: [applications_select_column!]
@@ -4069,9 +3649,7 @@ type query_root {
   """fetch data from the table: "eliminations" using primary key columns"""
   eliminations_by_pk(application_id: uuid!): eliminations
 
-  """
-  fetch data from the table: "messages"
-  """
+  """An array relationship"""
   messages(
     """distinct select on columns"""
     distinct_on: [messages_select_column!]
@@ -4089,9 +3667,7 @@ type query_root {
     where: messages_bool_exp
   ): [messages!]!
 
-  """
-  fetch aggregated fields from the table: "messages"
-  """
+  """An aggregate relationship"""
   messages_aggregate(
     """distinct select on columns"""
     distinct_on: [messages_select_column!]
@@ -4155,9 +3731,7 @@ type query_root {
   """fetch data from the table: "payments" using primary key columns"""
   payments_by_pk(id: uuid!): payments
 
-  """
-  fetch data from the table: "rating_rounds"
-  """
+  """An array relationship"""
   rating_rounds(
     """distinct select on columns"""
     distinct_on: [rating_rounds_select_column!]
@@ -4175,9 +3749,7 @@ type query_root {
     where: rating_rounds_bool_exp
   ): [rating_rounds!]!
 
-  """
-  fetch aggregated fields from the table: "rating_rounds"
-  """
+  """An aggregate relationship"""
   rating_rounds_aggregate(
     """distinct select on columns"""
     distinct_on: [rating_rounds_select_column!]
@@ -4238,9 +3810,7 @@ type query_root {
     where: rating_rounds_sorted_bool_exp
   ): rating_rounds_sorted_aggregate!
 
-  """
-  fetch data from the table: "ratings"
-  """
+  """An array relationship"""
   ratings(
     """distinct select on columns"""
     distinct_on: [ratings_select_column!]
@@ -4258,9 +3828,7 @@ type query_root {
     where: ratings_bool_exp
   ): [ratings!]!
 
-  """
-  fetch aggregated fields from the table: "ratings"
-  """
+  """An aggregate relationship"""
   ratings_aggregate(
     """distinct select on columns"""
     distinct_on: [ratings_select_column!]
@@ -4718,9 +4286,7 @@ type query_root {
   """
   work_specifications_by_pk(id: uuid!): work_specifications
 
-  """
-  fetch data from the table: "works"
-  """
+  """An array relationship"""
   works(
     """distinct select on columns"""
     distinct_on: [works_select_column!]
@@ -4738,9 +4304,7 @@ type query_root {
     where: works_bool_exp
   ): [works!]!
 
-  """
-  fetch aggregated fields from the table: "works"
-  """
+  """An aggregate relationship"""
   works_aggregate(
     """distinct select on columns"""
     distinct_on: [works_select_column!]
@@ -4804,7 +4368,7 @@ type rating_rounds {
     where: ratings_bool_exp
   ): [ratings!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   ratings_aggregate(
     """distinct select on columns"""
     distinct_on: [ratings_select_column!]
@@ -4838,7 +4402,7 @@ aggregate fields of "rating_rounds"
 """
 type rating_rounds_aggregate_fields {
   avg: rating_rounds_avg_fields
-  count(columns: [rating_rounds_select_column!], distinct: Boolean): Int
+  count(columns: [rating_rounds_select_column!], distinct: Boolean): Int!
   max: rating_rounds_max_fields
   min: rating_rounds_min_fields
   stddev: rating_rounds_stddev_fields
@@ -4872,6 +4436,8 @@ input type for inserting array relation for remote table "rating_rounds"
 """
 input rating_rounds_arr_rel_insert_input {
   data: [rating_rounds_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: rating_rounds_on_conflict
 }
 
@@ -4897,9 +4463,9 @@ input rating_rounds_avg_order_by {
 Boolean expression to filter rows from the table "rating_rounds". All fields are combined with a logical 'AND'.
 """
 input rating_rounds_bool_exp {
-  _and: [rating_rounds_bool_exp]
+  _and: [rating_rounds_bool_exp!]
   _not: rating_rounds_bool_exp
-  _or: [rating_rounds_bool_exp]
+  _or: [rating_rounds_bool_exp!]
   created_at: timestamptz_comparison_exp
   edition: editions_bool_exp
   edition_id: Int_comparison_exp
@@ -4926,7 +4492,7 @@ enum rating_rounds_constraint {
 }
 
 """
-input type for incrementing integer column in table "rating_rounds"
+input type for incrementing numeric columns in table "rating_rounds"
 """
 input rating_rounds_inc_input {
   edition_id: Int
@@ -5009,10 +4575,10 @@ input rating_rounds_min_order_by {
 response of any mutation on the table "rating_rounds"
 """
 type rating_rounds_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [rating_rounds!]!
 }
 
@@ -5021,6 +4587,8 @@ input type for inserting object relation for remote table "rating_rounds"
 """
 input rating_rounds_obj_rel_insert_input {
   data: rating_rounds_insert_input!
+
+  """on conflict condition"""
   on_conflict: rating_rounds_on_conflict
 }
 
@@ -5033,9 +4601,7 @@ input rating_rounds_on_conflict {
   where: rating_rounds_bool_exp
 }
 
-"""
-ordering options when selecting data from "rating_rounds"
-"""
+"""Ordering options when selecting data from "rating_rounds"."""
 input rating_rounds_order_by {
   created_at: order_by
   edition: editions_order_by
@@ -5051,9 +4617,7 @@ input rating_rounds_order_by {
   updated_at: order_by
 }
 
-"""
-primary key columns input for table: "rating_rounds"
-"""
+"""primary key columns input for table: rating_rounds"""
 input rating_rounds_pk_columns_input {
   id: Int!
 }
@@ -5127,7 +4691,7 @@ aggregate fields of "rating_rounds_sorted"
 """
 type rating_rounds_sorted_aggregate_fields {
   avg: rating_rounds_sorted_avg_fields
-  count(columns: [rating_rounds_sorted_select_column!], distinct: Boolean): Int
+  count(columns: [rating_rounds_sorted_select_column!], distinct: Boolean): Int!
   max: rating_rounds_sorted_max_fields
   min: rating_rounds_sorted_min_fields
   stddev: rating_rounds_sorted_stddev_fields
@@ -5137,23 +4701,6 @@ type rating_rounds_sorted_aggregate_fields {
   var_pop: rating_rounds_sorted_var_pop_fields
   var_samp: rating_rounds_sorted_var_samp_fields
   variance: rating_rounds_sorted_variance_fields
-}
-
-"""
-order by aggregate values of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_aggregate_order_by {
-  avg: rating_rounds_sorted_avg_order_by
-  count: order_by
-  max: rating_rounds_sorted_max_order_by
-  min: rating_rounds_sorted_min_order_by
-  stddev: rating_rounds_sorted_stddev_order_by
-  stddev_pop: rating_rounds_sorted_stddev_pop_order_by
-  stddev_samp: rating_rounds_sorted_stddev_samp_order_by
-  sum: rating_rounds_sorted_sum_order_by
-  var_pop: rating_rounds_sorted_var_pop_order_by
-  var_samp: rating_rounds_sorted_var_samp_order_by
-  variance: rating_rounds_sorted_variance_order_by
 }
 
 """aggregate avg on columns"""
@@ -5166,23 +4713,12 @@ type rating_rounds_sorted_avg_fields {
 }
 
 """
-order by avg() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_avg_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "rating_rounds_sorted". All fields are combined with a logical 'AND'.
 """
 input rating_rounds_sorted_bool_exp {
-  _and: [rating_rounds_sorted_bool_exp]
+  _and: [rating_rounds_sorted_bool_exp!]
   _not: rating_rounds_sorted_bool_exp
-  _or: [rating_rounds_sorted_bool_exp]
+  _or: [rating_rounds_sorted_bool_exp!]
   edition_id: Int_comparison_exp
   end_at: timestamptz_comparison_exp
   goal: Int_comparison_exp
@@ -5203,19 +4739,6 @@ type rating_rounds_sorted_max_fields {
   start_at: timestamptz
 }
 
-"""
-order by max() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_max_order_by {
-  edition_id: order_by
-  end_at: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-  start_at: order_by
-}
-
 """aggregate min on columns"""
 type rating_rounds_sorted_min_fields {
   edition_id: Int
@@ -5227,22 +4750,7 @@ type rating_rounds_sorted_min_fields {
   start_at: timestamptz
 }
 
-"""
-order by min() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_min_order_by {
-  edition_id: order_by
-  end_at: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-  start_at: order_by
-}
-
-"""
-ordering options when selecting data from "rating_rounds_sorted"
-"""
+"""Ordering options when selecting data from "rating_rounds_sorted"."""
 input rating_rounds_sorted_order_by {
   edition_id: order_by
   end_at: order_by
@@ -5288,17 +4796,6 @@ type rating_rounds_sorted_stddev_fields {
   prev_round_id: Float
 }
 
-"""
-order by stddev() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_stddev_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type rating_rounds_sorted_stddev_pop_fields {
   edition_id: Float
@@ -5306,17 +4803,6 @@ type rating_rounds_sorted_stddev_pop_fields {
   id: Float
   level: Float
   prev_round_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_stddev_pop_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -5328,17 +4814,6 @@ type rating_rounds_sorted_stddev_samp_fields {
   prev_round_id: Float
 }
 
-"""
-order by stddev_samp() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_stddev_samp_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-}
-
 """aggregate sum on columns"""
 type rating_rounds_sorted_sum_fields {
   edition_id: Int
@@ -5346,17 +4821,6 @@ type rating_rounds_sorted_sum_fields {
   id: Int
   level: Int
   prev_round_id: Int
-}
-
-"""
-order by sum() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_sum_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
 }
 
 """aggregate var_pop on columns"""
@@ -5368,17 +4832,6 @@ type rating_rounds_sorted_var_pop_fields {
   prev_round_id: Float
 }
 
-"""
-order by var_pop() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_var_pop_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-}
-
 """aggregate var_samp on columns"""
 type rating_rounds_sorted_var_samp_fields {
   edition_id: Float
@@ -5388,17 +4841,6 @@ type rating_rounds_sorted_var_samp_fields {
   prev_round_id: Float
 }
 
-"""
-order by var_samp() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_var_samp_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
-}
-
 """aggregate variance on columns"""
 type rating_rounds_sorted_variance_fields {
   edition_id: Float
@@ -5406,17 +4848,6 @@ type rating_rounds_sorted_variance_fields {
   id: Float
   level: Float
   prev_round_id: Float
-}
-
-"""
-order by variance() on columns of table "rating_rounds_sorted"
-"""
-input rating_rounds_sorted_variance_order_by {
-  edition_id: order_by
-  goal: order_by
-  id: order_by
-  level: order_by
-  prev_round_id: order_by
 }
 
 """aggregate stddev on columns"""
@@ -5609,7 +5040,7 @@ aggregate fields of "ratings"
 """
 type ratings_aggregate_fields {
   avg: ratings_avg_fields
-  count(columns: [ratings_select_column!], distinct: Boolean): Int
+  count(columns: [ratings_select_column!], distinct: Boolean): Int!
   max: ratings_max_fields
   min: ratings_min_fields
   stddev: ratings_stddev_fields
@@ -5643,6 +5074,8 @@ input type for inserting array relation for remote table "ratings"
 """
 input ratings_arr_rel_insert_input {
   data: [ratings_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: ratings_on_conflict
 }
 
@@ -5666,9 +5099,9 @@ input ratings_avg_order_by {
 Boolean expression to filter rows from the table "ratings". All fields are combined with a logical 'AND'.
 """
 input ratings_bool_exp {
-  _and: [ratings_bool_exp]
+  _and: [ratings_bool_exp!]
   _not: ratings_bool_exp
-  _or: [ratings_bool_exp]
+  _or: [ratings_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -5715,7 +5148,7 @@ aggregate fields of "ratings_by_application"
 """
 type ratings_by_application_aggregate_fields {
   avg: ratings_by_application_avg_fields
-  count(columns: [ratings_by_application_select_column!], distinct: Boolean): Int
+  count(columns: [ratings_by_application_select_column!], distinct: Boolean): Int!
   max: ratings_by_application_max_fields
   min: ratings_by_application_min_fields
   stddev: ratings_by_application_stddev_fields
@@ -5725,23 +5158,6 @@ type ratings_by_application_aggregate_fields {
   var_pop: ratings_by_application_var_pop_fields
   var_samp: ratings_by_application_var_samp_fields
   variance: ratings_by_application_variance_fields
-}
-
-"""
-order by aggregate values of table "ratings_by_application"
-"""
-input ratings_by_application_aggregate_order_by {
-  avg: ratings_by_application_avg_order_by
-  count: order_by
-  max: ratings_by_application_max_order_by
-  min: ratings_by_application_min_order_by
-  stddev: ratings_by_application_stddev_order_by
-  stddev_pop: ratings_by_application_stddev_pop_order_by
-  stddev_samp: ratings_by_application_stddev_samp_order_by
-  sum: ratings_by_application_sum_order_by
-  var_pop: ratings_by_application_var_pop_order_by
-  var_samp: ratings_by_application_var_samp_order_by
-  variance: ratings_by_application_variance_order_by
 }
 
 """aggregate avg on columns"""
@@ -5754,23 +5170,12 @@ type ratings_by_application_avg_fields {
 }
 
 """
-order by avg() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_avg_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "ratings_by_application". All fields are combined with a logical 'AND'.
 """
 input ratings_by_application_bool_exp {
-  _and: [ratings_by_application_bool_exp]
+  _and: [ratings_by_application_bool_exp!]
   _not: ratings_by_application_bool_exp
-  _or: [ratings_by_application_bool_exp]
+  _or: [ratings_by_application_bool_exp!]
   application: applications_bool_exp
   avg: numeric_comparison_exp
   avg_total: numeric_comparison_exp
@@ -5792,18 +5197,6 @@ type ratings_by_application_max_fields {
   round_id: Int
 }
 
-"""
-order by max() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_max_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  id: order_by
-  round_id: order_by
-}
-
 """aggregate min on columns"""
 type ratings_by_application_min_fields {
   avg: numeric
@@ -5814,21 +5207,7 @@ type ratings_by_application_min_fields {
   round_id: Int
 }
 
-"""
-order by min() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_min_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  id: order_by
-  round_id: order_by
-}
-
-"""
-ordering options when selecting data from "ratings_by_application"
-"""
+"""Ordering options when selecting data from "ratings_by_application"."""
 input ratings_by_application_order_by {
   application: applications_order_by
   avg: order_by
@@ -5873,17 +5252,6 @@ type ratings_by_application_stddev_fields {
   round_id: Float
 }
 
-"""
-order by stddev() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_stddev_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type ratings_by_application_stddev_pop_fields {
   avg: Float
@@ -5891,17 +5259,6 @@ type ratings_by_application_stddev_pop_fields {
   count: Float
   edition_id: Float
   round_id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_stddev_pop_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -5913,17 +5270,6 @@ type ratings_by_application_stddev_samp_fields {
   round_id: Float
 }
 
-"""
-order by stddev_samp() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_stddev_samp_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
-}
-
 """aggregate sum on columns"""
 type ratings_by_application_sum_fields {
   avg: numeric
@@ -5931,17 +5277,6 @@ type ratings_by_application_sum_fields {
   count: bigint
   edition_id: Int
   round_id: Int
-}
-
-"""
-order by sum() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_sum_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
 }
 
 """aggregate var_pop on columns"""
@@ -5953,17 +5288,6 @@ type ratings_by_application_var_pop_fields {
   round_id: Float
 }
 
-"""
-order by var_pop() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_var_pop_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
-}
-
 """aggregate var_samp on columns"""
 type ratings_by_application_var_samp_fields {
   avg: Float
@@ -5973,17 +5297,6 @@ type ratings_by_application_var_samp_fields {
   round_id: Float
 }
 
-"""
-order by var_samp() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_var_samp_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
-}
-
 """aggregate variance on columns"""
 type ratings_by_application_variance_fields {
   avg: Float
@@ -5991,17 +5304,6 @@ type ratings_by_application_variance_fields {
   count: Float
   edition_id: Float
   round_id: Float
-}
-
-"""
-order by variance() on columns of table "ratings_by_application"
-"""
-input ratings_by_application_variance_order_by {
-  avg: order_by
-  avg_total: order_by
-  count: order_by
-  edition_id: order_by
-  round_id: order_by
 }
 
 """
@@ -6019,7 +5321,7 @@ enum ratings_constraint {
 }
 
 """
-input type for incrementing integer column in table "ratings"
+input type for incrementing numeric columns in table "ratings"
 """
 input ratings_inc_input {
   message_id: Int
@@ -6100,10 +5402,10 @@ input ratings_min_order_by {
 response of any mutation on the table "ratings"
 """
 type ratings_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [ratings!]!
 }
 
@@ -6112,6 +5414,8 @@ input type for inserting object relation for remote table "ratings"
 """
 input ratings_obj_rel_insert_input {
   data: ratings_insert_input!
+
+  """on conflict condition"""
   on_conflict: ratings_on_conflict
 }
 
@@ -6124,9 +5428,7 @@ input ratings_on_conflict {
   where: ratings_bool_exp
 }
 
-"""
-ordering options when selecting data from "ratings"
-"""
+"""Ordering options when selecting data from "ratings"."""
 input ratings_order_by {
   application: applications_order_by
   application_id: order_by
@@ -6141,9 +5443,7 @@ input ratings_order_by {
   value: order_by
 }
 
-"""
-primary key columns input for table: "ratings"
-"""
+"""primary key columns input for table: ratings"""
 input ratings_pk_columns_input {
   id: uuid!
 }
@@ -6337,31 +5637,60 @@ input search_applications_args {
 }
 
 """
-expression to compare columns of type String. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
 input String_comparison_exp {
   _eq: String
   _gt: String
   _gte: String
+
+  """does the column match the given case-insensitive pattern"""
   _ilike: String
   _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
   _is_null: Boolean
+
+  """does the column match the given pattern"""
   _like: String
   _lt: String
   _lte: String
   _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
   _nilike: String
   _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
   _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
   _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
   _similar: String
 }
 
-"""subscription root"""
 type subscription_root {
-  """
-  fetch data from the table: "applications"
-  """
+  """An array relationship"""
   applications(
     """distinct select on columns"""
     distinct_on: [applications_select_column!]
@@ -6379,9 +5708,7 @@ type subscription_root {
     where: applications_bool_exp
   ): [applications!]!
 
-  """
-  fetch aggregated fields from the table: "applications"
-  """
+  """An aggregate relationship"""
   applications_aggregate(
     """distinct select on columns"""
     distinct_on: [applications_select_column!]
@@ -6576,9 +5903,7 @@ type subscription_root {
   """fetch data from the table: "eliminations" using primary key columns"""
   eliminations_by_pk(application_id: uuid!): eliminations
 
-  """
-  fetch data from the table: "messages"
-  """
+  """An array relationship"""
   messages(
     """distinct select on columns"""
     distinct_on: [messages_select_column!]
@@ -6596,9 +5921,7 @@ type subscription_root {
     where: messages_bool_exp
   ): [messages!]!
 
-  """
-  fetch aggregated fields from the table: "messages"
-  """
+  """An aggregate relationship"""
   messages_aggregate(
     """distinct select on columns"""
     distinct_on: [messages_select_column!]
@@ -6662,9 +5985,7 @@ type subscription_root {
   """fetch data from the table: "payments" using primary key columns"""
   payments_by_pk(id: uuid!): payments
 
-  """
-  fetch data from the table: "rating_rounds"
-  """
+  """An array relationship"""
   rating_rounds(
     """distinct select on columns"""
     distinct_on: [rating_rounds_select_column!]
@@ -6682,9 +6003,7 @@ type subscription_root {
     where: rating_rounds_bool_exp
   ): [rating_rounds!]!
 
-  """
-  fetch aggregated fields from the table: "rating_rounds"
-  """
+  """An aggregate relationship"""
   rating_rounds_aggregate(
     """distinct select on columns"""
     distinct_on: [rating_rounds_select_column!]
@@ -6745,9 +6064,7 @@ type subscription_root {
     where: rating_rounds_sorted_bool_exp
   ): rating_rounds_sorted_aggregate!
 
-  """
-  fetch data from the table: "ratings"
-  """
+  """An array relationship"""
   ratings(
     """distinct select on columns"""
     distinct_on: [ratings_select_column!]
@@ -6765,9 +6082,7 @@ type subscription_root {
     where: ratings_bool_exp
   ): [ratings!]!
 
-  """
-  fetch aggregated fields from the table: "ratings"
-  """
+  """An aggregate relationship"""
   ratings_aggregate(
     """distinct select on columns"""
     distinct_on: [ratings_select_column!]
@@ -7225,9 +6540,7 @@ type subscription_root {
   """
   work_specifications_by_pk(id: uuid!): work_specifications
 
-  """
-  fetch data from the table: "works"
-  """
+  """An array relationship"""
   works(
     """distinct select on columns"""
     distinct_on: [works_select_column!]
@@ -7245,9 +6558,7 @@ type subscription_root {
     where: works_bool_exp
   ): [works!]!
 
-  """
-  fetch aggregated fields from the table: "works"
-  """
+  """An aggregate relationship"""
   works_aggregate(
     """distinct select on columns"""
     distinct_on: [works_select_column!]
@@ -7272,7 +6583,7 @@ type subscription_root {
 scalar timestamp
 
 """
-expression to compare columns of type timestamp. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'.
 """
 input timestamp_comparison_exp {
   _eq: timestamp
@@ -7289,7 +6600,7 @@ input timestamp_comparison_exp {
 scalar timestamptz
 
 """
-expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
 """
 input timestamptz_comparison_exp {
   _eq: timestamptz
@@ -7331,7 +6642,7 @@ aggregate fields of "updates"
 """
 type updates_aggregate_fields {
   avg: updates_avg_fields
-  count(columns: [updates_select_column!], distinct: Boolean): Int
+  count(columns: [updates_select_column!], distinct: Boolean): Int!
   max: updates_max_fields
   min: updates_min_fields
   stddev: updates_stddev_fields
@@ -7343,31 +6654,6 @@ type updates_aggregate_fields {
   variance: updates_variance_fields
 }
 
-"""
-order by aggregate values of table "updates"
-"""
-input updates_aggregate_order_by {
-  avg: updates_avg_order_by
-  count: order_by
-  max: updates_max_order_by
-  min: updates_min_order_by
-  stddev: updates_stddev_order_by
-  stddev_pop: updates_stddev_pop_order_by
-  stddev_samp: updates_stddev_samp_order_by
-  sum: updates_sum_order_by
-  var_pop: updates_var_pop_order_by
-  var_samp: updates_var_samp_order_by
-  variance: updates_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "updates"
-"""
-input updates_arr_rel_insert_input {
-  data: [updates_insert_input!]!
-  on_conflict: updates_on_conflict
-}
-
 """aggregate avg on columns"""
 type updates_avg_fields {
   edition_id: Float
@@ -7375,20 +6661,12 @@ type updates_avg_fields {
 }
 
 """
-order by avg() on columns of table "updates"
-"""
-input updates_avg_order_by {
-  edition_id: order_by
-  id: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "updates". All fields are combined with a logical 'AND'.
 """
 input updates_bool_exp {
-  _and: [updates_bool_exp]
+  _and: [updates_bool_exp!]
   _not: updates_bool_exp
-  _or: [updates_bool_exp]
+  _or: [updates_bool_exp!]
   created_at: timestamptz_comparison_exp
   edition: editions_bool_exp
   edition_id: Int_comparison_exp
@@ -7407,7 +6685,7 @@ enum updates_constraint {
 }
 
 """
-input type for incrementing integer column in table "updates"
+input type for incrementing numeric columns in table "updates"
 """
 input updates_inc_input {
   edition_id: Int
@@ -7437,18 +6715,6 @@ type updates_max_fields {
   url: String
 }
 
-"""
-order by max() on columns of table "updates"
-"""
-input updates_max_order_by {
-  created_at: order_by
-  edition_id: order_by
-  id: order_by
-  text_de: order_by
-  text_en: order_by
-  url: order_by
-}
-
 """aggregate min on columns"""
 type updates_min_fields {
   created_at: timestamptz
@@ -7460,34 +6726,14 @@ type updates_min_fields {
 }
 
 """
-order by min() on columns of table "updates"
-"""
-input updates_min_order_by {
-  created_at: order_by
-  edition_id: order_by
-  id: order_by
-  text_de: order_by
-  text_en: order_by
-  url: order_by
-}
-
-"""
 response of any mutation on the table "updates"
 """
 type updates_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [updates!]!
-}
-
-"""
-input type for inserting object relation for remote table "updates"
-"""
-input updates_obj_rel_insert_input {
-  data: updates_insert_input!
-  on_conflict: updates_on_conflict
 }
 
 """
@@ -7499,9 +6745,7 @@ input updates_on_conflict {
   where: updates_bool_exp
 }
 
-"""
-ordering options when selecting data from "updates"
-"""
+"""Ordering options when selecting data from "updates"."""
 input updates_order_by {
   created_at: order_by
   edition: editions_order_by
@@ -7512,9 +6756,7 @@ input updates_order_by {
   url: order_by
 }
 
-"""
-primary key columns input for table: "updates"
-"""
+"""primary key columns input for table: updates"""
 input updates_pk_columns_input {
   id: Int!
 }
@@ -7560,26 +6802,10 @@ type updates_stddev_fields {
   id: Float
 }
 
-"""
-order by stddev() on columns of table "updates"
-"""
-input updates_stddev_order_by {
-  edition_id: order_by
-  id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type updates_stddev_pop_fields {
   edition_id: Float
   id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "updates"
-"""
-input updates_stddev_pop_order_by {
-  edition_id: order_by
-  id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -7588,26 +6814,10 @@ type updates_stddev_samp_fields {
   id: Float
 }
 
-"""
-order by stddev_samp() on columns of table "updates"
-"""
-input updates_stddev_samp_order_by {
-  edition_id: order_by
-  id: order_by
-}
-
 """aggregate sum on columns"""
 type updates_sum_fields {
   edition_id: Int
   id: Int
-}
-
-"""
-order by sum() on columns of table "updates"
-"""
-input updates_sum_order_by {
-  edition_id: order_by
-  id: order_by
 }
 
 """
@@ -7639,40 +6849,16 @@ type updates_var_pop_fields {
   id: Float
 }
 
-"""
-order by var_pop() on columns of table "updates"
-"""
-input updates_var_pop_order_by {
-  edition_id: order_by
-  id: order_by
-}
-
 """aggregate var_samp on columns"""
 type updates_var_samp_fields {
   edition_id: Float
   id: Float
 }
 
-"""
-order by var_samp() on columns of table "updates"
-"""
-input updates_var_samp_order_by {
-  edition_id: order_by
-  id: order_by
-}
-
 """aggregate variance on columns"""
 type updates_variance_fields {
   edition_id: Float
   id: Float
-}
-
-"""
-order by variance() on columns of table "updates"
-"""
-input updates_variance_order_by {
-  edition_id: order_by
-  id: order_by
 }
 
 """
@@ -7697,7 +6883,7 @@ type users {
     where: applications_bool_exp
   ): [applications!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   applications_aggregate(
     """distinct select on columns"""
     distinct_on: [applications_select_column!]
@@ -7732,35 +6918,18 @@ type users_aggregate {
 aggregate fields of "users"
 """
 type users_aggregate_fields {
-  count(columns: [users_select_column!], distinct: Boolean): Int
+  count(columns: [users_select_column!], distinct: Boolean): Int!
   max: users_max_fields
   min: users_min_fields
-}
-
-"""
-order by aggregate values of table "users"
-"""
-input users_aggregate_order_by {
-  count: order_by
-  max: users_max_order_by
-  min: users_min_order_by
-}
-
-"""
-input type for inserting array relation for remote table "users"
-"""
-input users_arr_rel_insert_input {
-  data: [users_insert_input!]!
-  on_conflict: users_on_conflict
 }
 
 """
 Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
 """
 input users_bool_exp {
-  _and: [users_bool_exp]
+  _and: [users_bool_exp!]
   _not: users_bool_exp
-  _or: [users_bool_exp]
+  _or: [users_bool_exp!]
   applications: applications_bool_exp
   id: String_comparison_exp
   last_seen: timestamptz_comparison_exp
@@ -7795,16 +6964,6 @@ type users_max_fields {
   type: String
 }
 
-"""
-order by max() on columns of table "users"
-"""
-input users_max_order_by {
-  id: order_by
-  last_seen: order_by
-  name: order_by
-  type: order_by
-}
-
 """aggregate min on columns"""
 type users_min_fields {
   id: String
@@ -7814,23 +6973,13 @@ type users_min_fields {
 }
 
 """
-order by min() on columns of table "users"
-"""
-input users_min_order_by {
-  id: order_by
-  last_seen: order_by
-  name: order_by
-  type: order_by
-}
-
-"""
 response of any mutation on the table "users"
 """
 type users_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [users!]!
 }
 
@@ -7839,6 +6988,8 @@ input type for inserting object relation for remote table "users"
 """
 input users_obj_rel_insert_input {
   data: users_insert_input!
+
+  """on conflict condition"""
   on_conflict: users_on_conflict
 }
 
@@ -7873,34 +7024,18 @@ type users_online_aggregate {
 aggregate fields of "users_online"
 """
 type users_online_aggregate_fields {
-  count(columns: [users_online_select_column!], distinct: Boolean): Int
+  count(columns: [users_online_select_column!], distinct: Boolean): Int!
   max: users_online_max_fields
   min: users_online_min_fields
-}
-
-"""
-order by aggregate values of table "users_online"
-"""
-input users_online_aggregate_order_by {
-  count: order_by
-  max: users_online_max_order_by
-  min: users_online_min_order_by
-}
-
-"""
-input type for inserting array relation for remote table "users_online"
-"""
-input users_online_arr_rel_insert_input {
-  data: [users_online_insert_input!]!
 }
 
 """
 Boolean expression to filter rows from the table "users_online". All fields are combined with a logical 'AND'.
 """
 input users_online_bool_exp {
-  _and: [users_online_bool_exp]
+  _and: [users_online_bool_exp!]
   _not: users_online_bool_exp
-  _or: [users_online_bool_exp]
+  _or: [users_online_bool_exp!]
   id: String_comparison_exp
   last_seen: timestamptz_comparison_exp
   name: String_comparison_exp
@@ -7925,16 +7060,6 @@ type users_online_max_fields {
   type: String
 }
 
-"""
-order by max() on columns of table "users_online"
-"""
-input users_online_max_order_by {
-  id: order_by
-  last_seen: order_by
-  name: order_by
-  type: order_by
-}
-
 """aggregate min on columns"""
 type users_online_min_fields {
   id: String
@@ -7944,36 +7069,17 @@ type users_online_min_fields {
 }
 
 """
-order by min() on columns of table "users_online"
-"""
-input users_online_min_order_by {
-  id: order_by
-  last_seen: order_by
-  name: order_by
-  type: order_by
-}
-
-"""
 response of any mutation on the table "users_online"
 """
 type users_online_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [users_online!]!
 }
 
-"""
-input type for inserting object relation for remote table "users_online"
-"""
-input users_online_obj_rel_insert_input {
-  data: users_online_insert_input!
-}
-
-"""
-ordering options when selecting data from "users_online"
-"""
+"""Ordering options when selecting data from "users_online"."""
 input users_online_order_by {
   id: order_by
   last_seen: order_by
@@ -8008,9 +7114,7 @@ input users_online_set_input {
   type: String
 }
 
-"""
-ordering options when selecting data from "users"
-"""
+"""Ordering options when selecting data from "users"."""
 input users_order_by {
   applications_aggregate: applications_aggregate_order_by
   id: order_by
@@ -8019,9 +7123,7 @@ input users_order_by {
   type: order_by
 }
 
-"""
-primary key columns input for table: "users"
-"""
+"""primary key columns input for table: users"""
 input users_pk_columns_input {
   id: String!
 }
@@ -8073,7 +7175,7 @@ enum users_update_column {
 scalar uuid
 
 """
-expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
 """
 input uuid_comparison_exp {
   _eq: uuid
@@ -8108,7 +7210,7 @@ aggregate fields of "wordlist"
 """
 type wordlist_aggregate_fields {
   avg: wordlist_avg_fields
-  count(columns: [wordlist_select_column!], distinct: Boolean): Int
+  count(columns: [wordlist_select_column!], distinct: Boolean): Int!
   max: wordlist_max_fields
   min: wordlist_min_fields
   stddev: wordlist_stddev_fields
@@ -8120,50 +7222,18 @@ type wordlist_aggregate_fields {
   variance: wordlist_variance_fields
 }
 
-"""
-order by aggregate values of table "wordlist"
-"""
-input wordlist_aggregate_order_by {
-  avg: wordlist_avg_order_by
-  count: order_by
-  max: wordlist_max_order_by
-  min: wordlist_min_order_by
-  stddev: wordlist_stddev_order_by
-  stddev_pop: wordlist_stddev_pop_order_by
-  stddev_samp: wordlist_stddev_samp_order_by
-  sum: wordlist_sum_order_by
-  var_pop: wordlist_var_pop_order_by
-  var_samp: wordlist_var_samp_order_by
-  variance: wordlist_variance_order_by
-}
-
-"""
-input type for inserting array relation for remote table "wordlist"
-"""
-input wordlist_arr_rel_insert_input {
-  data: [wordlist_insert_input!]!
-  on_conflict: wordlist_on_conflict
-}
-
 """aggregate avg on columns"""
 type wordlist_avg_fields {
   id: Float
 }
 
 """
-order by avg() on columns of table "wordlist"
-"""
-input wordlist_avg_order_by {
-  id: order_by
-}
-
-"""
 Boolean expression to filter rows from the table "wordlist". All fields are combined with a logical 'AND'.
 """
 input wordlist_bool_exp {
-  _and: [wordlist_bool_exp]
+  _and: [wordlist_bool_exp!]
   _not: wordlist_bool_exp
-  _or: [wordlist_bool_exp]
+  _or: [wordlist_bool_exp!]
   id: Int_comparison_exp
   value: String_comparison_exp
 }
@@ -8177,7 +7247,7 @@ enum wordlist_constraint {
 }
 
 """
-input type for incrementing integer column in table "wordlist"
+input type for incrementing numeric columns in table "wordlist"
 """
 input wordlist_inc_input {
   id: Int
@@ -8197,14 +7267,6 @@ type wordlist_max_fields {
   value: String
 }
 
-"""
-order by max() on columns of table "wordlist"
-"""
-input wordlist_max_order_by {
-  id: order_by
-  value: order_by
-}
-
 """aggregate min on columns"""
 type wordlist_min_fields {
   id: Int
@@ -8212,30 +7274,14 @@ type wordlist_min_fields {
 }
 
 """
-order by min() on columns of table "wordlist"
-"""
-input wordlist_min_order_by {
-  id: order_by
-  value: order_by
-}
-
-"""
 response of any mutation on the table "wordlist"
 """
 type wordlist_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [wordlist!]!
-}
-
-"""
-input type for inserting object relation for remote table "wordlist"
-"""
-input wordlist_obj_rel_insert_input {
-  data: wordlist_insert_input!
-  on_conflict: wordlist_on_conflict
 }
 
 """
@@ -8247,17 +7293,13 @@ input wordlist_on_conflict {
   where: wordlist_bool_exp
 }
 
-"""
-ordering options when selecting data from "wordlist"
-"""
+"""Ordering options when selecting data from "wordlist"."""
 input wordlist_order_by {
   id: order_by
   value: order_by
 }
 
-"""
-primary key columns input for table: "wordlist"
-"""
+"""primary key columns input for table: wordlist"""
 input wordlist_pk_columns_input {
   id: Int!
 }
@@ -8286,23 +7328,9 @@ type wordlist_stddev_fields {
   id: Float
 }
 
-"""
-order by stddev() on columns of table "wordlist"
-"""
-input wordlist_stddev_order_by {
-  id: order_by
-}
-
 """aggregate stddev_pop on columns"""
 type wordlist_stddev_pop_fields {
   id: Float
-}
-
-"""
-order by stddev_pop() on columns of table "wordlist"
-"""
-input wordlist_stddev_pop_order_by {
-  id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -8310,23 +7338,9 @@ type wordlist_stddev_samp_fields {
   id: Float
 }
 
-"""
-order by stddev_samp() on columns of table "wordlist"
-"""
-input wordlist_stddev_samp_order_by {
-  id: order_by
-}
-
 """aggregate sum on columns"""
 type wordlist_sum_fields {
   id: Int
-}
-
-"""
-order by sum() on columns of table "wordlist"
-"""
-input wordlist_sum_order_by {
-  id: order_by
 }
 
 """
@@ -8345,35 +7359,14 @@ type wordlist_var_pop_fields {
   id: Float
 }
 
-"""
-order by var_pop() on columns of table "wordlist"
-"""
-input wordlist_var_pop_order_by {
-  id: order_by
-}
-
 """aggregate var_samp on columns"""
 type wordlist_var_samp_fields {
   id: Float
 }
 
-"""
-order by var_samp() on columns of table "wordlist"
-"""
-input wordlist_var_samp_order_by {
-  id: order_by
-}
-
 """aggregate variance on columns"""
 type wordlist_variance_fields {
   id: Float
-}
-
-"""
-order by variance() on columns of table "wordlist"
-"""
-input wordlist_variance_order_by {
-  id: order_by
 }
 
 """
@@ -8412,7 +7405,7 @@ aggregate fields of "work_files"
 """
 type work_files_aggregate_fields {
   avg: work_files_avg_fields
-  count(columns: [work_files_select_column!], distinct: Boolean): Int
+  count(columns: [work_files_select_column!], distinct: Boolean): Int!
   max: work_files_max_fields
   min: work_files_min_fields
   stddev: work_files_stddev_fields
@@ -8446,6 +7439,8 @@ input type for inserting array relation for remote table "work_files"
 """
 input work_files_arr_rel_insert_input {
   data: [work_files_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: work_files_on_conflict
 }
 
@@ -8467,9 +7462,9 @@ input work_files_avg_order_by {
 Boolean expression to filter rows from the table "work_files". All fields are combined with a logical 'AND'.
 """
 input work_files_bool_exp {
-  _and: [work_files_bool_exp]
+  _and: [work_files_bool_exp!]
   _not: work_files_bool_exp
-  _or: [work_files_bool_exp]
+  _or: [work_files_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -8493,7 +7488,7 @@ enum work_files_constraint {
 }
 
 """
-input type for incrementing integer column in table "work_files"
+input type for incrementing numeric columns in table "work_files"
 """
 input work_files_inc_input {
   order: Int
@@ -8512,6 +7507,8 @@ input work_files_insert_input {
   mimetype: String
   order: Int
   originalname: String
+
+  """Password for Vimeo/YouTube Videos"""
   password: String
   size: numeric
   work: works_obj_rel_insert_input
@@ -8527,6 +7524,8 @@ type work_files_max_fields {
   mimetype: String
   order: Int
   originalname: String
+
+  """Password for Vimeo/YouTube Videos"""
   password: String
   size: numeric
   work_id: uuid
@@ -8543,6 +7542,8 @@ input work_files_max_order_by {
   mimetype: order_by
   order: order_by
   originalname: order_by
+
+  """Password for Vimeo/YouTube Videos"""
   password: order_by
   size: order_by
   work_id: order_by
@@ -8557,6 +7558,8 @@ type work_files_min_fields {
   mimetype: String
   order: Int
   originalname: String
+
+  """Password for Vimeo/YouTube Videos"""
   password: String
   size: numeric
   work_id: uuid
@@ -8573,6 +7576,8 @@ input work_files_min_order_by {
   mimetype: order_by
   order: order_by
   originalname: order_by
+
+  """Password for Vimeo/YouTube Videos"""
   password: order_by
   size: order_by
   work_id: order_by
@@ -8582,19 +7587,11 @@ input work_files_min_order_by {
 response of any mutation on the table "work_files"
 """
 type work_files_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [work_files!]!
-}
-
-"""
-input type for inserting object relation for remote table "work_files"
-"""
-input work_files_obj_rel_insert_input {
-  data: work_files_insert_input!
-  on_conflict: work_files_on_conflict
 }
 
 """
@@ -8606,9 +7603,7 @@ input work_files_on_conflict {
   where: work_files_bool_exp
 }
 
-"""
-ordering options when selecting data from "work_files"
-"""
+"""Ordering options when selecting data from "work_files"."""
 input work_files_order_by {
   application: applications_order_by
   application_id: order_by
@@ -8624,9 +7619,7 @@ input work_files_order_by {
   work_id: order_by
 }
 
-"""
-primary key columns input for table: "work_files"
-"""
+"""primary key columns input for table: work_files"""
 input work_files_pk_columns_input {
   id: uuid!
 }
@@ -8677,6 +7670,8 @@ input work_files_set_input {
   mimetype: String
   order: Int
   originalname: String
+
+  """Password for Vimeo/YouTube Videos"""
   password: String
   size: numeric
   work_id: uuid
@@ -8840,7 +7835,7 @@ type work_specification_mediums_aggregate {
 aggregate fields of "work_specification_mediums"
 """
 type work_specification_mediums_aggregate_fields {
-  count(columns: [work_specification_mediums_select_column!], distinct: Boolean): Int
+  count(columns: [work_specification_mediums_select_column!], distinct: Boolean): Int!
   max: work_specification_mediums_max_fields
   min: work_specification_mediums_min_fields
 }
@@ -8859,6 +7854,8 @@ input type for inserting array relation for remote table "work_specification_med
 """
 input work_specification_mediums_arr_rel_insert_input {
   data: [work_specification_mediums_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: work_specification_mediums_on_conflict
 }
 
@@ -8866,9 +7863,9 @@ input work_specification_mediums_arr_rel_insert_input {
 Boolean expression to filter rows from the table "work_specification_mediums". All fields are combined with a logical 'AND'.
 """
 input work_specification_mediums_bool_exp {
-  _and: [work_specification_mediums_bool_exp]
+  _and: [work_specification_mediums_bool_exp!]
   _not: work_specification_mediums_bool_exp
-  _or: [work_specification_mediums_bool_exp]
+  _or: [work_specification_mediums_bool_exp!]
   category_medium: category_mediums_bool_exp
   medium_id: uuid_comparison_exp
   specification_id: uuid_comparison_exp
@@ -8928,19 +7925,11 @@ input work_specification_mediums_min_order_by {
 response of any mutation on the table "work_specification_mediums"
 """
 type work_specification_mediums_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [work_specification_mediums!]!
-}
-
-"""
-input type for inserting object relation for remote table "work_specification_mediums"
-"""
-input work_specification_mediums_obj_rel_insert_input {
-  data: work_specification_mediums_insert_input!
-  on_conflict: work_specification_mediums_on_conflict
 }
 
 """
@@ -8953,7 +7942,7 @@ input work_specification_mediums_on_conflict {
 }
 
 """
-ordering options when selecting data from "work_specification_mediums"
+Ordering options when selecting data from "work_specification_mediums".
 """
 input work_specification_mediums_order_by {
   category_medium: category_mediums_order_by
@@ -8962,9 +7951,7 @@ input work_specification_mediums_order_by {
   works_specification: work_specifications_order_by
 }
 
-"""
-primary key columns input for table: "work_specification_mediums"
-"""
+"""primary key columns input for table: work_specification_mediums"""
 input work_specification_mediums_pk_columns_input {
   medium_id: uuid!
   specification_id: uuid!
@@ -9020,35 +8007,18 @@ type work_specification_tags_aggregate {
 aggregate fields of "work_specification_tags"
 """
 type work_specification_tags_aggregate_fields {
-  count(columns: [work_specification_tags_select_column!], distinct: Boolean): Int
+  count(columns: [work_specification_tags_select_column!], distinct: Boolean): Int!
   max: work_specification_tags_max_fields
   min: work_specification_tags_min_fields
-}
-
-"""
-order by aggregate values of table "work_specification_tags"
-"""
-input work_specification_tags_aggregate_order_by {
-  count: order_by
-  max: work_specification_tags_max_order_by
-  min: work_specification_tags_min_order_by
-}
-
-"""
-input type for inserting array relation for remote table "work_specification_tags"
-"""
-input work_specification_tags_arr_rel_insert_input {
-  data: [work_specification_tags_insert_input!]!
-  on_conflict: work_specification_tags_on_conflict
 }
 
 """
 Boolean expression to filter rows from the table "work_specification_tags". All fields are combined with a logical 'AND'.
 """
 input work_specification_tags_bool_exp {
-  _and: [work_specification_tags_bool_exp]
+  _and: [work_specification_tags_bool_exp!]
   _not: work_specification_tags_bool_exp
-  _or: [work_specification_tags_bool_exp]
+  _or: [work_specification_tags_bool_exp!]
   specification_id: uuid_comparison_exp
   tag_id: uuid_comparison_exp
 }
@@ -9075,14 +8045,6 @@ type work_specification_tags_max_fields {
   tag_id: uuid
 }
 
-"""
-order by max() on columns of table "work_specification_tags"
-"""
-input work_specification_tags_max_order_by {
-  specification_id: order_by
-  tag_id: order_by
-}
-
 """aggregate min on columns"""
 type work_specification_tags_min_fields {
   specification_id: uuid
@@ -9090,30 +8052,14 @@ type work_specification_tags_min_fields {
 }
 
 """
-order by min() on columns of table "work_specification_tags"
-"""
-input work_specification_tags_min_order_by {
-  specification_id: order_by
-  tag_id: order_by
-}
-
-"""
 response of any mutation on the table "work_specification_tags"
 """
 type work_specification_tags_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [work_specification_tags!]!
-}
-
-"""
-input type for inserting object relation for remote table "work_specification_tags"
-"""
-input work_specification_tags_obj_rel_insert_input {
-  data: work_specification_tags_insert_input!
-  on_conflict: work_specification_tags_on_conflict
 }
 
 """
@@ -9125,17 +8071,13 @@ input work_specification_tags_on_conflict {
   where: work_specification_tags_bool_exp
 }
 
-"""
-ordering options when selecting data from "work_specification_tags"
-"""
+"""Ordering options when selecting data from "work_specification_tags"."""
 input work_specification_tags_order_by {
   specification_id: order_by
   tag_id: order_by
 }
 
-"""
-primary key columns input for table: "work_specification_tags"
-"""
+"""primary key columns input for table: work_specification_tags"""
 input work_specification_tags_pk_columns_input {
   specification_id: uuid!
   tag_id: uuid!
@@ -9204,7 +8146,7 @@ type work_specifications {
     where: work_specification_mediums_bool_exp
   ): [work_specification_mediums!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   mediums_aggregate(
     """distinct select on columns"""
     distinct_on: [work_specification_mediums_select_column!]
@@ -9245,7 +8187,7 @@ aggregate fields of "work_specifications"
 """
 type work_specifications_aggregate_fields {
   avg: work_specifications_avg_fields
-  count(columns: [work_specifications_select_column!], distinct: Boolean): Int
+  count(columns: [work_specifications_select_column!], distinct: Boolean): Int!
   max: work_specifications_max_fields
   min: work_specifications_min_fields
   stddev: work_specifications_stddev_fields
@@ -9279,6 +8221,8 @@ input type for inserting array relation for remote table "work_specifications"
 """
 input work_specifications_arr_rel_insert_input {
   data: [work_specifications_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: work_specifications_on_conflict
 }
 
@@ -9306,9 +8250,9 @@ input work_specifications_avg_order_by {
 Boolean expression to filter rows from the table "work_specifications". All fields are combined with a logical 'AND'.
 """
 input work_specifications_bool_exp {
-  _and: [work_specifications_bool_exp]
+  _and: [work_specifications_bool_exp!]
   _not: work_specifications_bool_exp
-  _or: [work_specifications_bool_exp]
+  _or: [work_specifications_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -9337,7 +8281,7 @@ enum work_specifications_constraint {
 }
 
 """
-input type for incrementing integer column in table "work_specifications"
+input type for incrementing numeric columns in table "work_specifications"
 """
 input work_specifications_inc_input {
   dimensions_depth: Int
@@ -9450,10 +8394,10 @@ input work_specifications_min_order_by {
 response of any mutation on the table "work_specifications"
 """
 type work_specifications_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [work_specifications!]!
 }
 
@@ -9462,6 +8406,8 @@ input type for inserting object relation for remote table "work_specifications"
 """
 input work_specifications_obj_rel_insert_input {
   data: work_specifications_insert_input!
+
+  """on conflict condition"""
   on_conflict: work_specifications_on_conflict
 }
 
@@ -9474,9 +8420,7 @@ input work_specifications_on_conflict {
   where: work_specifications_bool_exp
 }
 
-"""
-ordering options when selecting data from "work_specifications"
-"""
+"""Ordering options when selecting data from "work_specifications"."""
 input work_specifications_order_by {
   application: applications_order_by
   application_id: order_by
@@ -9497,9 +8441,7 @@ input work_specifications_order_by {
   year: order_by
 }
 
-"""
-primary key columns input for table: "work_specifications"
-"""
+"""primary key columns input for table: work_specifications"""
 input work_specifications_pk_columns_input {
   id: uuid!
 }
@@ -9785,7 +8727,7 @@ type works {
     where: work_files_bool_exp
   ): [work_files!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   files_aggregate(
     """distinct select on columns"""
     distinct_on: [work_files_select_column!]
@@ -9824,7 +8766,7 @@ type works {
     where: work_specifications_bool_exp
   ): [work_specifications!]!
 
-  """An aggregated array relationship"""
+  """An aggregate relationship"""
   specifications_aggregate(
     """distinct select on columns"""
     distinct_on: [work_specifications_select_column!]
@@ -9859,7 +8801,7 @@ aggregate fields of "works"
 """
 type works_aggregate_fields {
   avg: works_avg_fields
-  count(columns: [works_select_column!], distinct: Boolean): Int
+  count(columns: [works_select_column!], distinct: Boolean): Int!
   max: works_max_fields
   min: works_min_fields
   stddev: works_stddev_fields
@@ -9893,6 +8835,8 @@ input type for inserting array relation for remote table "works"
 """
 input works_arr_rel_insert_input {
   data: [works_insert_input!]!
+
+  """on conflict condition"""
   on_conflict: works_on_conflict
 }
 
@@ -9912,9 +8856,9 @@ input works_avg_order_by {
 Boolean expression to filter rows from the table "works". All fields are combined with a logical 'AND'.
 """
 input works_bool_exp {
-  _and: [works_bool_exp]
+  _and: [works_bool_exp!]
   _not: works_bool_exp
-  _or: [works_bool_exp]
+  _or: [works_bool_exp!]
   application: applications_bool_exp
   application_id: uuid_comparison_exp
   created_at: timestamptz_comparison_exp
@@ -9940,7 +8884,7 @@ enum works_constraint {
 }
 
 """
-input type for incrementing integer column in table "works"
+input type for incrementing numeric columns in table "works"
 """
 input works_inc_input {
   order: numeric
@@ -10015,10 +8959,10 @@ input works_min_order_by {
 response of any mutation on the table "works"
 """
 type works_mutation_response {
-  """number of affected rows by the mutation"""
+  """number of rows affected by the mutation"""
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """data from the rows affected by the mutation"""
   returning: [works!]!
 }
 
@@ -10027,6 +8971,8 @@ input type for inserting object relation for remote table "works"
 """
 input works_obj_rel_insert_input {
   data: works_insert_input!
+
+  """on conflict condition"""
   on_conflict: works_on_conflict
 }
 
@@ -10039,9 +8985,7 @@ input works_on_conflict {
   where: works_bool_exp
 }
 
-"""
-ordering options when selecting data from "works"
-"""
+"""Ordering options when selecting data from "works"."""
 input works_order_by {
   application: applications_order_by
   application_id: order_by
@@ -10056,9 +9000,7 @@ input works_order_by {
   video_url: order_by
 }
 
-"""
-primary key columns input for table: "works"
-"""
+"""primary key columns input for table: works"""
 input works_pk_columns_input {
   id: uuid!
 }

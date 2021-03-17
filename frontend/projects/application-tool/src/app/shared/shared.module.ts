@@ -8,8 +8,10 @@ import { AuthService } from './services/auth.service';
 import { HasuraService } from './services/hasura.service';
 import { MultilangService } from './services/multilang.service';
 
+import { GetExtensionModule } from './pipes/get-extension/get-extension.module';
 import { GetScorePipeModule } from './pipes/get-score/get-score.module';
 import { LastPipeModule } from './pipes/last/last.module';
+import { TimePassedPipeModule } from './pipes/time-passed/time-passed.module';
 
 import { ModalModule } from './components/modal/modal.module';
 import { TranslateModule } from '@ngx-translate/core';
@@ -22,7 +24,6 @@ import { StorageService } from './services/storage.service';
 import { ChatModule } from './components/chat/chat.module';
 import { SpecificationModule } from './components/specification/specification.module';
 import { AlertModule } from './components/alert/alert.module';
-import { TimePassedPipeModule } from './pipes/time-passed/time-passed.module';
 import { EmbedService } from './services/embed.service';
 
 const MODULES = [
@@ -39,6 +40,7 @@ const MODULES = [
   ChatModule,
   SpecificationModule,
   AlertModule,
+  GetExtensionModule,
   GetScorePipeModule,
   LastPipeModule,
   TimePassedPipeModule,

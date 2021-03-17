@@ -279,7 +279,7 @@
             [innerText]="'snippets.updates' | translate"
           ></h3>
         </div>
-        <div *ngIf="updates$ | async as updates">
+        <div *ngIf="updates$ | async as updates" [@inOutAnimation]>
           <!-- SINGLE UPDATE -->
           <div class="update mt-4" *ngFor="let update of updates.data?.updates">
             <div

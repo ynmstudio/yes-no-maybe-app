@@ -54,7 +54,8 @@ export class UploadTaskComponent implements OnInit {
     // Client-side validation example
     if (
       this.pdf
-        ? this.file.type !== 'application/pdf'
+        ? this.file.type.split('/')[0] !== 'image' &&
+          this.file.type !== 'application/pdf'
         : this.file.type.split('/')[0] !== 'image' &&
           this.file.type !== 'video/mp4' &&
           this.file.type !== 'video/quicktime' &&
@@ -64,7 +65,7 @@ export class UploadTaskComponent implements OnInit {
       alert(
         `Dieser Dateityp wird nicht unterstützt. Bitte nur ${
           this.pdf
-            ? 'eine einzelne PDF Datei'
+            ? 'eine einzelne PDF Datei oder Screenshot'
             : 'Videos (.mp4/.mov), Audio (.mp3/.wav) oder Bilder'
         } hochladen.`
       );

@@ -21,11 +21,24 @@ import { DeleteApplicationComponent as DeleteApplicationComponentType } from '..
 import { AuthService } from '../../../shared/services/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { HasuraService } from '../../../shared/services/hasura.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('inOutAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1s ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('1s ease-in', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class DashboardComponent implements OnInit {
   user$;

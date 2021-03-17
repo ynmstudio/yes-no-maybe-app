@@ -82,9 +82,8 @@
           />
           <p
             class="absolute top-100 mt-2 text-xs font-mono text-gray-500 leading-tight truncate"
-          >
-            (i) Mindestens 6 oder mehr Zeichen eingeben
-          </p>
+            [innerText]="'snippets.auth.password-min-characters' | translate"
+          ></p>
         </div>
         <div class="privacy col-start-2 mt-10 flex items-center">
           <!-- This example requires Tailwind CSS v2.0+ -->
@@ -120,11 +119,8 @@
                   ? ' text-red-600'
                   : ' text-black'
               "
-              >Ich stimme den
-              <a href="#" class="underline hover:text-gray-400"
-                >Datenschutzbestimmungen</a
-              >
-              des Berlin Art Prize zu.
+              [innerHTML]="'snippets.auth.confirm-privacy' | translate"
+            >
             </span>
           </span>
         </div>
@@ -134,23 +130,20 @@
           *ngIf="displayName.touched && displayName.invalid"
           class="mt-2 truncate"
           id="name-error"
-        >
-          Bitte Namen eingeben.
-        </p>
+          [innerText]="'snippets.auth.name-error' | translate"
+        ></p>
         <p
           *ngIf="email.touched && email.invalid"
           class="mt-2 truncate"
           id="email-error"
-        >
-          Bitte gültige Email eingeben.
-        </p>
+          [innerText]="'snippets.auth.email-error' | translate"
+        ></p>
         <p
           *ngIf="password.touched && password.invalid"
           class="mt-2 truncate"
           id="password-too-short"
-        >
-          Bitte Kennwort mit 6 oder mehr Zeichen eingeben.
-        </p>
+          [innerText]="'snippets.auth.password-too-short' | translate"
+        ></p>
         <p
           *ngIf="
             password.touched &&
@@ -159,9 +152,8 @@
           "
           class="mt-2 truncate"
           id="password-not-matching"
-        >
-          Kennwörter stimmen nicht überein.
-        </p>
+          [innerText]="'snippets.auth.password-not-matching' | translate"
+        ></p>
       </div>
     </div>
 
