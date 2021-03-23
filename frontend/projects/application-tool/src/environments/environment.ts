@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   hasura: {
     graphql: 'https://berlin-art-prize--application.herokuapp.com/v1/graphql',
     websocket: 'wss://berlin-art-prize--application.herokuapp.com/v1/graphql',

@@ -54,6 +54,7 @@ const authCtx = (auth: AngularFireAuth) =>
         );
       }
       // Return the headers as usual
+      console.log(headers);
       return {
         headers: {
           ...headers,

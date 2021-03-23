@@ -13,7 +13,16 @@ export class HasuraService {
   updateUsername(name: string) {
     console.warn('Trying to update username');
     return this.updateUsernameGQL
-      .mutate({ name })
+      .mutate(
+        { name },
+        {
+          context: {
+            headers: {
+              'x-hasura-default-role': 'user',
+            },
+          },
+        }
+      )
       .pipe(tap((res) => console.warn(res)))
       .toPromise();
   }

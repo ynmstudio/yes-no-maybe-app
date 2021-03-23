@@ -43,12 +43,11 @@ export class AuthService {
 
         const token = await user.getIdToken();
         const idTokenResult = await user.getIdTokenResult();
-        const hasuraClaim =
-          idTokenResult.claims['https://hasura.io/jwt/claims'];
+        const hasuraRole = idTokenResult.claims['role'];
 
-        if (hasuraClaim) {
+        if (hasuraRole) {
           // setAuthState({ status: "in", user, token });
-          console.warn(token);
+          console.warn(token, hasuraRole);
         } else {
           // Check if refresh is required.
           const metadataRef = this.afDatabase.object(
@@ -58,13 +57,20 @@ export class AuthService {
             if (!data) return;
             // Force refresh to pick up the latest custom claims changes.
             const token = await user.getIdToken(true);
+            const idTokenResult = await user.getIdTokenResult(true);
+            const hasuraRole = idTokenResult.claims['role'];
             // setAuthState({ status: "in", user, token });
+            await this.hasuraService.updateUsername(
+              user.displayName || 'Anonymous'
+            );
             console.warn(token);
           });
         }
 
         // Set Email Verification Banner
-        this.emailVerified.next(user.emailVerified);
+        setTimeout(() => {
+          this.emailVerified.next(user.emailVerified);
+        }, 2500);
       } else {
         // setAuthState({ status: "out" });
         console.log('OUT');
@@ -94,9 +100,6 @@ export class AuthService {
       const idTokenResult = await result.user?.getIdTokenResult(true);
 
       if (idTokenResult && idTokenResult?.claims['role']) {
-        await new Promise((r) => setTimeout(r, 150));
-
-        await this.hasuraService.updateUsername(displayName || 'Anonymous');
         this.redirectToDashboard(idTokenResult?.claims['role']);
       } else {
         // Check if refresh is required.
@@ -112,13 +115,9 @@ export class AuthService {
             const idTokenResult = await user?.getIdTokenResult(true);
 
             if (!idTokenResult?.claims['role']) return;
-            await new Promise((r) => setTimeout(r, 150));
-            console.log(idTokenResult?.claims['role']);
 
-            await this.hasuraService.updateUsername(displayName || 'Anonymous');
-
-            this.redirectToDashboard(idTokenResult?.claims['role']);
             subscription.unsubscribe();
+            this.redirectToDashboard(idTokenResult?.claims['role']);
           });
       }
     } catch (error) {
@@ -152,6 +151,10 @@ export class AuthService {
 
       const idTokenResult = await result.user?.getIdTokenResult(true);
 
+      await this.hasuraService.updateUsername(
+        result.user?.displayName || 'Anonymous'
+      );
+
       if (idTokenResult) {
         this.redirectToDashboard(idTokenResult.claims['role']);
       }
@@ -163,7 +166,10 @@ export class AuthService {
   async sendEmailVerification() {
     this.afAuth.useDeviceLanguage();
     await this.afAuth
-      .onAuthStateChanged((user) => user?.sendEmailVerification())
+      .onAuthStateChanged((user) => {
+        user?.sendEmailVerification();
+        this.emailVerified.next(true);
+      })
       .catch((error) => this.alertService.error(error));
   }
   async logout() {
