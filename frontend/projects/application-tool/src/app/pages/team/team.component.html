@@ -18,7 +18,7 @@
           aria-haspopup="true"
           aria-expanded="true"
         >
-          <div [innerText]="(selectedEdition$ | async)?.name"></div>
+          <div [innerHtml]="(selectedEdition$ | async)?.name"></div>
           <!-- Heroicon name: solid/chevron-down -->
           <svg
             class="-mr-1 ml-2 h-4 w-4 transform-gpu transition-transform"
@@ -77,7 +77,7 @@
             }"
             (click)="switchEdition($event, edition.id)"
           >
-            <div [innerText]="edition.name"></div>
+            <div [innerHtml]="edition.name"></div>
             <div
               class="relative"
               *ngIf="edition.id === (currentEdition$ | async)?.id"
@@ -269,20 +269,5 @@
   <div class="flex-auto relative">
     <router-outlet></router-outlet>
   </div>
-  <footer class="container--default flex items-baseline justify-between">
-    <div class="text-headline">Berlin Art Prize</div>
-    <div class="space-x-8 flex">
-      <a
-        [routerLink]="['/', 'profile']"
-        routerLinkActive="router-link-active"
-        class="font-mono underline hover:text-gray-800"
-        [innerText]="'defaults.profile-single' | translate | titlecase"
-      ></a>
-      <button
-        (click)="logout()"
-        class="appearance-none font-mono underline hover:text-gray-800"
-        [innerText]="'actions.logout' | translate | titlecase"
-      ></button>
-    </div>
-  </footer>
+  <app-footer></app-footer>
 </div>

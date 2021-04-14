@@ -1,6 +1,6 @@
 <div
   class="font-mono text-xs border-b border-black dark:border-white mx-4 pt-4 pb-1"
-  [innerText]="'snippets.internal-chat' | translate | uppercase"
+  [innerHtml]="'snippets.internal-chat' | translate | uppercase"
 ></div>
 <div
   *ngIf="authState | async as user"
@@ -28,13 +28,13 @@
     >
       <div
         class="whitespace-nowrap"
-        [innerText]="message.created_at | date: 'short'"
+        [innerHtml]="message.created_at | date: 'short'"
         [ngClass]="[user?.uid === message.user.id ? 'order-1' : 'order-3']"
       ></div>
       <div class="order-2">&thinsp;–&thinsp;</div>
       <div
         *ngIf="message.rating"
-        [innerText]="
+        [innerHtml]="
           (user?.uid === message.user.id
             ? 'snippets.rating-by-you'
             : 'snippets.rating-by'
@@ -49,7 +49,7 @@
       <div
         *ngIf="!message.rating"
         class="whitespace-nowrap"
-        [innerText]="user?.uid === message.user.id ? 'You' : message.user.name"
+        [innerHtml]="user?.uid === message.user.id ? 'You' : message.user.name"
         [ngClass]="[user?.uid === message.user.id ? 'order-3' : 'order-1']"
       ></div>
     </div>
@@ -60,7 +60,7 @@
       >
         [{{ (message.rating?.value | getScore).i18n | translate }}]
       </div>
-      <div class="px-4 pt-4 pb-6" [innerText]="message.text"></div>
+      <div class="px-4 pt-4 pb-6" [innerHtml]="message.text"></div>
     </div>
 
     <button
@@ -74,7 +74,7 @@
   <div
     *ngIf="!(((messages$ | async)?.data?.messages?.length || 0) > 0)"
     class="text-center py-16 text-gray-300"
-    [innerText]="'snippets.no-messages' | translate"
+    [innerHtml]="'snippets.no-messages' | translate"
   ></div>
   <div class="h-28" *ngIf="!readOnly"></div>
 </div>

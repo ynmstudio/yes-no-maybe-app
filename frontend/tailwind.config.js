@@ -131,7 +131,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         login: "2fr 3fr 2fr",
-        form: "auto 1fr",
+        form: "auto 1fr auto",
         application: "auto 3fr 2fr",
         specifications: "auto auto auto auto",
       },

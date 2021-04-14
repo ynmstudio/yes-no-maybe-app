@@ -9,7 +9,7 @@
       >
         <span
           class="sr-only"
-          [innerText]="'screen-reader.back-to-overview' | translate"
+          [innerHtml]="'screen-reader.back-to-overview' | translate"
         ></span>
         <svg
           width="11px"
@@ -36,7 +36,7 @@
 
       <div
         class="text-headline h-10 leading-10"
-        [innerText]="
+        [innerHtml]="
           ((isNew
             ? 'application-form.new-application'
             : 'application-form.edit-application'
@@ -54,14 +54,14 @@
       >
         <label
           for="name"
-          [innerText]="'application-form.name-of-artist-or-group' | translate"
+          [innerHtml]="'application-form.name-of-artist-or-group' | translate"
         ></label>
         <input
           id="name"
           formControlName="name"
           name="name"
           type="text"
-          class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+          class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
           [ngClass]="{
             'ring-1 ring-red-500': name?.invalid
           }"
@@ -80,7 +80,7 @@
         >
           <span
             class="sr-only"
-            [innerText]="'screen-reader.this-is-a-group' | translate"
+            [innerHtml]="'screen-reader.this-is-a-group' | translate"
           ></span>
           <!-- On: "translate-x-5", Off: "translate-x-0" -->
           <span
@@ -92,7 +92,7 @@
         <span class="ml-3" id="toggleLabel">
           <span
             class="font-mono text-xs uppercase text-black leading-none"
-            [innerText]="'application-form.application-is-by-group' | translate"
+            [innerHtml]="'application-form.application-is-by-group' | translate"
           >
           </span>
         </span>
@@ -183,7 +183,7 @@
                     <button
                       (click)="deleteSpecification(specification.id)"
                       class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
-                      [innerText]="
+                      [innerHtml]="
                         'application-form.buttons.delete-specification'
                           | translate
                       "
@@ -196,7 +196,7 @@
                   addPortfolioSpecification(work.id, work.specifications.length)
                 "
                 class="block w-full md:w-auto ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
-                [innerText]="
+                [innerHtml]="
                   'application-form.buttons.add-work-specification' | translate
                 "
               ></button>
@@ -206,7 +206,7 @@
             <button
               (click)="addWork(true)"
               class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-              [innerText]="
+              [innerHtml]="
                 'application-form.buttons.add-pdf-portfolio' | translate
               "
             ></button>
@@ -291,7 +291,7 @@
                 </div>
                 <button
                   class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
-                  [innerText]="
+                  [innerHtml]="
                     'application-form.buttons.delete-work' | translate
                   "
                   (click)="deleteWork(work.id)"
@@ -301,7 +301,7 @@
             <button
               (click)="addWork()"
               class="block w-full md:w-auto ml-auto border border-black font-mono text-base leading-none py-3 px-6 rounded-xl"
-              [innerText]="
+              [innerHtml]="
                 'application-form.buttons.add-single-work' | translate
               "
             ></button>
@@ -310,7 +310,7 @@
             <button
               (click)="addWork()"
               class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono rounded-3xl text-white bg-black hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
-              [innerText]="
+              [innerHtml]="
                 'application-form.buttons.add-works-separately' | translate
               "
             ></button>
@@ -331,7 +331,7 @@
         <label
           class="col-start-1"
           for="statement"
-          [innerText]="'snippets.statement' | translate"
+          [innerHtml]="'snippets.statement' | translate"
         ></label>
         <div class="lg:col-span-2 flex items-baseline mb-3">
           <textarea
@@ -361,7 +361,7 @@
         <label
           class="col-start-1"
           for="residency"
-          [innerText]="'defaults.residency-single' | translate | titlecase"
+          [innerHtml]="'defaults.residency-single' | translate | titlecase"
         ></label>
         <div class="bg-gray-100 p-4 font-sans text-base mb-3">
           <div>
@@ -390,7 +390,7 @@
         <label
           class="col-start-1"
           for="database"
-          [innerText]="'defaults.database-single' | translate | titlecase"
+          [innerHtml]="'defaults.database-single' | translate | titlecase"
         ></label>
         <div class="bg-gray-100 p-4 font-sans text-base mb-3">
           <div>
@@ -418,7 +418,7 @@
         <label
           class="col-start-1"
           for="disclaimer"
-          [innerText]="'defaults.disclaimer-single' | translate | titlecase"
+          [innerHtml]="'defaults.disclaimer-single' | translate | titlecase"
         ></label>
         <div
           class="bg-gray-100 p-4 font-sans text-base mb-3"
@@ -464,7 +464,7 @@
         <label
           class="col-start-1"
           for="payment"
-          [innerText]="'defaults.payment-single' | translate | titlecase"
+          [innerHtml]="'defaults.payment-single' | translate | titlecase"
         ></label>
         <div class="bg-gray-100 p-4 font-sans text-base">
           <p class="mb-5">
@@ -561,7 +561,7 @@
             </svg>
             <div
               class="text-center"
-              [innerText]="
+              [innerHtml]="
                 'application-form.buttons.add-payment-screenshot' | translate
               "
             ></div>
@@ -615,10 +615,10 @@
               </svg>
             </div>
             <div class="ml-4">
-              <div [innerText]="payment?.value.originalname"></div>
+              <div [innerHtml]="payment?.value.originalname"></div>
               <div
                 class="text-gray-800"
-                [innerText]="payment?.value.size! | filesize"
+                [innerHtml]="payment?.value.size! | filesize"
               ></div>
             </div>
             <button
@@ -636,7 +636,7 @@
           >
             <span
               class="block"
-              [innerText]="'application-form.buttons.show-preview' | translate"
+              [innerHtml]="'application-form.buttons.show-preview' | translate"
             ></span>
             <svg
               class="block"
@@ -719,7 +719,7 @@
     <div
       class="my-8 p-4 text-center text-gray-400"
       *ngIf="updated_at?.value"
-      [innerText]="
+      [innerHtml]="
         'snippets.updated-some-time-ago'
           | translate: { time: updated_at?.value | timePassed }
       "
@@ -735,7 +735,10 @@
   <footer
     class="container--default flex items-end md:items-baseline justify-between"
   >
-    <div class="text-headline">Berlin Art Prize</div>
+    <div
+      class="text-headline"
+      [innerHtml]="'_configuration.title' | translate"
+    ></div>
     <div
       class="flex flex-col md:flex-row justify-end space-y-3 md:space-x-3 md:space-y-0 items-end"
     >

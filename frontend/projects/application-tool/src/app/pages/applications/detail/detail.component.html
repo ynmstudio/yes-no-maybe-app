@@ -331,7 +331,7 @@
       <div>
         <h1
           class="text-headline capitalize lg:whitespace-nowrap w-96 mb-10"
-          [innerText]="
+          [innerHtml]="
             anonymous
               ? applicationObject.data?.applications_by_pk?.internal_name
               : applicationObject.data.applications_by_pk?.name ||
@@ -352,7 +352,7 @@
             >
               <span
                 class="sr-only"
-                [innerText]="'snippets.hide-idenity' | translate"
+                [innerHtml]="'snippets.hide-idenity' | translate"
               ></span>
               <!-- On: "translate-x-5", Off: "translate-x-0" -->
               <span
@@ -363,7 +363,7 @@
             </button>
             <div
               class="ml-2 text-xs font-mono text-gray-800 leading-none"
-              [innerText]="'defaults.anonymous' | translate | uppercase"
+              [innerHtml]="'defaults.anonymous' | translate | uppercase"
             ></div>
           </div>
           <button
@@ -425,7 +425,7 @@
             </div>
             <div
               class="ml-2 text-xs font-mono text-gray-800 leading-none"
-              [innerText]="'snippets.new-alias' | translate | uppercase"
+              [innerHtml]="'snippets.new-alias' | translate | uppercase"
             ></div>
           </button>
         </div>
@@ -464,13 +464,13 @@
       >
         <div
           class="font-mono text-base max-w-3xl"
-          [innerText]="applicationObject.data?.applications_by_pk?.statement"
+          [innerHtml]="applicationObject.data?.applications_by_pk?.statement"
         ></div>
 
         <div *ngIf="!anonymous">
           <button
             class="inline-block mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
-            [innerText]="'email.send-email' | translate"
+            [innerHtml]="'email.send-email' | translate"
           ></button>
           <button
             (click)="eliminateApplication()"

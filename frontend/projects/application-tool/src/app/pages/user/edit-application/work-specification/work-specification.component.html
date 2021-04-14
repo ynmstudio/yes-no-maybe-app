@@ -4,7 +4,7 @@
 >
   <label
     for="title-{{ specification?.id }}"
-    [innerText]="('defaults.title-single' | translate | titlecase) + ':'"
+    [innerHtml]="('defaults.title-single' | translate | titlecase) + ':'"
   ></label>
   <div class="relative col-span-3">
     <input
@@ -22,13 +22,13 @@
       [ngClass]="{
         'opacity-100': title?.errors?.nameRevealed
       }"
-      [innerText]="'snippets.dont-reveal-name' | translate | uppercase"
+      [innerHtml]="'snippets.dont-reveal-name' | translate | uppercase"
     ></div>
   </div>
 
   <label
     for="year-{{ specification?.id }}"
-    [innerText]="
+    [innerHtml]="
       ('defaults.year-of-creating-single' | translate | titlecase) + ':'
     "
   ></label>
@@ -59,7 +59,7 @@
 
   <label
     for="mediums-{{ specification?.id }}"
-    [innerText]="('defaults.medium-multi' | translate | titlecase) + ':'"
+    [innerHtml]="('defaults.medium-multi' | translate | titlecase) + ':'"
   ></label>
   <app-medium-selector
     class="col-span-3"
@@ -69,12 +69,12 @@
   ></app-medium-selector>
 
   <label
-    [innerText]="('defaults.dimensions' | translate | titlecase) + ':'"
+    [innerHtml]="('defaults.dimensions' | translate | titlecase) + ':'"
   ></label>
   <div class="col-span-3 flex items-center space-x-2">
     <label
       for="dimensions_width-{{ specification?.id }}"
-      [innerText]="'defaults.dimensions-width' | translate | uppercase"
+      [innerHtml]="'defaults.dimensions-width' | translate | uppercase"
     ></label>
     <input
       id="dimensions_width-{{ specification?.id }}"
@@ -114,7 +114,7 @@
   </div>
   <label
     for="material-{{ specification?.id }}"
-    [innerText]="('defaults.material-single' | translate | titlecase) + ':'"
+    [innerHtml]="('defaults.material-single' | translate | titlecase) + ':'"
   ></label>
   <input
     id="material-{{ specification?.id }}"
@@ -125,7 +125,7 @@
   />
   <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
     <div
-      [innerText]="
+      [innerHtml]="
         ('defaults.description-single' | translate | titlecase) + ':'
       "
     ></div>
@@ -159,7 +159,7 @@
       [ngClass]="{
         'opacity-100': description?.errors?.nameRevealed
       }"
-      [innerText]="'snippets.dont-reveal-name' | translate | uppercase"
+      [innerHtml]="'snippets.dont-reveal-name' | translate | uppercase"
     ></div>
   </div>
   <!-- <pre class="col-span-4 p-1 bg-red-50 text-xs overflow-hidden">

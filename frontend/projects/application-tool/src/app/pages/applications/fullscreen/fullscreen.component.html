@@ -10,7 +10,7 @@
       >
         <span
           class="sr-only"
-          [innerText]="'screen-reader.back-to-overview' | translate"
+          [innerHtml]="'screen-reader.back-to-overview' | translate"
         ></span>
         <svg
           class="h-4 w-auto"
@@ -159,7 +159,7 @@
           class="capitalize"
           *ngIf="!searchActive"
           (click)="toggleSearch()"
-          [innerText]="
+          [innerHtml]="
             applicationObject.data?.applications_by_pk?.internal_name
           "
         ></button>
@@ -198,7 +198,7 @@
               "
               [routerLink]="['../..', result.id, 'fullscreen']"
               routerLinkActive="font-medium"
-              [innerText]="result.internal_name"
+              [innerHtml]="result.internal_name"
             ></a>
           </div>
         </div>
@@ -214,7 +214,7 @@
       >
         <span
           class="sr-only"
-          [innerText]="'screen-reader.back-to-overview' | translate"
+          [innerHtml]="'screen-reader.back-to-overview' | translate"
         ></span>
         <span class="text-2xl leading-none font-mono font-light">&times;</span>
       </a>
@@ -325,7 +325,7 @@
       class="absolute bottom-0 inset-x-0 container--default grid grid-cols-3"
       *ngIf="currentSpecification | async as specification"
     >
-      <div class="px-3" [innerText]="specification?.title || 'Untitled'"></div>
+      <div class="px-3" [innerHtml]="specification?.title || 'Untitled'"></div>
       <ol class="text-center" *ngIf="currentWork | async as work">
         <li
           *ngFor="let item of work?.files; let index = index"
@@ -407,11 +407,11 @@
     >
       <div
         class="font-mono text-xs border-b border-black dark:border-white mx-4 pt-4 pb-1"
-        [innerText]="'snippets.statement' | translate | uppercase"
+        [innerHtml]="'snippets.statement' | translate | uppercase"
       ></div>
       <div
         class="text-base p-4"
-        [innerText]="applicationObject.data?.applications_by_pk?.statement"
+        [innerHtml]="applicationObject.data?.applications_by_pk?.statement"
       ></div>
       <div class="">
         <div

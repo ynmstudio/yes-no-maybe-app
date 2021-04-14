@@ -9,7 +9,7 @@
       <div class="flex items-center justify-center bg-gray-100 h-80">
         <div
           class="text-gray-300"
-          [innerText]="'snippets.no-data' | translate"
+          [innerHtml]="'snippets.no-data' | translate"
         ></div>
       </div>
     </div>
@@ -72,19 +72,19 @@
             <a
               [routerLink]="['..', 'applications']"
               class="inline-block mt-8 mb-4 bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-              [innerText]="
+              [innerHtml]="
                 ('defaults.application-multi' | translate) + ' &rarr;'
               "
             ></a>
             <div class="aspect-w-1 aspect-h-1 bg-red-50 mt-4"></div>
           </div>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col xl:col-span-2">
           <div class="flex justify-between px-4 lg:px-6 xl:pl-16 pb-2">
             <div
               class="font-mono text-xs"
               [title]="'defaults.medium-multi' | translate"
-              [innerText]="
+              [innerHtml]="
                 'statistics.top-ten'
                   | translate: { type: ('defaults.medium-multi' | translate) }
                   | uppercase
@@ -92,7 +92,7 @@
             ></div>
             <div
               class="font-mono text-xs text-right"
-              [innerText]="'defaults.count' | translate | uppercase"
+              [innerHtml]="'defaults.count' | translate | uppercase"
             ></div>
           </div>
           <div class="flex-auto bg-gray-100 p-4 lg:p-6 xl:pl-16">
@@ -188,7 +188,7 @@
             </button>
           </div>
         </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col xl:col-span-2">
           <div
             class="flex justify-between px-4 lg:px-6 xl:pl-16 pb-2 mt-4 md:mt-0 lg:mt-4 xl:mt-0"
           >
@@ -408,7 +408,7 @@
       >
         <div
           class="text-headline"
-          [innerText]="
+          [innerHtml]="
             'edition.status--application-starts-in'
               | translate
                 : { time: (edition$ | async)?.application_start | timePassed }
@@ -427,7 +427,7 @@
       >
         <div
           class="text-headline"
-          [innerText]="
+          [innerHtml]="
             'edition.status--application-ends-in'
               | translate
                 : { time: (edition$ | async)?.application_end | timePassed }
@@ -447,7 +447,7 @@
       >
         <div
           class="text-headline"
-          [innerText]="'edition.status--rating' | translate"
+          [innerHtml]="'edition.status--rating' | translate"
         ></div>
       </div>
       <div
@@ -456,7 +456,7 @@
       >
         <div
           class="text-headline"
-          [innerText]="'edition.status--closed' | translate"
+          [innerHtml]="'edition.status--closed' | translate"
         ></div>
       </div>
       <div

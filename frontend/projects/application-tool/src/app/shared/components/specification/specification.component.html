@@ -33,7 +33,7 @@
     <span
       class="inline-block whitespace-nowrap mr-1 bg-blue-600 px-2 text-white rounded-full shadow-none focus:shadow-none leading-4 text-center text-xxs font-medium uppercase font-condensed"
       *ngFor="let medium of specification.mediums"
-      [innerText]="
+      [innerHtml]="
         translateService.currentLang == 'de'
           ? medium.category_medium.name_de
           : medium.category_medium.name_en
@@ -90,5 +90,5 @@
   >
     Beschreibung
   </div>
-  <div class="col-span-5 py-2" [innerText]="specification.description"></div>
+  <div class="col-span-5 py-2" [innerHtml]="specification.description"></div>
 </div>

@@ -40,8 +40,8 @@
       </svg>
     </div>
     <div class="ml-4">
-      <div [innerText]="file.originalname"></div>
-      <div class="text-gray-800" [innerText]="file.size || 0 | filesize"></div>
+      <div [innerHtml]="file.originalname"></div>
+      <div class="text-gray-800" [innerHtml]="file.size || 0 | filesize"></div>
     </div>
     <button
       (click)="deleteFile(file.id)"
@@ -69,7 +69,7 @@
     "
     class="flex-auto bg-gray-100 text-gray-300 h-full w-full flex items-center justify-center font-mono text-sm cursor-pointer"
     (click)="fileInput.click()"
-    [innerText]="
+    [innerHtml]="
       'application-form.buttons.drop-pdf-portfolio-here' | translate | titlecase
     "
   ></button>

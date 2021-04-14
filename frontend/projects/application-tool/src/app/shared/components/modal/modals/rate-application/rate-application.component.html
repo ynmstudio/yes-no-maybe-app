@@ -8,7 +8,7 @@
         (click)="selectRating(score.value)"
         class="text-extreme block mt-4 transition-opacity text-white focus:outline-none focus:ring-0 appearance-none"
         *ngFor="let score of scoring.values"
-        [innerText]="'[' + ((score.i18n | translate) || score.name) + ']'"
+        [innerHtml]="'[' + ((score.i18n | translate) || score.name) + ']'"
         [ngClass]="{
           'opacity-75 hover:opacity-100': value < 0,
           'opacity-100': value >= 0 && score.value === value,

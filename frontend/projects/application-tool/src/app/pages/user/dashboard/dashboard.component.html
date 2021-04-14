@@ -50,7 +50,7 @@
                 </span>
                 <span
                   class="uppercase"
-                  [innerText]="application.id | slice: 0:5"
+                  [innerHtml]="application.id | slice: 0:5"
                 ></span>
               </div>
               <div class="text-xs mt-4 lg:mt-6">
@@ -85,7 +85,7 @@
                 </div>
                 <div
                   class="cols-span-5 lg:col-span-3"
-                  [innerText]="
+                  [innerHtml]="
                     (application.group ? 'defaults.yes' : 'defaults.no')
                       | translate
                   "
@@ -101,7 +101,7 @@
                 </div>
                 <div class="cols-span-5 lg:col-span-3 text-orange-500">
                   <span
-                    [innerText]="
+                    [innerHtml]="
                       'application-state.' + (application.state || 'unknown')
                         | translate
                     "
@@ -132,12 +132,12 @@
                     <a
                       [routerLink]="['/', 'u', 'applications', application.id]"
                       class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-                      [innerText]="'defaults.edit' | translate"
+                      [innerHtml]="'defaults.edit' | translate"
                     ></a>
                     <button
                       class="underline font-mono leading-none"
                       (click)="deleteApplication(application.id)"
-                      [innerText]="'defaults.delete' | translate"
+                      [innerHtml]="'defaults.delete' | translate"
                     ></button>
                   </ng-container>
                   <ng-template #locked>
@@ -145,7 +145,7 @@
                       *ngIf="editionState?.state === 'submission'"
                       class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-base leading-none py-3 px-6 rounded-xl"
                       (click)="unlockApplication(application.id)"
-                      [innerText]="'defaults.unlock' | translate"
+                      [innerHtml]="'defaults.unlock' | translate"
                     ></button>
                   </ng-template>
                 </ng-container>
@@ -162,7 +162,7 @@
           <div class="my-1 h-48 bg-gray-100 flex items-center justify-center">
             <span
               class="text-gray-300"
-              [innerText]="'snippets.no-applications' | translate"
+              [innerHtml]="'snippets.no-applications' | translate"
             ></span>
           </div>
         </ng-template>
@@ -174,7 +174,7 @@
         "
         (click)="addApplication()"
         class="bg-black text-white font-mono text-base leading-none mt-8 py-3 px-6 w-full rounded-xl"
-        [innerText]="'snippets.add-application' | translate"
+        [innerHtml]="'snippets.add-application' | translate"
       ></button>
     </div>
     <!-- STATUS AND UPDATES -->
@@ -196,7 +196,7 @@
         >
           <div
             class="text-headline"
-            [innerText]="
+            [innerHtml]="
               'edition.status--application-starts-in'
                 | translate
                   : { time: (edition$ | async)?.application_start | timePassed }
@@ -209,7 +209,7 @@
         >
           <div
             class="text-headline"
-            [innerText]="
+            [innerHtml]="
               'edition.status--application-ends-in'
                 | translate
                   : { time: (edition$ | async)?.application_end | timePassed }
@@ -229,7 +229,7 @@
         >
           <div
             class="text-headline"
-            [innerText]="'edition.status--rating' | translate"
+            [innerHtml]="'edition.status--rating' | translate"
           ></div>
           <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
         </div>
@@ -239,7 +239,7 @@
         >
           <div
             class="text-headline"
-            [innerText]="'edition.status--closed' | translate"
+            [innerHtml]="'edition.status--closed' | translate"
           ></div>
         </div>
         <div
@@ -248,7 +248,7 @@
         >
           <div
             class="text-headline"
-            [innerText]="
+            [innerHtml]="
               'edition.current-state'
                 | translate: { state: editionState | titlecase }
             "
@@ -276,7 +276,7 @@
           <span>&darr;</span>
           <h3
             class="font-mono bg-gray-100 py-2 px-4"
-            [innerText]="'snippets.updates' | translate"
+            [innerHtml]="'snippets.updates' | translate"
           ></h3>
         </div>
         <div *ngIf="updates$ | async as updates" [@inOutAnimation]>
@@ -285,14 +285,14 @@
             <div
               class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
             >
-              <span [innerText]="update.created_at | date: 'short'"></span>
+              <span [innerHtml]="update.created_at | date: 'short'"></span>
             </div>
             <div
               class="relative group bg-gray-100 hover:bg-gray-200 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
             >
               <div
                 class="text-headline"
-                [innerHTML]="
+                [innerHtml]="
                   translateService.currentLang == 'de'
                     ? update.text_de || update.text_en
                     : update.text_en || update.text_de
@@ -305,7 +305,7 @@
                 target="_blank"
                 ><span
                   class="group-hover:underline"
-                  [innerText]="'actions.read-more' | translate"
+                  [innerHtml]="'actions.read-more' | translate"
                 ></span>
                 &rarr;</a
               >
@@ -320,18 +320,5 @@
       </div>
     </div>
   </div>
-  <footer class="container--default flex items-baseline justify-between">
-    <div class="text-headline">Berlin Art Prize</div>
-    <div class="space-x-8 flex">
-      <button
-        class="appearance-none font-mono underline hover:text-gray-800"
-        [innerText]="'defaults.profile-single' | translate | titlecase"
-      ></button>
-      <button
-        (click)="logout()"
-        class="appearance-none font-mono underline hover:text-gray-800"
-        [innerText]="'actions.logout' | translate | titlecase"
-      ></button>
-    </div>
-  </footer>
+  <app-footer></app-footer>
 </div>

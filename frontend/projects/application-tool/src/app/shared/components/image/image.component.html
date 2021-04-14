@@ -169,11 +169,11 @@
       showControls ? 'w-11/12' : 'w-24'
     ]"
     *ngSwitchCase="'iframe'"
-    [innerHTML]="active ? url : ''"
+    [innerHtml]="active ? url : ''"
   ></div>
 
   <div class="h-full w-20 flex items-center justify-center" *ngSwitchDefault>
-    <div class="text-xxs font-condensed" [innerText]="mimetype"></div>
+    <div class="text-xxs font-condensed" [innerHtml]="mimetype"></div>
   </div>
 </ng-container>
 <ng-template #loading>
