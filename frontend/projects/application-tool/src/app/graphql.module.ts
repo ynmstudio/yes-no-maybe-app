@@ -21,7 +21,7 @@ import { AlertService } from './shared/components/alert/alert.service';
 import { getParseErrors } from '@angular/compiler';
 
 // This should be in sync with update information inside ngsw-config.json file
-export const SCHEMA_VERSION = '0.0.0'; // Must be a string.
+export const SCHEMA_VERSION = '0.0.1'; // Must be a string.
 export const SCHEMA_VERSION_KEY = 'apollo_schema_version';
 
 const uri = environment.hasura.graphql; // <-- add the URL of the GraphQL server here
