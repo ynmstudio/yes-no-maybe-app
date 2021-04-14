@@ -1,0 +1,19 @@
+<footer class="container--default flex items-baseline justify-between">
+  <div
+    class="text-headline"
+    [innerHtml]="'_configuration.title' | translate"
+  ></div>
+  <div class="space-x-8 flex">
+    <a
+      [routerLink]="['/', 'profile']"
+      routerLinkActive="router-link-active"
+      class="font-mono underline hover:text-gray-800"
+      [innerHtml]="'defaults.profile-single' | translate | titlecase"
+    ></a>
+    <button
+      (click)="logout()"
+      class="appearance-none font-mono underline hover:text-gray-800"
+      [innerHtml]="'actions.logout' | translate | titlecase"
+    ></button>
+  </div>
+</footer>

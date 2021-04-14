@@ -8,6 +8,7 @@ import {
   AbstractControl,
   AsyncValidatorFn,
   ValidationErrors,
+  ValidatorFn,
 } from '@angular/forms';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { fuzzy } from 'fast-fuzzy';
@@ -27,6 +28,9 @@ export class AuthService {
 
   get authState() {
     return this.afAuth.authState;
+  }
+  get currentUser() {
+    return this.afAuth.currentUser;
   }
 
   constructor(
@@ -163,14 +167,62 @@ export class AuthService {
     }
   }
 
+  async updateDisplayName(name: string) {
+    if (!name) {
+      this.alertService.error('Please enter a valid name!');
+      return;
+    }
+    this.afAuth.useDeviceLanguage();
+    var user = await this.afAuth.currentUser;
+
+    try {
+      await user?.updateProfile({
+        displayName: name,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+  async updateEmail(email: string) {
+    if (!email) {
+      this.alertService.error('Please enter a valid email address!');
+      return;
+    }
+    this.afAuth.useDeviceLanguage();
+    var user = await this.afAuth.currentUser;
+
+    try {
+      await user?.updateEmail(email);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updatePassword(password: string) {
+    if (!password) {
+      this.alertService.error('Please enter a password');
+      return;
+    }
+    this.afAuth.useDeviceLanguage();
+    var user = await this.afAuth.currentUser;
+
+    try {
+      await user?.updatePassword(password);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async sendEmailVerification() {
     this.afAuth.useDeviceLanguage();
-    await this.afAuth
-      .onAuthStateChanged((user) => {
-        user?.sendEmailVerification();
-        this.emailVerified.next(true);
-      })
-      .catch((error) => this.alertService.error(error));
+    try {
+      const user = await this.afAuth.currentUser;
+      if (!user) return;
+      user.sendEmailVerification();
+      this.emailVerified.next(true);
+    } catch (error) {
+      this.alertService.error(error);
+    }
   }
   async logout() {
     await this.afAuth.signOut();
@@ -214,3 +266,15 @@ export class AuthService {
     };
   }
 }
+
+/** A hero's name can't match the hero's alter ego */
+export const passwordsMustMatch: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  return password && confirmPassword && password.value !== confirmPassword.value
+    ? { mustMatch: true }
+    : null;
+};

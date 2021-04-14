@@ -9,7 +9,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../shared/services/auth.service';
+import {
+  AuthService,
+  passwordsMustMatch,
+} from '../../shared/services/auth.service';
 
 export type AuthMode = 'login' | 'register' | 'forgot';
 
@@ -132,15 +135,3 @@ export class AuthComponent implements OnInit {
     this.authService.forgot(this.form.value.email);
   }
 }
-
-/** A hero's name can't match the hero's alter ego */
-export const passwordsMustMatch: ValidatorFn = (
-  control: AbstractControl
-): ValidationErrors | null => {
-  const password = control.get('password');
-  const confirmPassword = control.get('confirmPassword');
-
-  return password && confirmPassword && password.value !== confirmPassword.value
-    ? { mustMatch: true }
-    : null;
-};

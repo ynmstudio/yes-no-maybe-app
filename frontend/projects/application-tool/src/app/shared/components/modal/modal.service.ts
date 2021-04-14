@@ -20,7 +20,7 @@ export class ModalService<T> {
     private injector: Injector
   ) {}
 
-  async open(component: Type<T>, data: any): Promise<void> {
+  async open(component: Type<T>, data: any): Promise<ComponentRef<T> | void> {
     if (this.componentRef) {
       return;
     }

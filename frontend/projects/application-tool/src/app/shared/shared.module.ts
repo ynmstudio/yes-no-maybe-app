@@ -25,6 +25,7 @@ import { ChatModule } from './components/chat/chat.module';
 import { SpecificationModule } from './components/specification/specification.module';
 import { AlertModule } from './components/alert/alert.module';
 import { EmbedService } from './services/embed.service';
+import { FooterModule } from './components/footer/footer.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -35,6 +36,7 @@ const MODULES = [
   ModalModule,
   TranslateModule,
   UploadTaskModule,
+  FooterModule,
   ImageModule,
   PdfModule,
   ChatModule,
