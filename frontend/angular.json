@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "1822f51a-6716-41bd-8bf4-e5e73f7c24f8"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -28,7 +31,8 @@
               "graphql-tag",
               "zen-observable",
               "fast-fuzzy",
-              "ng2-pdf-viewer"
+              "ng2-pdf-viewer",
+              "pdfjs-dist/es5/web/pdf_viewer"
             ],
             "outputPath": "dist/application-tool",
             "index": "projects/application-tool/src/index.html",
@@ -45,10 +49,7 @@
               "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
               "projects/application-tool/src/styles.scss"
             ],
-            "scripts": [],
-            "customWebpackConfig": {
-              "path": "webpack.config.js"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -107,10 +108,7 @@
               "./node_modules/@videogular/ngx-videogular/fonts/videogular.css",
               "projects/application-tool/src/styles.scss"
             ],
-            "scripts": [],
-            "customWebpackConfig": {
-              "path": "webpack.config.js"
-            }
+            "scripts": []
           }
         },
         "lint": {
