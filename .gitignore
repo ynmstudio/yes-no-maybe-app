@@ -89,3 +89,4 @@ node_modules/
 .env
 /jwtRS256.key.pub
 /jwtRS256.key
+.runtimeconfig.json
