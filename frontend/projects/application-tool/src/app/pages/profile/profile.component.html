@@ -40,155 +40,187 @@
       ></div>
     </div>
   </div>
-
-  <div
-    class="flex-auto relative transition-opacity"
-    [formGroup]="form"
-    [ngClass]="(user$ | async) ? 'opacity-100' : 'opacity-0'"
-  >
-    <div class="flex-auto max-w-full space-y-5 lg:space-y-7">
-      <div class="container--default max-w-4xl mx-auto">
-        <div class="mt-8 flex-auto pt-4 pb-10 relative">
-          <input type="hidden" name="remember" value="true" />
-          <div
-            class="font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
-          >
-            <label for="displayName" class="text-right">Name*</label>
-            <input
-              id="first-name"
-              formControlName="displayName"
-              name="displayName"
-              type="text"
-              autocomplete="name"
-              class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-              (keydown.enter)="saveDisplayName()"
-            />
-            <button
-              (click)="saveDisplayName()"
-              class="uppercase transition-opacity p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50"
-              [ngClass]="displayName.dirty ? 'opacity-100' : 'opacity-0'"
-              [disabled]="displayName.invalid"
-              [tabindex]="displayName.dirty ? 0 : -1"
+  <div class="flex-auto relative">
+    <div
+      class="transition-opacity"
+      [formGroup]="form"
+      [ngClass]="(user$ | async) ? 'opacity-100' : 'opacity-0'"
+    >
+      <div class="flex-auto max-w-full space-y-5 lg:space-y-7">
+        <div class="container--default max-w-4xl mx-auto">
+          <div class="mt-8 flex-auto pt-4 pb-10 relative">
+            <div
+              class="font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
             >
-              speichern
-            </button>
-            <label for="email-address" class="text-right">E-Mail*</label>
-            <input
-              id="email-address"
-              formControlName="email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-              (keydown.enter)="saveNewEmail()"
-            />
-            <button
-              (click)="saveNewEmail()"
-              class="uppercase transition-opacity p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
-              [ngClass]="email.dirty ? 'opacity-100' : 'opacity-0'"
-              [disabled]="email.invalid"
-              [tabindex]="email.dirty ? 0 : -1"
-            >
-              speichern
-            </button>
-            <span class="col-span-3">&nbsp;</span>
-            <label
-              for="password"
-              class="text-right"
-              [innerHtml]="('snippets.auth.password' | translate) + '*'"
-            ></label>
-            <button
-              *ngIf="!showChangePassword"
-              (click)="toggleChangePassword()"
-              class="uppercase p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
-            >
-              Passwort ändern
-            </button>
-            <ng-container *ngIf="showChangePassword">
-              <div class="grid grid-cols-2 gap-x-2 relative">
-                <div class="relative">
-                  <input
-                    id="password"
-                    formControlName="password"
-                    name="password"
-                    type="password"
-                    autocomplete="new-password"
-                    required
-                    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-                  />
-                </div>
-                <div class="relative">
-                  <input
-                    id="confirmPassword"
-                    formControlName="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    autocomplete="new-password"
-                    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-                    (keydown.enter)="saveNewPassword()"
-                  />
-                </div>
-                <div class="col-span-2">
-                  <p
-                    class="absolute top-100 mt-2 text-xs font-mono text-gray-500 leading-tight truncate"
-                    [innerHtml]="
-                      'snippets.auth.password-min-characters' | translate
-                    "
-                  ></p>
-                </div>
-              </div>
+              <label for="displayName" class="text-right">Name*</label>
+              <input
+                id="first-name"
+                formControlName="displayName"
+                name="displayName"
+                type="text"
+                autocomplete="name"
+                class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+                (keydown.enter)="saveDisplayName()"
+              />
               <button
-                (click)="saveNewPassword()"
-                class="uppercase transition-opacity p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
-                [ngClass]="
-                  password.dirty
-                    ? 'opacity-100'
-                    : 'opacity-0 pointer-events-none'
-                "
-                [disabled]="password.invalid || form.errors?.mustMatch"
-                [tabindex]="password.valid ? 0 : -1"
+                (click)="saveDisplayName()"
+                class="uppercase transition-opacity p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50"
+                [ngClass]="displayName.dirty ? 'opacity-100' : 'opacity-0'"
+                [disabled]="displayName.invalid"
+                [tabindex]="displayName.dirty ? 0 : -1"
               >
                 speichern
               </button>
-            </ng-container>
-            <div
-              class="col-start-2 mt-4 py-4 text-xs font-mono text-red-600 leading-tight"
-            >
-              <p
-                *ngIf="displayName.touched && displayName.invalid"
-                class="mt-2 truncate"
-                id="name-error"
-                [innerHtml]="'snippets.auth.name-error' | translate"
-              ></p>
-              <p
-                *ngIf="email.touched && email.invalid"
-                class="mt-2 truncate"
-                id="email-error"
-                [innerHtml]="'snippets.auth.email-error' | translate"
-              ></p>
-              <p
-                *ngIf="password.dirty && password.invalid"
-                class="mt-2 truncate"
-                id="password-too-short"
-                [innerHtml]="'snippets.auth.password-too-short' | translate"
-              ></p>
-              <p
-                *ngIf="
-                  password.touched &&
-                  confirmPassword.dirty &&
-                  form.errors?.mustMatch
-                "
-                class="mt-2 truncate"
-                id="password-not-matching"
-                [innerHtml]="'snippets.auth.password-not-matching' | translate"
-              ></p>
+              <label for="email-address" class="text-right">E-Mail*</label>
+              <input
+                id="email-address"
+                formControlName="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+                (keydown.enter)="saveNewEmail()"
+              />
+              <button
+                (click)="saveNewEmail()"
+                class="uppercase transition-opacity p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
+                [ngClass]="email.dirty ? 'opacity-100' : 'opacity-0'"
+                [disabled]="email.invalid"
+                [tabindex]="email.dirty ? 0 : -1"
+              >
+                speichern
+              </button>
+              <span class="col-span-3">&nbsp;</span>
+              <label
+                for="password"
+                class="text-right"
+                [innerHtml]="('snippets.auth.password' | translate) + '*'"
+              ></label>
+              <button
+                *ngIf="!showChangePassword"
+                (click)="toggleChangePassword()"
+                class="uppercase p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
+              >
+                Passwort ändern
+              </button>
+              <ng-container *ngIf="showChangePassword">
+                <div class="grid grid-cols-2 gap-x-2 relative">
+                  <div class="relative">
+                    <input
+                      id="password"
+                      formControlName="password"
+                      name="password"
+                      type="password"
+                      autocomplete="new-password"
+                      required
+                      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+                    />
+                  </div>
+                  <div class="relative">
+                    <input
+                      id="confirmPassword"
+                      formControlName="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      autocomplete="new-password"
+                      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+                      (keydown.enter)="saveNewPassword()"
+                    />
+                  </div>
+                  <div class="col-span-2">
+                    <p
+                      class="absolute top-100 mt-2 text-xs font-mono text-gray-500 leading-tight truncate"
+                      [innerHtml]="
+                        'snippets.auth.password-min-characters' | translate
+                      "
+                    ></p>
+                  </div>
+                </div>
+                <button
+                  (click)="saveNewPassword()"
+                  class="uppercase transition-opacity p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
+                  [ngClass]="
+                    password.dirty
+                      ? 'opacity-100'
+                      : 'opacity-0 pointer-events-none'
+                  "
+                  [disabled]="password.invalid || form.errors?.mustMatch"
+                  [tabindex]="password.valid ? 0 : -1"
+                >
+                  speichern
+                </button>
+              </ng-container>
+              <div
+                class="col-start-2 mt-4 py-4 text-xs font-mono text-red-600 leading-tight"
+              >
+                <p
+                  *ngIf="displayName.touched && displayName.invalid"
+                  class="mt-2 truncate"
+                  id="name-error"
+                  [innerHtml]="'snippets.auth.name-error' | translate"
+                ></p>
+                <p
+                  *ngIf="email.touched && email.invalid"
+                  class="mt-2 truncate"
+                  id="email-error"
+                  [innerHtml]="'snippets.auth.email-error' | translate"
+                ></p>
+                <p
+                  *ngIf="password.dirty && password.invalid"
+                  class="mt-2 truncate"
+                  id="password-too-short"
+                  [innerHtml]="'snippets.auth.password-too-short' | translate"
+                ></p>
+                <p
+                  *ngIf="
+                    password.touched &&
+                    confirmPassword.dirty &&
+                    form.errors?.mustMatch
+                  "
+                  class="mt-2 truncate"
+                  id="password-not-matching"
+                  [innerHtml]="
+                    'snippets.auth.password-not-matching' | translate
+                  "
+                ></p>
+              </div>
+            </div>
+          </div>
+          <!-- <pre class="col-span-4 p-1 bg-red-50 text-xs overflow-hidden">
+            {{ user$ | async | json }}
+          </pre> -->
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="!(user$ | async)"
+      class="absolute inset-0 flex-auto max-w-full space-y-5 lg:space-y-7"
+    >
+      <div class="container--default max-w-4xl mx-auto">
+        <div class="mt-8 flex-auto pt-4 pb-10 relative">
+          <div
+            class="animate-pulse font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
+          >
+            <div class="h-6 md:h-8 bg-gray-100 rounded w-20"></div>
+            <div class="h-6 md:h-8 bg-gray-200 rounded w-auto"></div>
+            <div class="h-6 md:h-8 w-20">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="h-6 md:h-8 bg-gray-100 rounded w-20"></div>
+            <div class="h-6 md:h-8 bg-gray-200 rounded w-auto"></div>
+            <div class="h-6 md:h-8 w-20">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="h-6 md:h-8 col-span-3">&nbsp;</div>
+
+            <div class="h-6 md:h-8 bg-gray-100 rounded w-20"></div>
+            <div class="h-6 md:h-8 bg-gray-200 rounded w-auto"></div>
+            <div class="h-6 md:h-8 w-20">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
           </div>
         </div>
-        <!-- <pre class="col-span-4 p-1 bg-red-50 text-xs overflow-hidden">
-          {{ user$ | async | json }}
-        </pre> -->
       </div>
     </div>
   </div>

@@ -92,7 +92,7 @@ export class TeamService {
       switchMap((edition) => {
         return this.getAdminApplicationsByEditionGQL.watch(
           {
-            edition_id: edition?.id!,
+            edition_id: edition?.id,
           },
           { fetchPolicy: 'cache-and-network' }
         ).valueChanges;

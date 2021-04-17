@@ -8,7 +8,14 @@
           | translate: { user: (user$ | async)?.displayName || "…" }
       }}
     </div> -->
-    <div class="relative inline-block text-left">
+    <div
+      class="relative inline-block text-left transition-opacity"
+      [ngClass]="[
+        ((editions$ | async)?.data?.editions?.length || 0) > 0
+          ? 'opacity-100'
+          : 'opacity-0 pointer-events-none'
+      ]"
+    >
       <div>
         <button
           (click)="toggleEditionSelect()"

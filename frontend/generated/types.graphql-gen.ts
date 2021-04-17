@@ -7903,7 +7903,7 @@ export type DeletePaymentMutation = (
 );
 
 export type GetAdminApplicationsByEditionQueryVariables = Exact<{
-  edition_id: Scalars['Int'];
+  edition_id?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -7996,7 +7996,7 @@ export type EliminateApplicationMutation = (
 
 export type SearchApplicationsQueryVariables = Exact<{
   search: Scalars['String'];
-  edition_id: Scalars['Int'];
+  edition_id?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -9031,7 +9031,7 @@ export const DeletePaymentDocument = gql`
     }
   }
 export const GetAdminApplicationsByEditionDocument = gql`
-    query GetAdminApplicationsByEdition($edition_id: Int!) {
+    query GetAdminApplicationsByEdition($edition_id: Int = -1) {
   applications(
     where: {edition_id: {_eq: $edition_id}}
     order_by: {elimination: {created_at: asc_nulls_first}, created_at: asc_nulls_first}
@@ -9151,7 +9151,7 @@ export const EliminateApplicationDocument = gql`
     }
   }
 export const SearchApplicationsDocument = gql`
-    query SearchApplications($search: String!, $edition_id: Int!) {
+    query SearchApplications($search: String!, $edition_id: Int = -1) {
   search_applications(
     where: {edition_id: {_eq: $edition_id}, _not: {elimination: {}}}
     args: {search: $search}

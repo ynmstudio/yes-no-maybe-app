@@ -160,7 +160,7 @@ mutation DeletePayment($id: uuid!, $application_id: uuid!) {
 # Jury
 
 # Admin
-query GetAdminApplicationsByEdition($edition_id: Int!) {
+query GetAdminApplicationsByEdition($edition_id: Int = -1) {
   applications(
     where: { edition_id: { _eq: $edition_id } }
     order_by: {
@@ -228,7 +228,7 @@ mutation EliminateApplication(
   }
 }
 
-query SearchApplications($search: String!, $edition_id: Int!) {
+query SearchApplications($search: String!, $edition_id: Int = -1) {
   search_applications(
     where: { edition_id: { _eq: $edition_id }, _not: { elimination: {} } }
     args: { search: $search }
