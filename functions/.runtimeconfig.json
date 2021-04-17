@@ -1,10 +1,16 @@
 {
-  "storage": {
-    "dev_bucket": "berlin-art-prize-dev"
+  "coconut": {
+    "access_key": "GOOGMXMJVNU4KH3ZY7M2XDO5",
+    "api_key": "k-e4afd31ee1cae8cf3af0f5547aeefd0d",
+    "webhook": "https://app.coconut.co/tools/webhooks/ac9a9310/berlin-art-prize",
+    "secret_key": "YZ4fRMqt2gPmjWareYs+G51ek9W2U2qVOj/Pdg2w"
   },
   "hasura": {
     "admin_email": "denis@ynm.studio",
-    "shared_secret": "uimQAh2nnN*ay-fML9FP8s4pu_NUmazh",
-    "team_role_email_domain": "@ynm.studio"
+    "team_role_email_domain": "@ynm.studio",
+    "shared_secret": "uimQAh2nnN*ay-fML9FP8s4pu_NUmazh"
+  },
+  "storage": {
+    "dev_bucket": "berlin-art-prize-dev"
   }
 }

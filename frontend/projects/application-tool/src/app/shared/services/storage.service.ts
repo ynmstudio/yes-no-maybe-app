@@ -29,6 +29,10 @@ export class StorageService {
     return downloadURL;
   }
 
+  public getMetadata(key: string) {
+    return this.storage.ref(key).getMetadata();
+  }
+
   private getDownloadURL(
     key: string,
     original_key?: string

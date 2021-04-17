@@ -81,6 +81,20 @@ Firebase config data will be extracted via REST-API before publishing the projec
 4. `firebase functions:config:get > .runtimeconfig.json`
 5. `npm start`
 
+#### Automated Video Converter
+
+_Limitation: Currently only S3 Buckets are supported_
+
+Videos are automatically converted via Coconut.co
+For support the following environment variables must be set for firebase:
+
+1. `firebase functions:config:set coconut.api_key="k-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"`
+2. `firebase functions:config:set coconut.access_key="XXXXXXXXXXXXXXXXXXXXXXXX"`
+3. `firebase functions:config:set coconut.secret_key="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"`
+4. `firebase functions:config:set coconut.webhook="https://app.coconut.co/tools/webhooks/<coconut-webhook-id>/<user-name>"`;
+
+Check https://docs.coconut.co/ for more information.
+
 ### REQUIRED JSON API MIGRATIONS
 
 #### FOR "rated_by_user" FIELD

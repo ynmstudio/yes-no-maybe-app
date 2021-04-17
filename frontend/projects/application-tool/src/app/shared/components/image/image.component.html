@@ -87,7 +87,15 @@
 
         <vg-fullscreen></vg-fullscreen>
       </vg-controls>
-      <video [vgMedia]="$any(media)" [id]="key" #media preload="auto">
+      <video
+        [vgMedia]="$any(media)"
+        [poster]="thumbnailURL | async"
+        [id]="key"
+        #media
+        preload="auto"
+      >
+        <source [src]="webmDownloadURL | async" type="video/webm" />
+        <source [src]="mp4DownloadURL | async" type="video/mp4" />
         <source [src]="url" [attr.type]="mimetype" />
       </video>
       <vg-overlay-play></vg-overlay-play>

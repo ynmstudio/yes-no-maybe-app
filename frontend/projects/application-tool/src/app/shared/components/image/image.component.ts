@@ -28,6 +28,10 @@ export class ImageComponent implements OnInit, OnChanges {
   type: string = 'image';
 
   downloadURL!: Promise<string>;
+  // FOR VIDEO
+  mp4DownloadURL!: Promise<string>;
+  webmDownloadURL!: Promise<string>;
+  thumbnailURL!: Promise<string>;
 
   videoApi!: VgApiService;
 
@@ -48,7 +52,7 @@ export class ImageComponent implements OnInit, OnChanges {
     }
   }
 
-  getDownloadUrl() {
+  async getDownloadUrl() {
     if (!this.key) return;
 
     if (this.mimetype.startsWith('video/')) this.type = 'video';
@@ -73,6 +77,22 @@ export class ImageComponent implements OnInit, OnChanges {
           })
         )
       );
+    } else if (this.type === 'video') {
+      this.mp4DownloadURL = await this.storageService
+        .getUrl(this.key + '_converted.mp4', 'video/mp4')
+        .catch((_) => _);
+      this.webmDownloadURL = this.storageService
+        .getUrl(this.key + '_converted.webm', 'video/webm')
+        .catch((_) => _);
+      this.thumbnailURL = this.storageService
+        .getUrl(this.key + '_preview.gif', 'image/gif')
+        .catch((_) => _);
+      this.downloadURL = this.storageService
+        .getUrl(this.key, this.mimetype)
+        .catch((_) => {
+          this.error = true;
+          return _;
+        });
     } else {
       this.downloadURL = this.storageService
         .getUrl(
