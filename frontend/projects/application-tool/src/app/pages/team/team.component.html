@@ -25,7 +25,7 @@
           aria-haspopup="true"
           aria-expanded="true"
         >
-          <div [innerHtml]="(selectedEdition$ | async)?.name"></div>
+          <div [innerText]="(selectedEdition$ | async)?.name"></div>
           <!-- Heroicon name: solid/chevron-down -->
           <svg
             class="-mr-1 ml-2 h-4 w-4 transform-gpu transition-transform"
@@ -97,6 +97,13 @@
               ></div>
             </div>
           </button>
+          <button
+            class="appearance-none w-full text-left flex justify-between items-center px-4 py-2 text-sm text-gray-800 hover:bg-gray-200 hover:text-gray-900 focus:outline-none"
+            role="menuitem"
+            (click)="showNewEditionModal()"
+          >
+            + {{ "snippets.add-edition" | translate }}
+          </button>
         </div>
       </div>
     </div>
@@ -123,7 +130,7 @@
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <title>Group 15</title>
+          <title>Dashboard</title>
           <g
             id="Page-1"
             stroke="none"
@@ -170,7 +177,7 @@
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <title>Group 2</title>
+          <title>Applications</title>
           <g
             id="Page-1"
             stroke="none"
@@ -212,7 +219,7 @@
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <title>Group 6</title>
+          <title>Settings</title>
           <g
             id="Page-1"
             stroke="none"
@@ -254,7 +261,7 @@
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <title>Fill 1</title>
+          <title>Search</title>
           <g
             id="Page-1"
             stroke="none"
@@ -273,8 +280,36 @@
     </nav>
     <div></div>
   </div>
-  <div class="flex-auto relative">
+  <div
+    class="flex-auto relative"
+    *ngIf="selectedEdition$ | async as selectedEdition; else noEdition"
+  >
+    <div
+      *ngIf="!selectedEdition.current"
+      class="bg-yellow-300 text-yellow-900 py-2 p-4 text-sm text-center sticky top-24 -mt-px inset-x-0"
+    >
+      Diese Edition ist nicht aktiv und wird Bewerber:innen nicht angezeigt!
+      <a
+        class="ml-4 font-mono uppercase text-xxs"
+        [routerLink]="['/', 't', 'settings']"
+        routerLinkActive="hidden"
+      >
+        Einstellungen &rarr;
+      </a>
+    </div>
     <router-outlet></router-outlet>
   </div>
   <app-footer></app-footer>
 </div>
+
+<ng-template #noEdition>
+  <div
+    class="flex-auto relative my-1 h-80 flex items-center justify-center z-10"
+  >
+    <button
+      (click)="showNewEditionModal()"
+      class="inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+      [innerHtml]="'snippets.add-edition' | translate"
+    ></button>
+  </div>
+</ng-template>

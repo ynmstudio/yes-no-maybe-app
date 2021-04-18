@@ -9,6 +9,7 @@ import { DeleteApplicationComponent } from './modals/delete-application/delete-a
 import { DeleteWorkComponent } from './modals/delete-work/delete-work.component';
 import { DeleteSpecificationComponent } from './modals/delete-specification/delete-specification.component';
 import { RateApplicationComponent } from './modals/rate-application/rate-application.component';
+import { NewEditionComponent } from './modals/new-edition/new-edition.component';
 
 @NgModule({
   imports: [CommonModule, TranslateModule, FormsModule],
@@ -18,6 +19,7 @@ import { RateApplicationComponent } from './modals/rate-application/rate-applica
     DeleteApplicationComponent,
     DeleteWorkComponent,
     DeleteSpecificationComponent,
+    NewEditionComponent,
     RateApplicationComponent,
   ],
   exports: [
@@ -26,6 +28,7 @@ import { RateApplicationComponent } from './modals/rate-application/rate-applica
     DeleteApplicationComponent,
     DeleteWorkComponent,
     DeleteSpecificationComponent,
+    NewEditionComponent,
     RateApplicationComponent,
   ],
   providers: [ModalService],

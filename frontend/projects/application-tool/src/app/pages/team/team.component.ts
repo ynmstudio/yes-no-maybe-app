@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 import { TeamService } from './team.service';
-
+import { ModalService } from '../../shared/components/modal/modal.service';
+import { NewEditionComponent as NewEditionComponentType } from './../../shared/components/modal/modals/new-edition/new-edition.component';
 @Component({
   selector: 'app-team',
   templateUrl: './team.component.html',
@@ -15,7 +16,8 @@ export class TeamComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private teamService: TeamService
+    private teamService: TeamService,
+    private modalService: ModalService<NewEditionComponentType>
   ) {
     this.user$ = this.authService.authState;
     this.editions$ = this.teamService.getAllEditions();
@@ -34,6 +36,13 @@ export class TeamComponent implements OnInit {
     event.stopImmediatePropagation();
     await this.teamService.switchEdition(id);
     this.showEditions = false;
+  }
+
+  async showNewEditionModal() {
+    const { NewEditionComponent } = await import(
+      './../../shared/components/modal/modals/new-edition/new-edition.component'
+    );
+    return this.modalService.open(NewEditionComponent, '');
   }
 
   logout() {

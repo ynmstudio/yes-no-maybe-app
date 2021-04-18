@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -31,6 +32,7 @@ export class ProfileComponent implements OnInit {
   confirmPassword = new FormControl('', Validators.required);
 
   constructor(
+    private location: Location,
     private fb: FormBuilder,
     private authService: AuthService,
     private alertService: AlertService,
@@ -57,6 +59,10 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  back(): void {
+    this.location.back();
+  }
 
   showChangePassword: boolean = false;
   toggleChangePassword() {

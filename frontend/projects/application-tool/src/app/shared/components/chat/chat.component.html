@@ -28,7 +28,7 @@
     >
       <div
         class="whitespace-nowrap"
-        [innerHtml]="message.created_at | date: 'short'"
+        [innerHtml]="message.created_at | localizedDate: 'short'"
         [ngClass]="[user?.uid === message.user.id ? 'order-1' : 'order-3']"
       ></div>
       <div class="order-2">&thinsp;–&thinsp;</div>

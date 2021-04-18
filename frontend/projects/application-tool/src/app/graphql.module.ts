@@ -54,7 +54,7 @@ const authCtx = (auth: AngularFireAuth) =>
         );
       }
       // Return the headers as usual
-      console.log(headers);
+      // console.log(headers, token);
       return {
         headers: {
           ...headers,
@@ -250,6 +250,15 @@ export function createApollo(
 
   const cache = new InMemoryCache({
     possibleTypes: introspectionResult.possibleTypes,
+    typePolicies: {
+      Query: {
+        fields: {
+          editions: {
+            merge: false,
+          },
+        },
+      },
+    },
   });
 
   // await before instantiating ApolloClient, else queries might run before the cache is persisted

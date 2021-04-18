@@ -78,7 +78,7 @@ export class ImageComponent implements OnInit, OnChanges {
         )
       );
     } else if (this.type === 'video') {
-      this.mp4DownloadURL = await this.storageService
+      this.mp4DownloadURL = this.storageService
         .getUrl(this.key + '_converted.mp4', 'video/mp4')
         .catch((_) => _);
       this.webmDownloadURL = this.storageService

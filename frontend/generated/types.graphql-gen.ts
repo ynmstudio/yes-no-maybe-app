@@ -8315,17 +8315,34 @@ export type RenameEditionMutation = (
   )> }
 );
 
-export type SetCurrentEditionMutationVariables = Exact<{
+export type SetEditionStatusMutationVariables = Exact<{
   id: Scalars['Int'];
+  status: Scalars['Boolean'];
 }>;
 
 
-export type SetCurrentEditionMutation = (
+export type SetEditionStatusMutation = (
   { __typename?: 'mutation_root' }
   & { update_editions?: Maybe<(
     { __typename?: 'editions_mutation_response' }
     & Pick<Editions_Mutation_Response, 'affected_rows'>
   )>, update_editions_by_pk?: Maybe<(
+    { __typename?: 'editions' }
+    & EditionFragment
+  )> }
+);
+
+export type UpdateEditionMutationVariables = Exact<{
+  id: Scalars['Int'];
+  application_end: Scalars['timestamptz'];
+  application_start: Scalars['timestamptz'];
+  name: Scalars['String'];
+}>;
+
+
+export type UpdateEditionMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_editions_by_pk?: Maybe<(
     { __typename?: 'editions' }
     & EditionFragment
   )> }
@@ -8346,17 +8363,6 @@ export type SetEditionWinnerMutation = (
       & Pick<Applications, 'id' | 'name'>
     )> }
     & EditionFragment
-  )> }
-);
-
-export type DisableEditionsMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type DisableEditionsMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_editions?: Maybe<(
-    { __typename?: 'editions_mutation_response' }
-    & Pick<Editions_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -9568,12 +9574,12 @@ export const RenameEditionDocument = gql`
       super(apollo);
     }
   }
-export const SetCurrentEditionDocument = gql`
-    mutation SetCurrentEdition($id: Int!) {
-  update_editions(_set: {current: null}, where: {current: {_eq: true}}) {
+export const SetEditionStatusDocument = gql`
+    mutation SetEditionStatus($id: Int!, $status: Boolean!) {
+  update_editions(_set: {current: null}, where: {current: {_is_null: false}}) {
     affected_rows
   }
-  update_editions_by_pk(pk_columns: {id: $id}, _set: {current: true}) {
+  update_editions_by_pk(pk_columns: {id: $id}, _set: {current: $status}) {
     ...Edition
   }
 }
@@ -9582,8 +9588,29 @@ export const SetCurrentEditionDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class SetCurrentEditionGQL extends Apollo.Mutation<SetCurrentEditionMutation, SetCurrentEditionMutationVariables> {
-    document = SetCurrentEditionDocument;
+  export class SetEditionStatusGQL extends Apollo.Mutation<SetEditionStatusMutation, SetEditionStatusMutationVariables> {
+    document = SetEditionStatusDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateEditionDocument = gql`
+    mutation UpdateEdition($id: Int!, $application_end: timestamptz!, $application_start: timestamptz!, $name: String!) {
+  update_editions_by_pk(
+    pk_columns: {id: $id}
+    _set: {application_end: $application_end, application_start: $application_start, name: $name}
+  ) {
+    ...Edition
+  }
+}
+    ${EditionFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateEditionGQL extends Apollo.Mutation<UpdateEditionMutation, UpdateEditionMutationVariables> {
+    document = UpdateEditionDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -9606,24 +9633,6 @@ export const SetEditionWinnerDocument = gql`
   })
   export class SetEditionWinnerGQL extends Apollo.Mutation<SetEditionWinnerMutation, SetEditionWinnerMutationVariables> {
     document = SetEditionWinnerDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
-    }
-  }
-export const DisableEditionsDocument = gql`
-    mutation DisableEditions {
-  update_editions(_set: {current: null}, where: {current: {_eq: true}}) {
-    affected_rows
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class DisableEditionsGQL extends Apollo.Mutation<DisableEditionsMutation, DisableEditionsMutationVariables> {
-    document = DisableEditionsDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

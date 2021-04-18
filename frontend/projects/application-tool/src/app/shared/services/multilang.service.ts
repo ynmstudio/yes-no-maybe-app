@@ -1,8 +1,9 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, registerLocaleData } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
+import { DateAdapter } from '@angular/material/core';
 
 const APPLICATION_PREFERED_LANGUAGE_KEY = 'prefered_language';
 
@@ -32,7 +33,9 @@ export class MultilangService {
 
   constructor(
     private translate: TranslateService,
-    @Inject(DOCUMENT) private document: any
+    private x: TranslateService,
+    @Inject(DOCUMENT) private document: any,
+    private dateAdapter: DateAdapter<any>
   ) {
     this.translate.addLangs(this.availableLanguages);
     this.checkLanguage();
@@ -65,6 +68,7 @@ export class MultilangService {
 
   async updateLanguage(lang: string) {
     await this.translate.use(lang).toPromise();
+    this.dateAdapter.setLocale(lang);
     this.document.documentElement.lang = lang;
     localStorage.setItem(APPLICATION_PREFERED_LANGUAGE_KEY, lang);
     this._currentLanguage.next(lang);

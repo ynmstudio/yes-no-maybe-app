@@ -143,14 +143,35 @@ mutation RenameEdition($id: Int!, $name: String!) {
   }
 }
 
-mutation SetCurrentEdition($id: Int!) {
-  update_editions(_set: { current: null }, where: { current: { _eq: true } }) {
+mutation SetEditionStatus($id: Int!, $status: Boolean!) {
+  update_editions(
+    _set: { current: null }
+    where: { current: { _is_null: false } }
+  ) {
     affected_rows
   }
-  update_editions_by_pk(pk_columns: { id: $id }, _set: { current: true }) {
+  update_editions_by_pk(pk_columns: { id: $id }, _set: { current: $status }) {
     ...Edition
   }
 }
+mutation UpdateEdition(
+  $id: Int!
+  $application_end: timestamptz!
+  $application_start: timestamptz!
+  $name: String!
+) {
+  update_editions_by_pk(
+    pk_columns: { id: $id }
+    _set: {
+      application_end: $application_end
+      application_start: $application_start
+      name: $name
+    }
+  ) {
+    ...Edition
+  }
+}
+
 mutation SetEditionWinner($id: Int!, $application_id: uuid) {
   update_editions_by_pk(
     _set: { winner_id: $application_id }
@@ -161,10 +182,5 @@ mutation SetEditionWinner($id: Int!, $application_id: uuid) {
       id
       name
     }
-  }
-}
-mutation DisableEditions {
-  update_editions(_set: { current: null }, where: { current: { _eq: true } }) {
-    affected_rows
   }
 }

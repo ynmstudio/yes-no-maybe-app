@@ -28,11 +28,38 @@ import 'firebase/auth';
 import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
 import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
 import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
+import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
+
+import { registerLocaleData } from '@angular/common';
+import localeEn from '@angular/common/locales/en';
+import localeDe from '@angular/common/locales/de';
+registerLocaleData(localeEn, 'en');
+registerLocaleData(localeDe, 'de');
 
 export class ToolMissingTranslationHandler
   implements MissingTranslationHandler {
   handle(params: MissingTranslationHandlerParams) {
     return `<${params.key}>`;
+  }
+}
+
+export class CustomDatePickerAdapter extends NativeDateAdapter {
+  parse(value: string | number): Date | null {
+    if (typeof value === 'string' && value.indexOf('.') > -1) {
+      const str: string[] = value.split('.');
+      if (
+        str.length < 2 ||
+        isNaN(+str[0]) ||
+        isNaN(+str[1]) ||
+        isNaN(+str[2])
+      ) {
+        return null;
+      }
+      return new Date(Number(str[2]), Number(str[1]) - 1, Number(str[0]));
+    }
+    const timestamp: number =
+      typeof value === 'number' ? value : Date.parse(value);
+    return isNaN(timestamp) ? null : new Date(timestamp);
   }
 }
 
@@ -81,6 +108,7 @@ export class ToolMissingTranslationHandler
     //   provide: FUNCTIONS_EMULATOR,
     //   useValue: environment.production ? undefined : ['localhost', 5001],
     // },
+    { provide: DateAdapter, useClass: CustomDatePickerAdapter },
   ],
   bootstrap: [AppComponent],
 })

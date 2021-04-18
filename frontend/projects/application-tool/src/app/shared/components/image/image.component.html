@@ -24,12 +24,24 @@
       <video
         class="h-full w-auto inline-block object-contain"
         preload="metadata"
-        [src]="url"
+        [poster]="thumbnailURL | async"
         [controls]="showControls"
         [attr.type]="mimetype"
       >
         Your browser does not support the video tag.
+        <source
+          *ngIf="webmDownloadURL | async as webmUrl"
+          [src]="webmUrl"
+          type="video/webm"
+        />
+        <source
+          *ngIf="mp4DownloadURL | async as mp4Url"
+          [src]="mp4Url"
+          type="video/mp4"
+        />
+        <source [src]="url" [attr.type]="mimetype" />
       </video>
+
       <svg
         class="h-6 w-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-blue-600"
         width="34px"
@@ -94,8 +106,16 @@
         #media
         preload="auto"
       >
-        <source [src]="webmDownloadURL | async" type="video/webm" />
-        <source [src]="mp4DownloadURL | async" type="video/mp4" />
+        <source
+          *ngIf="webmDownloadURL | async as webmUrl"
+          [src]="webmUrl"
+          type="video/webm"
+        />
+        <source
+          *ngIf="mp4DownloadURL | async as mp4Url"
+          [src]="mp4Url"
+          type="video/mp4"
+        />
         <source [src]="url" [attr.type]="mimetype" />
       </video>
       <vg-overlay-play></vg-overlay-play>

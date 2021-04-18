@@ -26,6 +26,7 @@ import { SpecificationModule } from './components/specification/specification.mo
 import { AlertModule } from './components/alert/alert.module';
 import { EmbedService } from './services/embed.service';
 import { FooterModule } from './components/footer/footer.module';
+import { LocalizedDateModule } from './pipes/localized-date/localized-date.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -45,6 +46,7 @@ const MODULES = [
   GetExtensionModule,
   GetScorePipeModule,
   LastPipeModule,
+  LocalizedDateModule,
   TimePassedPipeModule,
 ];
 

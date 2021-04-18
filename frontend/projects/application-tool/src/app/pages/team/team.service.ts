@@ -13,16 +13,21 @@ import {
   GetEditionStateAdminGQL,
   GetCurrentRoundGQL,
 } from 'generated/types.graphql-gen';
-import { of, ReplaySubject } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { combineLatest, of, ReplaySubject } from 'rxjs';
+import {
+  first,
+  map,
+  switchMap,
+  takeWhile,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeamService {
-  _selectedEdition: ReplaySubject<
-    EditionFragment | undefined
-  > = new ReplaySubject();
+  private _selectedEditionId: ReplaySubject<number> = new ReplaySubject();
 
   constructor(
     private getAllEditionsGQL: GetAllEditionsGQL,
@@ -37,23 +42,41 @@ export class TeamService {
     private eliminateApplicationGQL: EliminateApplicationGQL,
     private getCurrentRoundGQL: GetCurrentRoundGQL
   ) {
-    this.currentEdition
-      .pipe(first())
-      .subscribe((edition) => this._selectedEdition.next(edition));
+    this.setInitialSelectedEdition();
+  }
+  setInitialSelectedEdition() {
+    this.getAllEditions()
+      .pipe(
+        tap((editions) => {
+          console.log('HUI');
+          if (editions?.data?.editions.length > 0) {
+            const currentEdition = editions?.data?.editions.find(
+              (edition) => edition.current
+            );
+            if (currentEdition) {
+              this._selectedEditionId.next(currentEdition.id);
+            } else {
+              this._selectedEditionId.next(
+                editions?.data?.editions[editions?.data?.editions.length - 1].id
+              );
+            }
+          }
+        }),
+        takeWhile((editions) => editions?.data?.editions.length < 1)
+      )
+      .subscribe();
   }
 
   getAllEditions() {
-    return this.getAllEditionsGQL.watch(
-      {},
-      { fetchPolicy: 'cache-and-network' }
-    ).valueChanges;
+    return this.getAllEditionsGQL.watch({}, { fetchPolicy: 'network-only' })
+      .valueChanges;
   }
   getStatistic() {
-    return this.selectedEdition.pipe(
-      switchMap((edition) => {
+    return this.selectedEditionId.pipe(
+      switchMap((id) => {
         return this.getEditionStatisticGQL.watch(
           {
-            id: edition?.id!,
+            id,
           },
           { fetchPolicy: 'cache-and-network', pollInterval: 60000 }
         ).valueChanges;
@@ -61,9 +84,8 @@ export class TeamService {
     );
   }
   getState() {
-    return this.selectedEdition.pipe(
-      switchMap((edition) => {
-        const id = edition?.id;
+    return this.selectedEditionId.pipe(
+      switchMap((id) => {
         if (id) {
           return this.getEditionStateAdminGQL.subscribe({ id });
         } else {
@@ -88,11 +110,11 @@ export class TeamService {
   }
 
   getAdminApplicationsByEdition() {
-    return this.selectedEdition.pipe(
-      switchMap((edition) => {
+    return this.selectedEditionId.pipe(
+      switchMap((edition_id) => {
         return this.getAdminApplicationsByEditionGQL.watch(
           {
-            edition_id: edition?.id,
+            edition_id,
           },
           { fetchPolicy: 'cache-and-network' }
         ).valueChanges;
@@ -129,8 +151,19 @@ export class TeamService {
     );
   }
 
+  get selectedEditionId() {
+    return this._selectedEditionId.asObservable();
+  }
+
   get selectedEdition() {
-    return this._selectedEdition.asObservable();
+    return combineLatest([this.getAllEditions(), this.selectedEditionId]).pipe(
+      switchMap(([editions, edition_id]) => {
+        console.log(editions, edition_id);
+        return of(
+          editions.data.editions.find((edition) => edition.id === edition_id)
+        );
+      })
+    );
   }
 
   async switchEdition(id: number) {
@@ -142,18 +175,18 @@ export class TeamService {
         )
       )
       .toPromise();
-
+    console.log(edition);
     if (edition) {
-      this._selectedEdition.next(edition);
+      this._selectedEditionId.next(edition.id);
     }
   }
   searchApplications(search: string) {
-    return this.selectedEdition.pipe(
-      switchMap((edition) => {
+    return this.selectedEditionId.pipe(
+      switchMap((edition_id) => {
         return this.searchApplicationsGQL.watch(
           {
             search,
-            edition_id: edition?.id!,
+            edition_id,
           },
           { fetchPolicy: 'cache-and-network' }
         ).valueChanges;

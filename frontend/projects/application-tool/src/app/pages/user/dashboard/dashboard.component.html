@@ -285,7 +285,9 @@
             <div
               class="relative font-mono text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
             >
-              <span [innerHtml]="update.created_at | date: 'short'"></span>
+              <span
+                [innerHtml]="update.created_at | localizedDate: 'short'"
+              ></span>
             </div>
             <div
               class="relative group bg-gray-100 hover:bg-gray-200 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"

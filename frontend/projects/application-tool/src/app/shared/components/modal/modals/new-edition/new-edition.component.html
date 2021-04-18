@@ -1,33 +1,36 @@
 <app-modal #modalComponent>
   <div class="sm:flex sm:items-start">
-    <div class="">
-      <h3 class="text-headline" id="modal-headline">Login</h3>
+    <div class="flex-auto">
+      <h3
+        class="text-headline"
+        id="modal-headline"
+        [innerHTML]="'modals.new-edition.headline' | translate"
+      ></h3>
       <div class="mt-2">
-        <p class="text-sm text-gray-800">
-          Zum Bestätigen der Änderungen bitte das Passwort für {{ data }} erneut
-          eingeben:
-        </p>
+        <p
+          class="text-sm text-gray-800"
+          [innerHTML]="'modals.new-edition.intro' | translate"
+        ></p>
         <input
-          id="password"
-          name="password"
-          type="password"
-          autocomplete="current-password"
-          [(ngModel)]="password"
+          id="name"
+          name="name"
+          type="text"
+          [(ngModel)]="name"
           #ctrl="ngModel"
           required
           class="appearance-none rounded-none relative block w-full mt-2 px-2 py-2 border-solid bg-transparent border-b border-t-0 border-r-0 border-l-0 border-white font-mono placeholder-gray-300 text-black focus:outline-none focus:ring-gray-200 bg-gray-100 focus:border-transparent focus:z-10 text-sm"
-          [placeholder]="'snippets.auth.password' | translate"
+          [placeholder]="'defaults.edition-single' | translate"
         />
       </div>
     </div>
   </div>
   <div class="mt-5 sm:mt-4 sm:flex">
     <button
-      (click)="login(ctrl.value)"
+      (click)="createNewEdition(ctrl.value)"
       type="button"
       class="inline-flex justify-center w-full rounded-xl border border-transparent px-6 py-3 bg-black text-base font-mono text-white hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm disabled:opacity-50"
       [disabled]="ctrl.invalid"
-      [innerHTML]="'actions.login' | translate | titlecase"
+      [innerHTML]="'actions.add' | translate | titlecase"
     ></button>
     <button
       (click)="close()"

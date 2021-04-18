@@ -15,15 +15,13 @@
       (click)="confirmDeletion()"
       type="button"
       class="inline-flex justify-center w-full rounded-xl border border-transparent px-6 py-3 bg-red-600 text-base font-mono text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm"
-    >
-      Löschen
-    </button>
+      [innerHTML]="'actions.delete' | translate | titlecase"
+    ></button>
     <button
       (click)="close()"
       type="button"
       class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-800 px-6 py-3 bg-white text-base font-mono text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-    >
-      Cancel
-    </button>
+      [innerHTML]="'actions.cancel' | translate | titlecase"
+    ></button>
   </div>
 </app-modal>

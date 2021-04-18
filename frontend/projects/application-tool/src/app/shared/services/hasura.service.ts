@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { GetUpdatesGQL, UpdateUsernameGQL } from 'generated/types.graphql-gen';
+import {
+  CreateEditionGQL,
+  GetAllEditionsDocument,
+  GetUpdatesGQL,
+  UpdateEditionGQL,
+  RenameEditionGQL,
+  SetEditionStatusGQL,
+  UpdateUsernameGQL,
+} from 'generated/types.graphql-gen';
 import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
@@ -7,7 +15,11 @@ import { tap } from 'rxjs/operators';
 export class HasuraService {
   constructor(
     private updateUsernameGQL: UpdateUsernameGQL,
-    private getUpdatesGQL: GetUpdatesGQL
+    private getUpdatesGQL: GetUpdatesGQL,
+    private createEditionGQL: CreateEditionGQL,
+    private updateEditionGQL: UpdateEditionGQL,
+    private renameEditionGQL: RenameEditionGQL,
+    private setEditionStatusGQL: SetEditionStatusGQL
   ) {}
 
   updateUsername(name: string) {
@@ -29,5 +41,56 @@ export class HasuraService {
 
   getUpdates() {
     return this.getUpdatesGQL.subscribe({}, { fetchPolicy: 'network-only' });
+  }
+
+  /**
+   * Edition
+   */
+
+  createEdition(name: string) {
+    return this.createEditionGQL
+      .mutate(
+        { name },
+        {
+          update: (store, { data: { ...createdEdition } }) => {
+            // Read the data from our cache for this query.
+            const { ...data }: any = store.readQuery({
+              query: GetAllEditionsDocument,
+            });
+            // Filter array by deleted producer id
+            data.editions = [
+              ...data.editions,
+              createdEdition.insert_editions_one,
+            ];
+            // Write our data back to the cache.
+            store.writeQuery({
+              query: GetAllEditionsDocument,
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+  renameEdition(id: number, name: string) {
+    return this.renameEditionGQL.mutate({ id, name }).toPromise();
+  }
+  updateEdition(
+    id: number,
+    application_start: Date,
+    application_end: Date,
+    name: string
+  ) {
+    return this.updateEditionGQL
+      .mutate({
+        id,
+        application_start,
+        application_end,
+        name,
+      })
+      .toPromise();
+  }
+  setEditionStatus(id: number, status: boolean) {
+    return this.setEditionStatusGQL.mutate({ id, status }).toPromise();
   }
 }
