@@ -11,6 +11,7 @@
         remote_table:
           schema: public
           name: eliminations
+        insertion_order: null
         column_mapping:
           id: application_id
   - name: payment
@@ -19,6 +20,7 @@
         remote_table:
           schema: public
           name: payments
+        insertion_order: null
         column_mapping:
           id: application_id
   - name: user
@@ -61,6 +63,13 @@
           schema: public
           name: works
   computed_fields:
+  - name: rated_by_user
+    definition:
+      function:
+        schema: public
+        name: application_rated_by_user
+      session_argument: hasura_session
+      table_argument: application_row
   - name: ready
     definition:
       function:
@@ -79,13 +88,6 @@
         schema: public
         name: application_is_winner
     comment: ""
-  - name: rated_by_user
-    definition:
-      function:
-        schema: public
-        name: application_rated_by_user
-      session_argument: hasura_session
-      table_argument: application_row
   insert_permissions:
   - role: user
     permission:
@@ -496,6 +498,7 @@
         remote_table:
           schema: public
           name: ratings
+        insertion_order: null
         column_mapping:
           id: message_id
   - name: rating_round
@@ -649,6 +652,7 @@
         remote_table:
           schema: public
           name: rating_rounds
+        insertion_order: null
         column_mapping:
           id: prev_round_id
   - name: prev_round
@@ -785,6 +789,7 @@
         remote_table:
           schema: public
           name: applications
+        insertion_order: null
         column_mapping:
           id: id
   - name: edition
@@ -793,6 +798,7 @@
         remote_table:
           schema: public
           name: editions
+        insertion_order: null
         column_mapping:
           edition_id: id
   - name: rating_round
@@ -801,6 +807,7 @@
         remote_table:
           schema: public
           name: rating_rounds
+        insertion_order: null
         column_mapping:
           round_id: id
   select_permissions:
