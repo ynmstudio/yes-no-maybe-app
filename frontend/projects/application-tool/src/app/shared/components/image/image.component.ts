@@ -32,6 +32,7 @@ export class ImageComponent implements OnInit, OnChanges {
   mp4DownloadURL!: Promise<string>;
   webmDownloadURL!: Promise<string>;
   thumbnailURL!: Promise<string>;
+  thumbnailGifURL!: Promise<string>;
 
   videoApi!: VgApiService;
 
@@ -85,8 +86,18 @@ export class ImageComponent implements OnInit, OnChanges {
         .getUrl(this.key + '_converted.webm', 'video/webm')
         .catch((_) => _);
       this.thumbnailURL = this.storageService
+        .getUrl(
+          this.key,
+          'image/jpg',
+          this.width && this.height
+            ? `_${this.width}x${this.height}.jpg`
+            : '.jpg'
+        )
+        .catch((_) => _);
+      this.thumbnailGifURL = this.storageService
         .getUrl(this.key + '_preview.gif', 'image/gif')
         .catch((_) => _);
+
       this.downloadURL = this.storageService
         .getUrl(this.key, this.mimetype)
         .catch((_) => {

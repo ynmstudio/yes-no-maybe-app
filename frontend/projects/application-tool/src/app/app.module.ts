@@ -27,7 +27,11 @@ import 'firebase/auth';
 
 import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
 import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
-import { USE_EMULATOR as FUNCTIONS_EMULATOR } from '@angular/fire/functions';
+import {
+  AngularFireFunctionsModule,
+  REGION,
+  USE_EMULATOR as FUNCTIONS_EMULATOR,
+} from '@angular/fire/functions';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 
 import { registerLocaleData } from '@angular/common';
@@ -71,6 +75,7 @@ export class CustomDatePickerAdapter extends NativeDateAdapter {
     AppRoutingModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireFunctionsModule,
     AngularFireAuthModule,
     AngularFireStorageModule,
     SharedModule.forRoot(),
@@ -108,6 +113,7 @@ export class CustomDatePickerAdapter extends NativeDateAdapter {
     //   provide: FUNCTIONS_EMULATOR,
     //   useValue: environment.production ? undefined : ['localhost', 5001],
     // },
+    { provide: REGION, useValue: 'europe-west3' },
     { provide: DateAdapter, useClass: CustomDatePickerAdapter },
   ],
   bootstrap: [AppComponent],

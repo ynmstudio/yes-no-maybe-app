@@ -24,10 +24,13 @@ export class ApplicationsComponent implements OnInit {
   togglePreviews() {
     this.previews = !this.previews;
   }
+  showEliminated: boolean = false;
+  toggleShowEliminated() {
+    this.showEliminated = !this.showEliminated;
+  }
   visiblePreview: string = '';
   showPreview(application_id: string) {
     this.visiblePreview = application_id;
-    console.log(this.visiblePreview);
   }
 
   visibleChat: string = '';

@@ -1,4 +1,50 @@
-<div class="container--default" (mouseleave)="showPreview('')">
+<div class="container--default-x" (mouseleave)="showPreview('')">
+  <div
+    class="container--default-x py-4 bg-white flex items-center relative z-10 space-x-8"
+  >
+    <div class="flex items-center">
+      <input
+        id="toggle_previews"
+        type="checkbox"
+        [checked]="previews"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="togglePreviews()"
+      />
+      <label
+        for="toggle_previews"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.preview' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center">
+      <input
+        id="toggle_anonymity"
+        type="checkbox"
+        [checked]="anonymous"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleAnonymity()"
+      />
+      <label
+        for="toggle_anonymity"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.anonymous' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center">
+      <input
+        id="toggle_show_eliminated"
+        type="checkbox"
+        [checked]="showEliminated"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleShowEliminated()"
+      />
+      <label
+        for="toggle_show_eliminated"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'snippets.show-eliminated' | translate | uppercase"
+      ></label>
+    </div>
+  </div>
   <ng-container
     *ngIf="
       (applications$ | async)?.data?.applications?.length > 0;
@@ -8,7 +54,7 @@
     <div
       id="preview"
       *ngIf="previews"
-      class="container--default-margin absolute inset-0 pointer-events-none"
+      class="container--default-margin fixed inset-0 pointer-events-none"
     >
       <div
         class="absolute inset-0 transform-gpu transition-opacity duration-500"
@@ -33,20 +79,27 @@
       </div>
     </div>
     <div
-      class="container--default-x flex items-center py-2 space-x-8 border-b bg-white border-gray-300 relative z-10 text-xxs uppercase font-mono"
+      class="container--default-x flex items-center py-2 space-x-8 border-b leading-none bg-white border-black border-opacity-30 relative z-10 text-xxs uppercase font-mono"
     >
-      <div class="flex-auto">Künstler:in-Alias</div>
-      <div>Bewertungen</div>
+      <div
+        class="flex-auto"
+        [innerHtml]="'defaults.application-alias-single' | translate"
+      ></div>
+      <div [innerHtml]="'defaults.rating-multi' | translate | uppercase">
+        Bewertungen
+      </div>
       <div>Stimmen</div>
       <div class="w-10 text-right">Notizen</div>
     </div>
     <div
-      (mouseleave)="showPreview('')"
-      *ngFor="let application of (applications$ | async)?.data.applications"
-      class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-300 even:bg-gray-200 even:bg-opacity-25 hover:bg-gray-50 hover:bg-opacity-100 relative"
+      *ngFor="
+        let application of (applications$ | async)?.data.applications
+          | showEliminated: showEliminated
+      "
+      class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-500 border-opacity-30 even:bg-gray-500 even:bg-opacity-5 hover:bg-gray-50 hover:bg-opacity-100 relative"
       [ngClass]="[
         application.elimination
-          ? 'text-gray-400 hover:text-black transition-colors'
+          ? 'text-black text-opacity-30 hover:text-opacity-100 transition-colors'
           : ''
       ]"
     >
@@ -60,8 +113,14 @@
         "
       ></div>
       <div
+        *ngIf="application.winner"
+        class="text-xxs bg-blue-700 text-white pl-1 pr-2 py-1 whitespace-nowrap overflow-ellipsis overflow-hidden rounded-full leading-none font-condensed font-medium uppercase"
+      >
+        &#11088;&nbsp;&nbsp;winner
+      </div>
+      <div
         class="text-xxs bg-red-600 text-white px-2 rounded-full font-condensed font-medium uppercase"
-        *ngIf="application.elimination as elimination"
+        *ngIf="application.elimination as elimination; else showState"
         title="Eliminated
         {{ elimination.created_at | timePassed }} ago by
         {{ elimination.eliminated_by.name }}"
@@ -71,19 +130,51 @@
       </div>
       <div
         class="text-center"
-        *ngIf="application.ratings_aggregate?.aggregate?.avg?.value as rating"
         [ngSwitch]="true"
         [ngClass]="[
           application.ratings_aggregate?.aggregate?.stddev_samp?.value > 5
             ? 'text-red-800'
-            : ''
+            : 'text-gray-800'
         ]"
       >
-        <div *ngSwitchCase="rating > 5" class="text-blue-700">[Yes]</div>
-        <div *ngSwitchCase="rating === 5">[Maybe]</div>
-        <div *ngSwitchCase="rating < 5">[No]</div>
+        <div
+          *ngSwitchCase="
+            application.ratings_aggregate?.aggregate?.avg?.value > 5
+          "
+          class="text-blue-700"
+        >
+          [Yes]
+        </div>
+        <div
+          *ngSwitchCase="
+            application.ratings_aggregate?.aggregate?.avg?.value === 5
+          "
+        >
+          [Maybe]
+        </div>
+        <div
+          *ngSwitchCase="
+            application.ratings_aggregate?.aggregate?.avg?.value !== null &&
+            application.ratings_aggregate?.aggregate?.avg?.value < 5
+          "
+        >
+          [No]
+        </div>
         <div *ngSwitchDefault>–</div>
       </div>
+      <ng-template #showState>
+        <div
+          *ngIf="application.state !== 'complete'"
+          class="text-xxs bg-yellow-200 text-yellow-900 px-2 py-1 whitespace-nowrap overflow-ellipsis overflow-hidden rounded-full leading-none font-condensed font-medium uppercase"
+          [title]="
+            'application-state.' + (application.state || 'unknown') | translate
+          "
+          [innerHtml]="
+            'application-state.' + (application.state || 'unknown') | translate
+          "
+        ></div>
+      </ng-template>
+
       <div
         class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
         [innerHtml]="application.ratings_aggregate?.aggregate?.count || 0"
@@ -152,60 +243,4 @@
       ></span>
     </div>
   </ng-template>
-  <div class="container--default flex items-center relative z-10 space-x-8">
-    <div class="flex items-center">
-      <!-- This example requires Tailwind CSS v2.0+ -->
-      <!-- On: "bg-gray-600", Off: "bg-gray-200" -->
-      <button
-        (click)="togglePreviews()"
-        type="button"
-        aria-pressed="false"
-        aria-labelledby="toggleLabel"
-        [ngClass]="previews ? 'bg-green-600' : 'bg-red-600'"
-        class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
-      >
-        <span
-          class="sr-only"
-          [innerHtml]="'snippets.hide-idenity' | translate"
-        ></span>
-        <!-- On: "translate-x-5", Off: "translate-x-0" -->
-        <span
-          aria-hidden="true"
-          [ngClass]="[previews ? 'translate-x-6' : 'translate-x-0']"
-          class="inline-block h-5 w-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"
-        ></span>
-      </button>
-      <div
-        class="ml-2 text-xs font-mono text-gray-800 leading-none"
-        [innerHtml]="'defaults.preview' | translate | uppercase"
-      ></div>
-    </div>
-    <div class="flex items-center">
-      <!-- This example requires Tailwind CSS v2.0+ -->
-      <!-- On: "bg-gray-600", Off: "bg-gray-200" -->
-      <button
-        (click)="toggleAnonymity()"
-        type="button"
-        aria-pressed="false"
-        aria-labelledby="toggleLabel"
-        [ngClass]="anonymous ? 'bg-green-600' : 'bg-red-600'"
-        class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
-      >
-        <span
-          class="sr-only"
-          [innerHtml]="'snippets.hide-idenity' | translate"
-        ></span>
-        <!-- On: "translate-x-5", Off: "translate-x-0" -->
-        <span
-          aria-hidden="true"
-          [ngClass]="[anonymous ? 'translate-x-6' : 'translate-x-0']"
-          class="inline-block h-5 w-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"
-        ></span>
-      </button>
-      <div
-        class="ml-2 text-xs font-mono text-gray-800 leading-none"
-        [innerHtml]="'defaults.anonymous' | translate | uppercase"
-      ></div>
-    </div>
-  </div>
 </div>

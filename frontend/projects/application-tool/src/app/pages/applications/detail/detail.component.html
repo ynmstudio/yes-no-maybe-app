@@ -8,7 +8,35 @@
     class="container--default-x"
     *ngIf="application$ | async as applicationObject"
   >
-    <div id="gallery">
+    <div
+      *ngIf="
+        applicationObject.data?.applications_by_pk?.elimination as elimination
+      "
+      class="bg-blue-600 text-white py-2 p-4 text-sm text-center sticky top-24 -mt-px inset-x-0"
+      title="Eliminated
+    {{ elimination.created_at | timePassed }} ago by
+    {{ elimination.eliminated_by.name }}"
+    >
+      <span
+        [innerHtml]="
+          'snippets.eliminated-some-time-ago'
+            | translate
+              : {
+                  time: elimination.created_at | timePassed,
+                  round: (elimination.rating_round?.level || 0) + 1
+                }
+        "
+      ></span>
+      <span *ngIf="elimination.reason">: {{ elimination.reason }}</span>
+    </div>
+    <div
+      id="gallery"
+      *ngIf="
+        (works$ | async)?.data?.works?.length &&
+          (works$ | async)?.data?.works as works;
+        else noWorks
+      "
+    >
       <div
         class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 xl:aspect-w-3 xl:aspect-h-1 border-t border-b border-gray-300"
       >
@@ -75,11 +103,7 @@
           >
             <div
               class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain no-scrollbar transition-colors"
-              *ngFor="
-                let work of (works$ | async)?.data?.works;
-                let indexW = index;
-                let first = first
-              "
+              *ngFor="let work of works; let indexW = index; let first = first"
               [ngClass]="[
                 (currentWorkIndex | async) == indexW
                   ? 'bg-gray-900 '
@@ -327,6 +351,17 @@
         </div>
       </div>
     </div>
+    <ng-template #noWorks>
+      <div
+        class="h-80 flex items-center justify-center relative z-10 border-t border-b bg-gray-100 border-gray-300 mb-12"
+      >
+        <span
+          class="text-gray-500"
+          [innerHtml]="'snippets.no-works' | translate"
+        ></span>
+      </div>
+    </ng-template>
+
     <div class="lg:flex items-baseline">
       <div>
         <h1
@@ -467,17 +502,30 @@
           [innerHtml]="applicationObject.data?.applications_by_pk?.statement"
         ></div>
 
-        <div *ngIf="!anonymous">
-          <button
-            class="inline-block mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+        <div class="flex space-x-4 mt-8">
+          <!-- <button
+            *ngIf="!anonymous"
+            class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
             [innerHtml]="'email.send-email' | translate"
-          ></button>
+          ></button> -->
           <button
-            (click)="eliminateApplication()"
-            class="inline-block ml-4 mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+            *ngIf="
+              applicationObject.data?.applications_by_pk?.elimination;
+              else eliminationButton
+            "
+            (click)="reviveApplication()"
+            class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
           >
-            Einreichung disqualifizieren
+            Einreichung wiederaufnehmen
           </button>
+          <ng-template #eliminationButton>
+            <button
+              (click)="eliminateApplication()"
+              class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+            >
+              Einreichung disqualifizieren
+            </button>
+          </ng-template>
         </div>
       </div>
     </div>

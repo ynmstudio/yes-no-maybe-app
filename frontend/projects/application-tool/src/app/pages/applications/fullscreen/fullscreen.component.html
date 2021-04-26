@@ -1,5 +1,5 @@
 <div
-  class="fixed inset-0 min-h-screen flex flex-col z-20 bg-gray-50 dark:bg-gray-950 text-black dark:text-white"
+  class="fixed inset-0 min-h-screen flex flex-col z-30 bg-gray-50 dark:bg-gray-950 text-black dark:text-white"
   *ngIf="application$ | async as applicationObject"
 >
   <div class="container--default flex items-center justify-between z-10">
@@ -132,22 +132,26 @@
       <div>
         <button
           *ngIf="
+            (application_live$ | async)?.data?.applications_by_pk &&
             !(application_live$ | async)?.data?.applications_by_pk
               ?.rated_by_user &&
             (state$ | async) === 'rating' &&
-            (currentRoundID$ | async)
+            (currentRound$ | async)?.active
           "
           class="block px-6 rounded-xl leading-10 bg-blue-600 text-white"
           (click)="showRating()"
         >
-          <!-- <div class="sr-only">Toggle Chat</div> -->
-          <span class="leading-none font-mono font-light">Bewerten</span>
+          <span
+            class="leading-none font-mono font-light"
+            [innerText]="'actions.rate' | translate | titlecase"
+          ></span>
         </button>
       </div>
     </div>
 
     <div class="flex items-center">
       <button
+        (click)="back()"
         class="block py-2 px-6 rounded-tl-xl rounded-bl-xl leading-none bg-gray-200 dark:bg-gray-900"
       >
         <span class="text-2xl leading-none font-mono font-light">&larr;</span>
@@ -373,7 +377,7 @@
         (click)="setCurrentWork(indexW)"
       >
         <div
-          class="inline-block h-32 w-auto mr-2 ring-blue-500 transition-shadow"
+          class="inline-block h-32 w-auto mr-2 ring-blue-500 transition-shadow relative"
           (click)="setCurrentFile(indexF, $event, indexW)"
           *ngFor="let file of work?.files; let indexF = index"
           [ngClass]="[

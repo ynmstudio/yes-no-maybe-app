@@ -90,7 +90,6 @@ export type Applications = {
   /** An object relationship */
   edition: Editions;
   edition_id: Scalars['Int'];
-  eliminated: Scalars['Boolean'];
   /** An object relationship */
   elimination?: Maybe<Eliminations>;
   /** An array relationship */
@@ -110,6 +109,8 @@ export type Applications = {
   payment?: Maybe<Payments>;
   /** A computed field, executes function "application_rated_by_user" */
   rated_by_user?: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  rating_in_latest_round?: Maybe<Ratings_By_Application>;
   /** An array relationship */
   ratings: Array<Ratings>;
   /** An aggregate relationship */
@@ -309,7 +310,6 @@ export type Applications_Bool_Exp = {
   disclaimer?: Maybe<Boolean_Comparison_Exp>;
   edition?: Maybe<Editions_Bool_Exp>;
   edition_id?: Maybe<Int_Comparison_Exp>;
-  eliminated?: Maybe<Boolean_Comparison_Exp>;
   elimination?: Maybe<Eliminations_Bool_Exp>;
   files?: Maybe<Work_Files_Bool_Exp>;
   group?: Maybe<Boolean_Comparison_Exp>;
@@ -319,6 +319,7 @@ export type Applications_Bool_Exp = {
   messages?: Maybe<Messages_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   payment?: Maybe<Payments_Bool_Exp>;
+  rating_in_latest_round?: Maybe<Ratings_By_Application_Bool_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
   residency?: Maybe<Boolean_Comparison_Exp>;
   specifications?: Maybe<Work_Specifications_Bool_Exp>;
@@ -349,7 +350,6 @@ export type Applications_Insert_Input = {
   disclaimer?: Maybe<Scalars['Boolean']>;
   edition?: Maybe<Editions_Obj_Rel_Insert_Input>;
   edition_id?: Maybe<Scalars['Int']>;
-  eliminated?: Maybe<Scalars['Boolean']>;
   elimination?: Maybe<Eliminations_Obj_Rel_Insert_Input>;
   files?: Maybe<Work_Files_Arr_Rel_Insert_Input>;
   group?: Maybe<Scalars['Boolean']>;
@@ -359,6 +359,7 @@ export type Applications_Insert_Input = {
   messages?: Maybe<Messages_Arr_Rel_Insert_Input>;
   name?: Maybe<Scalars['String']>;
   payment?: Maybe<Payments_Obj_Rel_Insert_Input>;
+  rating_in_latest_round?: Maybe<Ratings_By_Application_Obj_Rel_Insert_Input>;
   ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
   residency?: Maybe<Scalars['Boolean']>;
   specifications?: Maybe<Work_Specifications_Arr_Rel_Insert_Input>;
@@ -449,7 +450,6 @@ export type Applications_Order_By = {
   disclaimer?: Maybe<Order_By>;
   edition?: Maybe<Editions_Order_By>;
   edition_id?: Maybe<Order_By>;
-  eliminated?: Maybe<Order_By>;
   elimination?: Maybe<Eliminations_Order_By>;
   files_aggregate?: Maybe<Work_Files_Aggregate_Order_By>;
   group?: Maybe<Order_By>;
@@ -459,6 +459,7 @@ export type Applications_Order_By = {
   messages_aggregate?: Maybe<Messages_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
   payment?: Maybe<Payments_Order_By>;
+  rating_in_latest_round?: Maybe<Ratings_By_Application_Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
   residency?: Maybe<Order_By>;
   specifications_aggregate?: Maybe<Work_Specifications_Aggregate_Order_By>;
@@ -486,8 +487,6 @@ export enum Applications_Select_Column {
   /** column name */
   EditionId = 'edition_id',
   /** column name */
-  Eliminated = 'eliminated',
-  /** column name */
   Group = 'group',
   /** column name */
   Id = 'id',
@@ -512,7 +511,6 @@ export type Applications_Set_Input = {
   database?: Maybe<Scalars['Boolean']>;
   disclaimer?: Maybe<Scalars['Boolean']>;
   edition_id?: Maybe<Scalars['Int']>;
-  eliminated?: Maybe<Scalars['Boolean']>;
   group?: Maybe<Scalars['Boolean']>;
   id?: Maybe<Scalars['uuid']>;
   internal_name?: Maybe<Scalars['String']>;
@@ -579,8 +577,6 @@ export enum Applications_Update_Column {
   Disclaimer = 'disclaimer',
   /** column name */
   EditionId = 'edition_id',
-  /** column name */
-  Eliminated = 'eliminated',
   /** column name */
   Group = 'group',
   /** column name */
@@ -1282,11 +1278,39 @@ export type Eliminations_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "eliminations" */
+export type Eliminations_Aggregate_Order_By = {
+  avg?: Maybe<Eliminations_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Eliminations_Max_Order_By>;
+  min?: Maybe<Eliminations_Min_Order_By>;
+  stddev?: Maybe<Eliminations_Stddev_Order_By>;
+  stddev_pop?: Maybe<Eliminations_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Eliminations_Stddev_Samp_Order_By>;
+  sum?: Maybe<Eliminations_Sum_Order_By>;
+  var_pop?: Maybe<Eliminations_Var_Pop_Order_By>;
+  var_samp?: Maybe<Eliminations_Var_Samp_Order_By>;
+  variance?: Maybe<Eliminations_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "eliminations" */
+export type Eliminations_Arr_Rel_Insert_Input = {
+  data: Array<Eliminations_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Eliminations_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Eliminations_Avg_Fields = {
   __typename?: 'eliminations_avg_fields';
   id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "eliminations" */
+export type Eliminations_Avg_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "eliminations". All fields are combined with a logical 'AND'. */
@@ -1345,6 +1369,16 @@ export type Eliminations_Max_Fields = {
   round_id?: Maybe<Scalars['Int']>;
 };
 
+/** order by max() on columns of table "eliminations" */
+export type Eliminations_Max_Order_By = {
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  reason?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Eliminations_Min_Fields = {
   __typename?: 'eliminations_min_fields';
@@ -1354,6 +1388,16 @@ export type Eliminations_Min_Fields = {
   id?: Maybe<Scalars['Int']>;
   reason?: Maybe<Scalars['String']>;
   round_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "eliminations" */
+export type Eliminations_Min_Order_By = {
+  application_id?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  created_by?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  reason?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "eliminations" */
@@ -1430,11 +1474,23 @@ export type Eliminations_Stddev_Fields = {
   round_id?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "eliminations" */
+export type Eliminations_Stddev_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Eliminations_Stddev_Pop_Fields = {
   __typename?: 'eliminations_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "eliminations" */
+export type Eliminations_Stddev_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -1444,11 +1500,23 @@ export type Eliminations_Stddev_Samp_Fields = {
   round_id?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_samp() on columns of table "eliminations" */
+export type Eliminations_Stddev_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
 /** aggregate sum on columns */
 export type Eliminations_Sum_Fields = {
   __typename?: 'eliminations_sum_fields';
   id?: Maybe<Scalars['Int']>;
   round_id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "eliminations" */
+export type Eliminations_Sum_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
 };
 
 /** update columns of table "eliminations" */
@@ -1474,6 +1542,12 @@ export type Eliminations_Var_Pop_Fields = {
   round_id?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "eliminations" */
+export type Eliminations_Var_Pop_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Eliminations_Var_Samp_Fields = {
   __typename?: 'eliminations_var_samp_fields';
@@ -1481,11 +1555,23 @@ export type Eliminations_Var_Samp_Fields = {
   round_id?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_samp() on columns of table "eliminations" */
+export type Eliminations_Var_Samp_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type Eliminations_Variance_Fields = {
   __typename?: 'eliminations_variance_fields';
   id?: Maybe<Scalars['Float']>;
   round_id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "eliminations" */
+export type Eliminations_Variance_Order_By = {
+  id?: Maybe<Order_By>;
+  round_id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "messages" */
@@ -3079,9 +3165,9 @@ export type Query_Root = {
   editions_aggregate: Editions_Aggregate;
   /** fetch data from the table: "editions" using primary key columns */
   editions_by_pk?: Maybe<Editions>;
-  /** fetch data from the table: "eliminations" */
+  /** An array relationship */
   eliminations: Array<Eliminations>;
-  /** fetch aggregated fields from the table: "eliminations" */
+  /** An aggregate relationship */
   eliminations_aggregate: Eliminations_Aggregate;
   /** fetch data from the table: "eliminations" using primary key columns */
   eliminations_by_pk?: Maybe<Eliminations>;
@@ -3647,13 +3733,20 @@ export type Rating_Rounds = {
   __typename?: 'rating_rounds';
   /** A computed field, executes function "rating_round_state" */
   active?: Maybe<Scalars['Boolean']>;
+  closed: Scalars['Boolean'];
   created_at?: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
   edition: Editions;
   edition_id: Scalars['Int'];
+  /** An array relationship */
+  eliminations: Array<Eliminations>;
+  /** An aggregate relationship */
+  eliminations_aggregate: Eliminations_Aggregate;
   end_at: Scalars['timestamptz'];
   goal: Scalars['Int'];
   id: Scalars['Int'];
+  /** A computed field, executes function "get_rating_round_level" */
+  level?: Maybe<Scalars['Int']>;
   /** An object relationship */
   next_round?: Maybe<Rating_Rounds>;
   /** An object relationship */
@@ -3665,6 +3758,26 @@ export type Rating_Rounds = {
   ratings_aggregate: Ratings_Aggregate;
   start_at: Scalars['timestamptz'];
   updated_at?: Maybe<Scalars['timestamptz']>;
+};
+
+
+/** columns and relationships of "rating_rounds" */
+export type Rating_RoundsEliminationsArgs = {
+  distinct_on?: Maybe<Array<Eliminations_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Eliminations_Order_By>>;
+  where?: Maybe<Eliminations_Bool_Exp>;
+};
+
+
+/** columns and relationships of "rating_rounds" */
+export type Rating_RoundsEliminations_AggregateArgs = {
+  distinct_on?: Maybe<Array<Eliminations_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Eliminations_Order_By>>;
+  where?: Maybe<Eliminations_Bool_Exp>;
 };
 
 
@@ -3761,9 +3874,11 @@ export type Rating_Rounds_Bool_Exp = {
   _and?: Maybe<Array<Rating_Rounds_Bool_Exp>>;
   _not?: Maybe<Rating_Rounds_Bool_Exp>;
   _or?: Maybe<Array<Rating_Rounds_Bool_Exp>>;
+  closed?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   edition?: Maybe<Editions_Bool_Exp>;
   edition_id?: Maybe<Int_Comparison_Exp>;
+  eliminations?: Maybe<Eliminations_Bool_Exp>;
   end_at?: Maybe<Timestamptz_Comparison_Exp>;
   goal?: Maybe<Int_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
@@ -3793,9 +3908,11 @@ export type Rating_Rounds_Inc_Input = {
 
 /** input type for inserting data into table "rating_rounds" */
 export type Rating_Rounds_Insert_Input = {
+  closed?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   edition?: Maybe<Editions_Obj_Rel_Insert_Input>;
   edition_id?: Maybe<Scalars['Int']>;
+  eliminations?: Maybe<Eliminations_Arr_Rel_Insert_Input>;
   end_at?: Maybe<Scalars['timestamptz']>;
   goal?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -3882,9 +3999,11 @@ export type Rating_Rounds_On_Conflict = {
 
 /** Ordering options when selecting data from "rating_rounds". */
 export type Rating_Rounds_Order_By = {
+  closed?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   edition?: Maybe<Editions_Order_By>;
   edition_id?: Maybe<Order_By>;
+  eliminations_aggregate?: Maybe<Eliminations_Aggregate_Order_By>;
   end_at?: Maybe<Order_By>;
   goal?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
@@ -3903,6 +4022,8 @@ export type Rating_Rounds_Pk_Columns_Input = {
 
 /** select columns of table "rating_rounds" */
 export enum Rating_Rounds_Select_Column {
+  /** column name */
+  Closed = 'closed',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -3923,6 +4044,7 @@ export enum Rating_Rounds_Select_Column {
 
 /** input type for updating data in table "rating_rounds" */
 export type Rating_Rounds_Set_Input = {
+  closed?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   edition_id?: Maybe<Scalars['Int']>;
   end_at?: Maybe<Scalars['timestamptz']>;
@@ -3936,6 +4058,9 @@ export type Rating_Rounds_Set_Input = {
 /** columns and relationships of "rating_rounds_sorted" */
 export type Rating_Rounds_Sorted = {
   __typename?: 'rating_rounds_sorted';
+  closed?: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  edition?: Maybe<Editions>;
   edition_id?: Maybe<Scalars['Int']>;
   end_at?: Maybe<Scalars['timestamptz']>;
   goal?: Maybe<Scalars['Int']>;
@@ -3990,6 +4115,8 @@ export type Rating_Rounds_Sorted_Bool_Exp = {
   _and?: Maybe<Array<Rating_Rounds_Sorted_Bool_Exp>>;
   _not?: Maybe<Rating_Rounds_Sorted_Bool_Exp>;
   _or?: Maybe<Array<Rating_Rounds_Sorted_Bool_Exp>>;
+  closed?: Maybe<Boolean_Comparison_Exp>;
+  edition?: Maybe<Editions_Bool_Exp>;
   edition_id?: Maybe<Int_Comparison_Exp>;
   end_at?: Maybe<Timestamptz_Comparison_Exp>;
   goal?: Maybe<Int_Comparison_Exp>;
@@ -4025,6 +4152,8 @@ export type Rating_Rounds_Sorted_Min_Fields = {
 
 /** Ordering options when selecting data from "rating_rounds_sorted". */
 export type Rating_Rounds_Sorted_Order_By = {
+  closed?: Maybe<Order_By>;
+  edition?: Maybe<Editions_Order_By>;
   edition_id?: Maybe<Order_By>;
   end_at?: Maybe<Order_By>;
   goal?: Maybe<Order_By>;
@@ -4036,6 +4165,8 @@ export type Rating_Rounds_Sorted_Order_By = {
 
 /** select columns of table "rating_rounds_sorted" */
 export enum Rating_Rounds_Sorted_Select_Column {
+  /** column name */
+  Closed = 'closed',
   /** column name */
   EditionId = 'edition_id',
   /** column name */
@@ -4192,6 +4323,8 @@ export type Rating_Rounds_Sum_Order_By = {
 
 /** update columns of table "rating_rounds" */
 export enum Rating_Rounds_Update_Column {
+  /** column name */
+  Closed = 'closed',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -4438,6 +4571,19 @@ export type Ratings_By_Application_Bool_Exp = {
   round_id?: Maybe<Int_Comparison_Exp>;
 };
 
+/** input type for inserting data into table "ratings_by_application" */
+export type Ratings_By_Application_Insert_Input = {
+  application?: Maybe<Applications_Obj_Rel_Insert_Input>;
+  avg?: Maybe<Scalars['numeric']>;
+  avg_total?: Maybe<Scalars['numeric']>;
+  count?: Maybe<Scalars['bigint']>;
+  edition?: Maybe<Editions_Obj_Rel_Insert_Input>;
+  edition_id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['uuid']>;
+  rating_round?: Maybe<Rating_Rounds_Obj_Rel_Insert_Input>;
+  round_id?: Maybe<Scalars['Int']>;
+};
+
 /** aggregate max on columns */
 export type Ratings_By_Application_Max_Fields = {
   __typename?: 'ratings_by_application_max_fields';
@@ -4458,6 +4604,11 @@ export type Ratings_By_Application_Min_Fields = {
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['uuid']>;
   round_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting object relation for remote table "ratings_by_application" */
+export type Ratings_By_Application_Obj_Rel_Insert_Input = {
+  data: Ratings_By_Application_Insert_Input;
 };
 
 /** Ordering options when selecting data from "ratings_by_application". */
@@ -4871,9 +5022,9 @@ export type Subscription_Root = {
   editions_aggregate: Editions_Aggregate;
   /** fetch data from the table: "editions" using primary key columns */
   editions_by_pk?: Maybe<Editions>;
-  /** fetch data from the table: "eliminations" */
+  /** An array relationship */
   eliminations: Array<Eliminations>;
-  /** fetch aggregated fields from the table: "eliminations" */
+  /** An aggregate relationship */
   eliminations_aggregate: Eliminations_Aggregate;
   /** fetch data from the table: "eliminations" using primary key columns */
   eliminations_by_pk?: Maybe<Eliminations>;
@@ -5704,6 +5855,10 @@ export type Users = {
   id: Scalars['String'];
   last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  ratings: Array<Ratings>;
+  /** An aggregate relationship */
+  ratings_aggregate: Ratings_Aggregate;
   type: Scalars['String'];
 };
 
@@ -5725,6 +5880,26 @@ export type UsersApplications_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Applications_Order_By>>;
   where?: Maybe<Applications_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersRatingsArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersRatings_AggregateArgs = {
+  distinct_on?: Maybe<Array<Ratings_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Ratings_Order_By>>;
+  where?: Maybe<Ratings_Bool_Exp>;
 };
 
 /** aggregated selection of "users" */
@@ -5758,6 +5933,7 @@ export type Users_Bool_Exp = {
   id?: Maybe<String_Comparison_Exp>;
   last_seen?: Maybe<Timestamptz_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
+  ratings?: Maybe<Ratings_Bool_Exp>;
   type?: Maybe<String_Comparison_Exp>;
 };
 
@@ -5773,6 +5949,7 @@ export type Users_Insert_Input = {
   id?: Maybe<Scalars['String']>;
   last_seen?: Maybe<Scalars['timestamptz']>;
   name?: Maybe<Scalars['String']>;
+  ratings?: Maybe<Ratings_Arr_Rel_Insert_Input>;
   type?: Maybe<Scalars['String']>;
 };
 
@@ -5928,6 +6105,7 @@ export type Users_Order_By = {
   id?: Maybe<Order_By>;
   last_seen?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
+  ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
   type?: Maybe<Order_By>;
 };
 
@@ -7749,7 +7927,19 @@ export type ApplicationFragment = (
 
 export type AdminApplicationFragment = (
   { __typename?: 'applications' }
-  & Pick<Applications, 'internal_name' | 'rated_by_user'>
+  & Pick<Applications, 'internal_name' | 'rated_by_user' | 'winner'>
+  & { elimination?: Maybe<(
+    { __typename?: 'eliminations' }
+    & EliminationFragment
+  )>, files: Array<(
+    { __typename?: 'work_files' }
+    & WorkFileFragment
+  )> }
+);
+
+export type JuryApplicationsFragment = (
+  { __typename?: 'applications' }
+  & Pick<Applications, 'id' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'internal_name' | 'rated_by_user' | 'locked' | 'ready' | 'state' | 'winner'>
   & { elimination?: Maybe<(
     { __typename?: 'eliminations' }
     & EliminationFragment
@@ -7761,11 +7951,14 @@ export type AdminApplicationFragment = (
 
 export type EliminationFragment = (
   { __typename?: 'eliminations' }
-  & Pick<Eliminations, 'created_at' | 'round_id' | 'reason'>
+  & Pick<Eliminations, 'application_id' | 'created_at' | 'round_id' | 'reason'>
   & { eliminated_by: (
     { __typename?: 'users' }
     & Pick<Users, 'name'>
-  ) }
+  ), rating_round?: Maybe<(
+    { __typename?: 'rating_rounds' }
+    & Pick<Rating_Rounds, 'level'>
+  )> }
 );
 
 export type GetApplicationsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -7902,6 +8095,56 @@ export type DeletePaymentMutation = (
   )> }
 );
 
+export type GetJuryApplicationsSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetJuryApplicationsSubscription = (
+  { __typename?: 'subscription_root' }
+  & { applications_aggregate: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'applications' }
+      & { rating_in_latest_round?: Maybe<(
+        { __typename?: 'ratings_by_application' }
+        & Pick<Ratings_By_Application, 'round_id' | 'avg' | 'avg_total' | 'count'>
+      )>, ratings_aggregate: (
+        { __typename?: 'ratings_aggregate' }
+        & { aggregate?: Maybe<(
+          { __typename?: 'ratings_aggregate_fields' }
+          & Pick<Ratings_Aggregate_Fields, 'count'>
+          & { stddev_samp?: Maybe<(
+            { __typename?: 'ratings_stddev_samp_fields' }
+            & Pick<Ratings_Stddev_Samp_Fields, 'value'>
+          )>, var_samp?: Maybe<(
+            { __typename?: 'ratings_var_samp_fields' }
+            & Pick<Ratings_Var_Samp_Fields, 'value'>
+          )>, avg?: Maybe<(
+            { __typename?: 'ratings_avg_fields' }
+            & Pick<Ratings_Avg_Fields, 'value'>
+          )> }
+        )> }
+      ) }
+      & JuryApplicationsFragment
+    )> }
+  ) }
+);
+
+export type GetJuryApplicationQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetJuryApplicationQuery = (
+  { __typename?: 'query_root' }
+  & { applications_by_pk?: Maybe<(
+    { __typename?: 'applications' }
+    & JuryApplicationsFragment
+  )> }
+);
+
 export type GetAdminApplicationsByEditionQueryVariables = Exact<{
   edition_id?: Maybe<Scalars['Int']>;
 }>;
@@ -7911,7 +8154,10 @@ export type GetAdminApplicationsByEditionQuery = (
   { __typename?: 'query_root' }
   & { applications: Array<(
     { __typename?: 'applications' }
-    & { ratings_aggregate: (
+    & { rating_in_latest_round?: Maybe<(
+      { __typename?: 'ratings_by_application' }
+      & Pick<Ratings_By_Application, 'round_id' | 'avg' | 'avg_total' | 'count'>
+    )>, ratings_aggregate: (
       { __typename?: 'ratings_aggregate' }
       & { aggregate?: Maybe<(
         { __typename?: 'ratings_aggregate_fields' }
@@ -7953,17 +8199,38 @@ export type GetAdminApplicationQuery = (
   )> }
 );
 
-export type GetAdminApplicationLiveSubscriptionVariables = Exact<{
+export type GetAdminApplicationLiveQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
 
 
-export type GetAdminApplicationLiveSubscription = (
-  { __typename?: 'subscription_root' }
+export type GetAdminApplicationLiveQuery = (
+  { __typename?: 'query_root' }
   & { applications_by_pk?: Maybe<(
     { __typename?: 'applications' }
     & Pick<Applications, 'rated_by_user'>
   )> }
+);
+
+export type GetRemainingApplicationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRemainingApplicationsQuery = (
+  { __typename?: 'query_root' }
+  & { applications_aggregate: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'applications' }
+      & Pick<Applications, 'id' | 'internal_name'>
+      & { rating_in_latest_round?: Maybe<(
+        { __typename?: 'ratings_by_application' }
+        & Pick<Ratings_By_Application, 'round_id' | 'avg' | 'avg_total' | 'count'>
+      )> }
+    )> }
+  ) }
 );
 
 export type CreateNewAliasMutationVariables = Exact<{
@@ -7991,6 +8258,19 @@ export type EliminateApplicationMutation = (
   & { insert_eliminations_one?: Maybe<(
     { __typename?: 'eliminations' }
     & EliminationFragment
+  )> }
+);
+
+export type DeleteEliminationMutationVariables = Exact<{
+  application_id: Scalars['uuid'];
+}>;
+
+
+export type DeleteEliminationMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_eliminations_by_pk?: Maybe<(
+    { __typename?: 'eliminations' }
+    & Pick<Eliminations, 'application_id'>
   )> }
 );
 
@@ -8100,9 +8380,16 @@ export type MessageFragment = (
   & { user: (
     { __typename?: 'users' }
     & Pick<Users, 'id' | 'name'>
-  ), rating?: Maybe<(
+  ), rating_round?: Maybe<(
+    { __typename?: 'rating_rounds' }
+    & Pick<Rating_Rounds, 'level'>
+  )>, rating?: Maybe<(
     { __typename?: 'ratings' }
     & Pick<Ratings, 'value' | 'created_at'>
+    & { rating_round: (
+      { __typename?: 'rating_rounds' }
+      & Pick<Rating_Rounds, 'level'>
+    ) }
   )> }
 );
 
@@ -8349,20 +8636,15 @@ export type UpdateEditionMutation = (
 );
 
 export type SetEditionWinnerMutationVariables = Exact<{
-  id: Scalars['Int'];
   application_id?: Maybe<Scalars['uuid']>;
 }>;
 
 
 export type SetEditionWinnerMutation = (
   { __typename?: 'mutation_root' }
-  & { update_editions_by_pk?: Maybe<(
-    { __typename?: 'editions' }
-    & { winner?: Maybe<(
-      { __typename?: 'applications' }
-      & Pick<Applications, 'id' | 'name'>
-    )> }
-    & EditionFragment
+  & { update_editions?: Maybe<(
+    { __typename?: 'editions_mutation_response' }
+    & Pick<Editions_Mutation_Response, 'affected_rows'>
   )> }
 );
 
@@ -8386,6 +8668,133 @@ export type AddRatingMutation = (
   )> }
 );
 
+export type GetJuryStatisticSubscriptionVariables = Exact<{
+  round_id: Scalars['Int'];
+  _in: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type GetJuryStatisticSubscription = (
+  { __typename?: 'subscription_root' }
+  & { users: Array<(
+    { __typename?: 'users' }
+    & Pick<Users, 'name'>
+    & { ratings_aggregate: (
+      { __typename?: 'ratings_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'ratings_aggregate_fields' }
+        & Pick<Ratings_Aggregate_Fields, 'count'>
+      )> }
+    ) }
+  )> }
+);
+
+export type RoundFragment = (
+  { __typename?: 'rating_rounds' }
+  & Pick<Rating_Rounds, 'id' | 'goal' | 'start_at' | 'end_at' | 'active' | 'closed' | 'level'>
+  & { edition: (
+    { __typename?: 'editions' }
+    & Pick<Editions, 'id'>
+    & { applications_aggregate: (
+      { __typename?: 'applications_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'applications_aggregate_fields' }
+        & Pick<Applications_Aggregate_Fields, 'count'>
+      )> }
+    ) }
+  ), eliminations_aggregate: (
+    { __typename?: 'eliminations_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'eliminations_aggregate_fields' }
+      & Pick<Eliminations_Aggregate_Fields, 'count'>
+    )>, nodes: Array<(
+      { __typename?: 'eliminations' }
+      & Pick<Eliminations, 'application_id'>
+    )> }
+  ) }
+);
+
+export type RoundSortedFragment = (
+  { __typename?: 'rating_rounds_sorted' }
+  & Pick<Rating_Rounds_Sorted, 'id' | 'goal' | 'start_at' | 'end_at' | 'closed' | 'level'>
+  & { edition?: Maybe<(
+    { __typename?: 'editions' }
+    & { applications_aggregate: (
+      { __typename?: 'applications_aggregate' }
+      & { aggregate?: Maybe<(
+        { __typename?: 'applications_aggregate_fields' }
+        & Pick<Applications_Aggregate_Fields, 'count'>
+      )> }
+    ) }
+  )> }
+);
+
+export type GetAllRoundsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllRoundsQuery = (
+  { __typename?: 'query_root' }
+  & { rating_rounds_sorted: Array<(
+    { __typename?: 'rating_rounds_sorted' }
+    & RoundSortedFragment
+  )>, rating_rounds: Array<(
+    { __typename?: 'rating_rounds' }
+    & RoundFragment
+  )> }
+);
+
+export type CreateRoundMutationVariables = Exact<{
+  edition_id: Scalars['Int'];
+  end_at: Scalars['timestamptz'];
+  goal?: Maybe<Scalars['Int']>;
+  prev_round_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type CreateRoundMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_rating_rounds_one?: Maybe<(
+    { __typename?: 'rating_rounds' }
+    & RoundFragment
+  )> }
+);
+
+export type UpdateRoundMutationVariables = Exact<{
+  round_id: Scalars['Int'];
+  end_at: Scalars['timestamptz'];
+  goal?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type UpdateRoundMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_rating_rounds_by_pk?: Maybe<(
+    { __typename?: 'rating_rounds' }
+    & RoundFragment
+  )> }
+);
+
+export type CloseRoundMutationVariables = Exact<{
+  round_id: Scalars['Int'];
+  objects: Array<Eliminations_Insert_Input> | Eliminations_Insert_Input;
+}>;
+
+
+export type CloseRoundMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_eliminations?: Maybe<(
+    { __typename?: 'eliminations_mutation_response' }
+    & Pick<Eliminations_Mutation_Response, 'affected_rows'>
+    & { returning: Array<(
+      { __typename?: 'eliminations' }
+      & EliminationFragment
+    )> }
+  )>, update_rating_rounds_by_pk?: Maybe<(
+    { __typename?: 'rating_rounds' }
+    & Pick<Rating_Rounds, 'id' | 'closed'>
+  )> }
+);
+
 export type GetCurrentRoundSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -8393,8 +8802,58 @@ export type GetCurrentRoundSubscription = (
   { __typename?: 'subscription_root' }
   & { rating_rounds: Array<(
     { __typename?: 'rating_rounds' }
-    & Pick<Rating_Rounds, 'id'>
+    & RoundFragment
   )> }
+);
+
+export type GetApplicationsToEliminateQueryVariables = Exact<{
+  round_id: Scalars['Int'];
+}>;
+
+
+export type GetApplicationsToEliminateQuery = (
+  { __typename?: 'query_root' }
+  & { applications: Array<(
+    { __typename?: 'applications' }
+    & Pick<Applications, 'id'>
+  )> }
+);
+
+export type GetRoundStatisticQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetRoundStatisticQuery = (
+  { __typename?: 'query_root' }
+  & { rating_rounds_by_pk?: Maybe<(
+    { __typename?: 'rating_rounds' }
+    & RoundFragment
+  )>, out: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), in: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), rated: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ), total: (
+    { __typename?: 'applications_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'applications_aggregate_fields' }
+      & Pick<Applications_Aggregate_Fields, 'count'>
+    )> }
+  ) }
 );
 
 export type UpdateFragment = (
@@ -8725,10 +9184,14 @@ export const ApplicationFragmentDoc = gql`
     ${PaymentFragmentDoc}`;
 export const EliminationFragmentDoc = gql`
     fragment Elimination on eliminations {
+  application_id
   created_at
   round_id
   eliminated_by {
     name
+  }
+  rating_round {
+    level
   }
   reason
 }
@@ -8755,6 +9218,29 @@ export const AdminApplicationFragmentDoc = gql`
     fragment AdminApplication on applications {
   internal_name
   rated_by_user
+  winner
+  elimination {
+    ...Elimination
+  }
+  files(limit: 1, order_by: {order: asc_nulls_last}) {
+    ...WorkFile
+  }
+}
+    ${EliminationFragmentDoc}
+${WorkFileFragmentDoc}`;
+export const JuryApplicationsFragmentDoc = gql`
+    fragment JuryApplications on applications {
+  id
+  group
+  created_at
+  updated_at
+  statement
+  internal_name
+  rated_by_user
+  locked
+  ready
+  state
+  winner
   elimination {
     ...Elimination
   }
@@ -8775,9 +9261,15 @@ export const MessageFragmentDoc = gql`
   created_at
   application_id
   round_id
+  rating_round {
+    level
+  }
   rating {
     value
     created_at
+    rating_round {
+      level
+    }
   }
 }
     `;
@@ -8792,6 +9284,50 @@ export const EditionFragmentDoc = gql`
   applications_aggregate {
     aggregate {
       count
+    }
+  }
+}
+    `;
+export const RoundFragmentDoc = gql`
+    fragment Round on rating_rounds {
+  id
+  goal
+  start_at
+  end_at
+  active
+  closed
+  level
+  edition {
+    id
+    applications_aggregate(where: {_not: {elimination: {}}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+  eliminations_aggregate {
+    aggregate {
+      count
+    }
+    nodes {
+      application_id
+    }
+  }
+}
+    `;
+export const RoundSortedFragmentDoc = gql`
+    fragment RoundSorted on rating_rounds_sorted {
+  id
+  goal
+  start_at
+  end_at
+  closed
+  level
+  edition {
+    applications_aggregate(where: {_not: {elimination: {}}}) {
+      aggregate {
+        count
+      }
     }
   }
 }
@@ -9036,14 +9572,84 @@ export const DeletePaymentDocument = gql`
       super(apollo);
     }
   }
+export const GetJuryApplicationsDocument = gql`
+    subscription GetJuryApplications {
+  applications_aggregate(
+    where: {edition: {current: {_eq: true}}, _not: {elimination: {}}}
+    order_by: {rating_in_latest_round: {avg: desc_nulls_first, count: desc_nulls_first}, ratings_aggregate: {stddev_samp: {value: desc_nulls_first}}}
+  ) {
+    aggregate {
+      count
+    }
+    nodes {
+      ...JuryApplications
+      rating_in_latest_round {
+        round_id
+        avg
+        avg_total
+        count
+      }
+      ratings_aggregate {
+        aggregate {
+          count
+          stddev_samp {
+            value
+          }
+          var_samp {
+            value
+          }
+          avg {
+            value
+          }
+        }
+      }
+    }
+  }
+}
+    ${JuryApplicationsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetJuryApplicationsGQL extends Apollo.Subscription<GetJuryApplicationsSubscription, GetJuryApplicationsSubscriptionVariables> {
+    document = GetJuryApplicationsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetJuryApplicationDocument = gql`
+    query GetJuryApplication($id: uuid!) {
+  applications_by_pk(id: $id) {
+    ...JuryApplications
+  }
+}
+    ${JuryApplicationsFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetJuryApplicationGQL extends Apollo.Query<GetJuryApplicationQuery, GetJuryApplicationQueryVariables> {
+    document = GetJuryApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetAdminApplicationsByEditionDocument = gql`
     query GetAdminApplicationsByEdition($edition_id: Int = -1) {
   applications(
     where: {edition_id: {_eq: $edition_id}}
-    order_by: {elimination: {created_at: asc_nulls_first}, created_at: asc_nulls_first}
+    order_by: {created_at: asc_nulls_first, rating_in_latest_round: {avg: desc_nulls_first, count: desc_nulls_first}, ratings_aggregate: {stddev_samp: {value: desc_nulls_first}}, elimination: {created_at: asc_nulls_first}}
   ) {
     ...Application
     ...AdminApplication
+    rating_in_latest_round {
+      round_id
+      avg
+      avg_total
+      count
+    }
     ratings_aggregate {
       aggregate {
         count
@@ -9099,7 +9705,7 @@ ${AdminApplicationFragmentDoc}`;
     }
   }
 export const GetAdminApplicationLiveDocument = gql`
-    subscription GetAdminApplicationLive($id: uuid!) {
+    query GetAdminApplicationLive($id: uuid!) {
   applications_by_pk(id: $id) {
     rated_by_user
   }
@@ -9109,8 +9715,41 @@ export const GetAdminApplicationLiveDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class GetAdminApplicationLiveGQL extends Apollo.Subscription<GetAdminApplicationLiveSubscription, GetAdminApplicationLiveSubscriptionVariables> {
+  export class GetAdminApplicationLiveGQL extends Apollo.Query<GetAdminApplicationLiveQuery, GetAdminApplicationLiveQueryVariables> {
     document = GetAdminApplicationLiveDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetRemainingApplicationsDocument = gql`
+    query GetRemainingApplications {
+  applications_aggregate(
+    where: {edition: {current: {_eq: true}}, _not: {elimination: {}}}
+    order_by: {rating_in_latest_round: {avg: desc_nulls_first, count: desc_nulls_last}, ratings_aggregate: {stddev_samp: {value: desc_nulls_last}}}
+  ) {
+    aggregate {
+      count
+    }
+    nodes {
+      id
+      internal_name
+      rating_in_latest_round {
+        round_id
+        avg
+        avg_total
+        count
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetRemainingApplicationsGQL extends Apollo.Query<GetRemainingApplicationsQuery, GetRemainingApplicationsQueryVariables> {
+    document = GetRemainingApplicationsDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -9151,6 +9790,24 @@ export const EliminateApplicationDocument = gql`
   })
   export class EliminateApplicationGQL extends Apollo.Mutation<EliminateApplicationMutation, EliminateApplicationMutationVariables> {
     document = EliminateApplicationDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const DeleteEliminationDocument = gql`
+    mutation DeleteElimination($application_id: uuid!) {
+  delete_eliminations_by_pk(application_id: $application_id) {
+    application_id
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class DeleteEliminationGQL extends Apollo.Mutation<DeleteEliminationMutation, DeleteEliminationMutationVariables> {
+    document = DeleteEliminationDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);
@@ -9617,16 +10274,15 @@ export const UpdateEditionDocument = gql`
     }
   }
 export const SetEditionWinnerDocument = gql`
-    mutation SetEditionWinner($id: Int!, $application_id: uuid) {
-  update_editions_by_pk(_set: {winner_id: $application_id}, pk_columns: {id: $id}) {
-    ...Edition
-    winner {
-      id
-      name
-    }
+    mutation SetEditionWinner($application_id: uuid) {
+  update_editions(
+    where: {current: {_eq: true}}
+    _set: {winner_id: $application_id}
+  ) {
+    affected_rows
   }
 }
-    ${EditionFragmentDoc}`;
+    `;
 
   @Injectable({
     providedIn: 'root'
@@ -9641,7 +10297,7 @@ export const SetEditionWinnerDocument = gql`
 export const AddRatingDocument = gql`
     mutation AddRating($application_id: uuid!, $round_id: Int!, $value: Int!, $reason: String!) {
   insert_ratings_one(
-    object: {application_id: $application_id, round_id: $round_id, value: $value, message: {data: {text: $reason, application_id: $application_id}}}
+    object: {application_id: $application_id, round_id: $round_id, value: $value, message: {data: {text: $reason, application_id: $application_id, round_id: $round_id}}}
   ) {
     id
     application {
@@ -9661,10 +10317,141 @@ export const AddRatingDocument = gql`
       super(apollo);
     }
   }
+export const GetJuryStatisticDocument = gql`
+    subscription GetJuryStatistic($round_id: Int!, $_in: [String!]!) {
+  users(where: {id: {_in: $_in}}) {
+    name
+    ratings_aggregate(where: {round_id: {_eq: $round_id}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+    `;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetJuryStatisticGQL extends Apollo.Subscription<GetJuryStatisticSubscription, GetJuryStatisticSubscriptionVariables> {
+    document = GetJuryStatisticDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetAllRoundsDocument = gql`
+    query GetAllRounds {
+  rating_rounds_sorted(where: {_and: {edition: {current: {_eq: true}}}}) {
+    ...RoundSorted
+  }
+  rating_rounds(where: {_and: {edition: {current: {_eq: true}}}}) {
+    ...Round
+  }
+}
+    ${RoundSortedFragmentDoc}
+${RoundFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetAllRoundsGQL extends Apollo.Query<GetAllRoundsQuery, GetAllRoundsQueryVariables> {
+    document = GetAllRoundsDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CreateRoundDocument = gql`
+    mutation CreateRound($edition_id: Int!, $end_at: timestamptz!, $goal: Int = 1, $prev_round_id: Int = null) {
+  insert_rating_rounds_one(
+    object: {edition_id: $edition_id, end_at: $end_at, goal: $goal, prev_round_id: $prev_round_id}
+  ) {
+    ...Round
+  }
+}
+    ${RoundFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CreateRoundGQL extends Apollo.Mutation<CreateRoundMutation, CreateRoundMutationVariables> {
+    document = CreateRoundDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const UpdateRoundDocument = gql`
+    mutation UpdateRound($round_id: Int!, $end_at: timestamptz!, $goal: Int = 1) {
+  update_rating_rounds_by_pk(
+    pk_columns: {id: $round_id}
+    _set: {end_at: $end_at, goal: $goal}
+  ) {
+    ...Round
+  }
+}
+    ${RoundFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class UpdateRoundGQL extends Apollo.Mutation<UpdateRoundMutation, UpdateRoundMutationVariables> {
+    document = UpdateRoundDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const CloseRoundDocument = gql`
+    mutation CloseRound($round_id: Int!, $objects: [eliminations_insert_input!]!) {
+  insert_eliminations(objects: $objects) {
+    returning {
+      ...Elimination
+    }
+    affected_rows
+  }
+  update_rating_rounds_by_pk(pk_columns: {id: $round_id}, _set: {closed: true}) {
+    id
+    closed
+  }
+}
+    ${EliminationFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class CloseRoundGQL extends Apollo.Mutation<CloseRoundMutation, CloseRoundMutationVariables> {
+    document = CloseRoundDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
 export const GetCurrentRoundDocument = gql`
     subscription GetCurrentRound {
   rating_rounds(
     where: {_and: {edition: {current: {_eq: true}}, _not: {next_round: {}}}}
+  ) {
+    ...Round
+  }
+}
+    ${RoundFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetCurrentRoundGQL extends Apollo.Subscription<GetCurrentRoundSubscription, GetCurrentRoundSubscriptionVariables> {
+    document = GetCurrentRoundDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetApplicationsToEliminateDocument = gql`
+    query GetApplicationsToEliminate($round_id: Int!) {
+  applications(
+    where: {ratings: {rating_round: {id: {_eq: $round_id}}}, rating_in_latest_round: {round_id: {_eq: $round_id}, avg: {_lt: 5}}, _not: {elimination: {}}}
   ) {
     id
   }
@@ -9674,8 +10461,52 @@ export const GetCurrentRoundDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class GetCurrentRoundGQL extends Apollo.Subscription<GetCurrentRoundSubscription, GetCurrentRoundSubscriptionVariables> {
-    document = GetCurrentRoundDocument;
+  export class GetApplicationsToEliminateGQL extends Apollo.Query<GetApplicationsToEliminateQuery, GetApplicationsToEliminateQueryVariables> {
+    document = GetApplicationsToEliminateDocument;
+    
+    constructor(apollo: Apollo.Apollo) {
+      super(apollo);
+    }
+  }
+export const GetRoundStatisticDocument = gql`
+    query GetRoundStatistic($id: Int!) {
+  rating_rounds_by_pk(id: $id) {
+    ...Round
+  }
+  out: applications_aggregate(
+    where: {ratings: {rating_round: {id: {_eq: $id}}}, rating_in_latest_round: {round_id: {_eq: $id}, avg: {_lt: 5}}, _not: {elimination: {}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  in: applications_aggregate(
+    where: {ratings: {rating_round: {id: {_eq: $id}}}, rating_in_latest_round: {round_id: {_eq: $id}, avg: {_gte: 5}}, _not: {elimination: {}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  rated: applications_aggregate(
+    where: {ratings: {rating_round: {id: {_eq: $id}}}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  total: applications_aggregate(where: {_not: {elimination: {}}}) {
+    aggregate {
+      count
+    }
+  }
+}
+    ${RoundFragmentDoc}`;
+
+  @Injectable({
+    providedIn: 'root'
+  })
+  export class GetRoundStatisticGQL extends Apollo.Query<GetRoundStatisticQuery, GetRoundStatisticQueryVariables> {
+    document = GetRoundStatisticDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

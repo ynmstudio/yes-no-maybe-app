@@ -31,11 +31,15 @@ export class TeamComponent implements OnInit {
   toggleEditionSelect() {
     this.showEditions = !this.showEditions;
   }
+  hideEditionSelect() {
+    setTimeout(() => {
+      this.showEditions = false;
+    }, 300);
+  }
   async switchEdition(event: Event, id: number) {
     event.stopPropagation();
     event.stopImmediatePropagation();
     await this.teamService.switchEdition(id);
-    this.showEditions = false;
   }
 
   async showNewEditionModal() {

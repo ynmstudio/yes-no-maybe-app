@@ -27,6 +27,8 @@ import { AlertModule } from './components/alert/alert.module';
 import { EmbedService } from './services/embed.service';
 import { FooterModule } from './components/footer/footer.module';
 import { LocalizedDateModule } from './pipes/localized-date/localized-date.module';
+import { FirebaseService } from './services/firebase.service';
+import { ShowEliminatedModule } from './pipes/show-eliminated/show-eliminated.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -47,6 +49,7 @@ const MODULES = [
   GetScorePipeModule,
   LastPipeModule,
   LocalizedDateModule,
+  ShowEliminatedModule,
   TimePassedPipeModule,
 ];
 
@@ -64,6 +67,7 @@ const PROVIDERS: any = [
   AppService,
   AuthService,
   EmbedService,
+  FirebaseService,
   HasuraService,
   MultilangService,
   StorageService,

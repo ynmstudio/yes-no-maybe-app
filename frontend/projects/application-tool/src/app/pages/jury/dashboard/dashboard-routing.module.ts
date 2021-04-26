@@ -7,6 +7,13 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
   },
+  {
+    path: ':id/fullscreen',
+    loadChildren: () =>
+      import('./../../applications/fullscreen/fullscreen.module').then(
+        (m) => m.FullscreenModule
+      ),
+  },
 ];
 
 @NgModule({

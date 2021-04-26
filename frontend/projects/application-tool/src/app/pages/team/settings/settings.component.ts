@@ -8,11 +8,18 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import {
+  RoundFragment,
+  RoundSortedFragment,
+} from 'generated/types.graphql-gen';
 import { distinctUntilChanged, first } from 'rxjs/operators';
 import { AlertService } from '../../../shared/components/alert/alert.service';
-import { AppService } from '../../../shared/services/app.service';
+import { ModalService } from '../../../shared/components/modal/modal.service';
+import { FirebaseService } from '../../../shared/services/firebase.service';
 import { HasuraService } from '../../../shared/services/hasura.service';
 import { TeamService } from '../team.service';
+import { EditRoundComponent as EditRoundComponentType } from './../../../shared/components/modal/modals/edit-round/edit-round.component';
+import { NewRoundComponent as NewRoundComponentType } from './../../../shared/components/modal/modals/new-round/new-round.component';
 
 @Component({
   selector: 'app-team-settings',
@@ -24,10 +31,12 @@ export class SettingsComponent implements OnInit {
   currentEdition$;
   selectedEdition$;
 
+  allRounds$;
+  currentRound$;
+
   form: FormGroup;
 
   dateNow = new Date();
-  timezoneOffest = new Date().getTimezoneOffset() * 60000;
 
   name = new FormControl('', [Validators.required, Validators.minLength(2)]);
   application_start = new FormControl('', [Validators.required]);
@@ -37,11 +46,17 @@ export class SettingsComponent implements OnInit {
     private fb: FormBuilder,
     private hasuraService: HasuraService,
     private teamService: TeamService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private firebaseService: FirebaseService,
+    private newRoundModalService: ModalService<NewRoundComponentType>,
+    private editRoundModalService: ModalService<EditRoundComponentType>
   ) {
     this.editions$ = this.teamService.getAllEditions();
     this.currentEdition$ = this.teamService.currentEdition;
     this.selectedEdition$ = this.teamService.selectedEdition;
+
+    this.allRounds$ = this.hasuraService.getAllRounds();
+    this.currentRound$ = this.hasuraService.getCurrentRound();
 
     this.form = this.fb.group(
       {
@@ -85,14 +100,15 @@ export class SettingsComponent implements OnInit {
   }
 
   async saveEdition(id: number) {
-    console.log(this.timezoneOffest);
     try {
-      await this.hasuraService.updateEdition(
-        id,
-        new Date(this.application_start.value),
-        new Date(this.application_end.value),
-        this.name.value
-      );
+      await this.hasuraService
+        .updateEdition(
+          id,
+          new Date(this.application_start.value),
+          new Date(this.application_end.value),
+          this.name.value
+        )
+        .toPromise();
       this.form.markAsUntouched();
       this.form.markAsPristine();
     } catch (error) {}
@@ -106,6 +122,36 @@ export class SettingsComponent implements OnInit {
     this.form.markAsUntouched();
     this.form.markAsPristine();
     this.form.enable();
+  }
+
+  async showNewRoundModal(edition_id: number, prev_round_id?: number | null) {
+    const { NewRoundComponent } = await import(
+      './../../../shared/components/modal/modals/new-round/new-round.component'
+    );
+    console.log(edition_id, prev_round_id);
+    return this.newRoundModalService.open(NewRoundComponent, {
+      edition_id,
+      prev_round_id,
+    });
+  }
+
+  async showEditRoundModal(
+    rating_round?: RoundFragment | RoundSortedFragment | null
+  ) {
+    if (!rating_round) return;
+    const { EditRoundComponent } = await import(
+      './../../../shared/components/modal/modals/edit-round/edit-round.component'
+    );
+    return this.editRoundModalService.open(EditRoundComponent, {
+      round_id: rating_round.id,
+      end_at: rating_round.end_at,
+      goal: rating_round.goal,
+    });
+  }
+
+  async closeRound(round_id?: number | null, level?: number | null) {
+    if (!round_id) return;
+    await this.hasuraService.showCloseRoundModal(round_id, level || 0);
   }
 }
 

@@ -9,12 +9,29 @@ mutation AddRating(
       application_id: $application_id
       round_id: $round_id
       value: $value
-      message: { data: { text: $reason, application_id: $application_id } }
+      message: {
+        data: {
+          text: $reason
+          application_id: $application_id
+          round_id: $round_id
+        }
+      }
     }
   ) {
     id
     application {
       rated_by_user
+    }
+  }
+}
+
+subscription GetJuryStatistic($round_id: Int!, $_in: [String!]!) {
+  users(where: { id: { _in: $_in } }) {
+    name
+    ratings_aggregate(where: { round_id: { _eq: $round_id } }) {
+      aggregate {
+        count
+      }
     }
   }
 }

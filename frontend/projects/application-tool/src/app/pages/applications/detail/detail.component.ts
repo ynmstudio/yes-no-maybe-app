@@ -119,4 +119,7 @@ export class DetailComponent implements OnInit {
   async eliminateApplication(reason: string = '') {
     this.teamService.eliminateApplication(this.application_id, reason);
   }
+  async reviveApplication() {
+    this.teamService.reviveApplication(this.application_id);
+  }
 }

@@ -172,15 +172,11 @@ mutation UpdateEdition(
   }
 }
 
-mutation SetEditionWinner($id: Int!, $application_id: uuid) {
-  update_editions_by_pk(
+mutation SetEditionWinner($application_id: uuid) {
+  update_editions(
+    where: { current: { _eq: true } }
     _set: { winner_id: $application_id }
-    pk_columns: { id: $id }
   ) {
-    ...Edition
-    winner {
-      id
-      name
-    }
+    affected_rows
   }
 }

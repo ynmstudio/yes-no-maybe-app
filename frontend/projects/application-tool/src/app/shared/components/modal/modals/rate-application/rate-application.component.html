@@ -29,6 +29,7 @@
         <input
           id="reason"
           [(ngModel)]="reason"
+          (keydown.enter)="addRating()"
           name="reason"
           type="text"
           spellcheck="true"

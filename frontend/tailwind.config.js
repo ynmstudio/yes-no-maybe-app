@@ -208,6 +208,8 @@ module.exports = {
       backgroundOpacity: ["even"],
       ringColor: ["hover"],
       ringWidth: ["hover"],
+      backgroundColor: ["checked"],
+      borderColor: ["checked"],
     },
 
     filter: ["responsive"], // defaults to ['responsive']

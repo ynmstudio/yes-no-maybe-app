@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../shared/shared.module';
 
 import { JuryRoutingModule } from './jury-routing.module';
 import { JuryService } from './jury.service';
+import { JuryComponent } from './jury.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [JuryComponent],
   providers: [JuryService],
-  imports: [CommonModule, JuryRoutingModule],
+  imports: [SharedModule, JuryRoutingModule],
 })
 export class JuryModule {}

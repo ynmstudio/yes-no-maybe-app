@@ -42,7 +42,11 @@
       <div
         class="font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
       >
-        <label for="displayName" class="text-right">Name*</label>
+        <label
+          for="displayName"
+          class="text-right"
+          [innerText]="('defaults.name-single' | translate | titlecase) + '*'"
+        ></label>
         <input
           id="first-name"
           formControlName="displayName"
@@ -51,7 +55,11 @@
           autocomplete="name"
           class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
         />
-        <label for="email-address" class="text-right">E-Mail*</label>
+        <label
+          for="email-address"
+          class="text-right"
+          [innerText]="('defaults.email-single' | translate | titlecase) + '*'"
+        ></label>
         <input
           id="email-address"
           formControlName="email"
@@ -218,7 +226,12 @@
       <div class="lg:flex lg:space-x-8 space-y-4 lg:space-y-0">
         <div class="flex-auto px-2 relative">
           <div>
-            <label for="email-address" class="sr-only">E-Mail</label>
+            <label
+              for="email-address"
+              class="sr-only"
+              [innerText]="'defaults.email-single' | translate"
+            >
+            </label>
             <input
               id="email-address"
               formControlName="email"
@@ -226,16 +239,15 @@
               type="email"
               autocomplete="email"
               class="appearance-none rounded-none relative block w-full px-0 py-2 border-solid bg-transparent border-b border-t-0 border-r-0 border-l-0 border-white font-mono placeholder-gray-300 text-white focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
-              placeholder="E-Mail"
+              [placeholder]="'defaults.email-single' | translate"
             />
           </div>
           <p
             *ngIf="email.touched && email.invalid"
             class="absolute top-full w-full mt-2 text-xs font-mono text-red-400 text-opacity-90 leading-tight truncate"
             id="email-error"
-          >
-            Bitte gültige Email eingeben
-          </p>
+            [innerText]="'snippets.auth.email-error' | translate"
+          ></p>
         </div>
       </div>
     </div>
@@ -245,9 +257,8 @@
         type="submit"
         [disabled]="form.invalid"
         class="button--auth-submit"
-      >
-        zurücksetzen
-      </button>
+        [innerText]="'actions.reset' | translate"
+      ></button>
     </div>
   </form>
   <!-- LOGIN FORM -->
@@ -303,9 +314,8 @@
             *ngIf="email.touched && email.invalid"
             class="absolute top-full w-full mt-2 text-xs font-mono text-red-400 text-opacity-90 leading-tight truncate"
             id="email-error"
-          >
-            Bitte gültige Email eingeben
-          </p>
+            [innerHtml]="'snippets.auth.email-error' | translate"
+          ></p>
         </div>
         <div class="flex-auto px-2 relative">
           <div>

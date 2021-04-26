@@ -1,1 +1,326 @@
-<p>dashboard works!</p>
+<div
+  class="grid grid-cols-form gap-x-4 gap-y-3 items-start w-full container--default mx-auto"
+>
+  <div class="col-span-3 lg:col-span-1 lg:w-56 bg-white relative z-10">
+    <div class="text-headline mb-4">
+      {{
+        "snippets.welcome-user"
+          | translate: { user: (user$ | async)?.displayName || "…" }
+      }}
+    </div>
+  </div>
+  <div class="col-span-3 lg:col-span-2 md:flex bg-white relative z-10">
+    <!-- STATUS -->
+    <div
+      id="status"
+      class="md:w-80 lg:w-96 md:order-2 mb-6 flex-auto max-w-full md:flex-shrink-0"
+      [ngSwitch]="state$ | async"
+    >
+      <div
+        *ngSwitchCase="'rating'"
+        class="relative group cursor-pointer z-0 bg-orange-400 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <ng-container
+          *ngIf="currentRound$ | async as round; else noActiveRound"
+        >
+          <ng-container *ngIf="round.active; else noActiveRound">
+            <div
+              class="text-headline"
+              [innerHtml]="
+                'edition.status--rating--ends-in'
+                  | translate
+                    : {
+                        round: (round?.level || 0) + 1,
+                        time: round?.end_at | timePassed
+                      }
+              "
+            ></div>
+            <span
+              class="inline-block mt-4 font-mono text-black text-opacity-70"
+              [innerText]="'snippets.please-rate-applications' | translate"
+            >
+            </span>
+          </ng-container>
+        </ng-container>
+        <ng-template #noActiveRound>
+          <div
+            class="text-headline"
+            [innerHtml]="'edition.status--rating--no-active-round' | translate"
+          ></div>
+        </ng-template>
+      </div>
+      <div
+        *ngSwitchCase="'closed'"
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerHtml]="'edition.status--closed' | translate"
+        ></div>
+      </div>
+      <div
+        *ngSwitchDefault
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div class="text-headline animate-pulse">…</div>
+      </div>
+    </div>
+    <div
+      class="font-mono text-base leading-snug md:pr-8 lg:pr-16 mb-6"
+      [innerHtml]="'_configuration.jury.introduction' | translate"
+    ></div>
+  </div>
+  <div class="col-span-3 lg:col-span-1 lg:sticky lg:top-28 z-10 bg-white">
+    <div class="flex items-center mb-2">
+      <input
+        id="toggle_rating"
+        type="checkbox"
+        [checked]="ratings"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleRatings()"
+      />
+      <label
+        for="toggle_rating"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.rating-multi' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center mb-2">
+      <input
+        id="toggle_rating_count"
+        type="checkbox"
+        [checked]="ratingCount"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleRatingCount()"
+      />
+      <label
+        for="toggle_rating_count"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.rating-count' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center mb-2 relative">
+      <input
+        id="toggle_previews"
+        type="checkbox"
+        [checked]="previews"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="togglePreviews()"
+      />
+      <label
+        for="toggle_previews"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.preview' | translate | uppercase"
+      ></label>
+    </div>
+  </div>
+  <div
+    class="col-span-3 lg:col-span-2 min-h-screen"
+    style="height: 500vh !important"
+    (mouseleave)="showPreview('')"
+  >
+    <ng-container
+      *ngIf="
+        (applications$ | async)?.data?.applications_aggregate?.nodes?.length;
+        else noApplications
+      "
+    >
+      <div
+        class="container--default-x flex items-center py-2 space-x-8 border-b leading-none bg-white border-black border-opacity-30 relative z-10 text-xxs uppercase font-mono"
+      >
+        <div
+          class="flex-auto"
+          [innerHtml]="'defaults.application-alias-single' | translate"
+        ></div>
+        <div
+          [innerHtml]="'defaults.rating-multi' | translate | uppercase"
+        ></div>
+        <div>Stimmen</div>
+        <div class="w-10 text-right">Notizen</div>
+      </div>
+      <div
+        id="preview"
+        *ngIf="previews"
+        class="hidden md:block md:sticky z-0 h-0 top-0 overflow-visible pointer-events-none"
+      >
+        <div
+          class="absolute inset-x-0 top-0 h-screen transform-gpu transition-opacity duration-500"
+          [ngClass]="[
+            application.id === visiblePreview
+              ? 'opacity-100 ease-out'
+              : 'opacity-0 ease-in'
+          ]"
+          *ngFor="
+            let application of (applications$ | async)?.data
+              ?.applications_aggregate?.nodes
+          "
+        >
+          <ng-container
+            *ngFor="let file of application?.files; let index = index"
+          >
+            <app-image
+              class="absolute inset-0"
+              [key]="file.key"
+              [mimetype]="file.mimetype"
+              [width]="1440"
+              [height]="1200"
+            ></app-image>
+          </ng-container>
+        </div>
+      </div>
+      <div
+        *ngFor="
+          let application of (applications$ | async)?.data
+            ?.applications_aggregate?.nodes
+        "
+        class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-500 border-opacity-30 even:bg-gray-500 even:bg-opacity-5 hover:bg-gray-50 hover:bg-opacity-100 relative"
+        [ngClass]="[
+          application.elimination
+            ? 'text-black text-opacity-30 hover:text-opacity-100 transition-colors'
+            : '',
+          application.winner ? 'bg-blue-200 hover:bg-blue-300' : ''
+        ]"
+      >
+        <div
+          class="flex-auto font-mono capitalize"
+          [innerHtml]="application.internal_name"
+        ></div>
+        <div
+          *ngIf="application.winner"
+          class="text-xxs bg-blue-700 text-white pl-1 pr-2 py-1 whitespace-nowrap overflow-ellipsis overflow-hidden rounded-full leading-none font-condensed font-medium uppercase"
+        >
+          &#11088;&nbsp;&nbsp;winner
+        </div>
+        <div class="text-center text-gray-800" [ngSwitch]="true">
+          <div
+            *ngSwitchCase="(application.rating_in_latest_round?.avg || 0) > 5"
+            class="text-blue-700"
+          >
+            [Yes]
+          </div>
+          <div *ngSwitchCase="application.rating_in_latest_round?.avg === 5">
+            [Maybe]
+          </div>
+          <div
+            *ngSwitchCase="
+              application.rating_in_latest_round?.avg !== null &&
+              (application.rating_in_latest_round?.avg || 0) < 5
+            "
+          >
+            [No]
+          </div>
+          <div *ngSwitchDefault>–</div>
+        </div>
+
+        <div
+          class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
+          [innerHtml]="application.rating_in_latest_round?.count || 0"
+        ></div>
+
+        <!-- GLOBAL RATING -->
+        <!-- <div
+          class="text-center"
+          [ngSwitch]="true"
+          [ngClass]="[
+            (application.ratings_aggregate?.aggregate?.stddev_samp?.value ||
+              0) > 5
+              ? 'text-red-800'
+              : 'text-gray-800'
+          ]"
+        >
+          <div
+            *ngSwitchCase="
+              (application.ratings_aggregate?.aggregate?.avg?.value || 0) > 5
+            "
+            class="text-blue-700"
+          >
+            [Yes]
+          </div>
+          <div
+            *ngSwitchCase="
+              application.ratings_aggregate?.aggregate?.avg?.value === 5
+            "
+          >
+            [Maybe]
+          </div>
+          <div
+            *ngSwitchCase="
+              application.ratings_aggregate?.aggregate?.avg?.value !== null &&
+              (application.ratings_aggregate?.aggregate?.avg?.value || 0) < 5
+            "
+          >
+            [No]
+          </div>
+          <div *ngSwitchDefault>–</div>
+        </div> -->
+
+        <!-- <div
+          class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
+          [innerHtml]="application.ratings_aggregate?.aggregate?.count || 0"
+        ></div> -->
+        <button
+          class="w-10 text-right hover:text-blue-600 relative z-10 focus:outline-none focus:ring-0"
+          [ngClass]="{
+            'text-blue-600': application.id === visibleChat
+          }"
+          (click)="toggleChat(application.id, $event)"
+        >
+          <svg
+            class="inline-block"
+            width="25px"
+            height="21px"
+            viewBox="0 0 25 21"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <g
+              id="Page-1"
+              stroke="none"
+              stroke-width="1"
+              fill="none"
+              fill-rule="evenodd"
+            >
+              <path
+                d="M1,2.87232347 L1,14.8541978 C1,15.8862995 1.83211783,16.7261893 2.85499785,16.7261893 L4.70966681,16.7261893 L4.70966681,21 L8.94392964,16.7261893 L22.1450021,16.7261893 C23.1675533,16.7261893 24,15.8862995 24,14.8541978 L24,2.87232347 C24,1.84022176 23.1675533,1 22.1450021,1 L2.85499785,1 C1.83211783,1 1,1.84022176 1,2.87232347 Z M18,9 L7,9 M18,6 L7,6 M15,12 L7,12"
+                id="Stroke-2"
+                stroke="currentColor"
+              ></path>
+            </g>
+          </svg>
+        </button>
+        <div
+          *ngIf="application.id === visibleChat"
+          class="absolute z-30 top-12 right-6 w-5/6 md:w-80 h-screen max-h-96 bg-white shadow-md rounded-2xl"
+        >
+          <app-chat
+            [application_id]="application.id"
+            [readOnly]="true"
+            class="absolute inset-0 flex flex-col"
+          ></app-chat>
+          <!-- <div
+          class="absolute -top-2 -right-2 h-6 w-6 flex justify-center items-center bg-black text-white rounded-full"
+          (click)="toggleChat(application.id, $event)"
+        >
+          <span>X</span>
+        </div> -->
+        </div>
+
+        <a
+          (mouseenter)="showPreview(application.id)"
+          class="absolute inset-0 z-0"
+          [routerLink]="[application.id, 'fullscreen']"
+          routerLinkActive="router-link-active"
+        ></a>
+      </div>
+    </ng-container>
+    <ng-template #noApplications>
+      <div class="my-1 h-80 flex items-center justify-center relative z-10">
+        <span
+          class="text-gray-300"
+          [innerHtml]="'snippets.no-applications' | translate"
+        ></span>
+      </div>
+    </ng-template>
+  </div>
+</div>

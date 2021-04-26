@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Sun Apr 18 2021 17:28:42 GMT+0200 (GMT+02:00)
+# timestamp: Mon Apr 26 2021 10:36:57 GMT+0200 (GMT+02:00)
 
 schema {
   query: query_root
@@ -19,7 +19,6 @@ type applications {
   """An object relationship"""
   edition: editions!
   edition_id: Int!
-  eliminated: Boolean!
 
   """An object relationship"""
   elimination: eliminations
@@ -108,6 +107,9 @@ type applications {
   A computed field, executes function "application_rated_by_user"
   """
   rated_by_user: Boolean
+
+  """An object relationship"""
+  rating_in_latest_round: ratings_by_application
 
   """An array relationship"""
   ratings(
@@ -316,7 +318,6 @@ input applications_bool_exp {
   disclaimer: Boolean_comparison_exp
   edition: editions_bool_exp
   edition_id: Int_comparison_exp
-  eliminated: Boolean_comparison_exp
   elimination: eliminations_bool_exp
   files: work_files_bool_exp
   group: Boolean_comparison_exp
@@ -326,6 +327,7 @@ input applications_bool_exp {
   messages: messages_bool_exp
   name: String_comparison_exp
   payment: payments_bool_exp
+  rating_in_latest_round: ratings_by_application_bool_exp
   ratings: ratings_bool_exp
   residency: Boolean_comparison_exp
   specifications: work_specifications_bool_exp
@@ -363,7 +365,6 @@ input applications_insert_input {
   disclaimer: Boolean
   edition: editions_obj_rel_insert_input
   edition_id: Int
-  eliminated: Boolean
   elimination: eliminations_obj_rel_insert_input
   files: work_files_arr_rel_insert_input
   group: Boolean
@@ -373,6 +374,7 @@ input applications_insert_input {
   messages: messages_arr_rel_insert_input
   name: String
   payment: payments_obj_rel_insert_input
+  rating_in_latest_round: ratings_by_application_obj_rel_insert_input
   ratings: ratings_arr_rel_insert_input
   residency: Boolean
   specifications: work_specifications_arr_rel_insert_input
@@ -472,7 +474,6 @@ input applications_order_by {
   disclaimer: order_by
   edition: editions_order_by
   edition_id: order_by
-  eliminated: order_by
   elimination: eliminations_order_by
   files_aggregate: work_files_aggregate_order_by
   group: order_by
@@ -482,6 +483,7 @@ input applications_order_by {
   messages_aggregate: messages_aggregate_order_by
   name: order_by
   payment: payments_order_by
+  rating_in_latest_round: ratings_by_application_order_by
   ratings_aggregate: ratings_aggregate_order_by
   residency: order_by
   specifications_aggregate: work_specifications_aggregate_order_by
@@ -514,9 +516,6 @@ enum applications_select_column {
 
   """column name"""
   edition_id
-
-  """column name"""
-  eliminated
 
   """column name"""
   group
@@ -552,7 +551,6 @@ input applications_set_input {
   database: Boolean
   disclaimer: Boolean
   edition_id: Int
-  eliminated: Boolean
   group: Boolean
   id: uuid
   internal_name: String
@@ -629,9 +627,6 @@ enum applications_update_column {
 
   """column name"""
   edition_id
-
-  """column name"""
-  eliminated
 
   """column name"""
   group
@@ -1456,10 +1451,45 @@ type eliminations_aggregate_fields {
   variance: eliminations_variance_fields
 }
 
+"""
+order by aggregate values of table "eliminations"
+"""
+input eliminations_aggregate_order_by {
+  avg: eliminations_avg_order_by
+  count: order_by
+  max: eliminations_max_order_by
+  min: eliminations_min_order_by
+  stddev: eliminations_stddev_order_by
+  stddev_pop: eliminations_stddev_pop_order_by
+  stddev_samp: eliminations_stddev_samp_order_by
+  sum: eliminations_sum_order_by
+  var_pop: eliminations_var_pop_order_by
+  var_samp: eliminations_var_samp_order_by
+  variance: eliminations_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "eliminations"
+"""
+input eliminations_arr_rel_insert_input {
+  data: [eliminations_insert_input!]!
+
+  """on conflict condition"""
+  on_conflict: eliminations_on_conflict
+}
+
 """aggregate avg on columns"""
 type eliminations_avg_fields {
   id: Float
   round_id: Float
+}
+
+"""
+order by avg() on columns of table "eliminations"
+"""
+input eliminations_avg_order_by {
+  id: order_by
+  round_id: order_by
 }
 
 """
@@ -1527,6 +1557,18 @@ type eliminations_max_fields {
   round_id: Int
 }
 
+"""
+order by max() on columns of table "eliminations"
+"""
+input eliminations_max_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  reason: order_by
+  round_id: order_by
+}
+
 """aggregate min on columns"""
 type eliminations_min_fields {
   application_id: uuid
@@ -1535,6 +1577,18 @@ type eliminations_min_fields {
   id: Int
   reason: String
   round_id: Int
+}
+
+"""
+order by min() on columns of table "eliminations"
+"""
+input eliminations_min_order_by {
+  application_id: order_by
+  created_at: order_by
+  created_by: order_by
+  id: order_by
+  reason: order_by
+  round_id: order_by
 }
 
 """
@@ -1626,10 +1680,26 @@ type eliminations_stddev_fields {
   round_id: Float
 }
 
+"""
+order by stddev() on columns of table "eliminations"
+"""
+input eliminations_stddev_order_by {
+  id: order_by
+  round_id: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type eliminations_stddev_pop_fields {
   id: Float
   round_id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "eliminations"
+"""
+input eliminations_stddev_pop_order_by {
+  id: order_by
+  round_id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -1638,10 +1708,26 @@ type eliminations_stddev_samp_fields {
   round_id: Float
 }
 
+"""
+order by stddev_samp() on columns of table "eliminations"
+"""
+input eliminations_stddev_samp_order_by {
+  id: order_by
+  round_id: order_by
+}
+
 """aggregate sum on columns"""
 type eliminations_sum_fields {
   id: Int
   round_id: Int
+}
+
+"""
+order by sum() on columns of table "eliminations"
+"""
+input eliminations_sum_order_by {
+  id: order_by
+  round_id: order_by
 }
 
 """
@@ -1673,16 +1759,40 @@ type eliminations_var_pop_fields {
   round_id: Float
 }
 
+"""
+order by var_pop() on columns of table "eliminations"
+"""
+input eliminations_var_pop_order_by {
+  id: order_by
+  round_id: order_by
+}
+
 """aggregate var_samp on columns"""
 type eliminations_var_samp_fields {
   id: Float
   round_id: Float
 }
 
+"""
+order by var_samp() on columns of table "eliminations"
+"""
+input eliminations_var_samp_order_by {
+  id: order_by
+  round_id: order_by
+}
+
 """aggregate variance on columns"""
 type eliminations_variance_fields {
   id: Float
   round_id: Float
+}
+
+"""
+order by variance() on columns of table "eliminations"
+"""
+input eliminations_variance_order_by {
+  id: order_by
+  round_id: order_by
 }
 
 """
@@ -3606,9 +3716,7 @@ type query_root {
   """fetch data from the table: "editions" using primary key columns"""
   editions_by_pk(id: Int!): editions
 
-  """
-  fetch data from the table: "eliminations"
-  """
+  """An array relationship"""
   eliminations(
     """distinct select on columns"""
     distinct_on: [eliminations_select_column!]
@@ -3626,9 +3734,7 @@ type query_root {
     where: eliminations_bool_exp
   ): [eliminations!]!
 
-  """
-  fetch aggregated fields from the table: "eliminations"
-  """
+  """An aggregate relationship"""
   eliminations_aggregate(
     """distinct select on columns"""
     distinct_on: [eliminations_select_column!]
@@ -4334,14 +4440,56 @@ type rating_rounds {
   A computed field, executes function "rating_round_state"
   """
   active: Boolean
+  closed: Boolean!
   created_at: timestamptz
 
   """An object relationship"""
   edition: editions!
   edition_id: Int!
+
+  """An array relationship"""
+  eliminations(
+    """distinct select on columns"""
+    distinct_on: [eliminations_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eliminations_order_by!]
+
+    """filter the rows returned"""
+    where: eliminations_bool_exp
+  ): [eliminations!]!
+
+  """An aggregate relationship"""
+  eliminations_aggregate(
+    """distinct select on columns"""
+    distinct_on: [eliminations_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [eliminations_order_by!]
+
+    """filter the rows returned"""
+    where: eliminations_bool_exp
+  ): eliminations_aggregate!
   end_at: timestamptz!
   goal: Int!
   id: Int!
+
+  """
+  A computed field, executes function "get_rating_round_level"
+  """
+  level: Int
 
   """An object relationship"""
   next_round: rating_rounds
@@ -4466,9 +4614,11 @@ input rating_rounds_bool_exp {
   _and: [rating_rounds_bool_exp!]
   _not: rating_rounds_bool_exp
   _or: [rating_rounds_bool_exp!]
+  closed: Boolean_comparison_exp
   created_at: timestamptz_comparison_exp
   edition: editions_bool_exp
   edition_id: Int_comparison_exp
+  eliminations: eliminations_bool_exp
   end_at: timestamptz_comparison_exp
   goal: Int_comparison_exp
   id: Int_comparison_exp
@@ -4505,9 +4655,11 @@ input rating_rounds_inc_input {
 input type for inserting data into table "rating_rounds"
 """
 input rating_rounds_insert_input {
+  closed: Boolean
   created_at: timestamptz
   edition: editions_obj_rel_insert_input
   edition_id: Int
+  eliminations: eliminations_arr_rel_insert_input
   end_at: timestamptz
   goal: Int
   id: Int
@@ -4603,9 +4755,11 @@ input rating_rounds_on_conflict {
 
 """Ordering options when selecting data from "rating_rounds"."""
 input rating_rounds_order_by {
+  closed: order_by
   created_at: order_by
   edition: editions_order_by
   edition_id: order_by
+  eliminations_aggregate: eliminations_aggregate_order_by
   end_at: order_by
   goal: order_by
   id: order_by
@@ -4626,6 +4780,9 @@ input rating_rounds_pk_columns_input {
 select columns of table "rating_rounds"
 """
 enum rating_rounds_select_column {
+  """column name"""
+  closed
+
   """column name"""
   created_at
 
@@ -4655,6 +4812,7 @@ enum rating_rounds_select_column {
 input type for updating data in table "rating_rounds"
 """
 input rating_rounds_set_input {
+  closed: Boolean
   created_at: timestamptz
   edition_id: Int
   end_at: timestamptz
@@ -4669,6 +4827,10 @@ input rating_rounds_set_input {
 columns and relationships of "rating_rounds_sorted"
 """
 type rating_rounds_sorted {
+  closed: Boolean
+
+  """An object relationship"""
+  edition: editions
   edition_id: Int
   end_at: timestamptz
   goal: Int
@@ -4719,6 +4881,8 @@ input rating_rounds_sorted_bool_exp {
   _and: [rating_rounds_sorted_bool_exp!]
   _not: rating_rounds_sorted_bool_exp
   _or: [rating_rounds_sorted_bool_exp!]
+  closed: Boolean_comparison_exp
+  edition: editions_bool_exp
   edition_id: Int_comparison_exp
   end_at: timestamptz_comparison_exp
   goal: Int_comparison_exp
@@ -4752,6 +4916,8 @@ type rating_rounds_sorted_min_fields {
 
 """Ordering options when selecting data from "rating_rounds_sorted"."""
 input rating_rounds_sorted_order_by {
+  closed: order_by
+  edition: editions_order_by
   edition_id: order_by
   end_at: order_by
   goal: order_by
@@ -4765,6 +4931,9 @@ input rating_rounds_sorted_order_by {
 select columns of table "rating_rounds_sorted"
 """
 enum rating_rounds_sorted_select_column {
+  """column name"""
+  closed
+
   """column name"""
   edition_id
 
@@ -4926,6 +5095,9 @@ input rating_rounds_sum_order_by {
 update columns of table "rating_rounds"
 """
 enum rating_rounds_update_column {
+  """column name"""
+  closed
+
   """column name"""
   created_at
 
@@ -5187,6 +5359,21 @@ input ratings_by_application_bool_exp {
   round_id: Int_comparison_exp
 }
 
+"""
+input type for inserting data into table "ratings_by_application"
+"""
+input ratings_by_application_insert_input {
+  application: applications_obj_rel_insert_input
+  avg: numeric
+  avg_total: numeric
+  count: bigint
+  edition: editions_obj_rel_insert_input
+  edition_id: Int
+  id: uuid
+  rating_round: rating_rounds_obj_rel_insert_input
+  round_id: Int
+}
+
 """aggregate max on columns"""
 type ratings_by_application_max_fields {
   avg: numeric
@@ -5205,6 +5392,13 @@ type ratings_by_application_min_fields {
   edition_id: Int
   id: uuid
   round_id: Int
+}
+
+"""
+input type for inserting object relation for remote table "ratings_by_application"
+"""
+input ratings_by_application_obj_rel_insert_input {
+  data: ratings_by_application_insert_input!
 }
 
 """Ordering options when selecting data from "ratings_by_application"."""
@@ -5860,9 +6054,7 @@ type subscription_root {
   """fetch data from the table: "editions" using primary key columns"""
   editions_by_pk(id: Int!): editions
 
-  """
-  fetch data from the table: "eliminations"
-  """
+  """An array relationship"""
   eliminations(
     """distinct select on columns"""
     distinct_on: [eliminations_select_column!]
@@ -5880,9 +6072,7 @@ type subscription_root {
     where: eliminations_bool_exp
   ): [eliminations!]!
 
-  """
-  fetch aggregated fields from the table: "eliminations"
-  """
+  """An aggregate relationship"""
   eliminations_aggregate(
     """distinct select on columns"""
     distinct_on: [eliminations_select_column!]
@@ -6903,6 +7093,42 @@ type users {
   id: String!
   last_seen: timestamptz
   name: String
+
+  """An array relationship"""
+  ratings(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): [ratings!]!
+
+  """An aggregate relationship"""
+  ratings_aggregate(
+    """distinct select on columns"""
+    distinct_on: [ratings_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [ratings_order_by!]
+
+    """filter the rows returned"""
+    where: ratings_bool_exp
+  ): ratings_aggregate!
   type: String!
 }
 
@@ -6934,6 +7160,7 @@ input users_bool_exp {
   id: String_comparison_exp
   last_seen: timestamptz_comparison_exp
   name: String_comparison_exp
+  ratings: ratings_bool_exp
   type: String_comparison_exp
 }
 
@@ -6953,6 +7180,7 @@ input users_insert_input {
   id: String
   last_seen: timestamptz
   name: String
+  ratings: ratings_arr_rel_insert_input
   type: String
 }
 
@@ -7120,6 +7348,7 @@ input users_order_by {
   id: order_by
   last_seen: order_by
   name: order_by
+  ratings_aggregate: ratings_aggregate_order_by
   type: order_by
 }
 

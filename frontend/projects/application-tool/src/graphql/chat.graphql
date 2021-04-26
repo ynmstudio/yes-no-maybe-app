@@ -8,9 +8,15 @@ fragment Message on messages {
   created_at
   application_id
   round_id
+  rating_round {
+    level
+  }
   rating {
     value
     created_at
+    rating_round {
+      level
+    }
   }
 }
 

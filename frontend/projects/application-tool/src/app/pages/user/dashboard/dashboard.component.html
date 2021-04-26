@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-20 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <div class="text-headline">
       {{
@@ -132,12 +132,12 @@
                     <a
                       [routerLink]="['/', 'u', 'applications', application.id]"
                       class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl"
-                      [innerHtml]="'defaults.edit' | translate"
+                      [innerHtml]="'actions.edit' | translate"
                     ></a>
                     <button
                       class="underline font-mono leading-none"
                       (click)="deleteApplication(application.id)"
-                      [innerHtml]="'defaults.delete' | translate"
+                      [innerHtml]="'actions.delete' | translate"
                     ></button>
                   </ng-container>
                   <ng-template #locked>
@@ -145,7 +145,7 @@
                       *ngIf="editionState?.state === 'submission'"
                       class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-base leading-none py-3 px-6 rounded-xl"
                       (click)="unlockApplication(application.id)"
-                      [innerHtml]="'defaults.unlock' | translate"
+                      [innerHtml]="'actions.unlock' | translate"
                     ></button>
                   </ng-template>
                 </ng-container>

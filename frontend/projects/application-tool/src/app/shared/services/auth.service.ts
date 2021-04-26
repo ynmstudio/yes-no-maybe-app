@@ -46,7 +46,7 @@ export class AuthService {
         console.warn('HELLO WORLD', user, user.emailVerified);
 
         const token = await user.getIdToken();
-        const idTokenResult = await user.getIdTokenResult();
+        const idTokenResult = await user.getIdTokenResult(true);
         const hasuraRole = idTokenResult.claims['role'];
 
         if (hasuraRole) {
@@ -97,9 +97,11 @@ export class AuthService {
       console.log('AuthService >> register > user', result);
 
       const user = await this.afAuth.currentUser;
+
       await user?.updateProfile({
         displayName,
       });
+      await this.hasuraService.updateUsername(displayName);
 
       const idTokenResult = await result.user?.getIdTokenResult(true);
 
@@ -179,6 +181,7 @@ export class AuthService {
       await user?.updateProfile({
         displayName: name,
       });
+      await this.hasuraService.updateUsername(name);
     } catch (error) {
       throw error;
     }

@@ -40,6 +40,7 @@
     "@ngx-translate/http-loader": "^6.0.0",
     "@types/pdfjs-dist": "^2.7.1",
     "@videogular/ngx-videogular": "^3.0.1",
+    "angular-pipes": "^10.0.0",
     "apollo-angular": "^2.4.0",
     "apollo-link-context": "^1.0.20",
     "apollo-link-error": "^1.1.13",

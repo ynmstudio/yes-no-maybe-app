@@ -21,6 +21,8 @@ Other authentication/storage/hosting providers could be added at a later stage.
 - `hasura migrate apply --admin-secret myadminsecretkey --envfile .env`
 - `hasura metadata apply --admin-secret myadminsecretkey --envfile .env`
 
+## Features
+
 ## Technical Infrastructure
 
 - **Angular** for Frontend
@@ -71,7 +73,9 @@ Firebase config data will be extracted via REST-API before publishing the projec
 2. `firebase login` and select your project
 3. Set the admin account which gets the team role assigned on sign-up with `firebase functions:config:set hasura.admin_email="webmaster@example.com"`
 4. (optional) Set automatic team member accounts by defining your email domain with `firebase functions:config:set hasura.team_role_email_domain="@example.com"`
-5. Set shared secret key so hasura is able to interact with firebase storage with `firebase functions:config:set hasura.shared_secret="somesecuresecretkey"`
+5. Set admin secret key for synchronization from Firebase back to Hasura with `firebase functions:config:set hasura.endpoint="http://localhost:8080/v1/graphql"`
+6. Set admin secret key for synchronization from Firebase back to Hasura with `firebase functions:config:set hasura.admin_secret="myadminsecretkey"`
+7. Set shared secret key so hasura is able to interact with firebase storage with `firebase functions:config:set hasura.shared_secret="somesecuresecretkey"`
 
 #### Local Development
 
@@ -123,3 +127,8 @@ Check https://docs.coconut.co/ for more information.
 ```
 
 see https://hasura.io/docs/1.0/graphql/core/schema/computed-fields.html#accessing-hasura-session-variables-in-computed-fields
+
+# Upcoming Features
+
+- [ ] Let team add hints to applications where to stop a video or other important remarks the jury should see when evaluating a application
+- [ ] Add internal tagging system.

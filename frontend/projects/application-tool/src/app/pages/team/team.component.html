@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-10 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-20 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <!-- <div class="text-headline">
       {{
@@ -19,6 +19,7 @@
       <div>
         <button
           (click)="toggleEditionSelect()"
+          (blur)="hideEditionSelect()"
           type="button"
           class="inline-flex justify-center w-full uppercase rounded-xl p-3 font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 bg-gray-200 hover:bg-gray-300 text-black"
           id="options-menu"
@@ -288,18 +289,25 @@
       *ngIf="!selectedEdition.current"
       class="bg-yellow-300 text-yellow-900 py-2 p-4 text-sm text-center sticky top-24 -mt-px inset-x-0"
     >
-      Diese Edition ist nicht aktiv und wird Bewerber:innen nicht angezeigt!
+      {{ "snippets.edition-not-active" | translate }}
       <a
         class="ml-4 font-mono uppercase text-xxs"
         [routerLink]="['/', 't', 'settings']"
         routerLinkActive="hidden"
       >
-        Einstellungen &rarr;
+        {{ "defaults.settings" | translate }} &rarr;
       </a>
     </div>
     <router-outlet></router-outlet>
   </div>
-  <app-footer></app-footer>
+  <app-footer>
+    <a
+      [routerLink]="['/', 't', 'users']"
+      class="font-mono underline hover:text-gray-800"
+      [innerHtml]="'snippets.all-accounts' | translate"
+    >
+    </a>
+  </app-footer>
 </div>
 
 <ng-template #noEdition>

@@ -63,7 +63,7 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private getMessagesGQL: GetMessagesGQL,
-    private sendMessagesGQL: SendMessageGQL,
+    private sendMessageGQL: SendMessageGQL,
     private deleteMessageGQL: DeleteMessageGQL,
     private getMessagesLiveGQL: GetLatestMessageLiveGQL,
     private authService: AuthService
@@ -134,7 +134,7 @@ export class ChatComponent implements OnInit {
     }
 
     try {
-      await this.sendMessagesGQL
+      await this.sendMessageGQL
         .mutate({
           text: this.newMessage,
           application_id: this.application_id,

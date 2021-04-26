@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  EditionFragment,
   GetAllEditionsGQL,
   GetEditionStatisticGQL,
   GetAdminApplicationsByEditionGQL,
@@ -9,19 +8,16 @@ import {
   GetWorksGQL,
   SearchApplicationsGQL,
   EliminateApplicationGQL,
+  DeleteEliminationGQL,
   GetAdminApplicationLiveGQL,
   GetEditionStateAdminGQL,
-  GetCurrentRoundGQL,
+  AdminApplicationFragmentDoc,
+  SetEditionWinnerGQL,
 } from 'generated/types.graphql-gen';
-import { combineLatest, of, ReplaySubject } from 'rxjs';
-import {
-  first,
-  map,
-  switchMap,
-  takeWhile,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { combineLatest, EMPTY, of, ReplaySubject } from 'rxjs';
+import { first, map, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { ModalService } from '../../shared/components/modal/modal.service';
+import { ConfirmWinnerComponent as ConfirmWinnerComponentType } from './../../shared/components/modal/modals/confirm-winner/confirm-winner.component';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +36,9 @@ export class TeamService {
     private getWorksGQL: GetWorksGQL,
     private searchApplicationsGQL: SearchApplicationsGQL,
     private eliminateApplicationGQL: EliminateApplicationGQL,
-    private getCurrentRoundGQL: GetCurrentRoundGQL
+    private deleteEliminationGQL: DeleteEliminationGQL,
+    private setEditionWinnerGQL: SetEditionWinnerGQL,
+    private showConfirmWinnerModalService: ModalService<ConfirmWinnerComponentType>
   ) {
     this.setInitialSelectedEdition();
   }
@@ -48,7 +46,6 @@ export class TeamService {
     this.getAllEditions()
       .pipe(
         tap((editions) => {
-          console.log('HUI');
           if (editions?.data?.editions.length > 0) {
             const currentEdition = editions?.data?.editions.find(
               (edition) => edition.current
@@ -78,7 +75,7 @@ export class TeamService {
           {
             id,
           },
-          { fetchPolicy: 'cache-and-network', pollInterval: 60000 }
+          { fetchPolicy: 'cache-and-network', pollInterval: 10000 }
         ).valueChanges;
       })
     );
@@ -93,19 +90,6 @@ export class TeamService {
         }
       }),
       map((state) => state?.data?.editions_by_pk?.state || 'unknown')
-    );
-  }
-  getCurrentRoundId() {
-    return this.getCurrentRoundGQL.subscribe().pipe(
-      map((roundObject) => {
-        const length = roundObject.data?.rating_rounds?.length || 0;
-        if (length > 0) {
-          const currentRound = roundObject.data?.rating_rounds[length - 1];
-          return currentRound?.id;
-        } else {
-          return undefined;
-        }
-      })
     );
   }
 
@@ -130,7 +114,9 @@ export class TeamService {
     ).valueChanges;
   }
   getAdminApplicationLive(id: string) {
-    return this.getAdminApplicationLiveGQL.subscribe({ id });
+    return this.getAdminApplicationLiveGQL
+      .watch({ id }, { fetchPolicy: 'network-only', pollInterval: 5000 })
+      .valueChanges.pipe(tap((res) => console.log(res)));
   }
   getWorks(application_id: string) {
     return this.getWorksGQL.watch(
@@ -140,6 +126,7 @@ export class TeamService {
       { fetchPolicy: 'cache-and-network' }
     ).valueChanges;
   }
+
   async createNewAlias(id: string) {
     return this.createNewAliasGQL.mutate({ id }).toPromise();
   }
@@ -193,16 +180,88 @@ export class TeamService {
       })
     );
   }
+
   async eliminateApplication(
     application_id: string,
     reason: string,
     round_id?: number
   ) {
     await this.eliminateApplicationGQL
+      .mutate(
+        {
+          application_id,
+          reason,
+          round_id,
+        },
+        {
+          update: (store, { data: { ...elimination } }) => {
+            // Read the data from our cache for this query.
+            let { ...data }: any = store.readFragment({
+              id: `applications:${elimination.insert_eliminations_one?.application_id}`,
+              fragment: AdminApplicationFragmentDoc,
+              fragmentName: 'AdminApplication',
+            });
+            // Filter array by deleted producer id
+            data.elimination = {
+              ...data.elimination,
+              ...elimination.insert_eliminations_one,
+            };
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `applications:${elimination.insert_eliminations_one?.application_id}`,
+              fragment: AdminApplicationFragmentDoc,
+              fragmentName: 'AdminApplication',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+  async reviveApplication(application_id: string) {
+    await this.deleteEliminationGQL
+      .mutate(
+        {
+          application_id,
+        },
+        {
+          update: (store, { data: { ...deletedElimination } }) => {
+            // Read the data from our cache for this query.
+            let { ...data }: any = store.readFragment({
+              id: `applications:${deletedElimination.delete_eliminations_by_pk?.application_id}`,
+              fragment: AdminApplicationFragmentDoc,
+              fragmentName: 'AdminApplication',
+            });
+            // Filter array by deleted producer id
+            data.elimination = null;
+            // Write our data back to the cache.
+            store.writeFragment({
+              id: `applications:${deletedElimination.delete_eliminations_by_pk?.application_id}`,
+              fragment: AdminApplicationFragmentDoc,
+              fragmentName: 'AdminApplication',
+              data,
+            });
+          },
+        }
+      )
+      .toPromise();
+  }
+
+  /**
+   * Winner
+   */
+
+  async showConfirmWinnerModal() {
+    const { ConfirmWinnerComponent } = await import(
+      './../../shared/components/modal/modals/confirm-winner/confirm-winner.component'
+    );
+    return this.showConfirmWinnerModalService.open(ConfirmWinnerComponent, {});
+  }
+
+  async setEditionWinner(application_id?: string) {
+    return this.setEditionWinnerGQL
       .mutate({
         application_id,
-        reason,
-        round_id,
       })
       .toPromise();
   }

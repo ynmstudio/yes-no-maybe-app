@@ -105,6 +105,7 @@ export function createApollo(
               tokenResult?.claims['user_id']
             );
           }
+          console.log(token);
           // Return the headers as usual
           return {
             headers: {

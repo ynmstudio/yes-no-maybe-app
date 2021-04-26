@@ -56,9 +56,17 @@
     <div [ngClass]="[message.rating ? 'bg-black text-white mt-1' : '']">
       <div
         *ngIf="message.rating"
-        class="block mx-4 pt-4 pb-2 text-xs leading-none border-b border-current text-white font-mono uppercase"
+        class="flex justify-between items-baseline mx-4 pt-4 pb-2 text-xs leading-none border-b border-current text-white font-mono uppercase"
       >
-        [{{ (message.rating?.value | getScore).i18n | translate }}]
+        <div>[{{ (message.rating?.value | getScore).i18n | translate }}]</div>
+        <div
+          class="text-opacity-80 text-xxs leading-none text-white"
+          *ngIf="message.rating?.rating_round"
+        >
+          {{ "defaults.round-single" | translate }}&nbsp;{{
+            (message.rating?.rating_round?.level || 0) + 1
+          }}
+        </div>
       </div>
       <div class="px-4 pt-4 pb-6" [innerHtml]="message.text"></div>
     </div>

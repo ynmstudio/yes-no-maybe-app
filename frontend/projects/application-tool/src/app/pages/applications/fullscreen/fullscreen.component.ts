@@ -1,4 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Location } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -9,10 +10,10 @@ import {
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { SubscriptionResult } from 'apollo-angular';
 import {
-  GetAdminApplicationLiveSubscription,
+  GetAdminApplicationLiveQuery,
   GetAdminApplicationQuery,
+  GetJuryApplicationQuery,
   GetWorksQuery,
   SearchApplicationsQuery,
   WorkFragment,
@@ -30,6 +31,8 @@ import {
 import { AlertService } from '../../../shared/components/alert/alert.service';
 import { ModalService } from '../../../shared/components/modal/modal.service';
 import { RateApplicationComponent } from '../../../shared/components/modal/modals/rate-application/rate-application.component';
+import { HasuraService } from '../../../shared/services/hasura.service';
+import { JuryService } from '../../jury/jury.service';
 import { TeamService } from '../../team/team.service';
 
 @Component({
@@ -38,13 +41,13 @@ import { TeamService } from '../../team/team.service';
   styleUrls: ['./fullscreen.component.scss'],
 })
 export class FullscreenComponent implements OnInit {
-  application$: Observable<ApolloQueryResult<GetAdminApplicationQuery>>;
+  application$: Observable<ApolloQueryResult<GetJuryApplicationQuery>>;
   application_live$: Observable<
-    SubscriptionResult<GetAdminApplicationLiveSubscription>
+    ApolloQueryResult<GetAdminApplicationLiveQuery>
   >;
   works$: Observable<ApolloQueryResult<GetWorksQuery>>;
   state$;
-  currentRoundID$;
+  currentRound$;
 
   @ViewChild('searchInput') searchInput!: ElementRef;
   searchResults$: Observable<ApolloQueryResult<SearchApplicationsQuery>>;
@@ -75,7 +78,10 @@ export class FullscreenComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private location: Location,
+    private hasuraService: HasuraService,
     private teamService: TeamService,
+    private juryService: JuryService,
     private cdRef: ChangeDetectorRef,
     private rateApplicationModal: ModalService<RateApplicationComponent>,
     private alertService: AlertService
@@ -95,7 +101,7 @@ export class FullscreenComponent implements OnInit {
       switchMap((params) => of(params['id']))
     );
     this.application$ = this.application_id$.pipe(
-      switchMap((id) => this.teamService.getAdminApplication(id))
+      switchMap((id) => this.juryService.getApplication(id))
     );
     this.application_live$ = this.application_id$.pipe(
       switchMap((id) => this.teamService.getAdminApplicationLive(id))
@@ -129,7 +135,7 @@ export class FullscreenComponent implements OnInit {
       })
     );
     this.state$ = this.teamService.getState();
-    this.currentRoundID$ = this.teamService.getCurrentRoundId();
+    this.currentRound$ = this.hasuraService.getCurrentRound();
   }
 
   ngOnInit(): void {}
@@ -212,8 +218,8 @@ export class FullscreenComponent implements OnInit {
   // Rating
 
   async showRating() {
-    const roundID = await this.currentRoundID$.pipe(first()).toPromise();
-    if (!roundID) {
+    const round = await this.currentRound$.pipe(first()).toPromise();
+    if (!round) {
       this.alertService.error('No Round found');
       return;
     }
@@ -222,7 +228,10 @@ export class FullscreenComponent implements OnInit {
     );
     await this.rateApplicationModal.open(RateApplicationComponent, {
       application_id: this.application_id,
-      round_id: roundID,
+      round_id: round.id,
     });
+  }
+  back() {
+    this.location.back();
   }
 }

@@ -1,13 +1,15 @@
 {
   "coconut": {
+    "secret_key": "YZ4fRMqt2gPmjWareYs+G51ek9W2U2qVOj/Pdg2w",
     "access_key": "GOOGMXMJVNU4KH3ZY7M2XDO5",
     "api_key": "k-e4afd31ee1cae8cf3af0f5547aeefd0d",
-    "webhook": "https://app.coconut.co/tools/webhooks/ac9a9310/berlin-art-prize",
-    "secret_key": "YZ4fRMqt2gPmjWareYs+G51ek9W2U2qVOj/Pdg2w"
+    "webhook": "https://app.coconut.co/tools/webhooks/ac9a9310/berlin-art-prize"
   },
   "hasura": {
-    "admin_email": "denis@ynm.studio",
+    "admin_secret": "TT6aZCQA66cNnmFQwTgLkMxQxvhc6UD6zKBKnNpP7miRiGmqRwe7odJQiuoDh6sx",
     "team_role_email_domain": "@ynm.studio",
+    "admin_email": "denis@ynm.studio",
+    "endpoint": "https://berlin-art-prize--application.herokuapp.com/v1/graphql",
     "shared_secret": "uimQAh2nnN*ay-fML9FP8s4pu_NUmazh"
   },
   "storage": {
