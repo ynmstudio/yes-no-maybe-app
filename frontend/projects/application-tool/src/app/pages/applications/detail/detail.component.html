@@ -112,7 +112,7 @@
               (click)="setCurrentWork(indexW)"
             >
               <div
-                class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow relative"
+                class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow relative overflow-hidden"
                 (click)="setCurrentFile(indexF, $event, indexW)"
                 *ngFor="let file of work?.files; let indexF = index"
                 [ngClass]="[
