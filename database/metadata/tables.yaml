@@ -23,6 +23,15 @@
         insertion_order: null
         column_mapping:
           id: application_id
+  - name: rating_in_latest_round
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: ratings_by_application
+        insertion_order: null
+        column_mapping:
+          id: id
   - name: user
     using:
       foreign_key_constraint_on: created_by
@@ -113,7 +122,6 @@
       - created_at
       - created_by
       - edition_id
-      - eliminated
       - group
       - id
       - internal_name
@@ -345,6 +353,13 @@
         table:
           schema: public
           name: rating_rounds
+  - name: updates
+    using:
+      foreign_key_constraint_on:
+        column: edition_id
+        table:
+          schema: public
+          name: updates
   computed_fields:
   - name: state
     definition:
@@ -415,13 +430,21 @@
       - current
       - name
       - winner_id
-      filter: {}
+      filter:
+        winner_id:
+          _is_null: true
       check:
         _or:
-        - winner_id:
-            _is_null: true
-        - application_end:
-            _lt: now()
+        - _and:
+          - winner_id:
+              _is_null: true
+          - _not:
+              rating_rounds: {}
+        - winner:
+            edition_id:
+              _ceq:
+              - $
+              - id
   delete_permissions:
   - role: team
     permission:
@@ -659,6 +682,13 @@
     using:
       foreign_key_constraint_on: prev_round_id
   array_relationships:
+  - name: eliminations
+    using:
+      foreign_key_constraint_on:
+        column: round_id
+        table:
+          schema: public
+          name: eliminations
   - name: ratings
     using:
       foreign_key_constraint_on:
@@ -673,31 +703,52 @@
         schema: public
         name: rating_round_state
     comment: ""
+  - name: level
+    definition:
+      function:
+        schema: public
+        name: get_rating_round_level
   insert_permissions:
   - role: team
     permission:
-      check: {}
+      check:
+        _and:
+        - edition:
+            _and:
+            - current:
+                _eq: true
+            - application_end:
+                _lt: now()
+        - goal:
+            _gte: 0
+        - _or:
+          - prev_round_id:
+              _is_null: true
+          - prev_round:
+              closed:
+                _eq: true
       columns:
       - edition_id
       - end_at
       - goal
       - prev_round_id
-      - start_at
       backend_only: false
   select_permissions:
   - role: jury
     permission:
       columns:
-      - id
-      - start_at
-      - end_at
-      - edition_id
-      - goal
-      - prev_round_id
+      - closed
       - created_at
+      - edition_id
+      - end_at
+      - goal
+      - id
+      - prev_round_id
+      - start_at
       - updated_at
       computed_fields:
       - active
+      - level
       filter:
         _and:
         - edition:
@@ -708,16 +759,18 @@
   - role: team
     permission:
       columns:
-      - id
-      - start_at
-      - end_at
-      - edition_id
-      - goal
-      - prev_round_id
+      - closed
       - created_at
+      - edition_id
+      - end_at
+      - goal
+      - id
+      - prev_round_id
+      - start_at
       - updated_at
       computed_fields:
       - active
+      - level
       filter:
         _and:
         - edition:
@@ -725,9 +778,55 @@
               _eq: true
         - _not:
             next_round: {}
+  update_permissions:
+  - role: team
+    permission:
+      columns:
+      - closed
+      - end_at
+      - goal
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: team
+    permission:
+      filter:
+        _and:
+        - edition:
+            _and:
+            - current:
+                _eq: true
+            - winner_id:
+                _is_null: true
+        - _not:
+            next_round: {}
 - table:
     schema: public
     name: rating_rounds_sorted
+  object_relationships:
+  - name: edition
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: editions
+        insertion_order: null
+        column_mapping:
+          edition_id: id
+  select_permissions:
+  - role: team
+    permission:
+      columns:
+      - closed
+      - edition_id
+      - end_at
+      - goal
+      - id
+      - level
+      - prev_round_id
+      - start_at
+      filter: {}
+      allow_aggregations: true
 - table:
     schema: public
     name: ratings
@@ -742,6 +841,24 @@
     using:
       foreign_key_constraint_on: round_id
   insert_permissions:
+  - role: jury
+    permission:
+      check:
+        rating_round:
+          _and:
+          - closed:
+              _eq: false
+          - _not:
+              next_round: {}
+          - end_at:
+              _gte: now()
+      set:
+        created_by: x-hasura-User-Id
+      columns:
+      - application_id
+      - round_id
+      - value
+      backend_only: false
   - role: team
     permission:
       check: {}
@@ -923,6 +1040,13 @@
         table:
           schema: public
           name: applications
+  - name: ratings
+    using:
+      foreign_key_constraint_on:
+        column: created_by
+        table:
+          schema: public
+          name: ratings
   insert_permissions:
   - role: jury
     permission:
@@ -1070,6 +1194,21 @@
       - work_id
       backend_only: false
   select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - application_id
+      - password
+      - created_at
+      - id
+      - key
+      - mimetype
+      - order
+      - originalname
+      - size
+      - work_id
+      filter: {}
+      allow_aggregations: true
   - role: team
     permission:
       columns:
@@ -1326,6 +1465,25 @@
       - year
       backend_only: false
   select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - description
+      - dimensions_depth
+      - dimensions_height
+      - dimensions_width
+      - id
+      - material
+      - number_of_editions
+      - order
+      - title
+      - updated_at
+      - work_id
+      - year
+      filter: {}
+      allow_aggregations: true
   - role: team
     permission:
       columns:
@@ -1474,6 +1632,17 @@
       - portfolio
       backend_only: false
   select_permissions:
+  - role: jury
+    permission:
+      columns:
+      - application_id
+      - created_at
+      - id
+      - order
+      - portfolio
+      - updated_at
+      filter: {}
+      allow_aggregations: true
   - role: team
     permission:
       columns:
