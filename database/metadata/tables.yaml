@@ -1053,7 +1053,7 @@
       check: {}
       set:
         id: x-hasura-user-id
-        type: x-hasura-default-role
+        type: x-hasura-role
       columns:
       - name
       backend_only: false
@@ -1062,7 +1062,7 @@
       check: {}
       set:
         id: x-hasura-user-id
-        type: x-hasura-default-role
+        type: x-hasura-role
       columns:
       - name
       backend_only: false
@@ -1071,7 +1071,7 @@
       check: {}
       set:
         id: x-hasura-user-id
-        type: x-hasura-default-role
+        type: x-hasura-role
       columns:
       - last_seen
       - name
@@ -1115,8 +1115,6 @@
         id:
           _eq: X-Hasura-User-Id
       check: null
-      set:
-        type: x-hasura-default-role
   - role: team
     permission:
       columns:
@@ -1134,8 +1132,6 @@
         id:
           _eq: X-Hasura-User-Id
       check: null
-      set:
-        type: x-hasura-default-role
   delete_permissions:
   - role: team
     permission:
