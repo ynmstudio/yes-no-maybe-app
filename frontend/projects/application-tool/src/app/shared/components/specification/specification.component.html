@@ -1,34 +1,30 @@
 <div class="grid grid-cols-5 items-stretch p-4 lg:px-6 lg:py-8">
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Titel
-  </div>
+    [innerHtml]="'defaults.title-single' | translate"
+  ></div>
   <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.title }}
   </div>
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Jahr
-  </div>
+    [innerHtml]="'defaults.year-single' | translate"
+  ></div>
   <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.year }}
   </div>
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Editionen
-  </div>
+    [innerHtml]="'defaults.edition-multi' | translate"
+  ></div>
   <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.number_of_editions }}
   </div>
 
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Medien
-  </div>
+    [innerHtml]="'defaults.medium-multi' | translate"
+  ></div>
   <div class="col-span-3 border-b border-black dark:border-white py-1">
     <span
       class="inline-block whitespace-nowrap mr-1 bg-blue-600 px-2 text-white rounded-full shadow-none focus:shadow-none leading-4 text-center text-xxs font-medium uppercase font-condensed"
@@ -42,9 +38,8 @@
   </div>
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Maße
-  </div>
+    [innerHtml]="'defaults.dimensions' | translate"
+  ></div>
   <div class="col-span-3 border-b border-black dark:border-white">
     {{ "defaults.dimensions-width" | translate | uppercase }}
     {{ specification.dimensions_width || 0 }}
@@ -55,9 +50,8 @@
   </div>
   <div
     class="col-span-2 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Material
-  </div>
+    [innerHtml]="'defaults.material-multi' | translate"
+  ></div>
   <div class="col-span-3 border-b border-black dark:border-white">
     {{ specification.material }}
   </div>
@@ -65,7 +59,7 @@
     <div
       class="col-span-5 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
     >
-      Tags
+      {{ "defaults.tag-multi" | translate }}
       <span
         class="inline-block whitespace-nowrap mr-1 bg-blue-600 px-2 text-white rounded-full shadow-none focus:shadow-none leading-4 text-center text-xxs font-medium uppercase font-condensed"
         >Film/Video</span
@@ -78,7 +72,7 @@
     <div
       class="col-span-5 text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
     >
-      Hinweis
+      {{ "defaults.hint-single" | translate }}
       <span
         class="m-1 inline-block w-4 h-4 ring-1 ring-gray-600 dark:ring-gray-300 p-1 text-gray-800 dark:text-gray-100 rounded-full leading-none text-center text-xxs"
         >+</span
@@ -87,8 +81,7 @@
   </ng-container>
   <div
     class="col-span-5 mt-6 border-b border-black dark:border-white text-gray-800 dark:text-gray-200 font-mono uppercase text-xs"
-  >
-    Beschreibung
-  </div>
+    [innerHtml]="'defaults.description-single' | translate"
+  ></div>
   <div class="col-span-5 py-2" [innerHtml]="specification.description"></div>
 </div>

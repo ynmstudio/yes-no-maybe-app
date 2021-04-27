@@ -1,7 +1,10 @@
 <div class="">
   <div class="container--default-x py-4">
     <a [routerLink]="['..']" class="text-sm font-mono"
-      >&larr; <span class="underline">Zurück zur Übersicht</span></a
+      >&larr;
+      <span class="underline">{{
+        "snippets.back-to-overview" | translate
+      }}</span></a
     >
   </div>
   <div
@@ -515,16 +518,14 @@
             "
             (click)="reviveApplication()"
             class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
-          >
-            Einreichung wiederaufnehmen
-          </button>
+            [innerHtml]="'actions.revive-application' | translate"
+          ></button>
           <ng-template #eliminationButton>
             <button
               (click)="eliminateApplication()"
               class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
-            >
-              Einreichung disqualifizieren
-            </button>
+              [innerHtml]="'actions.eliminate-application' | translate"
+            ></button>
           </ng-template>
         </div>
       </div>

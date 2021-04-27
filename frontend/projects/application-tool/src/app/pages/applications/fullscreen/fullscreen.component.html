@@ -10,7 +10,7 @@
       >
         <span
           class="sr-only"
-          [innerHtml]="'screen-reader.back-to-overview' | translate"
+          [innerHtml]="'snippets.back-to-overview' | translate"
         ></span>
         <svg
           class="h-4 w-auto"
@@ -218,7 +218,7 @@
       >
         <span
           class="sr-only"
-          [innerHtml]="'screen-reader.back-to-overview' | translate"
+          [innerHtml]="'snippets.back-to-overview' | translate"
         ></span>
         <span class="text-2xl leading-none font-mono font-light">&times;</span>
       </a>
@@ -484,7 +484,7 @@
             class="inline-block"
             *ngIf="(currentSpecificationIndex | async) == index"
           >
-            Arbeitsangabe
+            {{ "defaults.specification-single" | translate }}
           </span>
           <span *ngIf="(work?.specifications?.length || 0) > 1">
             {{ index + 1 }}

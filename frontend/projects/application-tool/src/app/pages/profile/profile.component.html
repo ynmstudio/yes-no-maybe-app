@@ -9,7 +9,7 @@
       >
         <span
           class="sr-only"
-          [innerHtml]="'screen-reader.back-to-overview' | translate"
+          [innerHtml]="'snippets.back-to-overview' | translate"
         ></span>
         <svg
           width="11px"
@@ -52,7 +52,9 @@
             <div
               class="font-mono text-sm grid grid-cols-form items-center gap-x-4 gap-y-3"
             >
-              <label for="displayName" class="text-right">Name*</label>
+              <label for="displayName" class="text-right"
+                >{{ "defaults.name-single" | translate }}*</label
+              >
               <input
                 id="first-name"
                 formControlName="displayName"
@@ -68,9 +70,8 @@
                 [ngClass]="displayName.dirty ? 'opacity-100' : 'opacity-0'"
                 [disabled]="displayName.invalid"
                 [tabindex]="displayName.dirty ? 0 : -1"
-              >
-                speichern
-              </button>
+                [innerHtml]="'actions.save' | translate"
+              ></button>
               <label for="email-address" class="text-right">E-Mail*</label>
               <input
                 id="email-address"
@@ -88,9 +89,8 @@
                 [ngClass]="email.dirty ? 'opacity-100' : 'opacity-0'"
                 [disabled]="email.invalid"
                 [tabindex]="email.dirty ? 0 : -1"
-              >
-                speichern
-              </button>
+                [innerHtml]="'actions.save' | translate"
+              ></button>
               <span class="col-span-3">&nbsp;</span>
               <label
                 for="password"
@@ -101,9 +101,8 @@
                 *ngIf="!showChangePassword"
                 (click)="toggleChangePassword()"
                 class="uppercase p-3 rounded-xl bg-gray-200 hover:bg-gray-300 text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-30"
-              >
-                Passwort ändern
-              </button>
+                [innerHtml]="'snippets.auth.change-password' | translate"
+              ></button>
               <ng-container *ngIf="showChangePassword">
                 <div class="grid grid-cols-2 gap-x-2 relative">
                   <div class="relative">
@@ -147,9 +146,8 @@
                   "
                   [disabled]="password.invalid || form.errors?.mustMatch"
                   [tabindex]="password.valid ? 0 : -1"
-                >
-                  speichern
-                </button>
+                  [innerHtml]="'actions.save' | translate"
+                ></button>
               </ng-container>
               <div
                 class="col-start-2 mt-4 py-4 text-xs font-mono text-red-600 leading-tight"

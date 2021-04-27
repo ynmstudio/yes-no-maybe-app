@@ -251,6 +251,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>eliminate-application</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>enable</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -337,6 +354,23 @@
                     </concept_node>
                     <concept_node>
                         <name>reset</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>revive-application</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -1228,6 +1262,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>hint-single</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>jury-rating-multi</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -1636,6 +1687,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>specification-single</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>status-single</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -1654,6 +1722,23 @@
                     </concept_node>
                     <concept_node>
                         <name>submitted</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>tag-multi</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -1722,6 +1807,23 @@
                     </concept_node>
                     <concept_node>
                         <name>year-of-creating-single</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>year-single</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -2327,45 +2429,6 @@
                 </children>
             </folder_node>
             <folder_node>
-                <name>screen-reader</name>
-                <children>
-                    <concept_node>
-                        <name>back-to-overview</name>
-                        <definition_loaded>false</definition_loaded>
-                        <description/>
-                        <comment/>
-                        <default_text/>
-                        <translations>
-                            <translation>
-                                <language>de-DE</language>
-                                <approved>false</approved>
-                            </translation>
-                            <translation>
-                                <language>en-GB</language>
-                                <approved>false</approved>
-                            </translation>
-                        </translations>
-                    </concept_node>
-                    <concept_node>
-                        <name>this-is-a-group</name>
-                        <definition_loaded>false</definition_loaded>
-                        <description/>
-                        <comment/>
-                        <default_text/>
-                        <translations>
-                            <translation>
-                                <language>de-DE</language>
-                                <approved>false</approved>
-                            </translation>
-                            <translation>
-                                <language>en-GB</language>
-                                <approved>false</approved>
-                            </translation>
-                        </translations>
-                    </concept_node>
-                </children>
-            </folder_node>
-            <folder_node>
                 <name>snippets</name>
                 <children>
                     <concept_node>
@@ -2781,6 +2844,40 @@
                             </concept_node>
                         </children>
                     </folder_node>
+                    <concept_node>
+                        <name>back-to-overview</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>change-password</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
                     <concept_node>
                         <name>close-round</name>
                         <definition_loaded>false</definition_loaded>
@@ -3275,6 +3372,40 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>this-is-a-group</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>top-ten-type</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>de-DE</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>en-GB</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>updated-some-time-ago</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -3310,28 +3441,6 @@
                     </concept_node>
                     <concept_node>
                         <name>welcome-user</name>
-                        <definition_loaded>false</definition_loaded>
-                        <description/>
-                        <comment/>
-                        <default_text/>
-                        <translations>
-                            <translation>
-                                <language>de-DE</language>
-                                <approved>false</approved>
-                            </translation>
-                            <translation>
-                                <language>en-GB</language>
-                                <approved>false</approved>
-                            </translation>
-                        </translations>
-                    </concept_node>
-                </children>
-            </folder_node>
-            <folder_node>
-                <name>statistics</name>
-                <children>
-                    <concept_node>
-                        <name>top-ten</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
