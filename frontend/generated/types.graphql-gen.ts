@@ -951,6 +951,10 @@ export type Editions = {
   rating_rounds_aggregate: Rating_Rounds_Aggregate;
   /** A computed field, executes function "edition_state" */
   state?: Maybe<Scalars['String']>;
+  /** An array relationship */
+  updates: Array<Updates>;
+  /** An aggregate relationship */
+  updates_aggregate: Updates_Aggregate;
   /** An object relationship */
   winner?: Maybe<Applications>;
   winner_id?: Maybe<Scalars['uuid']>;
@@ -994,6 +998,26 @@ export type EditionsRating_Rounds_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Rating_Rounds_Order_By>>;
   where?: Maybe<Rating_Rounds_Bool_Exp>;
+};
+
+
+/** columns and relationships of "editions" */
+export type EditionsUpdatesArgs = {
+  distinct_on?: Maybe<Array<Updates_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Updates_Order_By>>;
+  where?: Maybe<Updates_Bool_Exp>;
+};
+
+
+/** columns and relationships of "editions" */
+export type EditionsUpdates_AggregateArgs = {
+  distinct_on?: Maybe<Array<Updates_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Updates_Order_By>>;
+  where?: Maybe<Updates_Bool_Exp>;
 };
 
 /** aggregated selection of "editions" */
@@ -1045,6 +1069,7 @@ export type Editions_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   rating_rounds?: Maybe<Rating_Rounds_Bool_Exp>;
+  updates?: Maybe<Updates_Bool_Exp>;
   winner?: Maybe<Applications_Bool_Exp>;
   winner_id?: Maybe<Uuid_Comparison_Exp>;
 };
@@ -1074,6 +1099,7 @@ export type Editions_Insert_Input = {
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   rating_rounds?: Maybe<Rating_Rounds_Arr_Rel_Insert_Input>;
+  updates?: Maybe<Updates_Arr_Rel_Insert_Input>;
   winner?: Maybe<Applications_Obj_Rel_Insert_Input>;
   winner_id?: Maybe<Scalars['uuid']>;
 };
@@ -1133,6 +1159,7 @@ export type Editions_Order_By = {
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   rating_rounds_aggregate?: Maybe<Rating_Rounds_Aggregate_Order_By>;
+  updates_aggregate?: Maybe<Updates_Aggregate_Order_By>;
   winner?: Maybe<Applications_Order_By>;
   winner_id?: Maybe<Order_By>;
 };
@@ -3207,9 +3234,9 @@ export type Query_Root = {
   search_applications: Array<Applications>;
   /** execute function "search_applications" and query aggregates on result of table type "applications" */
   search_applications_aggregate: Applications_Aggregate;
-  /** fetch data from the table: "updates" */
+  /** An array relationship */
   updates: Array<Updates>;
-  /** fetch aggregated fields from the table: "updates" */
+  /** An aggregate relationship */
   updates_aggregate: Updates_Aggregate;
   /** fetch data from the table: "updates" using primary key columns */
   updates_by_pk?: Maybe<Updates>;
@@ -5064,9 +5091,9 @@ export type Subscription_Root = {
   search_applications: Array<Applications>;
   /** execute function "search_applications" and query aggregates on result of table type "applications" */
   search_applications_aggregate: Applications_Aggregate;
-  /** fetch data from the table: "updates" */
+  /** An array relationship */
   updates: Array<Updates>;
-  /** fetch aggregated fields from the table: "updates" */
+  /** An aggregate relationship */
   updates_aggregate: Updates_Aggregate;
   /** fetch data from the table: "updates" using primary key columns */
   updates_by_pk?: Maybe<Updates>;
@@ -5656,11 +5683,39 @@ export type Updates_Aggregate_FieldsCountArgs = {
   distinct?: Maybe<Scalars['Boolean']>;
 };
 
+/** order by aggregate values of table "updates" */
+export type Updates_Aggregate_Order_By = {
+  avg?: Maybe<Updates_Avg_Order_By>;
+  count?: Maybe<Order_By>;
+  max?: Maybe<Updates_Max_Order_By>;
+  min?: Maybe<Updates_Min_Order_By>;
+  stddev?: Maybe<Updates_Stddev_Order_By>;
+  stddev_pop?: Maybe<Updates_Stddev_Pop_Order_By>;
+  stddev_samp?: Maybe<Updates_Stddev_Samp_Order_By>;
+  sum?: Maybe<Updates_Sum_Order_By>;
+  var_pop?: Maybe<Updates_Var_Pop_Order_By>;
+  var_samp?: Maybe<Updates_Var_Samp_Order_By>;
+  variance?: Maybe<Updates_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "updates" */
+export type Updates_Arr_Rel_Insert_Input = {
+  data: Array<Updates_Insert_Input>;
+  /** on conflict condition */
+  on_conflict?: Maybe<Updates_On_Conflict>;
+};
+
 /** aggregate avg on columns */
 export type Updates_Avg_Fields = {
   __typename?: 'updates_avg_fields';
   edition_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "updates" */
+export type Updates_Avg_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "updates". All fields are combined with a logical 'AND'. */
@@ -5711,6 +5766,16 @@ export type Updates_Max_Fields = {
   url?: Maybe<Scalars['String']>;
 };
 
+/** order by max() on columns of table "updates" */
+export type Updates_Max_Order_By = {
+  created_at?: Maybe<Order_By>;
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  text_de?: Maybe<Order_By>;
+  text_en?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
+};
+
 /** aggregate min on columns */
 export type Updates_Min_Fields = {
   __typename?: 'updates_min_fields';
@@ -5720,6 +5785,16 @@ export type Updates_Min_Fields = {
   text_de?: Maybe<Scalars['String']>;
   text_en?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "updates" */
+export type Updates_Min_Order_By = {
+  created_at?: Maybe<Order_By>;
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  text_de?: Maybe<Order_By>;
+  text_en?: Maybe<Order_By>;
+  url?: Maybe<Order_By>;
 };
 
 /** response of any mutation on the table "updates" */
@@ -5787,11 +5862,23 @@ export type Updates_Stddev_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev() on columns of table "updates" */
+export type Updates_Stddev_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate stddev_pop on columns */
 export type Updates_Stddev_Pop_Fields = {
   __typename?: 'updates_stddev_pop_fields';
   edition_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "updates" */
+export type Updates_Stddev_Pop_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5801,11 +5888,23 @@ export type Updates_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by stddev_samp() on columns of table "updates" */
+export type Updates_Stddev_Samp_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate sum on columns */
 export type Updates_Sum_Fields = {
   __typename?: 'updates_sum_fields';
   edition_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "updates" */
+export type Updates_Sum_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** update columns of table "updates" */
@@ -5831,6 +5930,12 @@ export type Updates_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_pop() on columns of table "updates" */
+export type Updates_Var_Pop_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate var_samp on columns */
 export type Updates_Var_Samp_Fields = {
   __typename?: 'updates_var_samp_fields';
@@ -5838,11 +5943,23 @@ export type Updates_Var_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
+/** order by var_samp() on columns of table "updates" */
+export type Updates_Var_Samp_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+};
+
 /** aggregate variance on columns */
 export type Updates_Variance_Fields = {
   __typename?: 'updates_variance_fields';
   edition_id?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "updates" */
+export type Updates_Variance_Order_By = {
+  edition_id?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
 };
 
 /** columns and relationships of "users" */

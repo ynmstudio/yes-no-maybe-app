@@ -32,7 +32,8 @@
               "zen-observable",
               "fast-fuzzy",
               "ng2-pdf-viewer",
-              "pdfjs-dist/es5/web/pdf_viewer"
+              "pdfjs-dist/es5/web/pdf_viewer",
+              "pdfjs-dist/es5/build/pdf"
             ],
             "outputPath": "dist/application-tool",
             "index": "projects/application-tool/src/index.html",

@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Apr 26 2021 10:36:57 GMT+0200 (GMT+02:00)
+# timestamp: Mon Apr 26 2021 20:42:48 GMT+0200 (GMT+02:00)
 
 schema {
   query: query_root
@@ -1146,6 +1146,42 @@ type editions {
   """
   state: String
 
+  """An array relationship"""
+  updates(
+    """distinct select on columns"""
+    distinct_on: [updates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [updates_order_by!]
+
+    """filter the rows returned"""
+    where: updates_bool_exp
+  ): [updates!]!
+
+  """An aggregate relationship"""
+  updates_aggregate(
+    """distinct select on columns"""
+    distinct_on: [updates_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [updates_order_by!]
+
+    """filter the rows returned"""
+    where: updates_bool_exp
+  ): updates_aggregate!
+
   """An object relationship"""
   winner: applications
   winner_id: uuid
@@ -1196,6 +1232,7 @@ input editions_bool_exp {
   id: Int_comparison_exp
   name: String_comparison_exp
   rating_rounds: rating_rounds_bool_exp
+  updates: updates_bool_exp
   winner: applications_bool_exp
   winner_id: uuid_comparison_exp
 }
@@ -1233,6 +1270,7 @@ input editions_insert_input {
   id: Int
   name: String
   rating_rounds: rating_rounds_arr_rel_insert_input
+  updates: updates_arr_rel_insert_input
   winner: applications_obj_rel_insert_input
   winner_id: uuid
 }
@@ -1297,6 +1335,7 @@ input editions_order_by {
   id: order_by
   name: order_by
   rating_rounds_aggregate: rating_rounds_aggregate_order_by
+  updates_aggregate: updates_aggregate_order_by
   winner: applications_order_by
   winner_id: order_by
 }
@@ -4045,9 +4084,7 @@ type query_root {
     where: applications_bool_exp
   ): applications_aggregate!
 
-  """
-  fetch data from the table: "updates"
-  """
+  """An array relationship"""
   updates(
     """distinct select on columns"""
     distinct_on: [updates_select_column!]
@@ -4065,9 +4102,7 @@ type query_root {
     where: updates_bool_exp
   ): [updates!]!
 
-  """
-  fetch aggregated fields from the table: "updates"
-  """
+  """An aggregate relationship"""
   updates_aggregate(
     """distinct select on columns"""
     distinct_on: [updates_select_column!]
@@ -6383,9 +6418,7 @@ type subscription_root {
     where: applications_bool_exp
   ): applications_aggregate!
 
-  """
-  fetch data from the table: "updates"
-  """
+  """An array relationship"""
   updates(
     """distinct select on columns"""
     distinct_on: [updates_select_column!]
@@ -6403,9 +6436,7 @@ type subscription_root {
     where: updates_bool_exp
   ): [updates!]!
 
-  """
-  fetch aggregated fields from the table: "updates"
-  """
+  """An aggregate relationship"""
   updates_aggregate(
     """distinct select on columns"""
     distinct_on: [updates_select_column!]
@@ -6844,10 +6875,45 @@ type updates_aggregate_fields {
   variance: updates_variance_fields
 }
 
+"""
+order by aggregate values of table "updates"
+"""
+input updates_aggregate_order_by {
+  avg: updates_avg_order_by
+  count: order_by
+  max: updates_max_order_by
+  min: updates_min_order_by
+  stddev: updates_stddev_order_by
+  stddev_pop: updates_stddev_pop_order_by
+  stddev_samp: updates_stddev_samp_order_by
+  sum: updates_sum_order_by
+  var_pop: updates_var_pop_order_by
+  var_samp: updates_var_samp_order_by
+  variance: updates_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "updates"
+"""
+input updates_arr_rel_insert_input {
+  data: [updates_insert_input!]!
+
+  """on conflict condition"""
+  on_conflict: updates_on_conflict
+}
+
 """aggregate avg on columns"""
 type updates_avg_fields {
   edition_id: Float
   id: Float
+}
+
+"""
+order by avg() on columns of table "updates"
+"""
+input updates_avg_order_by {
+  edition_id: order_by
+  id: order_by
 }
 
 """
@@ -6905,6 +6971,18 @@ type updates_max_fields {
   url: String
 }
 
+"""
+order by max() on columns of table "updates"
+"""
+input updates_max_order_by {
+  created_at: order_by
+  edition_id: order_by
+  id: order_by
+  text_de: order_by
+  text_en: order_by
+  url: order_by
+}
+
 """aggregate min on columns"""
 type updates_min_fields {
   created_at: timestamptz
@@ -6913,6 +6991,18 @@ type updates_min_fields {
   text_de: String
   text_en: String
   url: String
+}
+
+"""
+order by min() on columns of table "updates"
+"""
+input updates_min_order_by {
+  created_at: order_by
+  edition_id: order_by
+  id: order_by
+  text_de: order_by
+  text_en: order_by
+  url: order_by
 }
 
 """
@@ -6992,10 +7082,26 @@ type updates_stddev_fields {
   id: Float
 }
 
+"""
+order by stddev() on columns of table "updates"
+"""
+input updates_stddev_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type updates_stddev_pop_fields {
   edition_id: Float
   id: Float
+}
+
+"""
+order by stddev_pop() on columns of table "updates"
+"""
+input updates_stddev_pop_order_by {
+  edition_id: order_by
+  id: order_by
 }
 
 """aggregate stddev_samp on columns"""
@@ -7004,10 +7110,26 @@ type updates_stddev_samp_fields {
   id: Float
 }
 
+"""
+order by stddev_samp() on columns of table "updates"
+"""
+input updates_stddev_samp_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
 """aggregate sum on columns"""
 type updates_sum_fields {
   edition_id: Int
   id: Int
+}
+
+"""
+order by sum() on columns of table "updates"
+"""
+input updates_sum_order_by {
+  edition_id: order_by
+  id: order_by
 }
 
 """
@@ -7039,16 +7161,40 @@ type updates_var_pop_fields {
   id: Float
 }
 
+"""
+order by var_pop() on columns of table "updates"
+"""
+input updates_var_pop_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
 """aggregate var_samp on columns"""
 type updates_var_samp_fields {
   edition_id: Float
   id: Float
 }
 
+"""
+order by var_samp() on columns of table "updates"
+"""
+input updates_var_samp_order_by {
+  edition_id: order_by
+  id: order_by
+}
+
 """aggregate variance on columns"""
 type updates_variance_fields {
   edition_id: Float
   id: Float
+}
+
+"""
+order by variance() on columns of table "updates"
+"""
+input updates_variance_order_by {
+  edition_id: order_by
+  id: order_by
 }
 
 """
