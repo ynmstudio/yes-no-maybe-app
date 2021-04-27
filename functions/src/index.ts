@@ -516,10 +516,12 @@ exports.convertVideos = functions
                   duration: 1,
                 },
               },
-              mp4: {
+              "mp4:1080p::quality=4": {
+                key: "mp4",
                 path: `/${filePath}/${fileName}_converted.mp4`,
               },
-              webm: {
+              "webm:1080p::quality=4": {
+                key: "webm",
                 path: `/${filePath}/${fileName}_converted.webm`,
               },
             },
