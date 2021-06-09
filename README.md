@@ -8,13 +8,14 @@ In collaboration with communication design and web development studio [Yil & Man
 
 ## Important Notice
 
-This application and its tools is under steady development and we 
+**The application is in alpha state**
+While we tried to minimize the chance to introduce vulnerabilities (authentication/file-system), this application and its codebase haven't been audited by security specialists and it shouldn't be used to store, share or publish sensitive information.
 
 ## Usage
 
-People should be able to setup new project by only providing Firebase Config file and links to live Hasura instance (cloud/self-hosted) and have a setup process inside the app for the first user.
+Developers should be able to setup a new project by providing Firebase Config file and update the links to a Hasura instance (cloud/self-hosted). Please check the section **Getting Started** for more details regarding the configuration of Firebase and Hasura. The Section **Deploy** contains information on how to built the frontend.
 
-Other authentication/storage/hosting providers could be added at a later stage.
+Other authentication/storage/hosting providers may be added at a later stage.
 
 ## Prerequisites
 
@@ -23,13 +24,12 @@ Other authentication/storage/hosting providers could be added at a later stage.
 3. install [Docker](https://docs.docker.com/get-docker/)
 4. install [Firebase CLI](https://github.com/firebase/firebase-tools)
 
-
 ## Features
 
 - Built upon the Hasura GraphQL engine
 - Frontend built with Angular + Tailwind CSS
-- Multi-language support (Supported languages: en/de)
-- Authentication (Email/Password with Firebase Authentication)
+- Multi-language support (supported languages: EN/DE)
+- Authentication (e-mail/password with Firebase Authentication)
 - File Storage (supported with Firebase Storage)
 - Automatic image resizing (built with Firebase Functions)
 - Automatic video converter (built with Firebase Functions and Coconut.co)
@@ -74,13 +74,13 @@ _Important: always run via `hasura console --admin-secret myadminsecretkey` insi
 
 Currently, session variables are not available in computed fields by default and/or can be added via the console but must be added via the Hasura Endinge API. For more details see their article: [Accessing Hasura Session Variables in Computed Fields](https://hasura.io/docs/1.0/graphql/core/schema/computed-fields.html#accessing-hasura-session-variables-in-computed-fields).
 
-__`rated_by_user` field__
+**`rated_by_user` field**
 
 The field `rated_by_user` has to be added via the Hasura API on each machine hasura will run on.
 
 - POST to `http://localhost:8080/v1/query`
 
-__Request__
+**Request**
 
 ```bash
 POST /v1/query HTTP/1.1
@@ -110,7 +110,7 @@ X-Hasura-Admin-Secret: <your-admin-secret>
 }
 ```
 
-__Expected Response__
+**Expected Response**
 
 ```json
 {
@@ -165,22 +165,22 @@ For support the following environment variables must be set for firebase:
 
 Check https://docs.coconut.co/ for more information.
 
-
 ## Deploy
 
 ### Database
-The Hasura database and GraphQL engine can be deployed either via Hasuras own [Cloud Service](https://cloud.hasura.io/), which offers a fairly generous free tier. Otherwise you can deploy Hasura own your own server. Please check their documentation for all deployment guides: https://hasura.io/docs/latest/graphql/core/deployment/deployment-guides/index.html
+
+The Hasura database and GraphQL engine can be deployed either via Hasura's own [Cloud Service](https://cloud.hasura.io/), which offers a fairly generous free tier. Otherwise you can deploy Hasura on your own server. Please see their documentation for all deployment guides: https://hasura.io/docs/latest/graphql/core/deployment/deployment-guides/index.html
 
 ### App
+
 The app can be deployed using **Firebase Hosting**, but any other static file server should work as well (for example Netlify, GitHub Pages or your own server).
-For deploying of the application the build script needs to run inside the frontend folder `npm run build:prod`.
+For deploying the application, the build script needs to run inside the frontend folder `npm run build:prod`.
 
 Firebase Hosting example: `cd frontend && npm run build:prod && cd .. && firebase deploy --only hosting`
 
-
 # Upcoming Features
 
-- [ ] Let team add hints to applications where to stop a video or other important remarks the jury should see when evaluating a application
+- [ ] Add function to let the team add notes to applications the jury should see when evaluating an application, e.g. where to pause a video.
 - [ ] Add internal tagging system.
 
 # Funding
