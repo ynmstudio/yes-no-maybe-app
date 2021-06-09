@@ -1,0 +1,14 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+  	match /public/{allPaths=**} {
+      allow read;
+      allow read, write: if request.auth != null && request.auth.role == "team";
+    }
+  	match /users/{userId}/{allPaths=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read, write: if request.auth != null && request.auth.role == "team";
+      allow read: if request.auth != null && request.auth.role == "jury";
+    }
+  }
+}

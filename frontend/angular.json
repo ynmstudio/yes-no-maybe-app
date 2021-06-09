@@ -1,0 +1,147 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "1822f51a-6716-41bd-8bf4-e5e73f7c24f8"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "application-tool": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/application-tool",
+      "sourceRoot": "projects/application-tool/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "apollo-link-ws",
+              "@apollo/client",
+              "apollo-link-queue",
+              "subscriptions-transport-ws",
+              "graphql-tag",
+              "zen-observable",
+              "fast-fuzzy",
+              "ng2-pdf-viewer",
+              "pdfjs-dist/es5/web/pdf_viewer",
+              "pdfjs-dist/es5/build/pdf",
+              "graphemesplit"
+            ],
+            "outputPath": "dist/application-tool",
+            "index": "projects/application-tool/src/index.html",
+            "main": "projects/application-tool/src/main.ts",
+            "polyfills": "projects/application-tool/src/polyfills.ts",
+            "tsConfig": "projects/application-tool/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "projects/application-tool/src/favicon.ico",
+              "projects/application-tool/src/assets"
+            ],
+            "styles": [
+              "projects/application-tool/src/assets/fonts/ibm-plex/css/ibm-plex.css",
+              "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
+              "projects/application-tool/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "8mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "application-tool:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "application-tool:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "application-tool:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-builders/custom-webpack:karma",
+          "options": {
+            "main": "projects/application-tool/src/test.ts",
+            "polyfills": "projects/application-tool/src/polyfills.ts",
+            "tsConfig": "projects/application-tool/tsconfig.spec.json",
+            "karmaConfig": "projects/application-tool/karma.conf.js",
+            "assets": [
+              "projects/application-tool/src/favicon.ico",
+              "projects/application-tool/src/assets"
+            ],
+            "styles": [
+              "projects/application-tool/src/assets/fonts/ibm-plex/css/ibm-plex.css",
+              "./node_modules/@videogular/ngx-videogular/fonts/videogular.css",
+              "projects/application-tool/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/application-tool/tsconfig.app.json",
+              "projects/application-tool/tsconfig.spec.json",
+              "projects/application-tool/e2e/tsconfig.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/application-tool/e2e/protractor.conf.js",
+            "devServerTarget": "application-tool:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "application-tool:serve:production"
+            }
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
+        }
+      }
+    }
+  },
+  "defaultProject": "application-tool"
+}

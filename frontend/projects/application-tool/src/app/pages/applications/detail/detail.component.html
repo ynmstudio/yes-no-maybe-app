@@ -1,0 +1,820 @@
+<div class="">
+  <div class="container--default-x py-4">
+    <a [routerLink]="['..']" class="text-sm font-mono"
+      >&larr;
+      <span class="underline">{{
+        "snippets.back-to-overview" | translate
+      }}</span></a
+    >
+  </div>
+  <div
+    class="container--default-x"
+    *ngIf="application$ | async as applicationObject"
+  >
+    <div
+      *ngIf="
+        applicationObject.data?.applications_by_pk?.elimination as elimination
+      "
+      class="
+        bg-blue-600
+        text-white
+        py-2
+        p-4
+        text-sm text-center
+        sticky
+        top-24
+        -mt-px
+        inset-x-0
+      "
+      title="Eliminated
+    {{ elimination.created_at | timePassed }} ago by
+    {{ elimination.eliminated_by.name }}"
+    >
+      <span
+        [innerHtml]="
+          'snippets.eliminated-some-time-ago'
+            | translate
+              : {
+                  time: elimination.created_at | timePassed,
+                  round: (elimination.rating_round?.level || 0) + 1
+                }
+        "
+      ></span>
+      <span *ngIf="elimination.reason">: {{ elimination.reason }}</span>
+    </div>
+    <div
+      id="gallery"
+      *ngIf="
+        (works$ | async)?.data?.works?.length &&
+          (works$ | async)?.data?.works as works;
+        else noWorks
+      "
+    >
+      <div
+        class="
+          aspect-w-1 aspect-h-1
+          md:aspect-w-16 md:aspect-h-9
+          lg:aspect-h-8
+          xl:aspect-w-3 xl:aspect-h-1
+          border-t border-b border-gray-300
+        "
+      >
+        <div class="flex overflow-hidden bg-gray-50">
+          <div
+            class="
+              flex-auto
+              order-2
+              overflow-hidden
+              relative
+              lg:mx-40
+              transition-transform
+              transform-gpu
+              origin-right
+            "
+            [ngClass]="[
+              showSpecification || showChat
+                ? 'lg:-translate-x-40'
+                : 'lg:translate-x-0'
+            ]"
+          >
+            <div *ngIf="currentWork | async as work">
+              <ng-container
+                *ngFor="let file of work?.files; let index = index"
+                [ngSwitch]="file.mimetype"
+              >
+                <app-pdf
+                  *ngSwitchCase="'application/pdf'"
+                  class="
+                    absolute
+                    group
+                    inset-0
+                    text-center
+                    transform-gpu
+                    transition-opacity
+                  "
+                  [key]="file.key"
+                  [mimetype]="file.mimetype"
+                  [ngClass]="[
+                    (currentFileIndex | async) == index
+                      ? 'opacity-100'
+                      : 'opacity-0 pointer-events-none'
+                  ]"
+                >
+                </app-pdf>
+                <app-image
+                  *ngSwitchDefault
+                  class="
+                    absolute
+                    inset-0
+                    text-center
+                    transform-gpu
+                    transition-opacity
+                  "
+                  [key]="file.key"
+                  [mimetype]="file.mimetype"
+                  [width]="1440"
+                  [height]="1200"
+                  [ngClass]="[
+                    (currentFileIndex | async) == index
+                      ? 'opacity-100'
+                      : 'opacity-0 pointer-events-none'
+                  ]"
+                  [showControls]="true"
+                  [active]="(currentFileIndex | async) == index"
+                ></app-image>
+              </ng-container>
+              <ng-container *ngIf="(work?.files?.length || 0) > 1">
+                <button
+                  (click)="incrementFileIndex(-1, work?.files?.length || 0)"
+                  class="
+                    absolute
+                    left-0
+                    top-1/2
+                    transform
+                    -translate-y-1/2
+                    p-2
+                    text-3xl
+                  "
+                >
+                  &larr;
+                </button>
+                <button
+                  (click)="incrementFileIndex(1, work?.files?.length || 0)"
+                  class="
+                    absolute
+                    right-0
+                    top-1/2
+                    transform
+                    -translate-y-1/2
+                    p-2
+                    text-3xl
+                  "
+                >
+                  &rarr;
+                </button>
+              </ng-container>
+            </div>
+          </div>
+          <div
+            class="
+              absolute
+              inset-y-0
+              left-0
+              order-1
+              lg:static
+              bg-gray-200
+              w-64
+              lg:w-80
+              border-r border-gray-300
+            "
+          >
+            <div
+              class="
+                px-4
+                py-2
+                whitespace-nowrap
+                overflow-scroll
+                overscroll-contain
+                no-scrollbar
+                transition-colors
+              "
+              *ngFor="let work of works; let indexW = index; let first = first"
+              [ngClass]="[
+                (currentWorkIndex | async) == indexW
+                  ? 'bg-gray-900 '
+                  : 'hover:bg-gray-300 cursor-pointer'
+              ]"
+              (click)="setCurrentWork(indexW)"
+            >
+              <div
+                class="
+                  inline-block
+                  h-20
+                  w-auto
+                  mr-2
+                  ring-blue-500
+                  transition-shadow
+                  relative
+                  overflow-hidden
+                "
+                (click)="setCurrentFile(indexF, $event, indexW)"
+                *ngFor="let file of work?.files; let indexF = index"
+                [ngClass]="[
+                  (work?.files?.length || 0) > 1
+                    ? 'hover:ring-gray-300 hover:ring-1 cursor-pointer'
+                    : '',
+                  (work?.files?.length || 0) > 1 &&
+                  (currentWorkIndex | async) == indexW &&
+                  (currentFileIndex | async) == indexF
+                    ? 'ring-1'
+                    : 'ring-0'
+                ]"
+              >
+                <app-image
+                  [key]="file.key"
+                  [mimetype]="file.mimetype"
+                  [width]="200"
+                  [height]="200"
+                ></app-image>
+              </div>
+            </div>
+          </div>
+          <div
+            class="
+              absolute
+              w-64
+              lg:w-80
+              inset-y-0
+              right-0
+              bg-gray-200
+              border-l border-gray-300
+              transition-all
+              transform-gpu
+              origin-right
+            "
+            [ngClass]="[
+              showChat
+                ? 'translate-x-0  opacity-100'
+                : 'translate-x-full opacity-0'
+            ]"
+          >
+            <app-chat
+              *ngIf="chatLoaded"
+              [application_id]="application_id"
+              class="absolute inset-0"
+            ></app-chat>
+          </div>
+          <div
+            class="
+              absolute
+              w-64
+              lg:w-80
+              inset-y-0
+              right-0
+              bg-gray-200
+              border-l border-gray-300
+              transition-all
+              transform-gpu
+              origin-right
+            "
+            *ngIf="currentWork | async as work"
+            [ngClass]="[
+              showSpecification
+                ? 'translate-x-0 opacity-100'
+                : 'translate-x-full opacity-0'
+            ]"
+          >
+            <app-specification
+              *ngFor="
+                let specification of work?.specifications;
+                let index = index
+              "
+              [specification]="specification"
+              class="
+                absolute
+                inset-0
+                bg-gray-200
+                overflow-scroll
+                overscroll-contain
+                no-scrollbar
+                transform-gpu
+                transition-opacity
+              "
+              [ngClass]="[
+                (currentSpecificationIndex | async) == index
+                  ? 'opacity-100'
+                  : 'opacity-0 pointer-events-none'
+              ]"
+            ></app-specification>
+          </div>
+        </div>
+      </div>
+      <div
+        class="
+          border-b border-gray-300
+          mb-12
+          md:grid
+          grid-cols-2
+          lg:grid-cols-3
+        "
+      >
+        <div
+          class="lg:text-center lg:col-start-2"
+          *ngIf="currentSpecification | async as specification"
+        >
+          <div class="font-mono mt-2 px-3">
+            {{ specification?.title || "Untitled" }}
+          </div>
+          <ol *ngIf="currentWork | async as work">
+            <li
+              *ngFor="let item of work?.files; let index = index"
+              class="inline-block p-3 mx-1 group"
+              (click)="setCurrentFile(index, $event)"
+              [ngClass]="[
+                (work?.files?.length || 0) > 1 ? 'cursor-pointer' : ''
+              ]"
+            >
+              <span
+                class="
+                  block
+                  w-1
+                  h-1
+                  rounded-full
+                  ring-1 ring-gray-900
+                  transition-colors
+                "
+                [ngClass]="[
+                  (work?.files?.length || 0) > 1
+                    ? 'group-hover:ring-blue-600 group-hover:bg-blue-600'
+                    : '',
+                  (currentFileIndex | async) == index
+                    ? 'bg-black ring-black'
+                    : 'bg-transparent'
+                ]"
+              ></span>
+            </li>
+          </ol>
+        </div>
+        <div class="flex justify-between items-center">
+          <div
+            class="font-mono flex items-center space-x-2"
+            *ngIf="currentWork | async as work"
+          >
+            <button
+              class="
+                block
+                h-8
+                py-1
+                px-3
+                rounded-xl
+                leading-none
+                focus:outline-none
+                focus:ring-0
+              "
+              (click)="setCurrentSpecification(index)"
+              *ngFor="
+                let specification of work?.specifications;
+                let index = index
+              "
+              [ngClass]="[
+                (currentSpecificationIndex | async) == index &&
+                showSpecification
+                  ? 'bg-black text-white'
+                  : 'bg-gray-200 hover:bg-gray-300 text-black'
+              ]"
+            >
+              <span
+                class="inline-block"
+                *ngIf="(currentSpecificationIndex | async) == index"
+              >
+                Arbeitsangabe
+              </span>
+              <span *ngIf="(work?.specifications?.length || 0) > 1">
+                {{ index + 1 }}
+              </span>
+            </button>
+            <button
+              class="
+                block
+                h-8
+                px-3
+                rounded-xl
+                leading-none
+                focus:ring-0
+                outline-none
+              "
+              (click)="toggleChat()"
+              [ngClass]="[
+                showChat
+                  ? 'bg-black text-white'
+                  : 'bg-gray-200 hover:bg-gray-300 text-black'
+              ]"
+            >
+              <!-- <div class="sr-only">Toggle Chat</div> -->
+              <svg
+                class="inline-block h-5 w-auto"
+                width="25px"
+                height="21px"
+                viewBox="0 0 25 21"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <g
+                  id="Page-1"
+                  stroke="none"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <path
+                    d="M1,2.87232347 L1,14.8541978 C1,15.8862995 1.83211783,16.7261893 2.85499785,16.7261893 L4.70966681,16.7261893 L4.70966681,21 L8.94392964,16.7261893 L22.1450021,16.7261893 C23.1675533,16.7261893 24,15.8862995 24,14.8541978 L24,2.87232347 C24,1.84022176 23.1675533,1 22.1450021,1 L2.85499785,1 C1.83211783,1 1,1.84022176 1,2.87232347 Z M18,9 L7,9 M18,6 L7,6 M15,12 L7,12"
+                    id="Stroke-2"
+                    stroke="currentColor"
+                  ></path>
+                </g>
+              </svg>
+            </button>
+          </div>
+          <div>
+            <a class="block group" [routerLink]="['fullscreen']">
+              <!-- <svg
+                width="40px"
+                height="40px"
+                viewBox="0 0 40 40"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <g
+                  id="Page-1"
+                  stroke="none"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <g
+                    id="Group"
+                    transform="translate(1.000000, 1.000000)"
+                    stroke="currentColor"
+                  >
+                    <line
+                      x1="38"
+                      y1="0"
+                      x2="27.5"
+                      y2="10.5"
+                      id="Stroke-1"
+                    ></line>
+                    <line
+                      x1="38"
+                      y1="27"
+                      x2="27.5"
+                      y2="37.5"
+                      id="Stroke-1-Copy"
+                      transform="translate(32.500000, 32.500000) scale(1, -1) translate(-32.500000, -32.500000) "
+                    ></line>
+                    <line
+                      x1="10.5"
+                      y1="0.5"
+                      x2="0"
+                      y2="11"
+                      id="Stroke-1"
+                      transform="translate(5.500000, 5.500000) scale(1, -1) translate(-5.500000, -5.500000) "
+                    ></line>
+                    <line
+                      x1="10.5"
+                      y1="27.5"
+                      x2="0"
+                      y2="38"
+                      id="Stroke-1-Copy-2"
+                    ></line>
+                    <polyline
+                      id="Stroke-3"
+                      points="29 0.327721866 38 0 37.6722781 9"
+                    ></polyline>
+                    <polyline
+                      id="Stroke-5"
+                      points="9 37.6722781 0 38 0.327721866 29"
+                    ></polyline>
+                    <polyline
+                      id="Stroke-9"
+                      points="0.327721866 9 0 0 9 0.327721866"
+                    ></polyline>
+                    <polyline
+                      id="Stroke-11"
+                      points="37.6722781 29 38 38 29 37.6722781"
+                    ></polyline>
+                    <polygon
+                      id="Stroke-15"
+                      points="10 28 28 28 28 10 10 10"
+                    ></polygon>
+                  </g>
+                </g>
+              </svg> -->
+              <!-- <svg
+                id="Ebene_1"
+                width="40px"
+                height="40px"
+                data-name="Ebene 1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 27.1 15.4"
+              >
+                <path
+                  fill="currentColor"
+                  d="M26.85,13.2l-.12-.15L26.68,13l-.2-.24-.12-.12-.28-.32-.17-.17c-.11-.12-.23-.25-.37-.38l-.2-.21-.46-.44-.24-.22-.56-.5-.24-.21-.76-.61-.15-.12a20.26,20.26,0,0,0-3.25-2h0c-.26-.14-.52-.26-.79-.38l-.44-.18-.83-.32-.34-.11c-.29-.09-.58-.17-.88-.24l-.29-.07C15.75,6,15.38,6,15,5.9l-.25,0a12.09,12.09,0,0,0-1.21-.07,12.09,12.09,0,0,0-1.21.07l-.24,0A9.38,9.38,0,0,0,11,6.08l-.36.08-.81.23-.62.21-.45.17c-.41.16-.81.34-1.2.53h0a21.46,21.46,0,0,0-4.35,2.88v0c-.29.24-.55.47-.8.7L2.33,11c-.21.2-.41.39-.59.58l-.12.11-.46.48a.52.52,0,0,0-.1.11l-.34.37-.08.09L.41,13l0,.06-.12.15-.3.3.3.3L.37,14l0,.06.23.26.08.09.34.37a.52.52,0,0,0,.1.11l.46.48.12.11c.18.19.38.38.59.58l.11.09c.25.23.51.46.8.7v0A22.1,22.1,0,0,0,7.59,19.7h0c.38.19.78.36,1.19.53l.46.17.62.21.81.23.35.08a10,10,0,0,0,1.07.18l.24,0a12.09,12.09,0,0,0,1.21.07A12,12,0,0,0,15,21.1l.35-.06c.37-.06.74-.13,1.1-.22l.29-.08c.39-.11.78-.23,1.15-.36l.15-.06a17.58,17.58,0,0,0,2.51-1.19h0c.4-.23.79-.47,1.16-.72h0a25.06,25.06,0,0,0,3.63-3l0,0,.55-.55.05-.06.39-.43.05-.05.25-.3,0,0,.12-.16.2-.3ZM4.44,16.51h0A25.76,25.76,0,0,1,2.08,14.4L2,14.35l-.26-.28-.12-.13-.17-.18c-.08-.09-.17-.18-.23-.26s.15-.17.23-.26l.17-.18.12-.13L2,12.65l.05-.05a25.76,25.76,0,0,1,2.35-2.11h0a9.49,9.49,0,0,0,0,6ZM21,17.65c-.25.16-.5.32-.76.47l-.1.06-.72.4-.21.11-.66.32-.32.14-.6.25-.42.14-.55.19-.53.13-.49.12-.65.1-.39.06a9.75,9.75,0,0,1-2.16,0c-.14,0-.27,0-.4-.06l-.65-.1-.51-.12-.51-.13-.58-.19-.39-.13-.64-.26L8.5,19l-.7-.34-.19-.09-.74-.41-.09-.05c-.26-.16-.52-.32-.77-.49A8.56,8.56,0,0,1,6,9.35H6l.77-.48.09,0,.74-.41.19-.09c.22-.12.45-.23.68-.33l.3-.13.63-.26.41-.14c.19-.06.37-.13.57-.18l.51-.13c.17,0,.33-.09.5-.12l.65-.1.4-.06a9.84,9.84,0,0,1,2.17,0l.4.06.65.1.52.13.5.12.6.2.39.13.66.27.27.12c.25.11.49.23.72.35l.17.09c.26.14.52.28.77.43l.08,0,.79.5a8.72,8.72,0,0,1,1,4.1A8.35,8.35,0,0,1,21,17.65Zm4.6-3.91-.21.22-.07.07-.31.31h0a26.86,26.86,0,0,1-2.38,2.12h0a9.2,9.2,0,0,0,.49-3,9.8,9.8,0,0,0-.46-3h0A25.47,25.47,0,0,1,25,12.6l.05.06a3.25,3.25,0,0,1,.26.27l.13.13.16.18c.08.09.17.18.23.26Z"
+                  transform="translate(0.05 -5.8)"
+                />
+                <path
+                  class="pupil"
+                  fill="currentColor"
+                  d="M13.55,8.42a5.08,5.08,0,0,0,0,10.16,5.17,5.17,0,0,0,5.08-5.08A5,5,0,0,0,13.55,8.42ZM16,12a.86.86,0,1,1,.87-.86A.86.86,0,0,1,16,12Z"
+                  transform="translate(0.05 -5.8)"
+                />
+              </svg> -->
+              <svg
+                id="Ebene_1"
+                class="w-16 h-10"
+                data-name="Ebene 1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 25.93 14.4"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke-miterlimit="10"
+                  vector-effect="non-scaling-stroke"
+                  d="M1.2,13.5c1.2,1.4,6.3,6.7,12.3,6.7s11.1-5.4,12.3-6.7c-1.2-1.4-6.3-6.7-12.3-6.7S2.4,12.1,1.2,13.5Z"
+                  transform="translate(-0.54 -6.3)"
+                />
+                <g
+                  class="
+                    origin-center
+                    transition-transform
+                    transform-gpu
+                    scale-100
+                    group-hover:scale-150
+                  "
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-width="1"
+                    fill="none"
+                    fill-rule="evenodd"
+                    stroke-miterlimit="10"
+                    vector-effect="non-scaling-stroke"
+                    d="M13.5,9.6a3.9,3.9,0,0,0,0,7.8,4,4,0,0,0,3.9-3.9A3.84,3.84,0,0,0,13.5,9.6Z"
+                    transform="translate(-0.54 -6.3)"
+                  />
+                  <circle
+                    fill="currentColor"
+                    class="cls-2"
+                    cx="12.96"
+                    cy="7.2"
+                    r="1.2"
+                  />
+                </g>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noWorks>
+      <div
+        class="
+          h-80
+          flex
+          items-center
+          justify-center
+          relative
+          z-10
+          border-t border-b
+          bg-gray-100
+          border-gray-300
+          mb-12
+        "
+      >
+        <span
+          class="text-gray-500"
+          [innerHtml]="'snippets.no-works' | translate"
+        ></span>
+      </div>
+    </ng-template>
+
+    <div class="lg:flex items-baseline">
+      <div>
+        <h1
+          class="text-headline capitalize lg:whitespace-nowrap w-96 mb-10"
+          [innerHtml]="
+            anonymous
+              ? applicationObject.data?.applications_by_pk?.internal_name
+              : applicationObject.data.applications_by_pk?.name ||
+                'Untitled Application'
+          "
+        ></h1>
+        <div class="flex items-center space-x-6">
+          <div class="flex items-center">
+            <!-- This example requires Tailwind CSS v2.0+ -->
+            <!-- On: "bg-gray-600", Off: "bg-gray-200" -->
+            <button
+              (click)="toggleAnonymity()"
+              type="button"
+              aria-pressed="false"
+              aria-labelledby="toggleLabel"
+              [ngClass]="anonymous ? 'bg-green-600' : 'bg-red-600'"
+              class="
+                relative
+                inline-flex
+                flex-shrink-0
+                h-6
+                w-12
+                border-2 border-transparent
+                rounded-full
+                cursor-pointer
+                transition-colors
+                ease-in-out
+                duration-200
+                focus:outline-none
+                focus:ring-1 focus:ring-offset-1 focus:ring-white-400
+              "
+            >
+              <span
+                class="sr-only"
+                [innerHtml]="'snippets.hide-idenity' | translate"
+              ></span>
+              <!-- On: "translate-x-5", Off: "translate-x-0" -->
+              <span
+                aria-hidden="true"
+                [ngClass]="[anonymous ? 'translate-x-6' : 'translate-x-0']"
+                class="
+                  inline-block
+                  h-5
+                  w-5
+                  bg-white
+                  rounded-full
+                  shadow
+                  transform
+                  ring-0
+                  transition
+                  ease-in-out
+                  duration-200
+                "
+              ></span>
+            </button>
+            <div
+              class="ml-2 text-xs font-mono text-gray-800 leading-none"
+              [innerHtml]="'defaults.anonymous' | translate | uppercase"
+            ></div>
+          </div>
+          <button
+            [ngClass]="[
+              anonymous ? 'opacity-100' : 'opacity-20 pointer-events-none'
+            ]"
+            [disabled]="!anonymous"
+            (click)="createNewAlias()"
+            class="flex items-center transition-opacity"
+          >
+            <div
+              class="
+                rounded-full
+                bg-gray-200
+                hover:bg-gray-300
+                w-6
+                h-6
+                flex
+                items-center
+                justify-center
+              "
+            >
+              <svg
+                width="16px"
+                height="14px"
+                viewBox="0 0 16 14"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <g
+                  id="Page-1"
+                  stroke="none"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <g
+                    id="Group-25"
+                    transform="translate(0.000000, 1.000000)"
+                    stroke="currentColor"
+                  >
+                    <path
+                      d="M12.44476,9 C12.9953008,8.06195636 13.1484619,7.23012361 13.1484619,6.03387761 C13.1484619,2.70151076 10.6718674,0 7.61745673,0 C6.30362793,0 5.09680212,0.500381505 4.14846195,1.33496109"
+                      id="Stroke-1"
+                    ></path>
+                    <path
+                      d="M2.88252666,3 C2.31218921,3.94411631 2.14846195,4.79600182 2.14846195,6.01135847 C2.14846195,9.31849159 4.6068705,12 7.6397826,12 C8.97376399,12 10.1969274,11.4802363 11.1484619,10.617901"
+                      id="Stroke-5"
+                    ></path>
+                    <g
+                      id="Group-24"
+                      transform="translate(0.000000, 2.091343)"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M3.27455103,0.676387463 L3.65562688,2.88130311 L1.17450014,1.44882391 L3.27455103,0.676387463 Z"
+                        id="Triangle"
+                      ></path>
+                      <path
+                        d="M11.8229621,4.71677311 L14.3040888,6.1492523 L12.2040379,6.92168875 L11.8229621,4.71677311 Z"
+                        id="Triangle"
+                      ></path>
+                    </g>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <div
+              class="ml-2 text-xs font-mono text-gray-800 leading-none"
+              [innerHtml]="'snippets.new-alias' | translate | uppercase"
+            ></div>
+          </button>
+        </div>
+        <div *ngIf="!anonymous" class="bg-gray-50 mt-8 p-4">
+          <ng-container
+            *ngIf="
+              applicationObject.data?.applications_by_pk?.payment;
+              else noPayment
+            "
+          >
+            <h2 class="mb-4 text-xs font-mono uppercase">Payment</h2>
+            <div class="aspect-w-1 aspect-h-1 relative">
+              <app-pdf
+                class="group"
+                [key]="
+                  applicationObject.data?.applications_by_pk?.payment?.key || ''
+                "
+                [mimetype]="
+                  applicationObject.data?.applications_by_pk?.payment
+                    ?.mimetype || ''
+                "
+                [title]="
+                  applicationObject.data?.applications_by_pk?.payment
+                    ?.originalname
+                "
+              >
+              </app-pdf>
+            </div>
+          </ng-container>
+          <ng-template #noPayment>
+            <div class="p-4">No payment</div>
+          </ng-template>
+        </div>
+      </div>
+      <div
+        class="
+          flex-auto
+          mt-12
+          lg:mt-0
+          lg:ml-16
+          lg:pl-10
+          lg:pr-8
+          lg:border-l lg:border-r
+          border-gray-300
+        "
+      >
+        <div
+          class="font-mono text-base max-w-3xl"
+          [innerHtml]="applicationObject.data?.applications_by_pk?.statement"
+        ></div>
+
+        <div class="flex space-x-4 mt-8">
+          <!-- <button
+            *ngIf="!anonymous"
+            class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+            [innerHtml]="'email.send-email' | translate"
+          ></button> -->
+          <button
+            *ngIf="
+              applicationObject.data?.applications_by_pk?.elimination;
+              else eliminationButton
+            "
+            (click)="reviveApplication()"
+            class="
+              bg-black
+              text-white
+              border-black border
+              font-mono
+              text-base
+              leading-none
+              py-3
+              px-6
+              rounded-xl
+            "
+            [innerHtml]="'actions.revive-application' | translate"
+          ></button>
+          <ng-template #eliminationButton>
+            <button
+              (click)="eliminateApplication()"
+              class="
+                bg-black
+                text-white
+                border-black border
+                font-mono
+                text-base
+                leading-none
+                py-3
+                px-6
+                rounded-xl
+              "
+              [innerHtml]="'actions.eliminate-application' | translate"
+            ></button>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <pre class="p-1 bg-red-50 text-xs max-w-full overflow-hidden">
+  {{ application$ | async | json }}
+</pre> -->

@@ -1,0 +1,279 @@
+<div
+  class="flex-auto max-w-full space-y-5 lg:space-y-7"
+  *ngIf="selectedEdition$ | async as selectedEdition"
+>
+  <div
+    *ngIf="selectedEdition.current && selectedEdition.state === 'rating'"
+    class="container--default max-w-3xl mx-auto text-base mt-8 grid grid-cols-3 items-baseline gap-x-4 gap-y-3 bg-gray-100 rounded-xl"
+  >
+    <ng-container *ngIf="currentRound$ | async as round; else noRounds">
+      <h1 class="text-headline">
+        {{ "defaults.round-single" | translate }} {{ (round.level || 0) + 1 }}
+      </h1>
+      <div
+        class="col-start-1 row-start-2 font-mono"
+        [innerText]="
+          (round.closed ? 'round.is-closed' : 'round.is-running') | translate
+        "
+      ></div>
+      <ng-container *ngIf="!round.closed">
+        <div>{{ "snippets.ends-at" | translate }}:</div>
+        <div>{{ round.end_at | localizedDate: "short" }}</div>
+        <div>{{ "snippets.aimed-goal" | translate }}:</div>
+        <div>{{ round.goal }}</div>
+        <hr class="col-span-3" />
+        <button
+          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          (click)="showEditRoundModal(round)"
+          [innerHtml]="'snippets.edit-goals' | translate"
+        ></button>
+        <button
+          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          (click)="closeRound(round?.id, round?.level)"
+          [innerHtml]="'snippets.close-round' | translate"
+        ></button>
+      </ng-container>
+      <ng-container *ngIf="round.closed">
+        <div
+          class="col-start-2 col-span-2 text-right"
+          [innerHTML]="
+            'round.eliminations-in-this-round'
+              | translate
+                : { amount: round.eliminations_aggregate.aggregate?.count }
+          "
+        ></div>
+
+        <div
+          class="col-start-2 col-span-2 text-right"
+          [innerHTML]="
+            'round.remaining-applications'
+              | translate
+                : {
+                    amount:
+                      round.edition.applications_aggregate.aggregate?.count
+                  }
+          "
+        ></div>
+        <button
+          class="col-span-3 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          (click)="showNewRoundModal(selectedEdition.id, round.id)"
+        >
+          + {{ "snippets.add-round" | translate }}
+        </button>
+      </ng-container>
+    </ng-container>
+
+    <!-- <div
+      *ngIf="
+        (allRounds.data.rating_rounds_sorted?.length || 0) > 0;
+        else noRounds
+      "
+      class="col-span-3 grid grid-cols-4 gap-2"
+    >
+      <ng-container
+        *ngFor="
+          let round of allRounds.data.rating_rounds_sorted;
+          let index = index;
+          let last = last
+        "
+      >
+        <div>{{ (round.level || 0) + 1 }}</div>
+        <div>{{ round.start_at | localizedDate: "short" }}</div>
+        <div>{{ round.end_at | localizedDate: "short" }}</div>
+        <div>{{ round.goal }}</div>
+        <ng-container *ngIf="last && !round.closed">
+          <button
+            class="col-span-2 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+            (click)="showEditRoundModal(round)"
+            [innerHtml]="'snippets.edit-goals' | translate"
+          ></button>
+          <button
+            class="col-span-2 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+            (click)="closeRound(round?.id, round?.level)"
+            [innerHtml]="'snippets.close-round' | translate"
+          ></button>
+        </ng-container>
+
+        <button
+          class="col-span-4 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          *ngIf="last && round.closed"
+          (click)="showNewRoundModal(selectedEdition.id, round.id)"
+        >
+          + {{ "snippets.add-round" | translate }}
+        </button>
+      </ng-container>
+    </div> -->
+  </div>
+  <ng-template #noRounds>
+    <button
+      class="col-span-3 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+      (click)="showNewRoundModal(selectedEdition.id)"
+    >
+      + {{ "snippets.add-first-round" | translate }}
+    </button>
+  </ng-template>
+
+  <form
+    [formGroup]="form"
+    *ngIf="selectedEdition.state !== 'closed'; else winnerSelected"
+    class="container--default max-w-3xl mx-auto mt-8 grid font-mono text-sm grid-cols-form items-center gap-x-4 gap-y-3 bg-gray-200 rounded-xl"
+  >
+    <div class="col-span-3 flex flex-wrap justify-between items-start">
+      <h1 class="flex-auto text-headline">
+        {{ "defaults.edition-single" | translate | titlecase }}&nbsp;
+        <q [innerText]="selectedEdition.name"> </q>
+      </h1>
+
+      <div class="relative">
+        <button
+          (click)="
+            toggleEditionStatus(selectedEdition.id, !selectedEdition.current)
+          "
+          type="button"
+          class="uppercase transition-opacity p-3 rounded-xl text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-25"
+          [innerText]="
+            (selectedEdition.current
+              ? 'actions.deactivate'
+              : 'actions.activate'
+            ) | translate
+          "
+          [disabled]="selectedEdition.state === 'rating'"
+          [ngClass]="[
+            selectedEdition.current
+              ? 'bg-yellow-300 text-yellow-900 hover:bg-yellow-400 '
+              : 'bg-gray-200 hover:bg-gray-300'
+          ]"
+        ></button>
+        <ng-container *ngIf="currentEdition$ | async as currentEdition">
+          <div
+            class="text-xxs font-mono absolute top-full right-0 xl:top-0 xl:left-full xl:ml-8 xl:right-auto py-2 xl:px-4 w-64 text-right xl:text-left leading-tight text-gray-500"
+            *ngIf="
+              currentEdition.id !== selectedEdition.id &&
+              selectedEdition.state !== 'rating'
+            "
+            [innerHTML]="
+              'hints.other-edition-will-be-deactivated'
+                | translate: { name: currentEdition.name }
+            "
+          ></div>
+        </ng-container>
+      </div>
+    </div>
+    <ng-container
+      *ngIf="!(allRounds$ | async)?.data?.rating_rounds_sorted?.length"
+    >
+      <label
+        for="name-{{ selectedEdition?.id }}"
+        [innerHtml]="('defaults.name-single' | translate | titlecase) + ':'"
+      ></label>
+      <input
+        id="name-{{ selectedEdition?.id }}"
+        formControlName="name"
+        name="name"
+        type="text"
+        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        required
+        [ngClass]="[
+          name.touched && name.invalid ? 'bg-red-100' : 'bg-gray-100'
+        ]"
+      />
+      <label
+        for="application_start-{{ selectedEdition?.id }}"
+        [innerHtml]="('snippets.starts-at' | translate | titlecase) + ':'"
+      ></label>
+      <input
+        id="application_start-{{ selectedEdition?.id }}"
+        formControlName="application_start"
+        name="application_start"
+        type="datetime-local"
+        [min]="dateNow.toISOString() | slice: 0:16"
+        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        required
+        [ngClass]="[
+          (application_start.touched &&
+            application_start.invalid &&
+            application_start.errors?.pattern) ||
+          (application_end.touched && form.errors?.mustStartBeforeEnd)
+            ? 'bg-red-100'
+            : 'bg-gray-100'
+        ]"
+      />
+      <label
+        for="application_end-{{ selectedEdition?.id }}"
+        [innerHtml]="('snippets.ends-at' | translate | titlecase) + ':'"
+      ></label>
+      <input
+        id="application_end-{{ selectedEdition?.id }}"
+        formControlName="application_end"
+        name="application_end"
+        type="datetime-local"
+        [min]="application_start.value"
+        pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
+        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        required
+        [ngClass]="[
+          (application_end.touched &&
+            application_end.invalid &&
+            application_end.errors?.pattern) ||
+          (application_end.touched && form.errors?.mustStartBeforeEnd)
+            ? 'bg-red-100'
+            : 'bg-gray-100'
+        ]"
+      />
+
+      <div class="col-span-3">
+        <p
+          *ngIf="
+            (application_end.touched &&
+              application_end.invalid &&
+              application_end.errors?.pattern) ||
+            (application_start.touched &&
+              application_start.invalid &&
+              application_start.errors?.pattern)
+          "
+          class="mt-2 text-xs font-mono text-red-600 leading-tight truncate"
+          id="date-start-error"
+        >
+          Bitte gültiges Datumsformat eingeben (Beispiel:
+          <code [innerText]="dateNow"></code>)
+        </p>
+        <p
+          *ngIf="application_end.touched && form.errors?.mustStartBeforeEnd"
+          class="col-span-3 mt-2 text-xs font-mono text-red-600 leading-tight truncate"
+          id="date-start-error"
+        >
+          Das Enddatum muss nach dem Startdatum liegen!
+        </p>
+      </div>
+      <div
+        class="col-span-3 flex transition-opacity justify-end items-center"
+        [ngClass]="[form.dirty ? 'opacity-100' : 'opacity-0']"
+      >
+        <button
+          type="submit"
+          class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
+          (click)="saveEdition(selectedEdition.id)"
+          [innerHtml]="'actions.save' | translate"
+          [disabled]="form.invalid || form.pristine"
+        ></button>
+        <button
+          type="button"
+          class="bg-gray-300 text-black font-mono text-base leading-none py-3 px-6 ml-2 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
+          (click)="cancel()"
+          [innerHtml]="'actions.cancel' | translate"
+          [disabled]="form.pristine"
+        ></button>
+      </div>
+    </ng-container>
+  </form>
+
+  <ng-template #winnerSelected>
+    <div
+      class="container--default max-w-3xl mx-auto mt-8 bg-green-300 text-green-900 rounded-xl"
+    >
+      This edition already has a winner selected and therefor can't be edited
+      anymore!
+    </div>
+  </ng-template>
+</div>

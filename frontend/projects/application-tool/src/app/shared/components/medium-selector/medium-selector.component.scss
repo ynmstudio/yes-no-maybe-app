@@ -1,0 +1,36 @@
+@import "~node_modules/ngx-chips/core/styles/core/_core.scss";
+/* stylelint-disable */
+::ng-deep {
+  tag-input .ng2-tag-input.application-theme {
+    @apply p-0 min-h-0 border-none bg-gray-100 items-center;
+    &.ng2-tag-input--focused {
+      @apply border-none;
+    }
+    // apply theme to the tags
+    tag {
+      @apply min-h-0 font-condensed mt-1 ml-1 flex h-7 bg-blue-600  pl-3 pr-2 py-0 text-white rounded-full shadow-none focus:shadow-none leading-7 text-center text-xxs  font-medium uppercase;
+      &:not(:focus):not(.tag--editing):not(:active):not(.readonly) {
+        @apply hover:bg-blue-700 hover:text-white hover:shadow-none;
+      }
+    }
+    .tag-wrapper {
+      @apply flex items-center justify-between;
+    }
+    // apply theme to the delete icon
+    delete-icon {
+      @apply h-4 w-auto leading-none ml-1 transform-none hover:translate-y-0 hover:scale-100;
+      svg {
+        @apply h-4 w-auto;
+        path {
+          @apply fill-current;
+        }
+      }
+    }
+    // apply theme to the delete icon
+    input {
+      @apply bg-gray-100 focus:ring-0 font-sans;
+    }
+  }
+}
+
+/* stylelint-enable */

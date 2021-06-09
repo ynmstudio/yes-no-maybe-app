@@ -1,0 +1,76 @@
+<app-modal #modalComponent>
+  <div class="sm:flex sm:items-start">
+    <div class="">
+      <h3
+        class="text-headline"
+        id="modal-headline"
+        [innerHTML]="'modals.confirm-winner.headline' | translate"
+      ></h3>
+      <div class="mt-2">
+        <p
+          class="text-sm text-gray-800"
+          [innerHTML]="'modals.confirm-winner.intro' | translate"
+        ></p>
+
+        <div
+          *ngFor="
+            let application of (remainingApplications$ | async)?.data
+              ?.applications_aggregate?.nodes;
+            let index = index
+          "
+          class="flex justify-between items-center space-x-2 p-4 bg-gray-100"
+        >
+          <input
+            type="radio"
+            [id]="application.id"
+            [value]="application"
+            [(ngModel)]="selectedApplication"
+          />
+          <label
+            [for]="application.id"
+            class="capitalize flex-auto"
+            [innerHtml]="application.internal_name"
+          ></label>
+          <div class="text-center" [ngSwitch]="true">
+            <div
+              *ngSwitchCase="application.rating_in_latest_round?.avg > 5"
+              class="text-blue-700"
+            >
+              [Yes]
+            </div>
+            <div *ngSwitchCase="application.rating_in_latest_round?.avg === 5">
+              [Maybe]
+            </div>
+            <div
+              *ngSwitchCase="
+                application.rating_in_latest_round?.avg !== null &&
+                application.rating_in_latest_round?.avg < 5
+              "
+            >
+              [No]
+            </div>
+            <div *ngSwitchDefault>–</div>
+          </div>
+          <div
+            class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 text-black"
+            [innerHtml]="application.rating_in_latest_round?.count || 0"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-5 sm:mt-4 sm:flex">
+    <button
+      (click)="confirmWinner()"
+      type="button"
+      class="inline-flex justify-center w-full rounded-xl border border-transparent px-6 py-3 bg-red-600 text-base font-mono text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:w-auto sm:text-sm"
+      [innerHTML]="'actions.confirm' | translate | titlecase"
+    ></button>
+    <button
+      (click)="close()"
+      type="button"
+      class="mt-3 w-full inline-flex justify-center rounded-xl border border-gray-800 px-6 py-3 bg-white text-base font-mono text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+      [innerHTML]="'actions.cancel' | translate | titlecase"
+    ></button>
+  </div>
+</app-modal>

@@ -1,0 +1,175 @@
+fragment Round on rating_rounds {
+  id
+  goal
+  start_at
+  end_at
+  active
+  closed
+  level
+  edition {
+    id
+    applications_aggregate(where: { _not: { elimination: {} } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+  eliminations_aggregate {
+    aggregate {
+      count
+    }
+    nodes {
+      application_id
+    }
+  }
+}
+fragment RoundSorted on rating_rounds_sorted {
+  id
+  goal
+  start_at
+  end_at
+  closed
+  level
+  edition {
+    applications_aggregate(where: { _not: { elimination: {} } }) {
+      aggregate {
+        count
+      }
+    }
+  }
+}
+query GetAllRounds {
+  rating_rounds_sorted(
+    where: { _and: { edition: { current: { _eq: true } } } }
+  ) {
+    ...RoundSorted
+  }
+  rating_rounds(where: { _and: { edition: { current: { _eq: true } } } }) {
+    ...Round
+  }
+}
+
+mutation CreateRound(
+  $edition_id: Int!
+  $end_at: timestamptz!
+  $goal: Int = 1
+  $prev_round_id: Int = null
+) {
+  insert_rating_rounds_one(
+    object: {
+      edition_id: $edition_id
+      end_at: $end_at
+      goal: $goal
+      prev_round_id: $prev_round_id
+    }
+  ) {
+    ...Round
+  }
+}
+mutation UpdateRound($round_id: Int!, $end_at: timestamptz!, $goal: Int = 1) {
+  update_rating_rounds_by_pk(
+    pk_columns: { id: $round_id }
+    _set: { end_at: $end_at, goal: $goal }
+  ) {
+    ...Round
+  }
+}
+mutation CloseRound($round_id: Int!, $objects: [eliminations_insert_input!]!) {
+  insert_eliminations(objects: $objects) {
+    returning {
+      ...Elimination
+    }
+    affected_rows
+  }
+  update_rating_rounds_by_pk(
+    pk_columns: { id: $round_id }
+    _set: { closed: true }
+  ) {
+    id
+    closed
+  }
+}
+
+subscription GetCurrentRound {
+  rating_rounds(
+    where: {
+      _and: { edition: { current: { _eq: true } }, _not: { next_round: {} } }
+    }
+  ) {
+    ...Round
+    # prev_round {
+    #   ratings_aggregate {
+    #     aggregate {
+    #       count
+    #     }
+    #   }
+    # }
+  }
+}
+
+query GetApplicationsToEliminate($round_id: Int!) {
+  applications(
+    where: {
+      ratings: { rating_round: { id: { _eq: $round_id } } }
+      rating_in_latest_round: { round_id: { _eq: $round_id }, avg: { _lt: 5 } }
+      _not: { elimination: {} }
+    }
+  ) {
+    id
+  }
+}
+
+query GetRoundStatistic($id: Int!) {
+  rating_rounds_by_pk(id: $id) {
+    ...Round
+  }
+  out: applications_aggregate(
+    where: {
+      ratings: { rating_round: { id: { _eq: $id } } }
+      rating_in_latest_round: { round_id: { _eq: $id }, avg: { _lt: 5 } }
+      _not: { elimination: {} }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  in: applications_aggregate(
+    where: {
+      ratings: { rating_round: { id: { _eq: $id } } }
+      rating_in_latest_round: { round_id: { _eq: $id }, avg: { _gte: 5 } }
+      _not: { elimination: {} }
+    }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  rated: applications_aggregate(
+    where: { ratings: { rating_round: { id: { _eq: $id } } } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+  total: applications_aggregate(
+    where: { edition: { current: { _eq: true } }, _not: { elimination: {} } }
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+
+# query GetUnratedApplications($id: Int!) {
+#   applications(
+#     where: {
+#       _and: [
+#         { edition: { current: { _eq: true } } }
+#         { _not: { ratings: { round_id: { _eq: $id } } } }
+#       ]
+#     }
+#   ) {
+#     id
+#   }
+# }
