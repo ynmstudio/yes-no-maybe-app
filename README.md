@@ -1,6 +1,6 @@
-<img src="./docs/assets/header.svg" title="Yes No Maybe App Logo" height="auto" width="100%">
+<img src="./docs/assets/header.svg" title="YesNoMaybe App Logo" height="auto" width="100%">
 
-# About the App
+# About the YesNoMaybe App
 
 In collaboration with communication design and web development studio [Yil & Mann](https://ynm.studio), the [Berlin Art Prize e.V.](https://www.berlinartprize.com) has developed an online-based tool for anonymized selection processes. Complex artist portfolios are submitted and anonymized via the software. For the jury process, a linked CMS allows the portfolios to be viewed, indexed, and classified via interactive evaluation functions. The application is kept simple and streamlined for all users. Overall, the YesNoMaybe app is intended to prevent discrimination in selection processes and focus attention on the content of the applications.
 
