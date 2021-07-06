@@ -183,6 +183,10 @@ Firebase Hosting example: `cd frontend && npm run build:prod && cd .. && firebas
 - [ ] Add function to let the team add notes to applications the jury should see when evaluating an application, e.g. where to pause a video.
 - [ ] Add internal tagging system.
 
+# Presentation (german)
+
+![Walkthrough Tool and the infrastructure](/docs/assets/presentation_yesnomaybeapp.mov)
+
 # Funding
 
 Funded by [Senatsverwaltung für Kultur und Europa Berlin](https://www.berlin.de/sen/kultur/)
