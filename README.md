@@ -62,9 +62,10 @@ Other authentication/storage/hosting providers may be added at a later stage.
 1. duplicate `.env.example` and rename to `.env` and adapt accordingly. please adapt firebase env accordingly (see firebase section)
 2. `docker-compose up -d`
 3. `cd database`
-4. `hasura migrate apply --admin-secret myadminsecretkey --envfile .env`
-5. `hasura metadata apply --admin-secret myadminsecretkey --envfile .env`
-6. `hasura console --admin-secret myadminsecretkey`
+4. `hasura metadata apply --admin-secret myadminsecretkey --envfile .env`
+5. `hasura migrate apply --admin-secret myadminsecretkey --envfile .env`
+6. `hasura metadata reload --admin-secret myadminsecretkey --envfile .env`
+7. `hasura console --admin-secret myadminsecretkey`
 
 #### Local Development
 
@@ -126,8 +127,9 @@ X-Hasura-Admin-Secret: <your-admin-secret>
 
 - `hasura migrate squash --name "<feature-name>" --from <start-migration-version> --admin-secret myadminsecretkey`
 - `hasura migrate apply --version "<squash-migration-version>" --admin-secret myadminsecretkey --skip-execution`
-- `hasura migrate apply <squash-migration-version> --admin-secret <admin-secret> --endpoint <external-hasura-endpoint>`
-- `hasura metadata apply --admin-secret <admin-secret> --endpoint <external-hasura-endpoint>`
+- `hasura metadata apply --endpoint <external-hasura-endpoint> --admin-secret <admin-secret> `
+- `hasura migrate apply <squash-migration-version> --database-name default --admin-secret <admin-secret> --endpoint <external-hasura-endpoint>"`
+- `hasura metadata reload --admin-secret <admin-secret> --endpoint <external-hasura-endpoint>`
 
 ### Firebase
 
