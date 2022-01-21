@@ -61,6 +61,7 @@ export class AuthService {
             const token = await user.getIdToken(true);
             const idTokenResult = await user.getIdTokenResult(true);
             const hasuraRole = idTokenResult.claims['role'];
+            console.log(hasuraRole);
             // setAuthState({ status: "in", user, token });
             await this.hasuraService.updateUsername(
               user.displayName || 'Anonymous'
@@ -124,10 +125,11 @@ export class AuthService {
             this.redirectToDashboard(idTokenResult?.claims['role']);
           });
       }
-    } catch (error) {
+    } catch (error: any) {
       // Handle Errors here.
       const errorCode = error.code;
       const errorMessage = error.message;
+      console.error(error);
 
       if (errorCode == 'auth/weak-password') {
         this.alertService.info('The password is too weak.');
