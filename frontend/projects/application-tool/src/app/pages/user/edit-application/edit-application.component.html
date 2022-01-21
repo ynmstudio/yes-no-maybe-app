@@ -753,17 +753,31 @@
       class="flex flex-col md:flex-row justify-end space-y-3 md:space-x-3 md:space-y-0 items-end"
     >
       <div class="space-x-16 flex mt-16 md:mt-0 md:mr-16 order-2 md:order-none">
-        <a class="font-mono hover:underline" tabindex="-1" href="">AGB</a>
-        <a class="font-mono hover:underline" tabindex="-1" href=""
-          >Datenschutz</a
-        >
+        <a
+          class="font-mono hover:underline"
+          tabindex="-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="'_configuration.links.terms-and-conditions.url' | translate"
+          [innerHtml]="
+            '_configuration.links.terms-and-conditions.label' | translate
+          "
+        ></a>
+
+        <a
+          class="font-mono hover:underline"
+          tabindex="-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="'_configuration.links.privacy.url' | translate"
+          [innerHtml]="'_configuration.links.privacy.label' | translate"
+        ></a>
       </div>
       <button
         (click)="saveAndClose()"
         class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
-      >
-        Speichern und schließen
-      </button>
+        [innerText]="'actions.save-and-close' | translate"
+      ></button>
       <button
         (click)="finalizeAndClose()"
         class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
@@ -771,9 +785,8 @@
         [ngClass]="{
           'bg-green-400': form.valid
         }"
-      >
-        Fertig! Absenden
-      </button>
+        [innerText]="'actions.finalize-and-send' | translate"
+      ></button>
     </div>
   </footer>
 </div>
