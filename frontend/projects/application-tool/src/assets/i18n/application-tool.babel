@@ -3009,6 +3009,23 @@
                                 </translations>
                             </concept_node>
                             <concept_node>
+                                <name>email-saved</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description/>
+                                <comment/>
+                                <default_text/>
+                                <translations>
+                                    <translation>
+                                        <language>de-DE</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>en-GB</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                            <concept_node>
                                 <name>enter-password</name>
                                 <definition_loaded>false</definition_loaded>
                                 <description/>
@@ -3145,6 +3162,23 @@
                                 </translations>
                             </concept_node>
                             <concept_node>
+                                <name>password-saved</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description/>
+                                <comment/>
+                                <default_text/>
+                                <translations>
+                                    <translation>
+                                        <language>de-DE</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>en-GB</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                            <concept_node>
                                 <name>password-too-short</name>
                                 <definition_loaded>false</definition_loaded>
                                 <description/>
@@ -3243,6 +3277,23 @@
                                     <translation>
                                         <language>en-GB</language>
                                         <approved>true</approved>
+                                    </translation>
+                                </translations>
+                            </concept_node>
+                            <concept_node>
+                                <name>username-saved</name>
+                                <definition_loaded>false</definition_loaded>
+                                <description/>
+                                <comment/>
+                                <default_text/>
+                                <translations>
+                                    <translation>
+                                        <language>de-DE</language>
+                                        <approved>false</approved>
+                                    </translation>
+                                    <translation>
+                                        <language>en-GB</language>
+                                        <approved>false</approved>
                                     </translation>
                                 </translations>
                             </concept_node>

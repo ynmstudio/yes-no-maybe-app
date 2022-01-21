@@ -6,6 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { AlertService } from '../../shared/components/alert/alert.service';
 import { ModalService } from '../../shared/components/modal/modal.service';
 import { ConfirmLoginComponent as ConfirmLoginComponentType } from '../../shared/components/modal/modals/confirm-login/confirm-login.component';
@@ -36,7 +37,8 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private alertService: AlertService,
-    private modalService: ModalService<ConfirmLoginComponentType>
+    private modalService: ModalService<ConfirmLoginComponentType>,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group(
       {
@@ -73,13 +75,17 @@ export class ProfileComponent implements OnInit {
     try {
       await this.authService.updateDisplayName(this.displayName.value);
       this.displayName.markAsPristine();
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'auth/requires-recent-login') {
         await this.confirmLogin();
       } else {
         this.alertService.error(error);
       }
+      return;
     }
+    this.alertService.success(
+      this.translate.instant('snippets.auth.username-saved')
+    );
   }
   async saveNewEmail() {
     if (this.email.invalid) return;
@@ -87,13 +93,17 @@ export class ProfileComponent implements OnInit {
     try {
       await this.authService.updateEmail(this.email.value);
       this.email.markAsPristine();
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'auth/requires-recent-login') {
         await this.confirmLogin();
       } else {
         this.alertService.error(error);
       }
+      return;
     }
+    this.alertService.success(
+      this.translate.instant('snippets.auth.email-saved')
+    );
   }
 
   async saveNewPassword() {
@@ -108,13 +118,17 @@ export class ProfileComponent implements OnInit {
       this.confirmPassword.markAsPristine();
       this.password.updateValueAndValidity();
       this.confirmPassword.updateValueAndValidity();
-    } catch (error) {
+    } catch (error: any) {
       if (error.code === 'auth/requires-recent-login') {
         await this.confirmLogin();
       } else {
         this.alertService.error(error);
       }
+      return;
     }
+    this.alertService.success(
+      this.translate.instant('snippets.auth.password-saved')
+    );
   }
 
   async confirmLogin() {
