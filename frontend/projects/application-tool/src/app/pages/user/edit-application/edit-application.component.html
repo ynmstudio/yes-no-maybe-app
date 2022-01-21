@@ -413,10 +413,11 @@
         <div
           class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
         >
-          <div>
-            Wenn ich den Berlin Art Prize gewinne, würde ich gerne an der
-            Residency teilnehmen:
-          </div>
+          <div
+            [innerHtml]="
+              '_configuration.artist.residency-confirmation' | translate
+            "
+          ></div>
           <div class="relative flex items-start mt-3 mb-4">
             <input
               id="residency"
@@ -444,10 +445,11 @@
         <div
           class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
         >
-          <div>
-            Mein Portfolio darf in das Archiv des Berlin Art Prize aufgenommen
-            werden:
-          </div>
+          <div
+            [innerHtml]="
+              '_configuration.artist.archive-confirmation' | translate
+            "
+          ></div>
           <div class="relative flex items-start mt-3 mb-4">
             <input
               id="database"
