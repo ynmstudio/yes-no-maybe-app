@@ -112,6 +112,7 @@
                       name="password"
                       type="password"
                       autocomplete="new-password"
+                      [placeholder]="'snippets.auth.password' | translate"
                       required
                       class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
                     />
@@ -123,6 +124,9 @@
                       name="confirmPassword"
                       type="password"
                       autocomplete="new-password"
+                      [placeholder]="
+                        'snippets.auth.repeat-password' | translate
+                      "
                       class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
                       (keydown.enter)="saveNewPassword()"
                     />
