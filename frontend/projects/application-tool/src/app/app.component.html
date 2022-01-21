@@ -28,7 +28,7 @@
   </nav>
 </header>
 <div
-  *ngIf="!(authService.emailVerified | async)"
+  *ngIf="!((authService.emailVerified | async) || hideSendVerificationBanner)"
   class="verify-email fixed bottom-0 inset-x-0 px-4 py-3 z-20 bg-blue-600 text-white leading-none"
 >
   {{ "email.please-verify-your-email" | translate }}
@@ -38,6 +38,12 @@
   >
     &rarr;
     {{ "email.send-verification-email" | translate }}
+  </button>
+  <button
+    class="absolute inset-y-0 right-0 px-4 text-2xl"
+    (click)="dismissSendVerification()"
+  >
+    &times;
   </button>
 </div>
 <router-outlet></router-outlet>

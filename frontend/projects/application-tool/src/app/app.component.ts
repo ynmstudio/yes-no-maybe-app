@@ -40,6 +40,10 @@ export class AppComponent {
   sendVerification() {
     this.authService.sendEmailVerification();
   }
+  hideSendVerificationBanner = false;
+  dismissSendVerification() {
+    this.hideSendVerificationBanner = true;
+  }
   changeLanguage(lang: string) {
     this.multilangService.updateLanguage(lang);
   }
