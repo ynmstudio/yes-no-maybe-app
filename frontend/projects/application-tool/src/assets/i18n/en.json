@@ -177,6 +177,7 @@
 	"snippets.auth.register": "Sign up",
 	"snippets.auth.repeat-password": "Repeat<br />password",
 	"snippets.auth.required-fields": "Items marked* are required data and MUST be completed.",
+	"snippets.auth.sign-up": "Create account",
 	"snippets.auth.sign-up-here": "Create account",
 	"snippets.back-to-overview": "Back to overview",
 	"snippets.close-round": "Close and eliminate",

@@ -192,9 +192,8 @@
         type="submit"
         [disabled]="form.invalid"
         class="button--auth-submit"
-      >
-        Konto erstellen
-      </button>
+        [innerHtml]="'snippets.auth.sign-up' | translate"
+      ></button>
     </div>
   </form>
   <!-- FORGOT LOGIN FORM -->

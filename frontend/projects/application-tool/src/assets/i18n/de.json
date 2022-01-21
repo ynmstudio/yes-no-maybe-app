@@ -177,6 +177,7 @@
 	"snippets.auth.register": "registrieren",
 	"snippets.auth.repeat-password": "Passwort<br />wiederholen",
 	"snippets.auth.required-fields": "Mit einem Sternchen (*) markierte Felder sind Pflichtfelder und müssen ausgefüllt werden.",
+	"snippets.auth.sign-up": "Konto anlegen",
 	"snippets.auth.sign-up-here": "Konto anlegen",
 	"snippets.back-to-overview": "zurück zur Übersicht",
 	"snippets.close-round": "Runde schließen und Arbeiten ausschließen",
