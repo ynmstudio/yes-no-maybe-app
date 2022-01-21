@@ -511,7 +511,7 @@
             [innerHtml]="'_configuration.payment.description' | translate"
           ></p>
           <p class="mb-5 pl-5">
-            {{ "defaults.amount-single" | translate }}:
+            {{ "defaults.amount-single" | translate | titlecase }}:
             {{ "_configuration.payment.amount" | translate }}<br />
           </p>
           <p
@@ -520,7 +520,7 @@
           ></p>
 
           <p class="mb-5 pl-5">
-            {{ "defaults.intended-purpose-single" | translate }}:
+            {{ "defaults.intended-purpose-single" | translate | titlecase }}:
             <span class="font-medium"
               >Code {{ id?.value | uppercase | slice: 0:5 }}
               {{ edition?.value.name }}</span
