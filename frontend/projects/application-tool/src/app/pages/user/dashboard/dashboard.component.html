@@ -1,18 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="
-      container--default
-      sticky
-      top-0
-      inset-x-0
-      flex
-      items-center
-      justify-between
-      z-20
-      backdrop-blur
-      bg-white bg-opacity-80
-      border-b border-gray-300
-    "
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-20 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <div class="text-headline">
       {{
@@ -25,17 +13,7 @@
     <!-- APPLICATIONS -->
     <div
       id="applications"
-      class="
-        container--default
-        flex-auto
-        w-full
-        md:flex-shrink
-        border-b
-        md:border-b-0 md:border-r
-        border-gray-300
-        pb-12
-        mb-2
-      "
+      class="container--default flex-auto w-full md:flex-shrink border-b md:border-b-0 md:border-r border-gray-300 pb-12 mb-2"
     >
       <div
         *ngIf="applications$ | async as applicationsObject"
@@ -63,14 +41,7 @@
         >
           <div
             *ngFor="let application of applicationsObject.data?.applications"
-            class="
-              my-1
-              bg-gray-100
-              xl:grid
-              grid-cols-5
-              transition-colors
-              duration-200
-            "
+            class="my-1 bg-gray-100 xl:grid grid-cols-5 transition-colors duration-200"
             [ngClass]="{
               'bg-green-50': application.ready
             }"
@@ -108,25 +79,10 @@
             </div>
             <div class="col-span-3 py-3 sm:py-5 px-3 sm:px-5 lg:px-7">
               <div
-                class="
-                  grid grid-cols-7
-                  lg:grid-cols-4
-                  gap-6
-                  items-baseline
-                  border-b border-gray-300
-                  py-2
-                  sm:py-4
-                  font-mono
-                "
+                class="grid grid-cols-7 lg:grid-cols-4 gap-6 items-baseline border-b border-gray-300 py-2 sm:py-4 font-mono"
               >
                 <div
-                  class="
-                    col-span-2
-                    lg:col-span-1
-                    text-right text-xs
-                    uppercase
-                    text-gray-800
-                  "
+                  class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
                 >
                   {{ "application.group_application" | translate }}:
                 </div>
@@ -139,25 +95,10 @@
                 ></div>
               </div>
               <div
-                class="
-                  grid grid-cols-7
-                  lg:grid-cols-4
-                  gap-6
-                  items-baseline
-                  border-b border-gray-300
-                  py-2
-                  sm:py-4
-                  font-mono
-                "
+                class="grid grid-cols-7 lg:grid-cols-4 gap-6 items-baseline border-b border-gray-300 py-2 sm:py-4 font-mono"
               >
                 <div
-                  class="
-                    col-span-2
-                    lg:col-span-1
-                    text-right text-xs
-                    uppercase
-                    text-gray-800
-                  "
+                  class="col-span-2 lg:col-span-1 text-right text-xs uppercase text-gray-800"
                 >
                   {{ "application.status" | translate }}:
                 </div>
@@ -193,16 +134,7 @@
                   >
                     <a
                       [routerLink]="['/', 'u', 'applications', application.id]"
-                      class="
-                        bg-black
-                        text-white
-                        font-mono
-                        text-base
-                        leading-none
-                        py-3
-                        px-6
-                        rounded-xl
-                      "
+                      class="bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
                       [innerHtml]="'actions.edit' | translate"
                     ></a>
                     <button
@@ -214,17 +146,7 @@
                   <ng-template #locked>
                     <button
                       *ngIf="editionState?.state === 'submission'"
-                      class="
-                        text-black
-                        bg-gray-400 bg-opacity-50
-                        hover:bg-gray-500
-                        font-mono
-                        text-base
-                        leading-none
-                        py-3
-                        px-6
-                        rounded-xl
-                      "
+                      class="text-black bg-gray-400 bg-opacity-50 hover:bg-gray-500 font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
                       (click)="unlockApplication(application.id)"
                       [innerHtml]="'actions.unlock' | translate"
                     ></button>
@@ -232,19 +154,7 @@
                 </ng-container>
                 <ng-template #editionStateLoading>
                   <div
-                    class="
-                      text-black
-                      bg-gray-200 bg-opacity-50
-                      h-10
-                      w-32
-                      animate-pulse
-                      font-mono
-                      text-base
-                      leading-none
-                      py-3
-                      px-6
-                      rounded-xl
-                    "
+                    class="text-black bg-gray-200 bg-opacity-50 h-10 w-32 animate-pulse font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
                   ></div>
                 </ng-template>
               </div>
@@ -266,18 +176,7 @@
           'submission'
         "
         (click)="addApplication()"
-        class="
-          bg-black
-          text-white
-          font-mono
-          text-base
-          leading-none
-          mt-8
-          py-3
-          px-6
-          w-full
-          rounded-xl
-        "
+        class="bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none mt-8 py-3 px-6 w-full rounded-xl"
         [innerHtml]="'snippets.add-application' | translate"
       ></button>
     </div>
@@ -297,19 +196,7 @@
       >
         <div
           *ngSwitchCase="'open'"
-          class="
-            relative
-            group
-            cursor-pointer
-            z-0
-            bg-green-500
-            py-3
-            sm:py-5
-            px-3
-            sm:px-5
-            lg:px-7
-            md:ml-1
-          "
+          class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div
             class="text-headline"
@@ -322,19 +209,7 @@
         </div>
         <div
           *ngSwitchCase="'submission'"
-          class="
-            relative
-            group
-            cursor-pointer
-            z-0
-            bg-green-500
-            py-3
-            sm:py-5
-            px-3
-            sm:px-5
-            lg:px-7
-            md:ml-1
-          "
+          class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div
             class="text-headline"
@@ -354,19 +229,7 @@
 
         <div
           *ngSwitchCase="'rating'"
-          class="
-            relative
-            group
-            cursor-pointer
-            z-0
-            bg-orange-400
-            py-3
-            sm:py-5
-            px-3
-            sm:px-5
-            lg:px-7
-            md:ml-1
-          "
+          class="relative group cursor-pointer z-0 bg-orange-400 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div
             class="text-headline"
@@ -376,19 +239,7 @@
         </div>
         <div
           *ngSwitchCase="'closed'"
-          class="
-            relative
-            group
-            cursor-pointer
-            z-0
-            bg-gray-300
-            py-3
-            sm:py-5
-            px-3
-            sm:px-5
-            lg:px-7
-            md:ml-1
-          "
+          class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div
             class="text-headline"
@@ -397,19 +248,7 @@
         </div>
         <div
           *ngSwitchDefault
-          class="
-            relative
-            group
-            cursor-pointer
-            z-0
-            bg-gray-300
-            py-3
-            sm:py-5
-            px-3
-            sm:px-5
-            lg:px-7
-            md:ml-1
-          "
+          class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
         >
           <div
             class="text-headline"
@@ -424,19 +263,7 @@
       <ng-template #stateLoading>
         <div class="md:w-80 lg:w-96 mb-16">
           <div
-            class="
-              relative
-              h-32
-              group
-              z-0
-              bg-gray-100
-              py-3
-              sm:py-5
-              px-3
-              sm:px-5
-              lg:px-7
-              md:ml-1
-            "
+            class="relative h-32 group z-0 bg-gray-100 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
           >
             <div class="animate-pulse space-y-2">
               <div class="h-6 md:h-8 bg-gray-300 rounded"></div>
@@ -448,14 +275,7 @@
       <!-- UPDATES -->
       <div id="updates" class="md:w-80 lg:w-96">
         <div
-          class="
-            updates--header
-            border-b border-gray-300
-            flex
-            items-center
-            pb-3
-            space-x-2
-          "
+          class="updates--header border-b border-gray-300 flex items-center pb-3 space-x-2"
         >
           <span>&darr;</span>
           <h3
@@ -467,37 +287,14 @@
           <!-- SINGLE UPDATE -->
           <div class="update mt-4" *ngFor="let update of updates.data?.updates">
             <div
-              class="
-                relative
-                font-mono
-                text-sm
-                py-2
-                pl-3
-                sm:pl-5
-                lg:pl-7
-                pr-3
-                md:ml-1
-                flex
-                justify-between
-              "
+              class="relative font-mono text-xs sm:text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
             >
               <span
                 [innerHtml]="update.created_at | localizedDate: 'short'"
               ></span>
             </div>
             <div
-              class="
-                relative
-                group
-                bg-gray-100
-                hover:bg-gray-200
-                py-3
-                sm:py-5
-                px-3
-                sm:px-5
-                lg:px-7
-                md:ml-1
-              "
+              class="relative group bg-gray-100 hover:bg-gray-200 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
             >
               <div
                 class="text-headline"

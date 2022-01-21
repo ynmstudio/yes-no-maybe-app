@@ -1,13 +1,5 @@
 <div
-  class="
-    font-mono
-    text-xs
-    border-b border-black
-    dark:border-white
-    mx-4
-    pt-4
-    pb-1
-  "
+  class="font-mono text-xs border-b border-black dark:border-white mx-4 pt-4 pb-1"
   [innerHtml]="'snippets.internal-chat' | translate | uppercase"
 ></div>
 <div
@@ -64,20 +56,7 @@
     <div [ngClass]="[message.rating ? 'bg-black text-white mt-1' : '']">
       <div
         *ngIf="message.rating"
-        class="
-          flex
-          justify-between
-          items-baseline
-          mx-4
-          pt-4
-          pb-2
-          text-xs
-          leading-none
-          border-b border-current
-          text-white
-          font-mono
-          uppercase
-        "
+        class="flex justify-between items-baseline mx-4 pt-4 pb-2 text-xs leading-none border-b border-current text-white font-mono uppercase"
       >
         <div>[{{ (message.rating?.value | getScore).i18n | translate }}]</div>
         <div
@@ -95,26 +74,7 @@
     <button
       *ngIf="user?.uid === message.user.id && last"
       (click)="deleteMessage(message.id)"
-      class="
-        appearance-none
-        opacity-0
-        group-hover:opacity-100
-        transition-all
-        absolute
-        -top-1
-        -right-1
-        text-xs
-        font-mono
-        bg-black
-        hover:bg-red-600
-        cursor-pointer
-        text-white
-        w-5
-        h-5
-        leading-5
-        rounded-full
-        text-center
-      "
+      class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute -top-1 -right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
     >
       X
     </button>
@@ -128,18 +88,7 @@
 </div>
 <div class="absolute bottom-0 inset-x-0" *ngIf="!readOnly">
   <div
-    class="
-      absolute
-      bottom-0
-      inset-x-0
-      bg-gradient-to-t
-      from-gray-300
-      dark:from-gray-950
-      to-transparent
-      opacity-75
-      h-24
-      pointer-events-none
-    "
+    class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-gray-300 dark:from-gray-950 to-transparent opacity-75 h-24 pointer-events-none"
   ></div>
   <form
     class="relative flex items-center m-4 bg-blue-600 text-white pt-1 pb-3 pl-2"
@@ -148,24 +97,7 @@
     <input
       type="text"
       [placeholder]="'snippets.insert-message' | translate"
-      class="
-        appearance-none
-        px-0
-        rounded-none
-        relative
-        block
-        w-full
-        p-2
-        border-0 border-b border-white
-        font-mono
-        bg-transparent
-        placeholder-white placeholder-opacity-50
-        text-white
-        focus:outline-none
-        focus:border-white
-        focus:z-10
-        text-sm
-      "
+      class="appearance-none px-0 rounded-none relative block w-full p-2 border-0 border-b border-white font-mono bg-transparent placeholder-white placeholder-opacity-50 text-white focus:outline-none focus:border-white focus:z-10 text-xs sm:text-sm"
       name="newMessage"
       [(ngModel)]="newMessage"
     />

@@ -45,40 +45,13 @@
     </div>
     <button
       (click)="deleteFile(file.id)"
-      class="
-        appearance-none
-        opacity-0
-        group-hover:opacity-100
-        transition-all
-        absolute
-        top-1
-        right-1
-        text-xs
-        font-mono
-        bg-black
-        hover:bg-red-600
-        cursor-pointer
-        text-white
-        w-5
-        h-5
-        leading-5
-        rounded-full
-        text-center
-      "
+      class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
     >
       X
     </button>
   </div>
   <app-upload-task
-    class="
-      flex-none flex
-      items-center
-      justify-center
-      bg-gray-300
-      h-full
-      w-full
-      text-white
-    "
+    class="flex-none flex items-center justify-center bg-gray-300 h-full w-full text-white"
     *ngFor="let file of filesToUpload; let index = index"
     [file]="file"
     [path_prefix]="path_prefix"
@@ -94,19 +67,7 @@
       filesToUpload &&
       (filesToUpload?.length || 0) < 1
     "
-    class="
-      flex-auto
-      bg-gray-100
-      text-gray-800
-      h-full
-      w-full
-      flex
-      items-center
-      justify-center
-      font-mono
-      text-sm
-      cursor-pointer
-    "
+    class="flex-auto bg-gray-100 text-gray-800 h-full w-full flex items-center justify-center font-mono text-xs sm:text-sm cursor-pointer"
     (click)="fileInput.click()"
     [innerHtml]="'application-form.buttons.drop-pdf-portfolio-here' | translate"
   ></button>

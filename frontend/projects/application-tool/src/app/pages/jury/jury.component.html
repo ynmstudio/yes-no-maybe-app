@@ -1,41 +1,13 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="
-      container--default
-      sticky
-      top-0
-      inset-x-0
-      flex
-      items-center
-      justify-between
-      z-20
-      backdrop-blur
-      bg-white bg-opacity-80
-      border-b border-gray-300
-    "
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-20 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <nav
-      class="
-        rounded-xl
-        pointer-events-auto
-        whitespace-nowrap
-        flex
-        uppercase
-        font-condensed
-        text-sm
-        leading-none
-      "
+      class="rounded-xl pointer-events-auto whitespace-nowrap flex uppercase font-condensed text-xs sm:text-sm leading-none"
     >
       <a
         [routerLink]="['/', 'j', 'dashboard']"
-        class="
-          flex
-          items-center
-          justify-center
-          px-3
-          h-10
-          rounded-tl-xl rounded-bl-xl
-        "
+        class="flex items-center justify-center px-3 h-10 rounded-tl-xl rounded-bl-xl"
         routerLinkActive
         #dashboard="routerLinkActive"
         [ngClass]="[
@@ -86,14 +58,7 @@
       >
         <span class="sr-only"> Settings </span>
         <svg
-          class="
-            w-7
-            h-7
-            origin-center
-            transition-transform
-            transform-gpu
-            group-hover:animate-spin
-          "
+          class="w-7 h-7 origin-center transition-transform transform-gpu group-hover:animate-spin"
           viewBox="0 0 29 30"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -123,15 +88,7 @@
 
       <a
         [routerLink]="['/', 'j', 'search']"
-        class="
-          flex
-          items-center
-          justify-center
-          px-3
-          h-10
-          rounded-tr-xl rounded-br-xl
-          p-3
-        "
+        class="flex items-center justify-center px-3 h-10 rounded-tr-xl rounded-br-xl p-3"
         routerLinkActive
         #search="routerLinkActive"
         [ngClass]="[

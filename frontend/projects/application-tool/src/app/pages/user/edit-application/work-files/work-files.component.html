@@ -6,25 +6,10 @@
   [ngClass]="{
     'ring-2 ring-gray-800': isHovering
   }"
-  class="
-    h-24
-    lg:h-28
-    bg-gray-100
-    relative
-    ring-transparent ring-0
-    transition-shadow
-  "
+  class="h-24 lg:h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
 >
   <div
-    class="
-      absolute
-      inset-0
-      p-2
-      lg:p-4
-      space-x-2
-      flex flex-row
-      overflow-x-scroll
-    "
+    class="absolute inset-0 p-2 lg:p-4 space-x-2 flex flex-row overflow-x-scroll"
     cdkDropList
     cdkDropListOrientation="horizontal"
     (cdkDropListDropped)="reorderFiles(files, $event)"
@@ -44,26 +29,7 @@
       ></app-image>
       <button
         (click)="deleteFile(file.id)"
-        class="
-          appearance-none
-          opacity-0
-          group-hover:opacity-100
-          transition-all
-          absolute
-          top-1
-          right-1
-          text-xs
-          font-mono
-          bg-black
-          hover:bg-red-600
-          cursor-pointer
-          text-white
-          w-5
-          h-5
-          leading-5
-          rounded-full
-          text-center
-        "
+        class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
       >
         X
       </button>
@@ -83,16 +49,7 @@
     </div> -->
 
     <app-upload-task
-      class="
-        flex-none flex
-        items-center
-        justify-center
-        text-3xl
-        h-20
-        w-16
-        bg-gray-300
-        text-white
-      "
+      class="flex-none flex items-center justify-center text-3xl h-20 w-16 bg-gray-300 text-white"
       *ngFor="let file of filesToUpload; let index = index"
       [file]="file"
       [path_prefix]="path_prefix"
@@ -103,17 +60,7 @@
 
     <button
       *ngIf="(files?.length || 0) < maxFiles"
-      class="
-        flex-none flex
-        items-center
-        justify-center
-        text-3xl
-        h-20
-        w-16
-        bg-black
-        text-white
-        cursor-pointer
-      "
+      class="flex-none flex items-center justify-center text-3xl h-20 w-16 bg-black text-white cursor-pointer"
       (click)="fileInput.click()"
     >
       +
@@ -132,24 +79,7 @@
     <div class="flex-none w-2"></div>
   </div>
   <div
-    class="
-      absolute
-      z-0
-      bottom-0
-      right-0
-      p-1
-      bg-gray-100 bg-opacity-75
-      backdrop-blur
-      pointer-events-none
-      select-none
-      whitespace-nowrap
-      pl-3
-      text-xs
-      font-mono
-      leading-none
-      text-gray-800
-      transition-colors
-    "
+    class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors"
     [ngClass]="
       (files?.length || 0) > maxFiles ? 'text-red-600' : 'text-gray-800'
     "
@@ -162,23 +92,12 @@
 <form
   [formGroup]="form"
   (ngSubmit)="addVideo()"
-  class="relative font-mono text-sm"
+  class="relative font-mono text-xs sm:text-sm"
 >
   <div class="col-span-4">
     <button
       (click)="toggleOptionalVideoFields()"
-      class="
-        text-left
-        appearance-none
-        text-xs
-        uppercase
-        leading-none
-        text-gray-800
-        py-2
-        flex
-        items-center
-        justify-end
-      "
+      class="text-left appearance-none text-xs uppercase leading-none text-gray-800 py-2 flex items-center justify-end"
     >
       <span
         class="px-4"
@@ -225,26 +144,7 @@
       name="video_url"
       type="text"
       [placeholder]="'defaults.url-single' | translate | titlecase"
-      class="
-        appearance-none
-        rounded-tl-full rounded-bl-full
-        relative
-        block
-        w-full
-        py-1
-        px-4
-        border-solid
-        bg-white
-        border-b border-t-0 border-r-0 border-l-0 border-transparent
-        font-mono
-        placeholder-gray-500
-        text-black
-        focus:outline-none
-        focus:ring-gray-500
-        focus:border-gray-500
-        focus:z-10
-        text-sm
-      "
+      class="appearance-none rounded-tl-full rounded-bl-full relative block w-full py-1 px-4 border-solid bg-white border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
       [ngClass]="{
         'ring-1 ring-red-500': video_url?.invalid
       }"
@@ -256,26 +156,7 @@
       name="video_password"
       type="text"
       [placeholder]="'defaults.password-single' | translate | titlecase"
-      class="
-        appearance-none
-        rounded-tr-full rounded-br-full
-        relative
-        block
-        w-full
-        py-1
-        px-4
-        border-solid
-        bg-white
-        border-b border-t-0 border-r-0 border-l-0 border-transparent
-        font-mono
-        placeholder-gray-500
-        text-black
-        focus:outline-none
-        focus:ring-gray-500
-        focus:border-gray-500
-        focus:z-10
-        text-sm
-      "
+      class="appearance-none rounded-tr-full rounded-br-full relative block w-full py-1 px-4 border-solid bg-white border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     />
     <button class="text-2xl leading-none pl-2 pr-3 text-white" type="submit">
       &#8626;

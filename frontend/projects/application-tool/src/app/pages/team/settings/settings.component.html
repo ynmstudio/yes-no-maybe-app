@@ -4,7 +4,7 @@
 >
   <div
     *ngIf="selectedEdition.current && selectedEdition.state === 'rating'"
-    class="container--default max-w-3xl mx-auto text-base mt-8 grid grid-cols-3 items-baseline gap-x-4 gap-y-3 bg-gray-100 rounded-xl"
+    class="container--default max-w-3xl mx-auto text-xs sm:text-sm md:text-base mt-8 grid grid-cols-3 items-baseline gap-x-4 gap-y-3 bg-gray-100 rounded-xl"
   >
     <ng-container *ngIf="currentRound$ | async as round; else noRounds">
       <h1 class="text-headline">
@@ -23,12 +23,12 @@
         <div>{{ round.goal }}</div>
         <hr class="col-span-3" />
         <button
-          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
           (click)="showEditRoundModal(round)"
           [innerHtml]="'snippets.edit-goals' | translate"
         ></button>
         <button
-          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
           (click)="closeRound(round?.id, round?.level)"
           [innerHtml]="'snippets.close-round' | translate"
         ></button>
@@ -55,7 +55,7 @@
           "
         ></div>
         <button
-          class="col-span-3 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          class="col-span-3 bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
           (click)="showNewRoundModal(selectedEdition.id, round.id)"
         >
           + {{ "snippets.add-round" | translate }}
@@ -83,19 +83,19 @@
         <div>{{ round.goal }}</div>
         <ng-container *ngIf="last && !round.closed">
           <button
-            class="col-span-2 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+            class="col-span-2 inline-block mb-2 bg-transparent text-black border-black border font-mono  text-xs sm:text-sm md:text-base  leading-none py-3 px-6 rounded-xl disabled:opacity-30"
             (click)="showEditRoundModal(round)"
             [innerHtml]="'snippets.edit-goals' | translate"
           ></button>
           <button
-            class="col-span-2 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+            class="col-span-2 inline-block mb-2 bg-transparent text-black border-black border font-mono  text-xs sm:text-sm md:text-base  leading-none py-3 px-6 rounded-xl disabled:opacity-30"
             (click)="closeRound(round?.id, round?.level)"
             [innerHtml]="'snippets.close-round' | translate"
           ></button>
         </ng-container>
 
         <button
-          class="col-span-4 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          class="col-span-4 inline-block mb-2 bg-transparent text-black border-black border font-mono  text-xs sm:text-sm md:text-base  leading-none py-3 px-6 rounded-xl disabled:opacity-30"
           *ngIf="last && round.closed"
           (click)="showNewRoundModal(selectedEdition.id, round.id)"
         >
@@ -106,7 +106,7 @@
   </div>
   <ng-template #noRounds>
     <button
-      class="col-span-3 inline-block mb-2 bg-transparent text-black border-black border font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+      class="col-span-3 inline-block mb-2 bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
       (click)="showNewRoundModal(selectedEdition.id)"
     >
       + {{ "snippets.add-first-round" | translate }}
@@ -116,7 +116,7 @@
   <form
     [formGroup]="form"
     *ngIf="selectedEdition.state !== 'closed'; else winnerSelected"
-    class="container--default max-w-3xl mx-auto mt-8 grid font-mono text-sm grid-cols-form items-center gap-x-4 gap-y-3 bg-gray-200 rounded-xl"
+    class="container--default max-w-3xl mx-auto mt-8 grid font-mono text-xs sm:text-sm grid-cols-form items-center gap-x-4 gap-y-3 bg-gray-200 rounded-xl"
   >
     <div class="col-span-3 flex flex-wrap justify-between items-start">
       <h1 class="flex-auto text-headline">
@@ -130,7 +130,7 @@
             toggleEditionStatus(selectedEdition.id, !selectedEdition.current)
           "
           type="button"
-          class="uppercase transition-opacity p-3 rounded-xl text-black font-condensed text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-25"
+          class="uppercase transition-opacity p-3 rounded-xl text-black font-condensed text-xs sm:text-sm leading-none focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-gray-300 border-gray-300 border-opacity-50 disabled:opacity-25"
           [innerText]="
             (selectedEdition.current
               ? 'actions.deactivate'
@@ -171,7 +171,7 @@
         formControlName="name"
         name="name"
         type="text"
-        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
         required
         [ngClass]="[
           name.touched && name.invalid ? 'bg-red-100' : 'bg-gray-100'
@@ -188,7 +188,7 @@
         type="datetime-local"
         [min]="dateNow.toISOString() | slice: 0:16"
         pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
-        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
         required
         [ngClass]="[
           (application_start.touched &&
@@ -210,7 +210,7 @@
         type="datetime-local"
         [min]="application_start.value"
         pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}"
-        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+        class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
         required
         [ngClass]="[
           (application_end.touched &&
@@ -252,14 +252,14 @@
       >
         <button
           type="submit"
-          class="bg-black text-white font-mono text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
+          class="bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
           (click)="saveEdition(selectedEdition.id)"
           [innerHtml]="'actions.save' | translate"
           [disabled]="form.invalid || form.pristine"
         ></button>
         <button
           type="button"
-          class="bg-gray-300 text-black font-mono text-base leading-none py-3 px-6 ml-2 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
+          class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 ml-2 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
           (click)="cancel()"
           [innerHtml]="'actions.cancel' | translate"
           [disabled]="form.pristine"

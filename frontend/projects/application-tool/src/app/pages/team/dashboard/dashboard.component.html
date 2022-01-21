@@ -39,15 +39,7 @@
     >
       <ng-container *ngIf="roundStatistic$ | async as roundStatistic">
         <div
-          class="
-            md:grid
-            lg:block
-            xl:grid
-            md:grid-cols-2
-            xl:grid-cols-form
-            gap-0
-            items-stretch
-          "
+          class="md:grid lg:block xl:grid md:grid-cols-2 xl:grid-cols-form gap-0 items-stretch"
           *ngIf="roundStatistic.data.rating_rounds_by_pk; else noRounds"
         >
           <div class="xl:w-96 flex flex-col">
@@ -57,9 +49,7 @@
                   (roundStatistic.data.rating_rounds_by_pk?.active
                     ? "defaults.rating-round-single"
                     : "defaults.rating-round-result-single"
-                  )
-                    | translate
-                    
+                  ) | translate
                 }}
                 {{
                   roundStatistic.data.rating_rounds_by_pk?.level !== null
@@ -71,19 +61,11 @@
 
             <div class="flex-auto bg-gray-100 p-4 lg:p-6">
               <div
-                class="
-                  flex
-                  w-full
-                  justify-between
-                  items-center
-                  border-b border-black
-                  pb-4
-                  mb-4
-                "
+                class="flex w-full justify-between items-center border-b border-black pb-4 mb-4"
               >
                 <div
                   class="font-mono"
-                  [innerText]="'defaults.nominated' | translate "
+                  [innerText]="'defaults.nominated' | translate"
                 ></div>
                 <div
                   class="text-3xl"
@@ -102,36 +84,22 @@
                 </div>
               </div>
               <div
-                class="
-                  flex
-                  justify-between
-                  items-center
-                  border-b border-black
-                  pb-4
-                  mb-4
-                "
+                class="flex justify-between items-center border-b border-black pb-4 mb-4"
               >
                 <div
                   class="font-mono"
-                  [innerText]="'defaults.eliminated' | translate "
+                  [innerText]="'defaults.eliminated' | translate"
                 ></div>
                 <div class="text-3xl text-yellow-500">
                   {{ roundStatistic.data.out.aggregate?.count }}
                 </div>
               </div>
               <div
-                class="
-                  flex
-                  justify-between
-                  items-center
-                  border-b border-black
-                  pb-4
-                  mb-4
-                "
+                class="flex justify-between items-center border-b border-black pb-4 mb-4"
               >
                 <div
                   class="font-mono"
-                  [innerText]="'defaults.unrated' | translate "
+                  [innerText]="'defaults.unrated' | translate"
                 ></div>
                 <div class="text-3xl">
                   {{
@@ -153,63 +121,20 @@
 
               <a
                 [routerLink]="['..', 'applications']"
-                class="
-                  inline-block
-                  mt-8
-                  mb-2
-                  mr-2
-                  bg-black
-                  text-white
-                  font-mono
-                  text-base
-                  leading-none
-                  py-3
-                  px-6
-                  rounded-xl
-                "
-                >{{
-                  "snippets.go-to-applications" | translate 
-                }}
-                &rarr;</a
+                class="inline-block mt-8 mb-2 mr-2 bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
+                >{{ "snippets.go-to-applications" | translate }} &rarr;</a
               >
               <button
-                class="
-                  inline-block
-                  mb-2
-                  bg-transparent
-                  text-black
-                  border-black border
-                  font-mono
-                  text-base
-                  leading-none
-                  py-3
-                  px-6
-                  rounded-xl
-                  disabled:opacity-30
-                "
+                class="inline-block mb-2 bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
                 *ngIf="!roundStatistic.data.rating_rounds_by_pk?.closed"
                 (click)="
                   showCloseRoundModal(roundStatistic.data.rating_rounds_by_pk)
                 "
-                [innerHTML]="
-                  'snippets.close-round-short' | translate 
-                "
+                [innerHTML]="'snippets.close-round-short' | translate"
               ></button>
 
               <button
-                class="
-                  mb-2
-                  bg-transparent
-                  text-black
-                  border-black border
-                  font-mono
-                  text-base
-                  leading-none
-                  py-3
-                  px-6
-                  rounded-xl
-                  disabled:opacity-30
-                "
+                class="mb-2 bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
                 *ngIf="roundStatistic.data.rating_rounds_by_pk?.closed"
                 (click)="showConfirmWinnerModal()"
               >
@@ -219,64 +144,28 @@
           </div>
           <div class="flex flex-col xl:col-span-2">
             <div
-              class="
-                flex
-                justify-between
-                px-4
-                lg:px-6
-                xl:pl-16
-                pb-2
-                mt-4
-                md:mt-0
-                lg:mt-4
-                xl:mt-0
-              "
+              class="flex justify-between px-4 lg:px-6 xl:pl-16 pb-2 mt-4 md:mt-0 lg:mt-4 xl:mt-0"
             >
               <div
                 class="font-mono text-xs"
-                [innerHtml]="
-                  'defaults.jury-rating-multi' | translate 
-                "
+                [innerHtml]="'defaults.jury-rating-multi' | translate"
               ></div>
               <div
                 class="font-mono text-xs text-right"
-                [innerHtml]="'defaults.status-single' | translate "
+                [innerHtml]="'defaults.status-single' | translate"
               ></div>
             </div>
             <div class="flex-auto bg-gray-100 p-4 lg:p-6 xl:pl-16">
               <div
-                class="
-                  flex
-                  justify-between
-                  items-center
-                  border-b border-black
-                  pb-4
-                  mb-4
-                  font-mono
-                "
+                class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
                 *ngFor="let user of (juryMembers$ | async)?.data?.users"
               >
                 <div class="flex-auto">{{ user.name }}</div>
                 <div
-                  class="
-                    ml-4
-                    mb-3
-                    border border-black
-                    w-24
-                    xl:w-2/5
-                    h-3
-                    relative
-                  "
+                  class="ml-4 mb-3 border border-black w-24 xl:w-2/5 h-3 relative"
                 >
                   <div
-                    class="
-                      absolute
-                      inset-0
-                      bg-green-500
-                      origin-top-left
-                      transform-gpu
-                      transition-transform
-                    "
+                    class="absolute inset-0 bg-green-500 origin-top-left transform-gpu transition-transform"
                     [style.transform]="
                       'scaleX(' +
                       (user.ratings_aggregate.aggregate?.count || 0) /
@@ -335,12 +224,12 @@
               </div> -->
               <div>
                 <a [routerLink]="['..', 'users']" class="underline font-mono">
-                  {{ "snippets.manage-jury" | translate  }}
+                  {{ "snippets.manage-jury" | translate }}
                   &rarr;
                 </a>
               </div>
               <!-- <button
-                class="inline-block mt-8 bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+                class="inline-block mt-8 bg-black text-white border-black border font-mono  text-xs sm:text-sm md:text-base  leading-none py-3 px-6 rounded-xl"
               >
                 Nachricht an gesamte Jury
               </button> -->
@@ -355,21 +244,7 @@
         >
           <button
             *ngIf="edition$ | async as edition"
-            class="
-              col-span-3
-              inline-block
-              mb-8
-              bg-black
-              text-white
-              border-black border
-              font-mono
-              text-base
-              leading-none
-              py-3
-              px-6
-              rounded-xl
-              disabled:opacity-30
-            "
+            class="col-span-3 inline-block mb-8 bg-black text-white border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
             (click)="showNewRoundModal(edition.id)"
           >
             + {{ "snippets.add-first-round" | translate }}
@@ -400,19 +275,7 @@
     <div id="status" class="md:w-80 lg:w-96 mb-16" [ngSwitch]="state">
       <div
         *ngSwitchCase="'open'"
-        class="
-          relative
-          group
-          cursor-pointer
-          z-0
-          bg-green-500
-          py-3
-          sm:py-5
-          px-3
-          sm:px-5
-          lg:px-7
-          md:ml-1
-        "
+        class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
       >
         <div
           class="text-headline"
@@ -431,19 +294,7 @@
       </div>
       <div
         *ngSwitchCase="'submission'"
-        class="
-          relative
-          group
-          cursor-pointer
-          z-0
-          bg-green-500
-          py-3
-          sm:py-5
-          px-3
-          sm:px-5
-          lg:px-7
-          md:ml-1
-        "
+        class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
       >
         <div
           class="text-headline"
@@ -463,19 +314,7 @@
 
       <div
         *ngSwitchCase="'rating'"
-        class="
-          relative
-          group
-          cursor-pointer
-          z-0
-          bg-orange-400
-          py-3
-          sm:py-5
-          px-3
-          sm:px-5
-          lg:px-7
-          md:ml-1
-        "
+        class="relative group cursor-pointer z-0 bg-orange-400 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
       >
         <ng-container *ngIf="roundStatistic$ | async as roundStatistic">
           <div
@@ -515,19 +354,7 @@
       </div>
       <div
         *ngSwitchCase="'closed'"
-        class="
-          relative
-          group
-          cursor-pointer
-          z-0
-          bg-gray-300
-          py-3
-          sm:py-5
-          px-3
-          sm:px-5
-          lg:px-7
-          md:ml-1
-        "
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
       >
         <div
           class="text-headline"
@@ -536,19 +363,7 @@
       </div>
       <div
         *ngSwitchDefault
-        class="
-          relative
-          group
-          cursor-pointer
-          z-0
-          bg-gray-300
-          py-3
-          sm:py-5
-          px-3
-          sm:px-5
-          lg:px-7
-          md:ml-1
-        "
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
       >
         <div class="text-headline animate-pulse">…</div>
       </div>
@@ -556,15 +371,7 @@
     <!-- UPDATES -->
     <div id="updates" class="md:w-80 lg:w-96">
       <div
-        class="
-          updates--header
-          border-b border-gray-300
-          flex
-          justify-between
-          items-baseline
-          pb-3
-          space-x-2
-        "
+        class="updates--header border-b border-gray-300 flex justify-between items-baseline pb-3 space-x-2"
       >
         <span>&darr;</span>
         <h3
@@ -583,19 +390,7 @@
         <!-- SINGLE UPDATE -->
         <div class="update mt-4" *ngFor="let update of updates.data?.updates">
           <div
-            class="
-              relative
-              font-mono
-              text-sm
-              py-2
-              pl-3
-              sm:pl-5
-              lg:pl-7
-              pr-3
-              md:ml-1
-              flex
-              justify-between
-            "
+            class="relative font-mono text-xs sm:text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
           >
             <span
               [innerHtml]="update.created_at | localizedDate: 'short'"
@@ -603,19 +398,7 @@
           </div>
           <div
             (click)="showEditUpdateModal(update)"
-            class="
-              relative
-              group
-              bg-gray-100
-              hover:bg-gray-200
-              py-3
-              sm:py-5
-              px-3
-              sm:px-5
-              lg:px-7
-              md:ml-1
-              cursor-pointer
-            "
+            class="relative group bg-gray-100 hover:bg-gray-200 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1 cursor-pointer"
           >
             <div class="text-headline" [innerHtml]="update.text_de"></div>
             <div
@@ -635,26 +418,7 @@
             >
             <button
               (click)="showDeleteUpdateModal(update.id)"
-              class="
-                appearance-none
-                opacity-0
-                group-hover:opacity-100
-                transition-all
-                absolute
-                -top-1
-                -right-1
-                text-xs
-                font-mono
-                bg-black
-                hover:bg-red-600
-                cursor-pointer
-                text-white
-                w-5
-                h-5
-                leading-5
-                rounded-full
-                text-center
-              "
+              class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute -top-1 -right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
             >
               X
             </button>
@@ -680,15 +444,7 @@
     </div>
     <div class="flex-auto bg-gray-100 p-4 lg:p-6">
       <div
-        class="
-          flex
-          w-full
-          justify-between
-          items-center
-          border-b border-black
-          pb-4
-          mb-4
-        "
+        class="flex w-full justify-between items-center border-b border-black pb-4 mb-4"
       >
         <div class="font-mono">Angelegt</div>
         <div class="text-3xl">
@@ -696,14 +452,7 @@
         </div>
       </div>
       <div
-        class="
-          flex
-          justify-between
-          items-center
-          border-b border-black
-          pb-4
-          mb-4
-        "
+        class="flex justify-between items-center border-b border-black pb-4 mb-4"
       >
         <div class="font-mono">In Bearbeitung</div>
         <div class="text-3xl text-yellow-500">
@@ -719,19 +468,7 @@
 
       <a
         [routerLink]="['..', 'applications']"
-        class="
-          inline-block
-          mt-8
-          mb-4
-          bg-black
-          text-white
-          font-mono
-          text-base
-          leading-none
-          py-3
-          px-6
-          rounded-xl
-        "
+        class="inline-block mt-8 mb-4 bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
         [innerHtml]="('defaults.application-multi' | translate) + ' &rarr;'"
       ></a>
       <!-- <div class="aspect-w-1 aspect-h-1 bg-red-50 mt-4"></div> -->
@@ -759,14 +496,7 @@
           let category of statisticObject?.data?.category_mediums_aggregate
             ?.nodes | sortByCount
         "
-        class="
-          flex
-          justify-between
-          items-center
-          border-b border-black
-          pb-4
-          mb-4
-        "
+        class="flex justify-between items-center border-b border-black pb-4 mb-4"
       >
         <div
           class="font-mono"

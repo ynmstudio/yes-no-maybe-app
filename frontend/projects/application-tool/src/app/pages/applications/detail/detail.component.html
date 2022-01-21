@@ -15,17 +15,7 @@
       *ngIf="
         applicationObject.data?.applications_by_pk?.elimination as elimination
       "
-      class="
-        bg-blue-600
-        text-white
-        py-2
-        p-4
-        text-sm text-center
-        sticky
-        top-24
-        -mt-px
-        inset-x-0
-      "
+      class="bg-blue-600 text-white py-2 p-4 text-xs sm:text-sm text-center sticky top-24 -mt-px inset-x-0"
       title="Eliminated
     {{ elimination.created_at | timePassed }} ago by
     {{ elimination.eliminated_by.name }}"
@@ -51,26 +41,11 @@
       "
     >
       <div
-        class="
-          aspect-w-1 aspect-h-1
-          md:aspect-w-16 md:aspect-h-9
-          lg:aspect-h-8
-          xl:aspect-w-3 xl:aspect-h-1
-          border-t border-b border-gray-300
-        "
+        class="aspect-w-1 aspect-h-1 md:aspect-w-16 md:aspect-h-9 lg:aspect-h-8 xl:aspect-w-3 xl:aspect-h-1 border-t border-b border-gray-300"
       >
         <div class="flex overflow-hidden bg-gray-50">
           <div
-            class="
-              flex-auto
-              order-2
-              overflow-hidden
-              relative
-              lg:mx-40
-              transition-transform
-              transform-gpu
-              origin-right
-            "
+            class="flex-auto order-2 overflow-hidden relative lg:mx-40 transition-transform transform-gpu origin-right"
             [ngClass]="[
               showSpecification || showChat
                 ? 'lg:-translate-x-40'
@@ -84,14 +59,7 @@
               >
                 <app-pdf
                   *ngSwitchCase="'application/pdf'"
-                  class="
-                    absolute
-                    group
-                    inset-0
-                    text-center
-                    transform-gpu
-                    transition-opacity
-                  "
+                  class="absolute group inset-0 text-center transform-gpu transition-opacity"
                   [key]="file.key"
                   [mimetype]="file.mimetype"
                   [ngClass]="[
@@ -103,13 +71,7 @@
                 </app-pdf>
                 <app-image
                   *ngSwitchDefault
-                  class="
-                    absolute
-                    inset-0
-                    text-center
-                    transform-gpu
-                    transition-opacity
-                  "
+                  class="absolute inset-0 text-center transform-gpu transition-opacity"
                   [key]="file.key"
                   [mimetype]="file.mimetype"
                   [width]="1440"
@@ -126,29 +88,13 @@
               <ng-container *ngIf="(work?.files?.length || 0) > 1">
                 <button
                   (click)="incrementFileIndex(-1, work?.files?.length || 0)"
-                  class="
-                    absolute
-                    left-0
-                    top-1/2
-                    transform
-                    -translate-y-1/2
-                    p-2
-                    text-3xl
-                  "
+                  class="absolute left-0 top-1/2 transform -translate-y-1/2 p-2 text-3xl"
                 >
                   &larr;
                 </button>
                 <button
                   (click)="incrementFileIndex(1, work?.files?.length || 0)"
-                  class="
-                    absolute
-                    right-0
-                    top-1/2
-                    transform
-                    -translate-y-1/2
-                    p-2
-                    text-3xl
-                  "
+                  class="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 text-3xl"
                 >
                   &rarr;
                 </button>
@@ -156,28 +102,10 @@
             </div>
           </div>
           <div
-            class="
-              absolute
-              inset-y-0
-              left-0
-              order-1
-              lg:static
-              bg-gray-200
-              w-64
-              lg:w-80
-              border-r border-gray-300
-            "
+            class="absolute inset-y-0 left-0 order-1 lg:static bg-gray-200 w-64 lg:w-80 border-r border-gray-300"
           >
             <div
-              class="
-                px-4
-                py-2
-                whitespace-nowrap
-                overflow-scroll
-                overscroll-contain
-                no-scrollbar
-                transition-colors
-              "
+              class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain no-scrollbar transition-colors"
               *ngFor="let work of works; let indexW = index; let first = first"
               [ngClass]="[
                 (currentWorkIndex | async) == indexW
@@ -187,16 +115,7 @@
               (click)="setCurrentWork(indexW)"
             >
               <div
-                class="
-                  inline-block
-                  h-20
-                  w-auto
-                  mr-2
-                  ring-blue-500
-                  transition-shadow
-                  relative
-                  overflow-hidden
-                "
+                class="inline-block h-20 w-auto mr-2 ring-blue-500 transition-shadow relative overflow-hidden"
                 (click)="setCurrentFile(indexF, $event, indexW)"
                 *ngFor="let file of work?.files; let indexF = index"
                 [ngClass]="[
@@ -220,18 +139,7 @@
             </div>
           </div>
           <div
-            class="
-              absolute
-              w-64
-              lg:w-80
-              inset-y-0
-              right-0
-              bg-gray-200
-              border-l border-gray-300
-              transition-all
-              transform-gpu
-              origin-right
-            "
+            class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-all transform-gpu origin-right"
             [ngClass]="[
               showChat
                 ? 'translate-x-0  opacity-100'
@@ -245,18 +153,7 @@
             ></app-chat>
           </div>
           <div
-            class="
-              absolute
-              w-64
-              lg:w-80
-              inset-y-0
-              right-0
-              bg-gray-200
-              border-l border-gray-300
-              transition-all
-              transform-gpu
-              origin-right
-            "
+            class="absolute w-64 lg:w-80 inset-y-0 right-0 bg-gray-200 border-l border-gray-300 transition-all transform-gpu origin-right"
             *ngIf="currentWork | async as work"
             [ngClass]="[
               showSpecification
@@ -270,16 +167,7 @@
                 let index = index
               "
               [specification]="specification"
-              class="
-                absolute
-                inset-0
-                bg-gray-200
-                overflow-scroll
-                overscroll-contain
-                no-scrollbar
-                transform-gpu
-                transition-opacity
-              "
+              class="absolute inset-0 bg-gray-200 overflow-scroll overscroll-contain no-scrollbar transform-gpu transition-opacity"
               [ngClass]="[
                 (currentSpecificationIndex | async) == index
                   ? 'opacity-100'
@@ -290,13 +178,7 @@
         </div>
       </div>
       <div
-        class="
-          border-b border-gray-300
-          mb-12
-          md:grid
-          grid-cols-2
-          lg:grid-cols-3
-        "
+        class="border-b border-gray-300 mb-12 md:grid grid-cols-2 lg:grid-cols-3"
       >
         <div
           class="lg:text-center lg:col-start-2"
@@ -315,14 +197,7 @@
               ]"
             >
               <span
-                class="
-                  block
-                  w-1
-                  h-1
-                  rounded-full
-                  ring-1 ring-gray-900
-                  transition-colors
-                "
+                class="block w-1 h-1 rounded-full ring-1 ring-gray-900 transition-colors"
                 [ngClass]="[
                   (work?.files?.length || 0) > 1
                     ? 'group-hover:ring-blue-600 group-hover:bg-blue-600'
@@ -341,16 +216,7 @@
             *ngIf="currentWork | async as work"
           >
             <button
-              class="
-                block
-                h-8
-                py-1
-                px-3
-                rounded-xl
-                leading-none
-                focus:outline-none
-                focus:ring-0
-              "
+              class="block h-8 py-1 px-3 rounded-xl leading-none focus:outline-none focus:ring-0"
               (click)="setCurrentSpecification(index)"
               *ngFor="
                 let specification of work?.specifications;
@@ -374,15 +240,7 @@
               </span>
             </button>
             <button
-              class="
-                block
-                h-8
-                px-3
-                rounded-xl
-                leading-none
-                focus:ring-0
-                outline-none
-              "
+              class="block h-8 px-3 rounded-xl leading-none focus:ring-0 outline-none"
               (click)="toggleChat()"
               [ngClass]="[
                 showChat
@@ -529,13 +387,7 @@
                   transform="translate(-0.54 -6.3)"
                 />
                 <g
-                  class="
-                    origin-center
-                    transition-transform
-                    transform-gpu
-                    scale-100
-                    group-hover:scale-150
-                  "
+                  class="origin-center transition-transform transform-gpu scale-100 group-hover:scale-150"
                 >
                   <path
                     stroke="currentColor"
@@ -563,18 +415,7 @@
     </div>
     <ng-template #noWorks>
       <div
-        class="
-          h-80
-          flex
-          items-center
-          justify-center
-          relative
-          z-10
-          border-t border-b
-          bg-gray-100
-          border-gray-300
-          mb-12
-        "
+        class="h-80 flex items-center justify-center relative z-10 border-t border-b bg-gray-100 border-gray-300 mb-12"
       >
         <span
           class="text-gray-500"
@@ -604,21 +445,7 @@
               aria-pressed="false"
               aria-labelledby="toggleLabel"
               [ngClass]="anonymous ? 'bg-green-600' : 'bg-red-600'"
-              class="
-                relative
-                inline-flex
-                flex-shrink-0
-                h-6
-                w-12
-                border-2 border-transparent
-                rounded-full
-                cursor-pointer
-                transition-colors
-                ease-in-out
-                duration-200
-                focus:outline-none
-                focus:ring-1 focus:ring-offset-1 focus:ring-white-400
-              "
+              class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
             >
               <span
                 class="sr-only"
@@ -628,19 +455,7 @@
               <span
                 aria-hidden="true"
                 [ngClass]="[anonymous ? 'translate-x-6' : 'translate-x-0']"
-                class="
-                  inline-block
-                  h-5
-                  w-5
-                  bg-white
-                  rounded-full
-                  shadow
-                  transform
-                  ring-0
-                  transition
-                  ease-in-out
-                  duration-200
-                "
+                class="inline-block h-5 w-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"
               ></span>
             </button>
             <div
@@ -657,16 +472,7 @@
             class="flex items-center transition-opacity"
           >
             <div
-              class="
-                rounded-full
-                bg-gray-200
-                hover:bg-gray-300
-                w-6
-                h-6
-                flex
-                items-center
-                justify-center
-              "
+              class="rounded-full bg-gray-200 hover:bg-gray-300 w-6 h-6 flex items-center justify-center"
             >
               <svg
                 width="16px"
@@ -752,26 +558,17 @@
         </div>
       </div>
       <div
-        class="
-          flex-auto
-          mt-12
-          lg:mt-0
-          lg:ml-16
-          lg:pl-10
-          lg:pr-8
-          lg:border-l lg:border-r
-          border-gray-300
-        "
+        class="flex-auto mt-12 lg:mt-0 lg:ml-16 lg:pl-10 lg:pr-8 lg:border-l lg:border-r border-gray-300"
       >
         <div
-          class="font-mono text-base max-w-3xl"
+          class="font-mono text-xs sm:text-sm md:text-base max-w-3xl"
           [innerHtml]="applicationObject.data?.applications_by_pk?.statement"
         ></div>
 
         <div class="flex space-x-4 mt-8">
           <!-- <button
             *ngIf="!anonymous"
-            class="bg-black text-white border-black border font-mono text-base leading-none py-3 px-6 rounded-xl"
+            class="bg-black text-white border-black border font-mono  text-xs sm:text-sm md:text-base  leading-none py-3 px-6 rounded-xl"
             [innerHtml]="'email.send-email' | translate"
           ></button> -->
           <button
@@ -780,33 +577,13 @@
               else eliminationButton
             "
             (click)="reviveApplication()"
-            class="
-              bg-black
-              text-white
-              border-black border
-              font-mono
-              text-base
-              leading-none
-              py-3
-              px-6
-              rounded-xl
-            "
+            class="bg-black text-white border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
             [innerHtml]="'actions.revive-application' | translate"
           ></button>
           <ng-template #eliminationButton>
             <button
               (click)="eliminateApplication()"
-              class="
-                bg-black
-                text-white
-                border-black border
-                font-mono
-                text-base
-                leading-none
-                py-3
-                px-6
-                rounded-xl
-              "
+              class="bg-black text-white border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
               [innerHtml]="'actions.eliminate-application' | translate"
             ></button>
           </ng-template>

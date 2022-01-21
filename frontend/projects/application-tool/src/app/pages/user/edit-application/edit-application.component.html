@@ -1,18 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <div
-    class="
-      container--default
-      sticky
-      top-0
-      inset-x-0
-      flex
-      items-center
-      justify-between
-      z-20
-      backdrop-blur
-      bg-white bg-opacity-80
-      border-b border-gray-300
-    "
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-20 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
   >
     <div class="flex items-center space-x-4">
       <button
@@ -62,16 +50,7 @@
     <!-- APPLICATION FORM -->
     <div class="lg:flex xl:container container--default mx-auto">
       <div
-        class="
-          flex-auto
-          font-mono
-          text-sm
-          grid grid-cols-1
-          lg:grid-cols-form
-          items-center
-          gap-x-4 gap-y-2
-          lg:gap-y-3
-        "
+        class="flex-auto font-mono text-xs sm:text-sm grid grid-cols-1 lg:grid-cols-form items-center gap-x-4 gap-y-2 lg:gap-y-3"
       >
         <label
           for="name"
@@ -82,26 +61,7 @@
           formControlName="name"
           name="name"
           type="text"
-          class="
-            col-span-2
-            appearance-none
-            rounded-none
-            relative
-            block
-            w-full
-            p-2
-            border-solid
-            bg-gray-100
-            border-b border-t-0 border-r-0 border-l-0 border-transparent
-            font-mono
-            placeholder-gray-500
-            text-black
-            focus:outline-none
-            focus:ring-gray-500
-            focus:border-gray-500
-            focus:z-10
-            text-sm
-          "
+          class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
           [ngClass]="{
             'ring-1 ring-red-500': name?.invalid
           }"
@@ -116,21 +76,7 @@
           aria-pressed="false"
           aria-labelledby="toggleLabel"
           [ngClass]="group?.value ? 'bg-green-500' : 'bg-gray-300'"
-          class="
-            relative
-            inline-flex
-            flex-shrink-0
-            h-6
-            w-12
-            border-2 border-transparent
-            rounded-full
-            cursor-pointer
-            transition-colors
-            ease-in-out
-            duration-200
-            focus:outline-none
-            focus:ring-1 focus:ring-offset-1 focus:ring-white-400
-          "
+          class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
         >
           <span
             class="sr-only"
@@ -140,19 +86,7 @@
           <span
             aria-hidden="true"
             [ngClass]="group?.value ? 'translate-x-6' : 'translate-x-0'"
-            class="
-              inline-block
-              h-5
-              w-5
-              bg-white
-              rounded-full
-              shadow
-              transform
-              ring-0
-              transition
-              ease-in-out
-              duration-200
-            "
+            class="inline-block h-5 w-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"
           ></span>
         </button>
         <span class="ml-3" id="toggleLabel">
@@ -218,13 +152,7 @@
                 <app-work-specification
                   cdkDrag
                   cdkDragLockAxis="y"
-                  class="
-                    block
-                    relative
-                    mb-4
-                    sm:pb-4
-                    border-b border-transparent
-                  "
+                  class="block relative mb-4 sm:pb-4 border-b border-transparent"
                   *ngFor="
                     let specification of work.specifications;
                     let last = last;
@@ -240,13 +168,7 @@
                   <div class="absolute bottom-0 left-0 pb-4 space-y-4">
                     <div
                       cdkDragHandle
-                      class="
-                        cursor-move
-                        text-gray-300
-                        hover:text-gray-600
-                        transition-colors
-                        duration-75
-                      "
+                      class="cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
                       [ngClass]="{
                         'text-opacity-0 hover:text-opacity-0 pointer-events-none':
                           work.specifications.length <= 1
@@ -276,15 +198,7 @@
                     </div>
                     <button
                       (click)="deleteSpecification(specification.id)"
-                      class="
-                        appearance-none
-                        leading-none
-                        text-xs
-                        font-mono
-                        underline
-                        text-gray-400
-                        hover:text-gray-600
-                      "
+                      class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
                       [innerHtml]="
                         'application-form.buttons.delete-specification'
                           | translate
@@ -297,19 +211,7 @@
                 (click)="
                   addPortfolioSpecification(work.id, work.specifications.length)
                 "
-                class="
-                  block
-                  w-full
-                  md:w-auto
-                  ml-auto
-                  border border-black
-                  font-mono
-                  text-base
-                  leading-none
-                  py-3
-                  px-6
-                  rounded-xl
-                "
+                class="block w-full md:w-auto ml-auto border border-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
                 [innerHtml]="
                   'application-form.buttons.add-work-specification' | translate
                 "
@@ -319,24 +221,7 @@
           <ng-template #noPortfolioWork>
             <button
               (click)="addWork(true)"
-              class="
-                whitespace-nowrap
-                w-full
-                sm:my-4
-                py-6
-                lg:py-12
-                px-12
-                mb-4
-                border border-transparent
-                font-mono
-                bg-black
-                hover:bg-gray-900
-                text-white
-                rounded-3xl
-                focus:outline-none
-                focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
-                disabled:opacity-50
-              "
+              class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
               [innerHtml]="
                 ((singleWorks$ | async)?.data?.works?.length!
                   ? 'application-form.buttons.add-additional-pdf-portfolio'
@@ -360,21 +245,7 @@
               !(portfolioWorks$ | async)?.data?.works?.length! &&
               !(singleWorks$ | async)?.data?.works?.length!
             "
-            class="
-              text-xs
-              font-mono
-              uppercase
-              absolute
-              top-1/2
-              right-1/2
-              transform
-              translate-x-1/2
-              -translate-y-1/2
-              bg-gray-100
-              px-2
-              py-1
-              rounded-xl
-            "
+            class="text-xs font-mono uppercase absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bg-gray-100 px-2 py-1 rounded-xl"
             [innerText]="'defaults.or' | translate"
           >
           </span>
@@ -437,13 +308,7 @@
                 <div class="absolute bottom-0 left-0 pb-4 space-y-4">
                   <div
                     cdkDragHandle
-                    class="
-                      cursor-move
-                      text-gray-300
-                      hover:text-gray-600
-                      transition-colors
-                      duration-75
-                    "
+                    class="cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
                   >
                     <svg
                       width="19px"
@@ -468,15 +333,7 @@
                     </svg>
                   </div>
                   <button
-                    class="
-                      appearance-none
-                      leading-none
-                      text-xs
-                      font-mono
-                      underline
-                      text-gray-400
-                      hover:text-gray-600
-                    "
+                    class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
                     [innerHtml]="
                       'application-form.buttons.delete-work' | translate
                     "
@@ -486,19 +343,7 @@
               </div>
               <button
                 (click)="addWork()"
-                class="
-                  block
-                  w-full
-                  md:w-auto
-                  ml-auto
-                  border border-black
-                  font-mono
-                  text-base
-                  leading-none
-                  py-3
-                  px-6
-                  rounded-xl
-                "
+                class="block w-full md:w-auto ml-auto border border-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
                 [innerHtml]="
                   'application-form.buttons.add-single-work' | translate
                 "
@@ -509,24 +354,7 @@
         <ng-template #noSingleWork>
           <button
             (click)="addWork()"
-            class="
-              whitespace-nowrap
-              w-full
-              sm:my-4
-              py-6
-              lg:py-12
-              px-12
-              mb-4
-              border border-transparent
-              font-mono
-              bg-black
-              hover:bg-gray-900
-              text-white
-              rounded-3xl
-              focus:outline-none
-              focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
-              disabled:opacity-50
-            "
+            class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
             [innerHtml]="
               ((portfolioWorks$ | async)?.data?.works?.length!
                 ? 'application-form.buttons.add-additional-works-separately'
@@ -540,17 +368,7 @@
 
     <div class="xl:container container--default mx-auto">
       <div
-        class="
-          flex-auto
-          font-mono
-          text-sm
-          grid grid-cols-1
-          lg:grid-cols-application
-          items-baseline
-          gap-x-4 gap-y-3
-          sm:gap-y-5
-          lg:gap-y-7
-        "
+        class="flex-auto font-mono text-xs sm:text-sm grid grid-cols-1 lg:grid-cols-application items-baseline gap-x-4 gap-y-3 sm:gap-y-5 lg:gap-y-7"
       >
         <div class="lg:text-right">!</div>
         <div
@@ -568,32 +386,10 @@
             formControlName="statement"
             name="statement"
             rows="10"
-            class="
-              font-sans
-              text-base
-              rounded-none
-              relative
-              block
-              w-full
-              p-2
-              border-solid
-              bg-gray-100
-              border-b border-t-0 border-r-0 border-l-0 border-transparent
-              placeholder-gray-500
-              text-black
-              focus:outline-none
-              focus:ring-gray-500
-              focus:border-gray-500
-              focus:z-10
-            "
+            class="font-sans text-xs sm:text-sm md:text-base rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
           ></textarea>
           <div
-            class="
-              whitespace-nowrap
-              pl-3
-              text-xs text-gray-800
-              transition-colors
-            "
+            class="whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
             [ngClass]="
               statement?.value?.length > statementMaxLength * 0.95
                 ? statement?.value?.length > statementMaxLength
@@ -614,7 +410,9 @@
           for="residency"
           [innerHtml]="'defaults.residency-single' | translate | titlecase"
         ></label>
-        <div class="bg-gray-100 p-4 font-sans text-base mb-3">
+        <div
+          class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
+        >
           <div>
             Wenn ich den Berlin Art Prize gewinne, würde ich gerne an der
             Residency teilnehmen:
@@ -625,14 +423,7 @@
               formControlName="residency"
               name="residency"
               type="checkbox"
-              class="
-                focus:ring-gray-500
-                h-5
-                w-5
-                text-green-500
-                border-black
-                rounded-none
-              "
+              class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
             />
             <label for="residency" class="ml-3"
               >{{ "defaults.yes" | translate | titlecase }}
@@ -650,7 +441,9 @@
           for="database"
           [innerHtml]="'defaults.database-single' | translate | titlecase"
         ></label>
-        <div class="bg-gray-100 p-4 font-sans text-base mb-3">
+        <div
+          class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
+        >
           <div>
             Mein Portfolio darf in das Archiv des Berlin Art Prize aufgenommen
             werden:
@@ -661,14 +454,7 @@
               formControlName="database"
               name="database"
               type="checkbox"
-              class="
-                focus:ring-gray-500
-                h-5
-                w-5
-                text-green-500
-                border-black
-                rounded-none
-              "
+              class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
             />
             <label for="database" class="ml-3"
               >{{ "defaults.yes" | translate | titlecase }}
@@ -686,7 +472,7 @@
           [innerHtml]="'defaults.disclaimer-single' | translate | titlecase"
         ></label>
         <div
-          class="bg-gray-100 p-4 font-sans text-base mb-3"
+          class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
           [ngClass]="{
             'ring-1 ring-red-500': disclaimer?.invalid
           }"
@@ -700,14 +486,7 @@
               formControlName="disclaimer"
               name="disclaimer"
               type="checkbox"
-              class="
-                focus:ring-gray-500
-                h-5
-                w-5
-                text-green-500
-                border-black
-                rounded-none
-              "
+              class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
             />
             <label
               for="disclaimer"
@@ -724,7 +503,7 @@
           for="payment"
           [innerHtml]="'defaults.payment-single' | translate | titlecase"
         ></label>
-        <div class="bg-gray-100 p-4 font-sans text-base">
+        <div class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base">
           <p
             class="mb-5"
             [innerHtml]="'_configuration.payment.description' | translate"
@@ -756,17 +535,7 @@
             'ring-1 ring-red-600': !payment?.valid && !isHovering,
             'ring-2 ring-gray-800': !payment?.valid && isHovering
           }"
-          class="
-            bg-gray-100
-            text-gray-800
-            p-4
-            self-stretch
-            flex flex-col
-            items-center
-            justify-center
-            ring-0
-            transition-shadow
-          "
+          class="bg-gray-100 text-gray-800 p-4 self-stretch flex flex-col items-center justify-center ring-0 transition-shadow"
         >
           <app-upload-task
             class="flex-none flex items-center justify-center h-48 w-48"
@@ -889,50 +658,18 @@
             </div>
             <button
               (click)="deletePayment(payment?.value.id)"
-              class="
-                appearance-none
-                opacity-0
-                group-hover:opacity-100
-                transition-all
-                absolute
-                top-1
-                right-1
-                text-xs
-                font-mono
-                bg-black
-                hover:bg-red-600
-                cursor-pointer
-                text-white
-                w-5
-                h-5
-                leading-5
-                rounded-full
-                text-center
-              "
+              class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
             >
               X
             </button>
           </div>
         </div>
-        <div class="lg:col-start-2 lg:col-span-2 text-base mt-24">
+        <div
+          class="lg:col-start-2 lg:col-span-2 text-xs sm:text-sm md:text-base mt-24"
+        >
           <a
             [routerLink]="['fullscreen']"
-            class="
-              flex
-              group
-              items-center
-              justify-between
-              px-12
-              py-8
-              rounded-3xl
-              whitespace-nowrap
-              bg-blue-600
-              hover:bg-blue-700
-              text-white
-              leading-10
-              font-mono
-              lg:whitespace-nowrap
-            "
+            class="flex group items-center justify-between px-12 py-8 rounded-3xl whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white leading-10 font-mono lg:whitespace-nowrap"
           >
             <span
               class="block"
@@ -956,13 +693,7 @@
                 transform="translate(-0.54 -6.3)"
               />
               <g
-                class="
-                  origin-center
-                  transition-transform
-                  transform-gpu
-                  scale-100
-                  group-hover:scale-150
-                "
+                class="origin-center transition-transform transform-gpu scale-100 group-hover:scale-150"
               >
                 <path
                   stroke="currentColor"
@@ -1017,14 +748,7 @@
       [innerHtml]="'_configuration.title' | translate"
     ></div>
     <div
-      class="
-        flex flex-col
-        md:flex-row
-        justify-end
-        space-y-3
-        md:space-x-3 md:space-y-0
-        items-end
-      "
+      class="flex flex-col md:flex-row justify-end space-y-3 md:space-x-3 md:space-y-0 items-end"
     >
       <div class="space-x-16 flex mt-16 md:mt-0 md:mr-16 order-2 md:order-none">
         <a class="font-mono hover:underline" tabindex="-1" href="">AGB</a>
@@ -1034,33 +758,13 @@
       </div>
       <button
         (click)="saveAndClose()"
-        class="
-          bg-gray-300
-          text-black
-          font-mono
-          text-base
-          leading-none
-          py-3
-          px-6
-          rounded-xl
-        "
+        class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
       >
         Speichern und schließen
       </button>
       <button
         (click)="finalizeAndClose()"
-        class="
-          bg-gray-300
-          text-black
-          font-mono
-          text-base
-          leading-none
-          py-3
-          px-6
-          rounded-xl
-          disabled:opacity-30
-          disabled:pointer-events-none
-        "
+        class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
         [disabled]="!form.valid"
         [ngClass]="{
           'bg-green-400': form.valid

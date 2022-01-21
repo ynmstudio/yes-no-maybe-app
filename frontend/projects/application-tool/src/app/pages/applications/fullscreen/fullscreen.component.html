@@ -1,30 +1,12 @@
 <div
-  class="
-    fixed
-    inset-0
-    min-h-screen
-    flex flex-col
-    z-30
-    bg-gray-50
-    dark:bg-gray-950
-    text-black
-    dark:text-white
-  "
+  class="fixed inset-0 min-h-screen flex flex-col z-30 bg-gray-50 dark:bg-gray-950 text-black dark:text-white"
   *ngIf="application$ | async as applicationObject"
 >
   <div class="container--default flex items-center justify-between z-10">
     <div class="flex items-center space-x-8">
       <a
         [routerLink]="['..']"
-        class="
-          block
-          py-3
-          px-4
-          rounded-xl
-          leading-none
-          bg-gray-200
-          dark:bg-gray-900
-        "
+        class="block py-3 px-4 rounded-xl leading-none bg-gray-200 dark:bg-gray-900"
       >
         <span
           class="sr-only"
@@ -101,14 +83,7 @@
           </svg>
         </button>
         <button
-          class="
-            block
-            py-2
-            px-6
-            border-l border-r border-gray-50
-            dark:border-gray-950
-            leading-none
-          "
+          class="block py-2 px-6 border-l border-r border-gray-50 dark:border-gray-950 leading-none"
           (click)="toggleChat()"
           [ngClass]="[
             showChat
@@ -189,15 +164,7 @@
         *ngIf="prev_application$ | async as prev_application"
         [routerLink]="['../..', prev_application.id, 'fullscreen']"
         [title]="prev_application.internal_name"
-        class="
-          block
-          py-2
-          px-6
-          rounded-tl-xl rounded-bl-xl
-          leading-none
-          bg-gray-200
-          dark:bg-gray-900
-        "
+        class="block py-2 px-6 rounded-tl-xl rounded-bl-xl leading-none bg-gray-200 dark:bg-gray-900"
         [ngClass]="{
           'opacity-50 pointer-events-none':
             prev_application.id === application_id
@@ -206,20 +173,7 @@
         <span class="text-2xl leading-none font-mono font-light">&larr;</span>
       </a>
       <div
-        class="
-          block
-          h-10
-          w-80
-          px-6
-          whitespace-nowrap
-          bg-gray-200
-          dark:bg-gray-900
-          leading-10
-          border-l border-r border-gray-950
-          font-mono
-          capitalize
-          lg:whitespace-nowrap
-        "
+        class="block h-10 w-80 px-6 whitespace-nowrap bg-gray-200 dark:bg-gray-900 leading-10 border-l border-r border-gray-950 font-mono capitalize lg:whitespace-nowrap"
       >
         <button
           class="capitalize"
@@ -233,33 +187,13 @@
           <input
             tabindex="0"
             #searchInput
-            class="
-              appearance-none
-              px-0
-              py-1
-              text-sm
-              bg-transparent
-              border-0 border-b border-white
-              w-full
-              focus:ring-0
-            "
+            class="appearance-none px-0 py-1 text-xs sm:text-sm bg-transparent border-0 border-b border-white w-full focus:ring-0"
             type="text"
             [formControl]="searchTerm$"
             [placeholder]="'snippets.insert-internal-name' | translate"
           />
           <div
-            class="
-              absolute
-              top-full
-              -left-4
-              origin-top-left
-              w-80
-              mt-4
-              bg-white
-              dark:bg-gray-700
-              rounded-xl
-              shadow-lg
-            "
+            class="absolute top-full -left-4 origin-top-left w-80 mt-4 bg-white dark:bg-gray-700 rounded-xl shadow-lg"
             [ngClass]="[
               ((searchResults$ | async)?.data?.search_applications?.length ||
                 0) > 0
@@ -277,7 +211,7 @@
           >
             <a
               (click)="toggleSearch()"
-              class="block p-4 font-sans hover:underline text-sm"
+              class="block p-4 font-sans hover:underline text-xs sm:text-sm"
               *ngFor="
                 let result of (searchResults$ | async)?.data
                   ?.search_applications
@@ -293,15 +227,7 @@
         *ngIf="next_application$ | async as next_application"
         [routerLink]="['../..', next_application.id, 'fullscreen']"
         [title]="next_application.internal_name"
-        class="
-          block
-          py-2
-          px-6
-          border-r border-gray-950
-          leading-none
-          bg-gray-200
-          dark:bg-gray-900
-        "
+        class="block py-2 px-6 border-r border-gray-950 leading-none bg-gray-200 dark:bg-gray-900"
         [ngClass]="{
           'opacity-50 pointer-events-none':
             next_application.id === application_id
@@ -311,15 +237,7 @@
       </a>
       <a
         [routerLink]="['..']"
-        class="
-          block
-          py-2
-          px-6
-          rounded-tr-xl rounded-br-xl
-          leading-none
-          bg-gray-200
-          dark:bg-gray-900
-        "
+        class="block py-2 px-6 rounded-tr-xl rounded-br-xl leading-none bg-gray-200 dark:bg-gray-900"
       >
         <span
           class="sr-only"
@@ -332,14 +250,7 @@
   <div class="flex-auto container--default-x relative">
     <div
       *ngIf="currentWork | async as work"
-      class="
-        absolute
-        inset-0
-        overflow-hidden
-        bg-red-50
-        dark:bg-gray-950
-        lg:mb-24
-      "
+      class="absolute inset-0 overflow-hidden bg-red-50 dark:bg-gray-950 lg:mb-24"
     >
       <ng-container
         *ngFor="let file of work?.files; let index = index"
@@ -347,14 +258,7 @@
       >
         <app-pdf
           *ngSwitchCase="'application/pdf'"
-          class="
-            absolute
-            group
-            inset-0
-            text-center
-            transform-gpu
-            transition-opacity
-          "
+          class="absolute group inset-0 text-center transform-gpu transition-opacity"
           [key]="file.key"
           [mimetype]="file.mimetype"
           [ngClass]="[
@@ -383,21 +287,7 @@
       <ng-container *ngIf="(work?.files?.length || 0) > 1">
         <button
           (click)="incrementFileIndex(-1, work?.files?.length || 0)"
-          class="
-            absolute
-            left-0
-            top-1/2
-            transform
-            -translate-y-1/2
-            p-4
-            text-blue-600
-            hover:text-blue-400
-            rounded-tr-xl rounded-br-xl
-            dark:hover:bg-gray-900
-            dark:hover:text-gray-200
-            focus:outline-none
-            focus:ring-0
-          "
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 p-4 text-blue-600 hover:text-blue-400 rounded-tr-xl rounded-br-xl dark:hover:bg-gray-900 dark:hover:text-gray-200 focus:outline-none focus:ring-0"
         >
           <svg
             width="57px"
@@ -426,21 +316,7 @@
         </button>
         <button
           (click)="incrementFileIndex(1, work?.files?.length || 0)"
-          class="
-            absolute
-            right-0
-            top-1/2
-            transform
-            -translate-y-1/2
-            p-4
-            text-blue-600
-            hover:text-blue-400
-            rounded-tl-xl rounded-bl-xl
-            dark:hover:bg-gray-900
-            dark:hover:text-gray-200
-            focus:outline-none
-            focus:ring-0
-          "
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 p-4 text-blue-600 hover:text-blue-400 rounded-tl-xl rounded-bl-xl dark:hover:bg-gray-900 dark:hover:text-gray-200 focus:outline-none focus:ring-0"
         >
           <svg
             width="57px"
@@ -491,15 +367,7 @@
           ]"
         >
           <span
-            class="
-              block
-              w-1
-              h-1
-              rounded-full
-              ring-1 ring-gray-900
-              dark:ring-gray-100
-              transition-colors
-            "
+            class="block w-1 h-1 rounded-full ring-1 ring-gray-900 dark:ring-gray-100 transition-colors"
             [ngClass]="[
               (works?.data?.works?.length || 0) > 1
                 ? 'group-hover:ring-blue-600 group-hover:bg-blue-600 '
@@ -525,15 +393,7 @@
           [ngClass]="[(work?.files?.length || 0) > 1 ? 'cursor-pointer' : '']"
         >
           <span
-            class="
-              block
-              w-1
-              h-1
-              rounded-full
-              ring-1 ring-gray-900
-              dark:ring-gray-100
-              transition-colors
-            "
+            class="block w-1 h-1 rounded-full ring-1 ring-gray-900 dark:ring-gray-100 transition-colors"
             [ngClass]="[
               (work?.files?.length || 0) > 1
                 ? 'group-hover:ring-blue-600 group-hover:bg-blue-600 '
@@ -547,25 +407,7 @@
       </ol>
     </div>
     <div
-      class="
-        absolute
-        w-64
-        lg:w-80
-        xl:w-96
-        inset-y-0
-        left-0
-        mx-4
-        sm:mx-6
-        lg:mx-8
-        mb-0
-        overflow-hidden
-        bg-gray-200
-        dark:bg-gray-900
-        shadow-2xl
-        transition-all
-        transform-gpu
-        origin-right
-      "
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showOverview
           ? 'translate-x-0 opacity-100'
@@ -573,15 +415,7 @@
       ]"
     >
       <div
-        class="
-          px-4
-          py-2
-          whitespace-nowrap
-          overflow-scroll
-          overscroll-contain
-          no-scrollbar
-          transition-colors
-        "
+        class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain no-scrollbar transition-colors"
         *ngFor="
           let work of (works$ | async)?.data?.works;
           let indexW = index;
@@ -595,15 +429,7 @@
         (click)="setCurrentWork(indexW)"
       >
         <div
-          class="
-            inline-block
-            h-32
-            w-auto
-            mr-2
-            ring-blue-500
-            transition-shadow
-            relative
-          "
+          class="inline-block h-32 w-auto mr-2 ring-blue-500 transition-shadow relative"
           (click)="setCurrentFile(indexF, $event, indexW)"
           *ngFor="let file of work?.files; let indexF = index"
           [ngClass]="[
@@ -627,25 +453,7 @@
       </div>
     </div>
     <div
-      class="
-        absolute
-        w-64
-        lg:w-80
-        xl:w-96
-        inset-y-0
-        left-0
-        mx-4
-        sm:mx-6
-        lg:mx-8
-        mb-0
-        overflow-hidden
-        bg-gray-200
-        dark:bg-gray-900
-        shadow-2xl
-        transition-all
-        transform-gpu
-        origin-right
-      "
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showStatement
           ? 'translate-x-0 opacity-100'
@@ -653,15 +461,7 @@
       ]"
     >
       <div
-        class="
-          font-mono
-          text-xs
-          border-b border-black
-          dark:border-white
-          mx-4
-          pt-4
-          pb-1
-        "
+        class="font-mono text-xs border-b border-black dark:border-white mx-4 pt-4 pb-1"
         [innerHtml]="'snippets.statement' | translate | uppercase"
       ></div>
       <div
@@ -679,25 +479,7 @@
       </div>
     </div>
     <div
-      class="
-        absolute
-        w-64
-        lg:w-80
-        xl:w-96
-        inset-y-0
-        left-0
-        mx-4
-        sm:mx-6
-        lg:mx-8
-        mb-0
-        overflow-hidden
-        bg-gray-200
-        dark:bg-gray-900
-        shadow-2xl
-        transition-all
-        transform-gpu
-        origin-right
-      "
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showChat
           ? 'translate-x-0 opacity-100'
@@ -712,25 +494,7 @@
       ></app-chat>
     </div>
     <div
-      class="
-        absolute
-        w-64
-        lg:w-80
-        xl:w-96
-        inset-y-0
-        right-0
-        mx-4
-        sm:mx-6
-        lg:mx-8
-        mb-0
-        overflow-hidden
-        bg-gray-200
-        dark:bg-gray-900
-        shadow-2xl
-        transition-all
-        transform-gpu
-        origin-right
-      "
+      class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 right-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showSpecification
           ? 'translate-x-0 opacity-100'
@@ -741,17 +505,7 @@
         <app-specification
           *ngFor="let specification of work?.specifications; let index = index"
           [specification]="specification"
-          class="
-            absolute
-            inset-0
-            bg-gray-200
-            dark:bg-gray-900
-            overflow-scroll
-            overscroll-contain
-            no-scrollbar
-            transform-gpu
-            transition-opacity
-          "
+          class="absolute inset-0 bg-gray-200 dark:bg-gray-900 overflow-scroll overscroll-contain no-scrollbar transform-gpu transition-opacity"
           [ngClass]="[
             (currentSpecificationIndex | async) == index
               ? 'opacity-100'
@@ -761,15 +515,7 @@
       </ng-container>
     </div>
     <div
-      class="
-        absolute
-        bottom-0
-        right-0
-        container--default
-        flex
-        justify-between
-        items-center
-      "
+      class="absolute bottom-0 right-0 container--default flex justify-between items-center"
     >
       <div
         class="font-mono flex items-center space-x-2 mx-4"

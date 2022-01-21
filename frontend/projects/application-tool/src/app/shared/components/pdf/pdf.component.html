@@ -25,15 +25,7 @@
       [ngClass]="error ? 'opacity-0' : 'opacity-1'"
     ></div>
     <div
-      class="
-        absolute
-        bottom-0
-        right-0
-        p-1
-        text-base
-        font-mono
-        transition-opacity
-      "
+      class="absolute bottom-0 right-0 p-1 text-xs sm:text-sm md:text-base font-mono transition-opacity"
       [ngClass]="error ? 'opacity-1' : 'opacity-0'"
     >
       404
@@ -41,33 +33,13 @@
   </div>
 </ng-template>
 <div
-  class="
-    absolute
-    transition-opacity
-    duration-300
-    delay-150
-    lg:opacity-0
-    lg:group-hover:opacity-100
-    top-0
-    right-0
-    m-2
-  "
+  class="absolute transition-opacity duration-300 delay-150 lg:opacity-0 lg:group-hover:opacity-100 top-0 right-0 m-2"
 >
   <a
     [href]="downloadURL | async"
     download="true"
     target="_blank"
-    class="
-      w-6
-      h-6
-      leading-6
-      text-center
-      bg-gray-100
-      dark:bg-gray-900 dark:bg-opacity-100
-      hover:bg-gray-200
-      dark:hover:bg-gray-700
-      rounded-full
-    "
+    class="w-6 h-6 leading-6 text-center bg-gray-100 dark:bg-gray-900 dark:bg-opacity-100 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full"
     mat-button
     type="button"
     title="download"
@@ -76,31 +48,11 @@
   </a>
 </div>
 <div
-  class="
-    absolute
-    bottom-14
-    lg:bottom-0
-    inset-x-0
-    m-2
-    flex
-    justify-center
-    transition-opacity
-    duration-300
-    delay-150
-    lg:opacity-50
-    lg:group-hover:opacity-100
-  "
+  class="absolute bottom-14 lg:bottom-0 inset-x-0 m-2 flex justify-center transition-opacity duration-300 delay-150 lg:opacity-50 lg:group-hover:opacity-100"
   *ngIf="pdf"
 >
   <button
-    class="
-      p-2
-      bg-gray-100
-      dark:bg-gray-900 dark:bg-opacity-100
-      hover:bg-gray-200
-      dark:hover:bg-gray-700
-      rounded-tl-xl rounded-bl-xl
-    "
+    class="p-2 bg-gray-100 dark:bg-gray-900 dark:bg-opacity-100 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-tl-xl rounded-bl-xl"
     (click)="incrementPage(-1)"
     mat-button
     type="button"
@@ -108,28 +60,10 @@
     &larr;
   </button>
   <div
-    class="
-      py-1
-      px-2
-      text-xs text-center
-      leading-none
-      bg-gray-100
-      dark:bg-gray-900 dark:bg-opacity-100
-    "
+    class="py-1 px-2 text-xs text-center leading-none bg-gray-100 dark:bg-gray-900 dark:bg-opacity-100"
   >
     <input
-      class="
-        outline-none
-        border-none
-        focus:outline-none
-        focus:ring-0
-        bg-transparent
-        py-1
-        px-0
-        w-6
-        h-auto
-        text-xs text-right
-      "
+      class="outline-none border-none focus:outline-none focus:ring-0 bg-transparent py-1 px-0 w-6 h-auto text-xs text-right"
       type="number"
       [(ngModel)]="page"
       min="1"
@@ -139,14 +73,7 @@
     <span class="inline-block w-6 text-left">{{ pdf.numPages || 1 }}</span>
   </div>
   <button
-    class="
-      p-2
-      bg-gray-100
-      dark:bg-gray-900 dark:bg-opacity-100
-      hover:bg-gray-200
-      dark:hover:bg-gray-700
-      rounded-tr-xl rounded-br-xl
-    "
+    class="p-2 bg-gray-100 dark:bg-gray-900 dark:bg-opacity-100 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-tr-xl rounded-br-xl"
     (click)="incrementPage(1)"
     mat-button
     type="button"
@@ -154,15 +81,7 @@
     &rarr;
   </button>
   <button
-    class="
-      ml-2
-      p-2
-      bg-gray-100
-      dark:bg-gray-900 dark:bg-opacity-100
-      hover:bg-gray-200
-      dark:hover:bg-gray-700
-      rounded-tl-xl rounded-bl-xl
-    "
+    class="ml-2 p-2 bg-gray-100 dark:bg-gray-900 dark:bg-opacity-100 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-tl-xl rounded-bl-xl"
     (click)="zoomOut()"
     mat-button
     type="button"
@@ -170,14 +89,7 @@
     –
   </button>
   <button
-    class="
-      p-2
-      bg-gray-100
-      dark:bg-gray-900 dark:bg-opacity-100
-      hover:bg-gray-200
-      dark:hover:bg-gray-700
-      rounded-tr-xl rounded-br-xl
-    "
+    class="p-2 bg-gray-100 dark:bg-gray-900 dark:bg-opacity-100 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-tr-xl rounded-br-xl"
     (click)="zoomIn()"
     mat-button
     type="button"

@@ -1,6 +1,6 @@
 <form
   [formGroup]="form"
-  class="relative font-mono text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-1 lg:gap-y-2"
+  class="relative font-mono text-xs sm:text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-1 lg:gap-y-2"
 >
   <label
     for="title-{{ specification?.id }}"
@@ -12,7 +12,7 @@
       formControlName="title"
       name="title"
       type="text"
-      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
       [ngClass]="{
         'ring-1 ring-red-500': title?.invalid
       }"
@@ -37,7 +37,7 @@
     formControlName="year"
     name="year"
     type="text"
-    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     [ngClass]="{
       'ring-1 ring-red-500': year?.invalid
     }"
@@ -53,7 +53,7 @@
     name="number_of_editions"
     type="number"
     min="0"
-    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
   />
   <!-- @TODO Add Medium Tag List -->
 
@@ -82,7 +82,7 @@
       name="dimensions_width"
       type="number"
       min="0"
-      class="flex-1 w-4 appearance-none rounded-none p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      class="flex-1 w-4 appearance-none rounded-none p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     />
     <label for="dimensions_height-{{ specification?.id }}"
       >&times;&nbsp;{{
@@ -95,7 +95,7 @@
       name="dimensions_height"
       type="number"
       min="0"
-      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     />
     <label for="dimensions_depth-{{ specification?.id }}"
       >&times;&nbsp;{{
@@ -108,7 +108,7 @@
       name="dimensions_depth"
       type="number"
       min="0"
-      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     />
     <span>cm/px</span>
   </div>
@@ -121,7 +121,7 @@
     formControlName="material"
     name="material"
     type="text"
-    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
   />
   <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
     <div
@@ -136,7 +136,7 @@
       formControlName="description"
       name="description"
       rows="6"
-      class="font-sans text-base rounded-none block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+      class="font-sans text-xs sm:text-sm md:text-base rounded-none block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
       [ngClass]="{
         'ring-1 ring-red-500': description?.invalid
       }"

@@ -1,4 +1,4 @@
-<div class="container--default max-w-3xl mx-auto text-sm">
+<div class="container--default max-w-3xl mx-auto text-xs sm:text-sm">
   <ng-container *ngIf="allUsers$ | async as allUsers; else loadingUsers">
     <ng-container
       *ngFor="let userGroups of allUsers | groupBy: 'role'; trackBy: trackByKey"
@@ -72,7 +72,7 @@
     (ngSubmit)="createUser()"
   >
     <input
-      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-50 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-50 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
       id="new-user-displayName"
       formControlName="displayName"
       name="displayName"
@@ -84,7 +84,7 @@
       [placeholder]="'defaults.name-single' | translate"
     />
     <input
-      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-50 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-sm"
+      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-50 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
       id="new-user-email"
       formControlName="email"
       name="email"
