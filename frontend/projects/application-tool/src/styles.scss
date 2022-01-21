@@ -47,8 +47,6 @@
     scroll-behavior: smooth;
   }
   body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     @apply opacity-100 transition-all;
     &.fade-out {
       @apply opacity-0;
