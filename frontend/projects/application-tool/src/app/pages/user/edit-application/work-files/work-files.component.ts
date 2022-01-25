@@ -66,7 +66,6 @@ export class WorkFilesComponent implements OnInit {
   }
 
   onDrop(files: FileList) {
-    
     for (let i = 0; i < files.length; i++) {
       const file = files.item(i);
       if (file) {
@@ -80,14 +79,15 @@ export class WorkFilesComponent implements OnInit {
       this.onDrop(fileInput.target.files);
     }
   }
-  async finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
-    
-    await this.userService.addWorkFile(
-      asset,
-      this.files.length,
-      this.work_id,
-      this.application_id
-    );
+  async finishTask(filesToUpload: File[], index: number, asset?: FileFragment) {
+    if (asset) {
+      await this.userService.addWorkFile(
+        asset,
+        this.files.length,
+        this.work_id,
+        this.application_id
+      );
+    }
 
     filesToUpload.splice(index, 1);
     this.pendingUploads.next(filesToUpload.length > 0);
@@ -190,9 +190,10 @@ export class WorkFilesComponent implements OnInit {
               });
               // Update objects
               data.files = data.files.map((file: any) => {
-                let updatedFile = updatedFiles?.insert_work_files?.returning.find(
-                  (updatedFile) => updatedFile.id === file.id
-                );
+                let updatedFile =
+                  updatedFiles?.insert_work_files?.returning.find(
+                    (updatedFile) => updatedFile.id === file.id
+                  );
                 if (updatedFile) {
                   return { ...file, ...updatedFile };
                 }

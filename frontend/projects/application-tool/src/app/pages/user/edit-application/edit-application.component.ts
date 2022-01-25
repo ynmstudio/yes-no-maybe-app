@@ -164,7 +164,6 @@ export class EditApplicationComponent implements OnInit {
         }
       )
       .valueChanges.subscribe((resp) => {
-        
         const application = resp.data.applications_by_pk as any;
 
         for (const key in application) {
@@ -294,12 +293,12 @@ export class EditApplicationComponent implements OnInit {
               fragment: WorkFragmentDoc,
               fragmentName: 'Work',
             });
-            
+
             data = {
               ...data,
               specifications: [...data.specifications, newSpecification],
             };
-            
+
             // Write our data back to the cache.
             store.writeFragment({
               id: `works:${work_id}`,
@@ -359,10 +358,9 @@ export class EditApplicationComponent implements OnInit {
   async finishPaymentTask(
     paymentFileToUpload: File[],
     index: number,
-    asset: FileFragment
+    asset?: FileFragment
   ) {
-    
-    await this.userService.addPayment(asset, this.application_id);
+    if (asset) await this.userService.addPayment(asset, this.application_id);
 
     paymentFileToUpload.splice(index, 1);
   }
@@ -431,10 +429,11 @@ export class EditApplicationComponent implements OnInit {
               // Update objects
               data.specifications = data.specifications.map(
                 (specification: any) => {
-                  let updatedSpecification = updatedSpecifications?.insert_work_specifications?.returning.find(
-                    (updatedSpecification) =>
-                      updatedSpecification.id === specification.id
-                  );
+                  let updatedSpecification =
+                    updatedSpecifications?.insert_work_specifications?.returning.find(
+                      (updatedSpecification) =>
+                        updatedSpecification.id === specification.id
+                    );
                   if (updatedSpecification) {
                     return { ...specification, ...updatedSpecification };
                   }

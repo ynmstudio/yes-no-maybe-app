@@ -50,14 +50,15 @@ export class WorkPortfolioComponent implements OnInit {
       this.onDrop(fileInput.target.files);
     }
   }
-  async finishTask(filesToUpload: File[], index: number, asset: FileFragment) {
-    
-    await this.userService.addWorkFile(
-      asset,
-      this.files.length,
-      this.work_id,
-      this.application_id
-    );
+  async finishTask(filesToUpload: File[], index: number, asset?: FileFragment) {
+    if (asset) {
+      await this.userService.addWorkFile(
+        asset,
+        this.files.length,
+        this.work_id,
+        this.application_id
+      );
+    }
 
     filesToUpload.splice(index, 1);
     this.pendingUploads.next(filesToUpload.length > 0);
