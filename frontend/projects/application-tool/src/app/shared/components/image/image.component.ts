@@ -30,7 +30,7 @@ export class ImageComponent implements OnInit, OnChanges {
   downloadURL!: Promise<string>;
   // FOR VIDEO
   mp4DownloadURL!: Promise<string>;
-  webmDownloadURL!: Promise<string>;
+  // webmDownloadURL!: Promise<string>;
   thumbnailURL!: Promise<string>;
   thumbnailGifURL!: Promise<string>;
 
@@ -82,9 +82,9 @@ export class ImageComponent implements OnInit, OnChanges {
       this.mp4DownloadURL = this.storageService
         .getUrl(this.key + '_converted.mp4', 'video/mp4')
         .catch((_) => _);
-      this.webmDownloadURL = this.storageService
-        .getUrl(this.key + '_converted.webm', 'video/webm')
-        .catch((_) => _);
+      // this.webmDownloadURL = this.storageService
+      //   .getUrl(this.key + '_converted.webm', 'video/webm')
+      //   .catch((_) => _);
       this.thumbnailURL = this.storageService
         .getUrl(
           this.key,

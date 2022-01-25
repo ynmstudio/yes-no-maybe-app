@@ -29,11 +29,11 @@
         [attr.type]="mimetype"
       >
         Your browser does not support the video tag.
-        <source
+        <!-- <source
           *ngIf="webmDownloadURL | async as webmUrl"
           [src]="webmUrl"
           type="video/webm"
-        />
+        /> -->
         <source
           *ngIf="mp4DownloadURL | async as mp4Url"
           [src]="mp4Url"
@@ -106,11 +106,11 @@
         #media
         preload="auto"
       >
-        <source
+        <!-- <source
           *ngIf="webmDownloadURL | async as webmUrl"
           [src]="webmUrl"
           type="video/webm"
-        />
+        /> -->
         <source
           *ngIf="mp4DownloadURL | async as mp4Url"
           [src]="mp4Url"
