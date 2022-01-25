@@ -99,21 +99,25 @@ export class CustomDatePickerAdapter extends NativeDateAdapter {
   ],
   providers: [
     // check firebase.json for matching ports
-    {
-      provide: BUCKET,
-      useValue: environment.production ? undefined : 'berlin-art-prize-dev',
-    },
+    // {
+    //   provide: BUCKET,
+    //   useValue: environment.production ? undefined : 'berlin-art-prize-dev',
+    // },
     // {
     //   provide: AUTH_EMULATOR,
-    //   useValue: environment.production ? undefined : ['localhost', 9099],
+    //   useValue: environment.production ? undefined : ['http://localhost:9099'],
     // },
     // {
     //   provide: DATABASE_EMULATOR,
-    //   useValue: environment.production ? undefined : ['localhost', 9000],
+    //   useValue: environment.production ? undefined : ['http://localhost:9000'],
     // },
     // {
     //   provide: FUNCTIONS_EMULATOR,
-    //   useValue: environment.production ? undefined : ['localhost', 5001],
+    //   useValue: environment.production ? undefined : ['http://localhost:5001'],
+    // },
+    // {
+    //   provide: STORAGE_EMULATOR,
+    //   useValue: environment.production ? undefined : ['localhost', 9199],
     // },
     { provide: REGION, useValue: 'europe-west3' },
     { provide: DateAdapter, useClass: CustomDatePickerAdapter },

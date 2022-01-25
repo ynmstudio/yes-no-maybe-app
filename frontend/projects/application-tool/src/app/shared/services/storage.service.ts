@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { environment } from 'projects/application-tool/src/environments/environment';
-import { Observable, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -10,12 +9,7 @@ import { catchError } from 'rxjs/operators';
 export class StorageService {
   savedDownloadUrls: Map<string, string | null> = new Map();
 
-  constructor(private afStorage: AngularFireStorage) {
-    if (!environment.production) {
-      this.afStorage.storage.useEmulator('localhost', 9199);
-      console.log('afStorage', this.afStorage.storage.app);
-    }
-  }
+  constructor(private afStorage: AngularFireStorage) {}
 
   async getUrl(key: string, mimetype: string, size: string = '') {
     if (!key) return;
