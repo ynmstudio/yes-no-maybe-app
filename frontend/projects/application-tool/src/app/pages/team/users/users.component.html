@@ -26,7 +26,12 @@
           <option value="jury">Jury</option>
           <option value="team">Team</option>
         </select>
-
+        <button
+          *ngIf="user.disabled"
+          (click)="deleteUser(user.uid)"
+          class="text-xxs font-mono underline text-red-700"
+          [innerText]="'actions.delete' | translate | uppercase"
+        ></button>
         <button
           (click)="toggleUserStatus(user.uid, !user.disabled)"
           class="text-xxs font-mono underline"
@@ -35,12 +40,6 @@
               | translate
               | uppercase
           "
-        ></button>
-        <button
-          *ngIf="user.disabled"
-          (click)="deleteUser(user.uid)"
-          class="text-xxs font-mono underline text-red-700"
-          [innerText]="'actions.delete' | translate | uppercase"
         ></button>
       </div>
     </ng-container>
