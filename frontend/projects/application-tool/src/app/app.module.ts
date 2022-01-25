@@ -6,9 +6,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 import { environment } from '../environments/environment';
 
 import {
@@ -20,18 +20,19 @@ import {
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { SharedModule } from './shared/shared.module';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 // @TODO Delete on production
 // @BODY check https://github.com/angular/angularfire/issues/2656
 import 'firebase/auth';
 
-import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/auth';
-import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/database';
+import { USE_EMULATOR as AUTH_EMULATOR } from '@angular/fire/compat/auth';
+import { USE_EMULATOR as DATABASE_EMULATOR } from '@angular/fire/compat/database';
+import { USE_EMULATOR as STORAGE_EMULATOR } from '@angular/fire/compat/storage';
 import {
   AngularFireFunctionsModule,
   REGION,
   USE_EMULATOR as FUNCTIONS_EMULATOR,
-} from '@angular/fire/functions';
+} from '@angular/fire/compat/functions';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 
 import { registerLocaleData } from '@angular/common';
@@ -41,7 +42,8 @@ registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'de');
 
 export class ToolMissingTranslationHandler
-  implements MissingTranslationHandler {
+  implements MissingTranslationHandler
+{
   handle(params: MissingTranslationHandlerParams) {
     return `<${params.key}>`;
   }

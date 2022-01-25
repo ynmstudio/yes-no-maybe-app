@@ -14,11 +14,9 @@ import { OperationDefinitionNode } from 'graphql';
 import { ConnectionService } from 'ng-connection-service';
 
 import { environment } from '../environments/environment';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { take } from 'rxjs/operators';
-import { AppService } from './shared/services/app.service';
 import { AlertService } from './shared/components/alert/alert.service';
-import { getParseErrors } from '@angular/compiler';
 
 // This should be in sync with update information inside ngsw-config.json file
 export const SCHEMA_VERSION = '0.0.1'; // Must be a string.

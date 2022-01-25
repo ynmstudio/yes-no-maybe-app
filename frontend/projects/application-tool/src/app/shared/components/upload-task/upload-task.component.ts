@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFireStorage,
   AngularFireUploadTask,
-} from '@angular/fire/storage';
+} from '@angular/fire/compat/storage';
 import { FileFragment, GetEditionGQL } from 'generated/types.graphql-gen';
 
 import { Observable } from 'rxjs';
@@ -24,7 +24,9 @@ export class UploadTaskComponent implements OnInit {
   @Input() pdf: boolean = false;
 
   @Output('uploaded')
-  asset: EventEmitter<FileFragment> = new EventEmitter<FileFragment>();
+  asset: EventEmitter<FileFragment | undefined> = new EventEmitter<
+    FileFragment | undefined
+  >();
 
   task!: AngularFireUploadTask;
 
@@ -47,8 +49,6 @@ export class UploadTaskComponent implements OnInit {
   }
 
   async startUpload() {
-    
-
     if (!this.file) alert('Keine Datei gefunden');
 
     // Client-side validation example
@@ -61,7 +61,7 @@ export class UploadTaskComponent implements OnInit {
           this.file.type !== 'video/quicktime' &&
           this.file.type.split('/')[0] !== 'audio'
     ) {
-      this.asset.next();
+      this.asset.next(undefined);
       alert(
         `Dieser Dateityp wird nicht unterstützt. Bitte nur ${
           this.pdf
@@ -76,13 +76,10 @@ export class UploadTaskComponent implements OnInit {
 
     const uuid = uuidv4();
 
-
     // The storage path
     const path =
       (this.public || !user?.uid ? 'public' : `users/${user?.uid}`) +
       `/${this.path_prefix}/${uuid}`;
-
-
 
     // Reference to storage bucket
     const ref = this.storage.ref(path);
@@ -121,6 +118,6 @@ export class UploadTaskComponent implements OnInit {
   }
   cancel() {
     this.task.cancel();
-    this.asset.next();
+    this.asset.next(undefined);
   }
 }

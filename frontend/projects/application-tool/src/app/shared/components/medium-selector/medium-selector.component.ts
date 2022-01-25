@@ -9,10 +9,7 @@ import {
   GetMediumsOfSpecificationQuery,
   DeleteMediumOfSpecificationGQL,
 } from 'generated/types.graphql-gen';
-import { responsePathAsArray } from 'graphql';
-import { TagModel } from 'ngx-chips/core/accessor';
-import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-medium-selector',

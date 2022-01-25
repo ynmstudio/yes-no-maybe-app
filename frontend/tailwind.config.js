@@ -1,8 +1,6 @@
 module.exports = {
   prefix: "",
-  purge: {
-    content: ["./projects/application-tool/src/**/*.{html,ts}"],
-  },
+  content: ["./projects/application-tool/src/**/*.{html,ts}"],
   darkMode: "class", // or 'media' or 'false'
   theme: {
     fontFamily: {

@@ -196,7 +196,7 @@ export class HasuraService {
     );
     return this.showCloseRoundModalService.open(CloseRoundComponent, {
       round_id,
-      applications: applications.data.applications,
+      applications: applications?.data.applications,
       level,
     });
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { UserService } from '../user.service';
 import { SubscriptionResult } from 'apollo-angular';
 import {
@@ -90,9 +90,9 @@ export class DashboardComponent implements OnInit {
       )
       .toPromise();
 
-    if (newApplication.data?.insert_applications_one?.id) {
+    if (newApplication?.data?.insert_applications_one?.id) {
       this.router.navigate(
-        ['u', 'applications', newApplication.data?.insert_applications_one?.id],
+        ['u', 'applications', newApplication.data.insert_applications_one?.id],
         {
           state: { new: true },
         }

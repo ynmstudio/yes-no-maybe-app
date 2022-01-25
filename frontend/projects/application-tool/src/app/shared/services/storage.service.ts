@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { environment } from 'projects/application-tool/src/environments/environment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -31,7 +31,7 @@ export class StorageService {
       return this.savedDownloadUrls.get(requestKey);
     }
     let downloadURL = await this.getDownloadURL(requestKey, key).toPromise();
-    this.savedDownloadUrls.set(requestKey, downloadURL);
+    if (downloadURL) this.savedDownloadUrls.set(requestKey, downloadURL);
     return downloadURL;
   }
 

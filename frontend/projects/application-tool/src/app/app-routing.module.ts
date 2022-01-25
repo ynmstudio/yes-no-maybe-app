@@ -7,10 +7,10 @@ import {
   hasCustomClaim,
   redirectLoggedInTo,
   redirectUnauthorizedTo,
-} from '@angular/fire/auth-guard';
+} from '@angular/fire/compat/auth-guard';
 import { pipe } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-import { customClaims } from '@angular/fire/auth-guard';
+import { customClaims } from '@angular/fire/compat/auth-guard';
 
 // the roles are based on hasura rights management. we are using following rules: 'user', 'jury' and 'team'
 // a role called 'admin' should not be used as hasura does not allow permission checks on this role.

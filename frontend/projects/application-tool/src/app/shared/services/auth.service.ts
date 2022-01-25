@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireAuth } from '@angular/fire/auth';
+import { Inject, Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { AppService } from './app.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -166,7 +166,7 @@ export class AuthService {
       if (idTokenResult) {
         this.redirectToDashboard(idTokenResult.claims['role']);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.alertService.error(error);
     }
   }
@@ -225,7 +225,7 @@ export class AuthService {
       if (!user) return;
       user.sendEmailVerification();
       this.emailVerified.next(true);
-    } catch (error) {
+    } catch (error: any) {
       this.alertService.error(error);
     }
   }

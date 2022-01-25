@@ -59,7 +59,7 @@ export class MultilangService {
         this.availableLanguages.find(
           (lang) =>
             lang ===
-            this.translate.getBrowserLang().substring(0, 2).toLowerCase()
+            this.translate.getBrowserLang()?.substring(0, 2).toLowerCase()
         ) || language;
     }
     this.updateLanguage(language);
