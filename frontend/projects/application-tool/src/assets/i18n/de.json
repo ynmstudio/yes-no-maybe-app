@@ -11,7 +11,7 @@
 	"_configuration.links.terms-and-conditions.label": "AGB",
 	"_configuration.links.terms-and-conditions.url": "https://www.berlinartprize.com/",
 	"_configuration.payment.amount": "10 EUR",
-	"_configuration.payment.bank-details": "PayPal: paypal@berlinartprize.com\\n\nBerlin Art Prize e.V.\\n\nBank: EthikBank\\n\nBLZ: 83094495\\n\nKontonummer: 3237516\\n\nBIC: GENO DE F1 ETK\\n\nIBAN: DE84830944950003237516",
+	"_configuration.payment.bank-details": "PayPal: paypal@berlinartprize.com\nBerlin Art Prize e.V.\nBank: EthikBank\nBLZ: 83094495\nKontonummer: 3237516\nBIC: GENO DE F1 ETK\nIBAN: DE84830944950003237516",
 	"_configuration.payment.description": "Um die Einreichung abzuschließen, benötigen wir einen Nachweis über die Bezahlung der Teilnahmegebühr. Bitte lade in dem Feld rechts ein Screenshot/PDF der bereits getätigten Überweisung hoch.",
 	"_configuration.title": "Berlin Art Prize",
 	"actions.activate": "Aktivieren",
