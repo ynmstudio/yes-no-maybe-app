@@ -232,8 +232,8 @@
               <span
                 class="inline-block"
                 *ngIf="(currentSpecificationIndex | async) == index"
+                [innerHtml]="'defaults.specification-single' | translate"
               >
-                Arbeitsangabe
               </span>
               <span *ngIf="(work?.specifications?.length || 0) > 1">
                 {{ index + 1 }}
