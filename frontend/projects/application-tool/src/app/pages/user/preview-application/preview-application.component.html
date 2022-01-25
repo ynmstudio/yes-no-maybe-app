@@ -294,6 +294,11 @@
       </ol>
     </div>
     <div
+      *ngIf="showOverview"
+      (click)="toggleOverview()"
+      class="absolute inset-0"
+    ></div>
+    <div
       class="absolute w-64 lg:w-80 xl:w-96 inset-y-0 left-0 mx-4 sm:mx-6 lg:mx-8 mb-0 overflow-hidden bg-gray-200 dark:bg-gray-900 shadow-2xl transition-all transform-gpu origin-right"
       [ngClass]="[
         showOverview
