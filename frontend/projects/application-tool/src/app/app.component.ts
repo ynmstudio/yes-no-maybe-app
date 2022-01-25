@@ -1,3 +1,10 @@
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, Renderer2 } from '@angular/core';
 import { Event, NavigationEnd, NavigationStart, Router } from '@angular/router';
@@ -8,6 +15,21 @@ import { MultilangService } from './shared/services/multilang.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [
+    trigger('flyInOut', [
+      state('in', style({ transform: 'translate3d(0, 0, 0)', opacity: 1 })),
+      transition('void => *', [
+        style({ transform: 'translate3d(0, 100%, 0)', opacity: 0 }),
+        animate(500),
+      ]),
+      transition('* => void', [
+        animate(
+          250,
+          style({ transform: 'translate3d(0, 50%, 0)', opacity: 0 })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class AppComponent {
   @HostListener('window:beforeunload', ['$event'])

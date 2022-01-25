@@ -29,7 +29,8 @@
 </header>
 <div
   *ngIf="!((authService.emailVerified | async) || hideSendVerificationBanner)"
-  class="verify-email fixed bottom-0 inset-x-0 px-4 py-3 z-20 bg-blue-600 text-white leading-none"
+  [@flyInOut]="'in'"
+  class="verify-email fixed bottom-0 inset-x-0 m-2 sm:m-4 px-4 py-3 z-20 bg-blue-600 text-white leading-none"
 >
   {{ "email.please-verify-your-email" | translate }}
   <button
