@@ -100,11 +100,11 @@ export class AuthService {
       await user?.updateProfile({
         displayName,
       });
-      await this.hasuraService.updateUsername(displayName);
 
       const idTokenResult = await result.user?.getIdTokenResult(true);
 
       if (idTokenResult && idTokenResult?.claims['role']) {
+        await this.hasuraService.updateUsername(displayName);
         this.redirectToDashboard(idTokenResult?.claims['role']);
       } else {
         // Check if refresh is required.
@@ -120,6 +120,8 @@ export class AuthService {
             const idTokenResult = await user?.getIdTokenResult(true);
 
             if (!idTokenResult?.claims['role']) return;
+
+            await this.hasuraService.updateUsername(displayName);
 
             subscription.unsubscribe();
             this.redirectToDashboard(idTokenResult?.claims['role']);
