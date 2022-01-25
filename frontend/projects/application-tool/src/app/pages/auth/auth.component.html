@@ -176,10 +176,10 @@
             [innerHtml]="'snippets.auth.password-not-matching' | translate"
           ></p>
           <p
-            class="mt-4"
+            class="mt-4 transition-colors"
             id="required-fields-error"
             [ngClass]="[
-              form.touched && form.invalid ? 'text-red-600' : 'text-gray-500'
+              form.touched && form.invalid ? 'text-gray-500' : 'text-gray-400'
             ]"
             [innerHtml]="'snippets.auth.required-fields' | translate"
           ></p>
