@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { environment } from 'projects/application-tool/src/environments/environment';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -9,7 +10,12 @@ import { catchError } from 'rxjs/operators';
 export class StorageService {
   savedDownloadUrls: Map<string, string | null> = new Map();
 
-  constructor(private storage: AngularFireStorage) {}
+  constructor(private afStorage: AngularFireStorage) {
+    if (!environment.production) {
+      this.afStorage.storage.useEmulator('localhost', 9199);
+      console.log('afStorage', this.afStorage.storage.app);
+    }
+  }
 
   async getUrl(key: string, mimetype: string, size: string = '') {
     if (!key) return;
@@ -30,14 +36,14 @@ export class StorageService {
   }
 
   public getMetadata(key: string) {
-    return this.storage.ref(key).getMetadata();
+    return this.afStorage.ref(key).getMetadata();
   }
 
   private getDownloadURL(
     key: string,
     original_key?: string
   ): Observable<string | null> {
-    return this.storage
+    return this.afStorage
       .ref(key)
       .getDownloadURL()
       .pipe(
