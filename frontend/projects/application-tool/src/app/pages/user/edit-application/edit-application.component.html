@@ -221,7 +221,7 @@
           <ng-template #noPortfolioWork>
             <button
               (click)="addWork(true)"
-              class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+              class="md:whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-4 md:px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
               [innerHtml]="
                 ((singleWorks$ | async)?.data?.works?.length!
                   ? 'application-form.buttons.add-additional-pdf-portfolio'
@@ -354,7 +354,7 @@
         <ng-template #noSingleWork>
           <button
             (click)="addWork()"
-            class="whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+            class="md:whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-4 md:px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
             [innerHtml]="
               ((portfolioWorks$ | async)?.data?.works?.length!
                 ? 'application-form.buttons.add-additional-works-separately'
