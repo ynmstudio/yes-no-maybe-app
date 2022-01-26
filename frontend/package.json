@@ -65,6 +65,7 @@
     "screenfull": "^6.0.1",
     "subscriptions-transport-ws": "^0.9.18",
     "tailwindcss-filters": "^3.0.0",
+    "tailwindcss-safe-area": "^0.2.2",
     "tslib": "^2.2.0",
     "uuid": "^8.3.2",
     "zone.js": "~0.11.4"
