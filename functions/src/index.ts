@@ -486,7 +486,7 @@ exports.convertVideos = functions
       // const metageneration = object.metageneration; // Number of times metadata has been generated. New objects have a value of 1.
       try {
         const { data } = await axios.post(
-          "https://api.coconut.co/v2/jobs",
+          "https://api-eu-west-1.coconut.co/v2/jobs",
           {
             input: {
               url: source,
@@ -501,7 +501,6 @@ exports.convertVideos = functions
               },
             },
             notification: {
-              type: "http",
               url: webhook,
             },
             outputs: {
