@@ -1,12 +1,12 @@
 <form
   [formGroup]="form"
-  class="relative font-mono text-xs sm:text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-1 lg:gap-y-2"
+  class="relative font-mono text-xs sm:text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-3 lg:gap-y-2"
 >
   <label
     for="title-{{ specification?.id }}"
     [innerHtml]="('defaults.title-single' | translate | titlecase) + ':'"
   ></label>
-  <div class="relative col-span-3">
+  <div class="relative col-span-4 md:col-span-3">
     <input
       id="title-{{ specification?.id }}"
       formControlName="title"
@@ -27,6 +27,7 @@
   </div>
 
   <label
+    class="col-span-2 md:col-auto"
     for="year-{{ specification?.id }}"
     [innerHtml]="
       ('defaults.year-of-creating-single' | translate | titlecase) + ':'
@@ -37,12 +38,14 @@
     formControlName="year"
     name="year"
     type="text"
-    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    class="col-span-2 md:col-auto appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     [ngClass]="{
       'ring-1 ring-red-500': year?.invalid
     }"
   />
-  <label for="number_of_editions-{{ specification?.id }}" class="text-right"
+  <label
+    for="number_of_editions-{{ specification?.id }}"
+    class="col-span-2 md:col-auto md:text-right"
     >{{ "defaults.edition-multi" | translate | titlecase }} ({{
       "defaults.optional" | translate
     }}):</label
@@ -53,7 +56,7 @@
     name="number_of_editions"
     type="number"
     min="0"
-    class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    class="col-span-2 md:col-auto appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
   />
   <!-- @TODO Add Medium Tag List -->
 
@@ -62,7 +65,7 @@
     [innerHtml]="('defaults.medium-multi' | translate | titlecase) + ':'"
   ></label>
   <app-medium-selector
-    class="col-span-3"
+    class="col-span-4 md:col-span-3"
     [specification]="specification"
     [application_id]="application_id"
     [work_id]="work_id"
@@ -71,7 +74,7 @@
   <label
     [innerHtml]="('defaults.dimensions' | translate | titlecase) + ':'"
   ></label>
-  <div class="col-span-3 flex items-center space-x-2">
+  <div class="col-span-4 md:col-span-3 flex items-center space-x-2">
     <label
       for="dimensions_width-{{ specification?.id }}"
       [innerHtml]="'defaults.dimensions-width' | translate | uppercase"
@@ -121,7 +124,7 @@
     formControlName="material"
     name="material"
     type="text"
-    class="col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    class="col-span-4 md:col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
   />
   <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
     <div
