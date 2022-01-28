@@ -200,24 +200,6 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {
-      opacity: ["disabled"],
-      backgroundColor: ["even"],
-      backgroundOpacity: ["even"],
-      ringColor: ["hover"],
-      ringWidth: ["hover"],
-      backgroundColor: ["checked"],
-      borderColor: ["checked"],
-      translate: ["group-hover"],
-      rotate: ["group-hover"],
-      scale: ["group-hover"],
-      animation: ["group-hover"],
-    },
-
-    filter: ["responsive"], // defaults to ['responsive']
-    backdropFilter: ["responsive"], // defaults to ['responsive']
-  },
   corePlugins: {
     float: false,
     prose: false,
