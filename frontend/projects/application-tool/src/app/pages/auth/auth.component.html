@@ -11,7 +11,7 @@
   class="min-h-screen flex items-center justify-center pt-10 pb-16 container--default-x"
 >
   <!-- BAP 2022 -->
-  <div class="absolute inset-0 -z-10 overflow-hidden opacity-10">
+  <div class="absolute inset-0 -z-10 overflow-hidden opacity-5">
     <div
       class="pointer-events-none backface-hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[100vmax] h-[100vmax]"
     >
@@ -384,10 +384,10 @@
   class="container--default lg:fixed bottom-0 inset-x-0 md:flex space-y-4 md:space-y-0 md:space-x-2 justify-end z-0"
 >
   <!-- DO NOT DELETE THIS FUNDED BY BLOCK -->
-  <div>
+  <div class="order-2">
     <p [innerHtml]="'snippets.funded-by' | translate"></p>
   </div>
-  <div class="pb-4 pr-4 md:pb-0 md:pr-10">
+  <div class="pb-4 pr-4 md:pb-0 md:pr-10 order-2">
     <svg
       id="Ebene_1"
       data-name="Ebene 1"
@@ -552,7 +552,7 @@
       />
     </svg>
   </div>
-  <div>
+  <div class="order-2">
     <p [innerHtml]="'_configuration.full-name' | translate"></p>
     <p>
       <a
@@ -560,5 +560,13 @@
         [innerHtml]="'_configuration.email' | translate"
       ></a>
     </p>
+  </div>
+  <div
+    class="flex-auto mt-8 md:mt-0 text-xxs font-mono uppercase self-end text-gray-400 order-1"
+  >
+    Built by
+    <a href="https://ynm.studio" target="_blank" rel="noopener noreferrer"
+      >YNM</a
+    >
   </div>
 </footer>
