@@ -152,6 +152,45 @@
                         <name>links</name>
                         <children>
                             <folder_node>
+                                <name>imprint</name>
+                                <children>
+                                    <concept_node>
+                                        <name>label</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>de-DE</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>en-GB</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>url</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>de-DE</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>en-GB</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                </children>
+                            </folder_node>
+                            <folder_node>
                                 <name>privacy</name>
                                 <children>
                                     <concept_node>
