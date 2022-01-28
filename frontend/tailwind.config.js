@@ -199,7 +199,7 @@ module.exports = {
         },
       },
       keyframes: {
-        rotate: {
+        rotation: {
           "0%": { transform: "rotate(-360deg) rotateY(-90deg)" },
           "100%": { transform: "rotate(360deg) rotateY(90deg)" },
         },
