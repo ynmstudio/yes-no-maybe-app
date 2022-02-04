@@ -144,6 +144,7 @@ Firebase config data will be extracted via REST-API before publishing the projec
 5. Set admin secret key for synchronization from Firebase back to Hasura with `firebase functions:config:set hasura.endpoint="http://localhost:8080/v1/graphql"`
 6. Set admin secret key for synchronization from Firebase back to Hasura with `firebase functions:config:set hasura.admin_secret="myadminsecretkey"`
 7. Set shared secret key so hasura is able to interact with firebase storage with `firebase functions:config:set hasura.shared_secret="somesecuresecretkey"`
+8. To be able to download PDF files and show them inside the application tool, you need to configure CORS for Firebase Storage with `gsutil cors set cors.json gs://<your-cloud-storage-bucket>`. For more information check the [documentation](https://firebase.google.com/docs/storage/web/download-files#cors_configuration).
 
 #### Local Development
 

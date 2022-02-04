@@ -102,10 +102,10 @@
             </div>
           </div>
           <div
-            class="absolute inset-y-0 left-0 order-1 lg:static bg-gray-200 w-64 lg:w-80 border-r border-gray-300"
+            class="absolute inset-y-0 left-0 order-1 lg:static bg-gray-200 w-64 lg:w-80 border-r border-gray-300 overflow-y-auto overscroll-y-contain no-scrollbar"
           >
             <div
-              class="px-4 py-2 whitespace-nowrap overflow-scroll overscroll-contain no-scrollbar transition-colors"
+              class="px-4 py-2 whitespace-nowrap overflow-x-scroll overscroll-x-contain no-scrollbar transition-colors"
               *ngFor="let work of works; let indexW = index; let first = first"
               [ngClass]="[
                 (currentWorkIndex | async) == indexW
