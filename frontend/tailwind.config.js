@@ -11,8 +11,7 @@ const backfaceVisibility = plugin(function ({ addUtilities }) {
 });
 
 module.exports = {
-  mode: "jit",
-  content: ["./projects/application-tool/src/**/*.{html,ts}"],
+  content: ["./projects/application-tool/src/**/*.{html,ts,scss}"],
   darkMode: "class", // or 'media' or 'false'
   theme: {
     fontFamily: {
