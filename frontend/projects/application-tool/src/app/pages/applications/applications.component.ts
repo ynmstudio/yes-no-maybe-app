@@ -1,11 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { TeamService } from './../team/team.service';
 import { Observable } from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-applications',
   templateUrl: './applications.component.html',
   styleUrls: ['./applications.component.scss'],
+  animations: [
+    trigger('inOutAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('500ms ease-in', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class ApplicationsComponent implements OnInit {
   applications$: Observable<any>;
@@ -28,9 +41,12 @@ export class ApplicationsComponent implements OnInit {
   toggleShowEliminated() {
     this.showEliminated = !this.showEliminated;
   }
-  visiblePreview: string = '';
-  showPreview(application_id: string) {
-    this.visiblePreview = application_id;
+  _visiblePreview: string = '';
+  get visiblePreview() {
+    return this._visiblePreview;
+  }
+  set visiblePreview(application_id: string) {
+    this._visiblePreview = application_id;
   }
 
   visibleChat: string = '';
