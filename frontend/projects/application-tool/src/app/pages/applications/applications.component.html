@@ -64,6 +64,7 @@
         >
           <app-image
             class="absolute inset-0 transform-gpu"
+            *ngIf="application.id === visiblePreview"
             [@inOutAnimation]
             [key]="file.key"
             [mimetype]="file.mimetype"
