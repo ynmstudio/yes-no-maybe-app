@@ -1,4 +1,4 @@
-<div class="container--default-x" (mouseleave)="showPreview('')">
+<div class="container--default-x" (mouseleave)="visiblePreview = ''">
   <div
     class="container--default-x py-4 bg-white flex items-center relative z-10 space-x-8"
   >
@@ -56,27 +56,22 @@
       *ngIf="previews"
       class="container--default-margin fixed inset-0 pointer-events-none"
     >
-      <div
-        class="absolute inset-0 transform-gpu transition-opacity duration-500"
-        [ngClass]="[
-          application.id === visiblePreview
-            ? 'opacity-100 ease-out'
-            : 'opacity-0 ease-in'
-        ]"
+      <ng-container
         *ngFor="let application of (applications$ | async)?.data.applications"
       >
         <ng-container
           *ngFor="let file of application?.files; let index = index"
         >
           <app-image
-            class="absolute inset-0"
+            class="absolute inset-0 transform-gpu"
+            [@inOutAnimation]
             [key]="file.key"
             [mimetype]="file.mimetype"
             [width]="1440"
             [height]="1200"
           ></app-image>
         </ng-container>
-      </div>
+      </ng-container>
     </div>
     <div
       class="container--default-x flex items-center py-2 space-x-8 border-b leading-none bg-white border-black border-opacity-30 relative z-10 text-xxs uppercase font-mono"
@@ -228,7 +223,7 @@
       </div>
 
       <a
-        (mouseenter)="showPreview(application.id)"
+        (mouseenter)="visiblePreview = application.id"
         class="absolute inset-0 z-0"
         [routerLink]="[application.id]"
         routerLinkActive="router-link-active"
