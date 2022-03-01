@@ -41,6 +41,10 @@ export class ApplicationsComponent implements OnInit {
   toggleShowEliminated() {
     this.showEliminated = !this.showEliminated;
   }
+  showUnedited: boolean = false;
+  toggleShowUnedited() {
+    this.showUnedited = !this.showUnedited;
+  }
   _visiblePreview: string = '';
   get visiblePreview() {
     return this._visiblePreview;

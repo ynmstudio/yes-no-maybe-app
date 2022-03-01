@@ -30,6 +30,7 @@ import { FooterModule } from './components/footer/footer.module';
 import { LocalizedDateModule } from './pipes/localized-date/localized-date.module';
 import { FirebaseService } from './services/firebase.service';
 import { ShowEliminatedModule } from './pipes/show-eliminated/show-eliminated.module';
+import { HideByStatusModule } from './pipes/hide-by-status/hide-by-status.module';
 
 const MODULES = [
   // Do NOT include UniversalModule, HttpModule, or JsonpModule here
@@ -50,6 +51,7 @@ const MODULES = [
   GetScorePipeModule,
   LastPipeModule,
   LocalizedDateModule,
+  HideByStatusModule,
   ShowEliminatedModule,
   TimePassedPipeModule,
   SortByCountModule,

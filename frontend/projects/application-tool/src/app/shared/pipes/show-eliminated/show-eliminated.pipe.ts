@@ -1,8 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {
-  AdminApplicationFragment,
-  ApplicationFragment,
-} from 'generated/types.graphql-gen';
 
 @Pipe({
   name: 'showEliminated',
