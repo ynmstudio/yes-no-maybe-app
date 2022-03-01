@@ -44,6 +44,20 @@
         [innerHtml]="'snippets.show-eliminated' | translate | uppercase"
       ></label>
     </div>
+    <div class="flex items-center">
+      <input
+        id="toggle_hide_unedited"
+        type="checkbox"
+        [checked]="showUnedited"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleShowUnedited()"
+      />
+      <label
+        for="toggle_hide_unedited"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'snippets.show-unedited' | translate | uppercase"
+      ></label>
+    </div>
   </div>
   <ng-container
     *ngIf="
@@ -91,6 +105,7 @@
       *ngFor="
         let application of (applications$ | async)?.data.applications
           | showEliminated: showEliminated
+          | hideByStatus: showUnedited:'pristine'
       "
       class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-500 border-opacity-30 even:bg-gray-500 even:bg-opacity-5 hover:bg-gray-50 hover:bg-opacity-100 relative"
       [ngClass]="[
