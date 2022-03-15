@@ -91,7 +91,11 @@ export class CustomDatePickerAdapter extends NativeDateAdapter {
       loader: {
         provide: TranslateLoader,
         useFactory: (http: HttpClient) => {
-          return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+          return new TranslateHttpLoader(
+            http,
+            './assets/i18n/',
+            '.json?v=' + environment.version
+          );
         },
         deps: [HttpClient],
       },
