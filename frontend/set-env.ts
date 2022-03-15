@@ -8,7 +8,7 @@ const targetPath =
 const colors = require('colors');
 require('dotenv').config();
 const envConfigFile = `export const environment = {
-  version: ${process.env.npm_package_version},
+  version: '${process.env.npm_package_version}',
   production: ${process.env.PRODUCTION},
   hasura: {
     graphql: '${process.env.HASURA_GRAPHQL_URL}',
