@@ -12,12 +12,17 @@
         <p
           class="text-sm text-gray-800"
           [innerHTML]="
-            'modals.close-round.intro' | translate: { round: data.level + 1 }
+            'modals.close-round.intro'
+              | translate
+                : {
+                    round: data.level + 1,
+                    applications: data.applications.length
+                  }
           "
         ></p>
         <div
           *ngFor="let application of data.applications; let index = index"
-          class="flex justify-between items-center p-4 bg-gray-100"
+          class="flex justify-between items-center p-4 max-h-48 overflow-auto bg-gray-100"
         >
           <span>{{ application.id + "" | slice: 0:5 | uppercase }}</span>
           <a
