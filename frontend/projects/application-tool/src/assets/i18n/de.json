@@ -143,7 +143,7 @@
 	"hints.other-edition-will-be-deactivated": "(!) Derzeit ist Edition <q>{{name}}</q> aktiv und wird durch das Aktivieren dieser Edition deaktiviert.",
 	"hints.test-your-application": "Bitte achte auf die Reihenfolge der hochgeladenen Bilder und Videos sowie weiteren möglichen Dateien. In dieser Reihenfolge wird sich auch die Jury die Arbeiten später anschauen. Du kannst die Ansicht der Jury über den oberen Button testen.",
 	"modals.close-round.headline": "Runde {{round}} schließen",
-	"modals.close-round.intro": "Soll diese Runde wirklich geschlossen werden? Folgende Einreichungen werden ausgeschlossen:",
+	"modals.close-round.intro": "Soll diese Runde wirklich geschlossen werden? Folgende {{applications}} Einreichung(en) werden ausgeschlossen:",
 	"modals.confirm-login.headline": "Erneut einloggen",
 	"modals.confirm-login.intro": "Zum Bestätigen der Änderungen bitte das bisherige Passwort für {{ user }} erneut eingeben:",
 	"modals.confirm-winner.headline": "Einreichung wählen",
