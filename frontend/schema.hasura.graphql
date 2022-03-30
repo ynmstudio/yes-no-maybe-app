@@ -1,5 +1,5 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Wed Mar 30 2022 12:15:43 GMT+0200 (Mitteleuropäische Sommerzeit)
+# timestamp: Wed Mar 30 2022 12:30:42 GMT+0200 (Mitteleuropäische Sommerzeit)
 
 schema {
   query: query_root
