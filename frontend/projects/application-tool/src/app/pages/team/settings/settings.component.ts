@@ -12,6 +12,7 @@ import {
   RoundFragment,
   RoundSortedFragment,
 } from 'generated/types.graphql-gen';
+import { firstValueFrom } from 'rxjs';
 import { distinctUntilChanged, first } from 'rxjs/operators';
 import { AlertService } from '../../../shared/components/alert/alert.service';
 import { ModalService } from '../../../shared/components/modal/modal.service';
@@ -101,21 +102,22 @@ export class SettingsComponent implements OnInit {
 
   async saveEdition(id: number) {
     try {
-      await this.hasuraService
-        .updateEdition(
+      await firstValueFrom(
+        this.hasuraService.updateEdition(
           id,
           new Date(this.application_start.value),
           new Date(this.application_end.value),
           this.name.value
         )
-        .toPromise();
+      );
+
       this.form.markAsUntouched();
       this.form.markAsPristine();
     } catch (error) {}
   }
   async cancel() {
     this.form.disable();
-    const edition = await this.selectedEdition$.pipe(first()).toPromise();
+    const edition = await firstValueFrom(this.selectedEdition$.pipe(first()));
 
     this.setFormValues(edition);
 
@@ -148,9 +150,12 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  closeRoundLoading?: boolean = false;
   async closeRound(round_id?: number | null, level?: number | null) {
     if (!round_id) return;
+    this.closeRoundLoading = true;
     await this.hasuraService.showCloseRoundModal(round_id, level || 0);
+    this.closeRoundLoading = false;
   }
 }
 

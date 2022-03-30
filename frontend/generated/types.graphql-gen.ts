@@ -8945,7 +8945,7 @@ export type GetApplicationsToEliminateQuery = (
   { __typename?: 'query_root' }
   & { applications: Array<(
     { __typename?: 'applications' }
-    & Pick<Applications, 'id'>
+    & Pick<Applications, 'id' | 'state'>
   )> }
 );
 
@@ -10632,6 +10632,7 @@ export const GetApplicationsToEliminateDocument = gql`
     where: {ratings: {rating_round: {id: {_eq: $round_id}}}, rating_in_latest_round: {round_id: {_eq: $round_id}, avg: {_lt: 5}}, _not: {elimination: {}}}
   ) {
     id
+    state
   }
 }
     `;

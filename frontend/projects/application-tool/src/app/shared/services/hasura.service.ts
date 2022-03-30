@@ -19,7 +19,7 @@ import {
   GetRoundStatisticGQL,
   RoundFragment,
 } from 'generated/types.graphql-gen';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { ModalService } from '../components/modal/modal.service';
 import { CloseRoundComponent as CloseRoundComponentType } from '../components/modal/modals/close-round/close-round.component';
@@ -45,7 +45,7 @@ export class HasuraService {
   ) {}
 
   updateUsername(name: string) {
-    return this.updateUsernameGQL.mutate({ name }).toPromise();
+    return firstValueFrom(this.updateUsernameGQL.mutate({ name }));
   }
 
   getUpdates() {
@@ -57,8 +57,8 @@ export class HasuraService {
    */
 
   createEdition(name: string) {
-    return this.createEditionGQL
-      .mutate(
+    return firstValueFrom(
+      this.createEditionGQL.mutate(
         { name },
         {
           update: (store, { data: { ...createdEdition } }) => {
@@ -79,10 +79,10 @@ export class HasuraService {
           },
         }
       )
-      .toPromise();
+    );
   }
   renameEdition(id: number, name: string) {
-    return this.renameEditionGQL.mutate({ id, name }).toPromise();
+    return firstValueFrom(this.renameEditionGQL.mutate({ id, name }));
   }
   updateEdition(
     id: number,
@@ -98,7 +98,7 @@ export class HasuraService {
     });
   }
   setEditionStatus(id: number, status: boolean) {
-    return this.setEditionStatusGQL.mutate({ id, status }).toPromise();
+    return firstValueFrom(this.setEditionStatusGQL.mutate({ id, status }));
   }
 
   /**
@@ -187,9 +187,9 @@ export class HasuraService {
     );
   }
   async showCloseRoundModal(round_id: number, level: number = 0) {
-    const applications = await this.getApplicationsToEliminateGQL
-      .fetch({ round_id })
-      .toPromise();
+    const applications = await firstValueFrom(
+      this.getApplicationsToEliminateGQL.fetch({ round_id })
+    );
 
     const { CloseRoundComponent } = await import(
       '../components/modal/modals/close-round/close-round.component'
