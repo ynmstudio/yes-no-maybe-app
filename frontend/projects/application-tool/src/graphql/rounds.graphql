@@ -128,6 +128,7 @@ query GetApplicationsToEliminate($round_id: Int!) {
     }
   ) {
     id
+    state
   }
 }
 
