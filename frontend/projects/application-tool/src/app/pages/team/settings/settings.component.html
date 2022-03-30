@@ -23,14 +23,17 @@
         <div>{{ round.goal }}</div>
         <hr class="col-span-3" />
         <button
-          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black hover:text-white hover:bg-gray-900 border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
           (click)="showEditRoundModal(round)"
           [innerHtml]="'snippets.edit-goals' | translate"
         ></button>
         <button
-          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+          class="col-start-2 col-span-2 inline-block bg-transparent text-black border-black hover:text-white hover:bg-gray-900 border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
           (click)="closeRound(round?.id, round?.level)"
           [innerHtml]="'snippets.close-round' | translate"
+          [ngClass]="{
+            'text-white bg-gray-900 animate-pulse': closeRoundLoading
+          }"
         ></button>
       </ng-container>
       <ng-container *ngIf="round.closed">

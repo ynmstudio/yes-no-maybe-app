@@ -8,7 +8,7 @@
           'modals.close-round.headline' | translate: { round: data.level + 1 }
         "
       ></h3>
-      <div class="mt-2">
+      <div class="mt-2 max-h-52 overflow-auto">
         <p
           class="text-sm text-gray-800"
           [innerHTML]="
@@ -22,13 +22,28 @@
         ></p>
         <div
           *ngFor="let application of data.applications; let index = index"
-          class="flex justify-between items-center p-4 max-h-48 overflow-auto bg-gray-100"
+          class="flex justify-between items-center p-2 gap-4 bg-gray-100"
         >
-          <span>{{ application.id + "" | slice: 0:5 | uppercase }}</span>
+          <span class="flex-auto">{{
+            application.id + "" | slice: 0:5 | uppercase
+          }}</span>
+          <span
+            *ngIf="application.state !== 'complete'"
+            class="text-xxs bg-yellow-200 text-yellow-900 px-2 py-1 whitespace-nowrap overflow-ellipsis overflow-hidden rounded-full leading-none font-condensed font-medium uppercase"
+            [title]="
+              'application-state.' + (application.state || 'unknown')
+                | translate
+            "
+            [innerHtml]="
+              'application-state.' + (application.state || 'unknown')
+                | translate
+            "
+          >
+          </span>
           <a
+            target="_blank"
             [routerLink]="['/', 't', 'applications', application.id]"
-            class="underline"
-            (click)="close()"
+            class="underline text-xxs uppercase"
             [innerHtml]="'actions.show' | translate"
           ></a>
         </div>
