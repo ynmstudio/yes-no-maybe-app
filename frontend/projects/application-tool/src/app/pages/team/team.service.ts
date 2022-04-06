@@ -21,7 +21,14 @@ import {
   Updates_Set_Input,
 } from 'generated/types.graphql-gen';
 import { combineLatest, EMPTY, of, ReplaySubject } from 'rxjs';
-import { first, map, switchMap, takeWhile, tap } from 'rxjs/operators';
+import {
+  first,
+  map,
+  switchMap,
+  takeWhile,
+  tap,
+  shareReplay,
+} from 'rxjs/operators';
 import { ModalService } from '../../shared/components/modal/modal.service';
 import { DeleteUpdateComponent as DeleteUpdateComponentType } from '../../shared/components/modal/modals/delete-update/delete-update.component';
 import { EditUpdateComponent as EditUpdateComponentType } from '../../shared/components/modal/modals/edit-update/edit-update.component';
@@ -130,29 +137,34 @@ export class TeamService {
           },
           { fetchPolicy: 'cache-and-network' }
         ).valueChanges;
-      })
+      }),
+      shareReplay()
     );
   }
   getAdminApplication(id: string) {
-    return this.getAdminApplicationGQL.watch(
-      {
-        id,
-      },
-      { fetchPolicy: 'cache-and-network' }
-    ).valueChanges;
+    return this.getAdminApplicationGQL
+      .watch(
+        {
+          id,
+        },
+        { fetchPolicy: 'cache-and-network' }
+      )
+      .valueChanges.pipe(shareReplay());
   }
   getAdminApplicationLive(id: string) {
     return this.getAdminApplicationLiveGQL
       .watch({ id }, { fetchPolicy: 'network-only', pollInterval: 5000 })
-      .valueChanges;
+      .valueChanges.pipe(shareReplay());
   }
   getWorks(application_id: string) {
-    return this.getWorksGQL.watch(
-      {
-        application_id,
-      },
-      { fetchPolicy: 'cache-and-network' }
-    ).valueChanges;
+    return this.getWorksGQL
+      .watch(
+        {
+          application_id,
+        },
+        { fetchPolicy: 'cache-and-network' }
+      )
+      .valueChanges.pipe(shareReplay());
   }
 
   async createNewAlias(id: string) {
@@ -172,9 +184,9 @@ export class TeamService {
 
   get selectedEdition() {
     return combineLatest([this.getAllEditions(), this.selectedEditionId]).pipe(
-      switchMap(([editions, edition_id]) => of(
-          editions.data.editions.find((edition) => edition.id === edition_id)
-        ))
+      switchMap(([editions, edition_id]) =>
+        of(editions.data.editions.find((edition) => edition.id === edition_id))
+      )
     );
   }
 

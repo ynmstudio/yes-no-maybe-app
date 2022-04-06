@@ -5,7 +5,7 @@ import {
   GetJuryApplicationsGQL,
 } from 'generated/types.graphql-gen';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -25,19 +25,22 @@ export class JuryService {
         } else {
           return 'no-edition';
         }
-      })
+      }),
+      shareReplay()
     );
   }
 
   getApplications() {
-    return this.getJuryApplicationsGQL.subscribe();
+    return this.getJuryApplicationsGQL.subscribe().pipe(shareReplay());
   }
   getApplication(id: string) {
-    return this.getJuryApplicationGQL.watch(
-      {
-        id,
-      },
-      { fetchPolicy: 'cache-and-network' }
-    ).valueChanges;
+    return this.getJuryApplicationGQL
+      .watch(
+        {
+          id,
+        },
+        { fetchPolicy: 'cache-and-network' }
+      )
+      .valueChanges.pipe(shareReplay());
   }
 }
