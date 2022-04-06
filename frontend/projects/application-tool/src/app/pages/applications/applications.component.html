@@ -71,7 +71,10 @@
       class="container--default-margin fixed inset-0 pointer-events-none"
     >
       <ng-container
-        *ngFor="let application of (applications$ | async)?.data.applications"
+        *ngFor="
+          let application of (applications$ | async)?.data.applications;
+          trackBy: trackById
+        "
       >
         <ng-container
           *ngFor="let file of application?.files; let index = index"
@@ -105,7 +108,8 @@
       *ngFor="
         let application of (applications$ | async)?.data.applications
           | showEliminated: showEliminated
-          | hideByStatus: showUnedited:'pristine'
+          | hideByStatus: showUnedited:'pristine';
+        trackBy: trackById
       "
       class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-500 border-opacity-30 even:bg-gray-500 even:bg-opacity-5 hover:bg-gray-50 hover:bg-opacity-100 relative"
       [ngClass]="[

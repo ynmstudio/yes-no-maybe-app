@@ -64,4 +64,8 @@ export class ApplicationsComponent implements OnInit {
       this.visibleChat = application_id;
     }
   }
+
+  trackById(index: number, item: any) {
+    return item.id;
+  }
 }
