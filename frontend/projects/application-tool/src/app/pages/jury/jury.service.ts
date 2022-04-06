@@ -26,12 +26,14 @@ export class JuryService {
           return 'no-edition';
         }
       }),
-      shareReplay()
+      shareReplay({ refCount: true })
     );
   }
 
   getApplications() {
-    return this.getJuryApplicationsGQL.subscribe().pipe(shareReplay());
+    return this.getJuryApplicationsGQL
+      .subscribe()
+      .pipe(shareReplay({ refCount: true }));
   }
   getApplication(id: string) {
     return this.getJuryApplicationGQL
@@ -41,6 +43,6 @@ export class JuryService {
         },
         { fetchPolicy: 'cache-and-network' }
       )
-      .valueChanges.pipe(shareReplay());
+      .valueChanges.pipe(shareReplay({ refCount: true }));
   }
 }

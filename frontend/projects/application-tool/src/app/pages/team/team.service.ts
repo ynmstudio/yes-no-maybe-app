@@ -138,7 +138,7 @@ export class TeamService {
           { fetchPolicy: 'cache-and-network' }
         ).valueChanges;
       }),
-      shareReplay()
+      shareReplay({ refCount: true })
     );
   }
   getAdminApplication(id: string) {
@@ -149,12 +149,12 @@ export class TeamService {
         },
         { fetchPolicy: 'cache-and-network' }
       )
-      .valueChanges.pipe(shareReplay());
+      .valueChanges.pipe(shareReplay({ refCount: true }));
   }
   getAdminApplicationLive(id: string) {
     return this.getAdminApplicationLiveGQL
       .watch({ id }, { fetchPolicy: 'network-only', pollInterval: 5000 })
-      .valueChanges.pipe(shareReplay());
+      .valueChanges.pipe(shareReplay({ refCount: true }));
   }
   getWorks(application_id: string) {
     return this.getWorksGQL
@@ -164,7 +164,7 @@ export class TeamService {
         },
         { fetchPolicy: 'cache-and-network' }
       )
-      .valueChanges.pipe(shareReplay());
+      .valueChanges.pipe(shareReplay({ refCount: true }));
   }
 
   async createNewAlias(id: string) {
