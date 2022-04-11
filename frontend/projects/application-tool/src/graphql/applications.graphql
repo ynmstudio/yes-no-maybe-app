@@ -60,9 +60,6 @@ fragment JuryApplications on applications {
   statement
   internal_name
   rated_by_user
-  locked
-  ready
-  state
   winner
   elimination {
     ...Elimination

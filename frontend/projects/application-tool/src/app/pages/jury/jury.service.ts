@@ -31,9 +31,7 @@ export class JuryService {
   }
 
   getApplications() {
-    return this.getJuryApplicationsGQL
-      .subscribe()
-      .pipe(shareReplay({ refCount: true }));
+    return this.getJuryApplicationsGQL.subscribe().pipe(shareReplay());
   }
   getApplication(id: string) {
     return this.getJuryApplicationGQL

@@ -8071,7 +8071,7 @@ export type AdminApplicationFragment = (
 
 export type JuryApplicationsFragment = (
   { __typename?: 'applications' }
-  & Pick<Applications, 'id' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'internal_name' | 'rated_by_user' | 'locked' | 'ready' | 'state' | 'winner'>
+  & Pick<Applications, 'id' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'internal_name' | 'rated_by_user' | 'winner'>
   & { elimination?: Maybe<(
     { __typename?: 'eliminations' }
     & EliminationFragment
@@ -9412,9 +9412,6 @@ export const JuryApplicationsFragmentDoc = gql`
   statement
   internal_name
   rated_by_user
-  locked
-  ready
-  state
   winner
   elimination {
     ...Elimination
