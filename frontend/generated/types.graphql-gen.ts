@@ -8286,7 +8286,14 @@ export type GetAdminApplicationsByEditionQuery = (
   { __typename?: 'query_root' }
   & { applications: Array<(
     { __typename?: 'applications' }
-    & { rating_in_latest_round?: Maybe<(
+    & Pick<Applications, 'id' | 'name' | 'internal_name' | 'state' | 'winner'>
+    & { files: Array<(
+      { __typename?: 'work_files' }
+      & WorkFileFragment
+    )>, elimination?: Maybe<(
+      { __typename?: 'eliminations' }
+      & EliminationFragment
+    )>, rating_in_latest_round?: Maybe<(
       { __typename?: 'ratings_by_application' }
       & Pick<Ratings_By_Application, 'round_id' | 'avg' | 'avg_total' | 'count'>
     )>, ratings_aggregate: (
@@ -8306,8 +8313,6 @@ export type GetAdminApplicationsByEditionQuery = (
         )> }
       )> }
     ) }
-    & ApplicationFragment
-    & AdminApplicationFragment
   )>, applications_aggregate: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
@@ -9817,8 +9822,17 @@ export const GetAdminApplicationsByEditionDocument = gql`
     where: {edition_id: {_eq: $edition_id}}
     order_by: {created_at: asc_nulls_first, rating_in_latest_round: {avg: desc_nulls_first, count: desc_nulls_first}, ratings_aggregate: {stddev_samp: {value: desc_nulls_first}}, elimination: {created_at: asc_nulls_first}}
   ) {
-    ...Application
-    ...AdminApplication
+    id
+    name
+    internal_name
+    state
+    winner
+    files(limit: 1, order_by: {order: asc_nulls_last}) {
+      ...WorkFile
+    }
+    elimination {
+      ...Elimination
+    }
     rating_in_latest_round {
       round_id
       avg
@@ -9846,8 +9860,8 @@ export const GetAdminApplicationsByEditionDocument = gql`
     }
   }
 }
-    ${ApplicationFragmentDoc}
-${AdminApplicationFragmentDoc}`;
+    ${WorkFileFragmentDoc}
+${EliminationFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'

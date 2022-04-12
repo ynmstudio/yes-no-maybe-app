@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { SubscriptionResult } from 'apollo-angular';
 import {
   EditionStateGQL,
   GetJuryApplicationGQL,
   GetJuryApplicationsGQL,
+  GetJuryApplicationsSubscription,
 } from 'generated/types.graphql-gen';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -11,11 +13,19 @@ import { map, shareReplay } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class JuryService {
+  juryApplications$: Observable<
+    SubscriptionResult<GetJuryApplicationsSubscription>
+  >;
+
   constructor(
     private editionStateGQL: EditionStateGQL,
     private getJuryApplicationsGQL: GetJuryApplicationsGQL,
     private getJuryApplicationGQL: GetJuryApplicationGQL
-  ) {}
+  ) {
+    this.juryApplications$ = this.getJuryApplicationsGQL
+      .subscribe({})
+      .pipe(shareReplay());
+  }
 
   getEditionState(): Observable<string> {
     return this.editionStateGQL.subscribe().pipe(
@@ -31,7 +41,7 @@ export class JuryService {
   }
 
   getApplications() {
-    return this.getJuryApplicationsGQL.subscribe().pipe(shareReplay());
+    return this.juryApplications$;
   }
   getApplication(id: string) {
     return this.getJuryApplicationGQL

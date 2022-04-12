@@ -138,7 +138,7 @@ export class TeamService {
           { fetchPolicy: 'cache-and-network' }
         ).valueChanges;
       }),
-      shareReplay({ refCount: true })
+      shareReplay()
     );
   }
   getAdminApplication(id: string) {
