@@ -16,8 +16,8 @@
   "dependencies": {
     "axios": "^0.21.2",
     "coconutjs": "^2.4.2",
-    "firebase-admin": "^9.4.2",
-    "firebase-functions": "^3.13.1"
+    "firebase-admin": "^11.4.1",
+    "firebase-functions": "^3.24.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.9.1",
