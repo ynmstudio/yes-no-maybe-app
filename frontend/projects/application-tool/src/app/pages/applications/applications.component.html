@@ -1,6 +1,6 @@
 <div class="container--default-x" (mouseleave)="visiblePreview = ''">
   <div
-    class="container--default-x py-4 bg-white flex items-center relative z-10 space-x-8"
+    class="container--default-x py-4 bg-white flex items-center relative z-10 space-x-4 md:space-x-8"
   >
     <div class="flex items-center">
       <input
@@ -30,7 +30,7 @@
         [innerHtml]="'defaults.anonymous' | translate | uppercase"
       ></label>
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center overflow-hidden">
       <input
         id="toggle_show_eliminated"
         type="checkbox"
@@ -40,11 +40,11 @@
       />
       <label
         for="toggle_show_eliminated"
-        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none whitespace-nowrap overflow-ellipsis overflow-hidden"
         [innerHtml]="'snippets.show-eliminated' | translate | uppercase"
       ></label>
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center overflow-hidden">
       <input
         id="toggle_hide_unedited"
         type="checkbox"
@@ -54,7 +54,7 @@
       />
       <label
         for="toggle_hide_unedited"
-        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none whitespace-nowrap overflow-ellipsis overflow-hidden"
         [innerHtml]="'snippets.show-unedited' | translate | uppercase"
       ></label>
     </div>
@@ -107,8 +107,8 @@
     <div
       *ngFor="
         let application of (applications$ | async)?.data.applications
-          | showEliminated: showEliminated
-          | hideByStatus: showUnedited:'pristine';
+          | showEliminated : showEliminated
+          | hideByStatus : showUnedited : 'pristine';
         trackBy: trackById
       "
       class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-500 border-opacity-30 even:bg-gray-500 even:bg-opacity-5 hover:bg-gray-50 hover:bg-opacity-100 relative"
