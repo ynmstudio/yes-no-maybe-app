@@ -1,11 +1,20 @@
 # source: http://localhost:8080/v1/graphql
-# timestamp: Mon Apr 26 2021 20:42:48 GMT+0200 (GMT+02:00)
+# timestamp: Wed Mar 30 2022 12:30:42 GMT+0200 (Mitteleuropäische Sommerzeit)
 
 schema {
   query: query_root
   mutation: mutation_root
   subscription: subscription_root
 }
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
 
 """
 columns and relationships of "applications"
@@ -327,13 +336,17 @@ input applications_bool_exp {
   messages: messages_bool_exp
   name: String_comparison_exp
   payment: payments_bool_exp
+  rated_by_user: Boolean_comparison_exp
   rating_in_latest_round: ratings_by_application_bool_exp
   ratings: ratings_bool_exp
+  ready: Boolean_comparison_exp
   residency: Boolean_comparison_exp
   specifications: work_specifications_bool_exp
+  state: String_comparison_exp
   statement: String_comparison_exp
   updated_at: timestamptz_comparison_exp
   user: users_bool_exp
+  winner: Boolean_comparison_exp
   works: works_bool_exp
 }
 
@@ -462,7 +475,7 @@ on conflict condition type for table "applications"
 """
 input applications_on_conflict {
   constraint: applications_constraint!
-  update_columns: [applications_update_column!]!
+  update_columns: [applications_update_column!]! = []
   where: applications_bool_exp
 }
 
@@ -483,13 +496,17 @@ input applications_order_by {
   messages_aggregate: messages_aggregate_order_by
   name: order_by
   payment: payments_order_by
+  rated_by_user: order_by
   rating_in_latest_round: ratings_by_application_order_by
   ratings_aggregate: ratings_aggregate_order_by
+  ready: order_by
   residency: order_by
   specifications_aggregate: work_specifications_aggregate_order_by
+  state: order_by
   statement: order_by
   updated_at: order_by
   user: users_order_by
+  winner: order_by
   works_aggregate: works_aggregate_order_by
 }
 
@@ -860,7 +877,7 @@ on conflict condition type for table "category_mediums"
 """
 input category_mediums_on_conflict {
   constraint: category_mediums_constraint!
-  update_columns: [category_mediums_update_column!]!
+  update_columns: [category_mediums_update_column!]! = []
   where: category_mediums_bool_exp
 }
 
@@ -1005,7 +1022,7 @@ on conflict condition type for table "category_tags"
 """
 input category_tags_on_conflict {
   constraint: category_tags_constraint!
-  update_columns: [category_tags_update_column!]!
+  update_columns: [category_tags_update_column!]! = []
   where: category_tags_bool_exp
 }
 
@@ -1232,6 +1249,7 @@ input editions_bool_exp {
   id: Int_comparison_exp
   name: String_comparison_exp
   rating_rounds: rating_rounds_bool_exp
+  state: String_comparison_exp
   updates: updates_bool_exp
   winner: applications_bool_exp
   winner_id: uuid_comparison_exp
@@ -1321,7 +1339,7 @@ on conflict condition type for table "editions"
 """
 input editions_on_conflict {
   constraint: editions_constraint!
-  update_columns: [editions_update_column!]!
+  update_columns: [editions_update_column!]! = []
   where: editions_bool_exp
 }
 
@@ -1335,6 +1353,7 @@ input editions_order_by {
   id: order_by
   name: order_by
   rating_rounds_aggregate: rating_rounds_aggregate_order_by
+  state: order_by
   updates_aggregate: updates_aggregate_order_by
   winner: applications_order_by
   winner_id: order_by
@@ -1656,7 +1675,7 @@ on conflict condition type for table "eliminations"
 """
 input eliminations_on_conflict {
   constraint: eliminations_constraint!
-  update_columns: [eliminations_update_column!]!
+  update_columns: [eliminations_update_column!]! = []
   where: eliminations_bool_exp
 }
 
@@ -2059,7 +2078,7 @@ on conflict condition type for table "messages"
 """
 input messages_on_conflict {
   constraint: messages_constraint!
-  update_columns: [messages_update_column!]!
+  update_columns: [messages_update_column!]! = []
   where: messages_bool_exp
 }
 
@@ -3463,7 +3482,7 @@ on conflict condition type for table "payments"
 """
 input payments_on_conflict {
   constraint: payments_constraint!
-  update_columns: [payments_update_column!]!
+  update_columns: [payments_update_column!]! = []
   where: payments_bool_exp
 }
 
@@ -4064,7 +4083,7 @@ type query_root {
   """
   search_applications_aggregate(
     """
-    input parameters for function "search_applications"
+    input parameters for function "search_applications_aggregate"
     """
     args: search_applications_args!
 
@@ -4649,6 +4668,7 @@ input rating_rounds_bool_exp {
   _and: [rating_rounds_bool_exp!]
   _not: rating_rounds_bool_exp
   _or: [rating_rounds_bool_exp!]
+  active: Boolean_comparison_exp
   closed: Boolean_comparison_exp
   created_at: timestamptz_comparison_exp
   edition: editions_bool_exp
@@ -4657,6 +4677,7 @@ input rating_rounds_bool_exp {
   end_at: timestamptz_comparison_exp
   goal: Int_comparison_exp
   id: Int_comparison_exp
+  level: Int_comparison_exp
   next_round: rating_rounds_bool_exp
   prev_round: rating_rounds_bool_exp
   prev_round_id: Int_comparison_exp
@@ -4784,12 +4805,13 @@ on conflict condition type for table "rating_rounds"
 """
 input rating_rounds_on_conflict {
   constraint: rating_rounds_constraint!
-  update_columns: [rating_rounds_update_column!]!
+  update_columns: [rating_rounds_update_column!]! = []
   where: rating_rounds_bool_exp
 }
 
 """Ordering options when selecting data from "rating_rounds"."""
 input rating_rounds_order_by {
+  active: order_by
   closed: order_by
   created_at: order_by
   edition: editions_order_by
@@ -4798,6 +4820,7 @@ input rating_rounds_order_by {
   end_at: order_by
   goal: order_by
   id: order_by
+  level: order_by
   next_round: rating_rounds_order_by
   prev_round: rating_rounds_order_by
   prev_round_id: order_by
@@ -5653,7 +5676,7 @@ on conflict condition type for table "ratings"
 """
 input ratings_on_conflict {
   constraint: ratings_constraint!
-  update_columns: [ratings_update_column!]!
+  update_columns: [ratings_update_column!]! = []
   where: ratings_bool_exp
 }
 
@@ -6398,7 +6421,7 @@ type subscription_root {
   """
   search_applications_aggregate(
     """
-    input parameters for function "search_applications"
+    input parameters for function "search_applications_aggregate"
     """
     args: search_applications_args!
 
@@ -7021,7 +7044,7 @@ on conflict condition type for table "updates"
 """
 input updates_on_conflict {
   constraint: updates_constraint!
-  update_columns: [updates_update_column!]!
+  update_columns: [updates_update_column!]! = []
   where: updates_bool_exp
 }
 
@@ -7372,7 +7395,7 @@ on conflict condition type for table "users"
 """
 input users_on_conflict {
   constraint: users_constraint!
-  update_columns: [users_update_column!]!
+  update_columns: [users_update_column!]! = []
   where: users_bool_exp
 }
 
@@ -7664,7 +7687,7 @@ on conflict condition type for table "wordlist"
 """
 input wordlist_on_conflict {
   constraint: wordlist_constraint!
-  update_columns: [wordlist_update_column!]!
+  update_columns: [wordlist_update_column!]! = []
   where: wordlist_bool_exp
 }
 
@@ -7974,7 +7997,7 @@ on conflict condition type for table "work_files"
 """
 input work_files_on_conflict {
   constraint: work_files_constraint!
-  update_columns: [work_files_update_column!]!
+  update_columns: [work_files_update_column!]! = []
   where: work_files_bool_exp
 }
 
@@ -8312,7 +8335,7 @@ on conflict condition type for table "work_specification_mediums"
 """
 input work_specification_mediums_on_conflict {
   constraint: work_specification_mediums_constraint!
-  update_columns: [work_specification_mediums_update_column!]!
+  update_columns: [work_specification_mediums_update_column!]! = []
   where: work_specification_mediums_bool_exp
 }
 
@@ -8442,7 +8465,7 @@ on conflict condition type for table "work_specification_tags"
 """
 input work_specification_tags_on_conflict {
   constraint: work_specification_tags_constraint!
-  update_columns: [work_specification_tags_update_column!]!
+  update_columns: [work_specification_tags_update_column!]! = []
   where: work_specification_tags_bool_exp
 }
 
@@ -8791,7 +8814,7 @@ on conflict condition type for table "work_specifications"
 """
 input work_specifications_on_conflict {
   constraint: work_specifications_constraint!
-  update_columns: [work_specifications_update_column!]!
+  update_columns: [work_specifications_update_column!]! = []
   where: work_specifications_bool_exp
 }
 
@@ -9356,7 +9379,7 @@ on conflict condition type for table "works"
 """
 input works_on_conflict {
   constraint: works_constraint!
-  update_columns: [works_update_column!]!
+  update_columns: [works_update_column!]! = []
   where: works_bool_exp
 }
 

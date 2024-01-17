@@ -10,6 +10,48 @@
   [ngSwitch]="mode"
   class="min-h-screen flex items-center justify-center pt-10 pb-16 container--default-x"
 >
+  <!-- BAP 2022 -->
+  <div
+    class="absolute inset-0 -z-10 opacity-20 overflow-hidden grid grid-cols-2 md:grid-cols-6 grid-rows-5"
+  >
+    <img
+      class="block p-12 w-full h-auto max-h-full col-span-2 row-span-2 self-center justify-self-end max-w-xs"
+      src="assets/_custom/bap22_tool_graphic-1.svg"
+      alt=""
+      srcset=""
+    />
+    <img
+      class="block p-4 md:p-12 w-full h-auto max-h-full col-span-2 md:col-span-4 row-start-5 md:row-start-auto row-span-2 self-center md:self-end"
+      src="assets/_custom/bap22_tool_graphic-2.svg"
+      alt=""
+      srcset=""
+    />
+    <img
+      class="block p-4 w-full h-auto max-h-full md:col-span-2 md:row-start-4 row-span-2 self-end md:self-center"
+      src="assets/_custom/bap22_tool_graphic-5-16.svg"
+      alt=""
+      srcset=""
+    />
+    <img
+      class="block p-4 pr-16 w-full h-auto max-h-full md:col-span-2 md:row-start-4 row-span-2 self-end md:self-center"
+      src="assets/_custom/bap22_tool_graphic-3.svg"
+      alt=""
+      srcset=""
+    />
+  </div>
+
+  <!-- <div class="absolute inset-0 -z-10 overflow-hidden opacity-5">
+    <div
+      class="pointer-events-none backface-hidden absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[100vmax] h-[100vmax]"
+    >
+      <img
+        class="block w-full h-full animate-rotation"
+        src="assets/_custom/bap_wheel-1.svg"
+        alt=""
+        srcset=""
+      />
+    </div>
+  </div> -->
   <!-- REGISTER FORM -->
   <form
     id="register"
@@ -368,18 +410,18 @@
 </main>
 
 <footer
-  class="container--default lg:fixed bottom-0 inset-x-0 md:flex space-y-4 md:space-y-0 md:space-x-2 justify-end z-0"
+  class="container--default lg:fixed bottom-0 inset-x-0 md:flex md:gap-x-2 justify-end z-0"
 >
   <!-- DO NOT DELETE THIS FUNDED BY BLOCK -->
-  <div>
+  <div class="order-2">
     <p [innerHtml]="'snippets.funded-by' | translate"></p>
   </div>
-  <div class="pb-4 pr-4 md:pb-0 md:pr-10">
+  <div class="pb-4 pr-4 md:pb-0 md:pr-10 order-2">
     <svg
       id="Ebene_1"
       data-name="Ebene 1"
       xmlns="http://www.w3.org/2000/svg"
-      class="py-1 pr-12 md:p-1 md:h-10 md:w-auto"
+      class="w-full h-auto py-1 pr-12 md:p-1 md:h-10 md:w-auto"
       viewBox="0 0 1417.32 283.46"
     >
       <defs>
@@ -539,7 +581,7 @@
       />
     </svg>
   </div>
-  <div>
+  <div class="order-2">
     <p [innerHtml]="'_configuration.full-name' | translate"></p>
     <p>
       <a
@@ -547,5 +589,13 @@
         [innerHtml]="'_configuration.email' | translate"
       ></a>
     </p>
+  </div>
+  <div
+    class="flex-auto mt-8 md:mt-0 text-xxs font-mono uppercase self-end text-gray-400 order-1"
+  >
+    Built by
+    <a href="https://ynm.studio" target="_blank" rel="noopener noreferrer"
+      >YNM</a
+    >
   </div>
 </footer>

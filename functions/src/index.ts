@@ -162,7 +162,7 @@ interface GetAllUsersDataObject {
  */
 exports.getAllUsers = functions
   .region("europe-west3")
-  .https.onCall((data: GetAllUsersDataObject, context) => {
+  .https.onCall(async (data: GetAllUsersDataObject, context) => {
     // verify Firebase Auth ID token
     if (!context.auth) {
       throw new HttpsError("unauthenticated", "Authentication Required!", {
@@ -176,35 +176,46 @@ exports.getAllUsers = functions
       );
     }
 
-    const maxResults = 1000; // optional arg.
-    return auth
-      .listUsers(maxResults)
-      .then((userRecords) => {
-        return userRecords.users
-          .sort((a, b) => {
-            if (a.customClaims?.role < b.customClaims?.role) return 1;
-            if (a.customClaims?.role > b.customClaims?.role) return -1;
-            return 0;
-          })
-          .filter((user) => user.uid !== context.auth?.uid)
-          .filter((user) => {
-            return data.role ? user.customClaims?.role === data.role : true;
-          })
-          .map((user) => {
-            return {
-              uid: user.uid,
-              displayName: user.displayName,
-              email: secureEmail(user.email + ""),
-              role: user.customClaims?.role,
-              disabled: user.disabled,
-            };
-          });
+    const users = await getUsersRecursive().catch((error) => {
+      functions.logger.error(error);
+      return [];
+    });
+
+    return users
+      .sort((a, b) => {
+        if (a.customClaims?.role < b.customClaims?.role) return 1;
+        if (a.customClaims?.role > b.customClaims?.role) return -1;
+        return 0;
       })
-      .catch((error) => {
-        functions.logger.error(error);
-        return [];
+      .filter((user) => user.uid !== context.auth?.uid)
+      .filter((user) => {
+        return data.role ? user.customClaims?.role === data.role : true;
+      })
+      .map((user) => {
+        return {
+          uid: user.uid,
+          displayName: user.displayName,
+          email: secureEmail(user.email + ""),
+          role: user.customClaims?.role,
+          disabled: user.disabled,
+        };
       });
   });
+async function getUsersRecursive(pageToken?: string) {
+  const maxResults = 1000; // optional arg.
+  let users: admin.auth.UserRecord[] = [];
+  try {
+    const userRecords = await auth.listUsers(maxResults, pageToken);
+    users = userRecords.users;
+    if (userRecords.pageToken)
+      users = [...users, ...(await getUsersRecursive(userRecords.pageToken))];
+  } catch (error) {
+    functions.logger.error(error);
+    return [];
+  }
+  return users;
+}
+
 interface CreateUserDataObject {
   displayName: string;
   email: string;

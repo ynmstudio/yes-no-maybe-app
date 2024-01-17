@@ -176,7 +176,7 @@
 	"snippets.application-eliminated": "Ausgeschlossen",
 	"snippets.auth.already-signed-up": "Bereits registriert?",
 	"snippets.auth.change-password": "Passwort ändern",
-	"snippets.auth.confirm-privacy": "Ich stimme den  <a href=\"https://2022.berlinartprize.com/\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline hover:text-gray-400\">Datenschutzbestimmungen</a> des Berlin Art Prize zu.",
+	"snippets.auth.confirm-privacy": "Ich stimme den  <a href=\"https://www.berlinartprize.com/datenschutzerklaerung-apply\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"underline hover:text-gray-400\">Datenschutzbestimmungen</a> des Berlin Art Prize zu.",
 	"snippets.auth.email-error": "Bitte gültige Email eingeben.",
 	"snippets.auth.email-saved": "E-Mail erfolgreich gespeichert.",
 	"snippets.auth.enter-password": "Bitte Kennwort eingeben.",

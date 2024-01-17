@@ -60,9 +60,6 @@ fragment JuryApplications on applications {
   statement
   internal_name
   rated_by_user
-  locked
-  ready
-  state
   winner
   elimination {
     ...Elimination
@@ -236,8 +233,19 @@ query GetAdminApplicationsByEdition($edition_id: Int = -1) {
       elimination: { created_at: asc_nulls_first }
     }
   ) {
-    ...Application
-    ...AdminApplication
+    # ...Application
+    # ...AdminApplication
+    id
+    name
+    internal_name
+    state
+    winner
+    files(limit: 1, order_by: { order: asc_nulls_last }) {
+      ...WorkFile
+    }
+    elimination {
+      ...Elimination
+    }
     rating_in_latest_round {
       round_id
       avg

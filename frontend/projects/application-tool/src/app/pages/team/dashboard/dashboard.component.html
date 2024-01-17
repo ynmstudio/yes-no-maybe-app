@@ -176,11 +176,17 @@
                   ></div>
                   <div class="absolute top-full left-0 text-xs">
                     {{
+                      user.ratings_aggregate.aggregate?.count || 0
+                    }}&thinsp;/&thinsp;{{
+                      (roundStatistic$ | async)?.data?.total?.aggregate
+                        ?.count || 0
+                    }}
+                    <!-- {{
                       ((user.ratings_aggregate.aggregate?.count || 0) /
                         ((roundStatistic$ | async)?.data?.total?.aggregate
                           ?.count || 1)) *
                         100 | number: "1.0-0"
-                    }}%
+                    }}% -->
                   </div>
                 </div>
               </div>

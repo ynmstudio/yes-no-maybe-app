@@ -40,6 +40,38 @@
               [innerText]="'snippets.please-rate-applications' | translate"
             >
             </span>
+            <div
+              class="flex justify-between items-center my-4 py-4 font-mono"
+              *ngFor="let user of (juryMembers$ | async)?.data?.users"
+            >
+              <div class="mb-3 border border-black w-24 xl:w-full h-3 relative">
+                <div
+                  class="absolute inset-0 bg-green-500 origin-top-left transform-gpu transition-transform"
+                  [style.transform]="
+                    'scaleX(' +
+                    (user.ratings_aggregate.aggregate?.count || 0) /
+                      ((roundStatistic$ | async)?.data?.total?.aggregate
+                        ?.count || 1) +
+                    ')'
+                  "
+                ></div>
+                <div class="absolute top-full left-0 text-xs">
+                  {{
+                    user.ratings_aggregate.aggregate?.count || 0
+                  }}&thinsp;/&thinsp;{{
+                    (roundStatistic$ | async)?.data?.total?.aggregate?.count ||
+                      1 ||
+                      0
+                  }}
+                  <!-- {{
+            ((user.ratings_aggregate.aggregate?.count || 0) /
+              ((roundStatistic$ | async)?.data?.total?.aggregate
+                ?.count || 1)) *
+              100 | number: "1.0-0"
+          }}% -->
+                </div>
+              </div>
+            </div>
           </ng-container>
         </ng-container>
         <ng-template #noActiveRound>

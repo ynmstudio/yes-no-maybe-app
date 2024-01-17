@@ -21,6 +21,7 @@ export type Scalars = {
 
 
 
+
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_Comparison_Exp = {
   _eq?: Maybe<Scalars['Boolean']>;
@@ -319,13 +320,17 @@ export type Applications_Bool_Exp = {
   messages?: Maybe<Messages_Bool_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   payment?: Maybe<Payments_Bool_Exp>;
+  rated_by_user?: Maybe<Boolean_Comparison_Exp>;
   rating_in_latest_round?: Maybe<Ratings_By_Application_Bool_Exp>;
   ratings?: Maybe<Ratings_Bool_Exp>;
+  ready?: Maybe<Boolean_Comparison_Exp>;
   residency?: Maybe<Boolean_Comparison_Exp>;
   specifications?: Maybe<Work_Specifications_Bool_Exp>;
+  state?: Maybe<String_Comparison_Exp>;
   statement?: Maybe<String_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
   user?: Maybe<Users_Bool_Exp>;
+  winner?: Maybe<Boolean_Comparison_Exp>;
   works?: Maybe<Works_Bool_Exp>;
 };
 
@@ -438,7 +443,7 @@ export type Applications_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "applications" */
 export type Applications_On_Conflict = {
   constraint: Applications_Constraint;
-  update_columns: Array<Applications_Update_Column>;
+  update_columns?: Array<Applications_Update_Column>;
   where?: Maybe<Applications_Bool_Exp>;
 };
 
@@ -459,13 +464,17 @@ export type Applications_Order_By = {
   messages_aggregate?: Maybe<Messages_Aggregate_Order_By>;
   name?: Maybe<Order_By>;
   payment?: Maybe<Payments_Order_By>;
+  rated_by_user?: Maybe<Order_By>;
   rating_in_latest_round?: Maybe<Ratings_By_Application_Order_By>;
   ratings_aggregate?: Maybe<Ratings_Aggregate_Order_By>;
+  ready?: Maybe<Order_By>;
   residency?: Maybe<Order_By>;
   specifications_aggregate?: Maybe<Work_Specifications_Aggregate_Order_By>;
+  state?: Maybe<Order_By>;
   statement?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
   user?: Maybe<Users_Order_By>;
+  winner?: Maybe<Order_By>;
   works_aggregate?: Maybe<Works_Aggregate_Order_By>;
 };
 
@@ -760,7 +769,7 @@ export type Category_Mediums_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "category_mediums" */
 export type Category_Mediums_On_Conflict = {
   constraint: Category_Mediums_Constraint;
-  update_columns: Array<Category_Mediums_Update_Column>;
+  update_columns?: Array<Category_Mediums_Update_Column>;
   where?: Maybe<Category_Mediums_Bool_Exp>;
 };
 
@@ -889,7 +898,7 @@ export type Category_Tags_Mutation_Response = {
 /** on conflict condition type for table "category_tags" */
 export type Category_Tags_On_Conflict = {
   constraint: Category_Tags_Constraint;
-  update_columns: Array<Category_Tags_Update_Column>;
+  update_columns?: Array<Category_Tags_Update_Column>;
   where?: Maybe<Category_Tags_Bool_Exp>;
 };
 
@@ -1069,6 +1078,7 @@ export type Editions_Bool_Exp = {
   id?: Maybe<Int_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   rating_rounds?: Maybe<Rating_Rounds_Bool_Exp>;
+  state?: Maybe<String_Comparison_Exp>;
   updates?: Maybe<Updates_Bool_Exp>;
   winner?: Maybe<Applications_Bool_Exp>;
   winner_id?: Maybe<Uuid_Comparison_Exp>;
@@ -1145,7 +1155,7 @@ export type Editions_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "editions" */
 export type Editions_On_Conflict = {
   constraint: Editions_Constraint;
-  update_columns: Array<Editions_Update_Column>;
+  update_columns?: Array<Editions_Update_Column>;
   where?: Maybe<Editions_Bool_Exp>;
 };
 
@@ -1159,6 +1169,7 @@ export type Editions_Order_By = {
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   rating_rounds_aggregate?: Maybe<Rating_Rounds_Aggregate_Order_By>;
+  state?: Maybe<Order_By>;
   updates_aggregate?: Maybe<Updates_Aggregate_Order_By>;
   winner?: Maybe<Applications_Order_By>;
   winner_id?: Maybe<Order_By>;
@@ -1446,7 +1457,7 @@ export type Eliminations_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "eliminations" */
 export type Eliminations_On_Conflict = {
   constraint: Eliminations_Constraint;
-  update_columns: Array<Eliminations_Update_Column>;
+  update_columns?: Array<Eliminations_Update_Column>;
   where?: Maybe<Eliminations_Bool_Exp>;
 };
 
@@ -1789,7 +1800,7 @@ export type Messages_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "messages" */
 export type Messages_On_Conflict = {
   constraint: Messages_Constraint;
-  update_columns: Array<Messages_Update_Column>;
+  update_columns?: Array<Messages_Update_Column>;
   where?: Maybe<Messages_Bool_Exp>;
 };
 
@@ -3056,7 +3067,7 @@ export type Payments_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "payments" */
 export type Payments_On_Conflict = {
   constraint: Payments_Constraint;
-  update_columns: Array<Payments_Update_Column>;
+  update_columns?: Array<Payments_Update_Column>;
   where?: Maybe<Payments_Bool_Exp>;
 };
 
@@ -3901,6 +3912,7 @@ export type Rating_Rounds_Bool_Exp = {
   _and?: Maybe<Array<Rating_Rounds_Bool_Exp>>;
   _not?: Maybe<Rating_Rounds_Bool_Exp>;
   _or?: Maybe<Array<Rating_Rounds_Bool_Exp>>;
+  active?: Maybe<Boolean_Comparison_Exp>;
   closed?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   edition?: Maybe<Editions_Bool_Exp>;
@@ -3909,6 +3921,7 @@ export type Rating_Rounds_Bool_Exp = {
   end_at?: Maybe<Timestamptz_Comparison_Exp>;
   goal?: Maybe<Int_Comparison_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
+  level?: Maybe<Int_Comparison_Exp>;
   next_round?: Maybe<Rating_Rounds_Bool_Exp>;
   prev_round?: Maybe<Rating_Rounds_Bool_Exp>;
   prev_round_id?: Maybe<Int_Comparison_Exp>;
@@ -4020,12 +4033,13 @@ export type Rating_Rounds_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "rating_rounds" */
 export type Rating_Rounds_On_Conflict = {
   constraint: Rating_Rounds_Constraint;
-  update_columns: Array<Rating_Rounds_Update_Column>;
+  update_columns?: Array<Rating_Rounds_Update_Column>;
   where?: Maybe<Rating_Rounds_Bool_Exp>;
 };
 
 /** Ordering options when selecting data from "rating_rounds". */
 export type Rating_Rounds_Order_By = {
+  active?: Maybe<Order_By>;
   closed?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   edition?: Maybe<Editions_Order_By>;
@@ -4034,6 +4048,7 @@ export type Rating_Rounds_Order_By = {
   end_at?: Maybe<Order_By>;
   goal?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
+  level?: Maybe<Order_By>;
   next_round?: Maybe<Rating_Rounds_Order_By>;
   prev_round?: Maybe<Rating_Rounds_Order_By>;
   prev_round_id?: Maybe<Order_By>;
@@ -4838,7 +4853,7 @@ export type Ratings_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "ratings" */
 export type Ratings_On_Conflict = {
   constraint: Ratings_Constraint;
-  update_columns: Array<Ratings_Update_Column>;
+  update_columns?: Array<Ratings_Update_Column>;
   where?: Maybe<Ratings_Bool_Exp>;
 };
 
@@ -5809,7 +5824,7 @@ export type Updates_Mutation_Response = {
 /** on conflict condition type for table "updates" */
 export type Updates_On_Conflict = {
   constraint: Updates_Constraint;
-  update_columns: Array<Updates_Update_Column>;
+  update_columns?: Array<Updates_Update_Column>;
   where?: Maybe<Updates_Bool_Exp>;
 };
 
@@ -6107,7 +6122,7 @@ export type Users_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "users" */
 export type Users_On_Conflict = {
   constraint: Users_Constraint;
-  update_columns: Array<Users_Update_Column>;
+  update_columns?: Array<Users_Update_Column>;
   where?: Maybe<Users_Bool_Exp>;
 };
 
@@ -6372,7 +6387,7 @@ export type Wordlist_Mutation_Response = {
 /** on conflict condition type for table "wordlist" */
 export type Wordlist_On_Conflict = {
   constraint: Wordlist_Constraint;
-  update_columns: Array<Wordlist_Update_Column>;
+  update_columns?: Array<Wordlist_Update_Column>;
   where?: Maybe<Wordlist_Bool_Exp>;
 };
 
@@ -6658,7 +6673,7 @@ export type Work_Files_Mutation_Response = {
 /** on conflict condition type for table "work_files" */
 export type Work_Files_On_Conflict = {
   constraint: Work_Files_Constraint;
-  update_columns: Array<Work_Files_Update_Column>;
+  update_columns?: Array<Work_Files_Update_Column>;
   where?: Maybe<Work_Files_Bool_Exp>;
 };
 
@@ -6949,7 +6964,7 @@ export type Work_Specification_Mediums_Mutation_Response = {
 /** on conflict condition type for table "work_specification_mediums" */
 export type Work_Specification_Mediums_On_Conflict = {
   constraint: Work_Specification_Mediums_Constraint;
-  update_columns: Array<Work_Specification_Mediums_Update_Column>;
+  update_columns?: Array<Work_Specification_Mediums_Update_Column>;
   where?: Maybe<Work_Specification_Mediums_Bool_Exp>;
 };
 
@@ -7065,7 +7080,7 @@ export type Work_Specification_Tags_Mutation_Response = {
 /** on conflict condition type for table "work_specification_tags" */
 export type Work_Specification_Tags_On_Conflict = {
   constraint: Work_Specification_Tags_Constraint;
-  update_columns: Array<Work_Specification_Tags_Update_Column>;
+  update_columns?: Array<Work_Specification_Tags_Update_Column>;
   where?: Maybe<Work_Specification_Tags_Bool_Exp>;
 };
 
@@ -7374,7 +7389,7 @@ export type Work_Specifications_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "work_specifications" */
 export type Work_Specifications_On_Conflict = {
   constraint: Work_Specifications_Constraint;
-  update_columns: Array<Work_Specifications_Update_Column>;
+  update_columns?: Array<Work_Specifications_Update_Column>;
   where?: Maybe<Work_Specifications_Bool_Exp>;
 };
 
@@ -7856,7 +7871,7 @@ export type Works_Obj_Rel_Insert_Input = {
 /** on conflict condition type for table "works" */
 export type Works_On_Conflict = {
   constraint: Works_Constraint;
-  update_columns: Array<Works_Update_Column>;
+  update_columns?: Array<Works_Update_Column>;
   where?: Maybe<Works_Bool_Exp>;
 };
 
@@ -8056,7 +8071,7 @@ export type AdminApplicationFragment = (
 
 export type JuryApplicationsFragment = (
   { __typename?: 'applications' }
-  & Pick<Applications, 'id' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'internal_name' | 'rated_by_user' | 'locked' | 'ready' | 'state' | 'winner'>
+  & Pick<Applications, 'id' | 'group' | 'created_at' | 'updated_at' | 'statement' | 'internal_name' | 'rated_by_user' | 'winner'>
   & { elimination?: Maybe<(
     { __typename?: 'eliminations' }
     & EliminationFragment
@@ -8271,7 +8286,14 @@ export type GetAdminApplicationsByEditionQuery = (
   { __typename?: 'query_root' }
   & { applications: Array<(
     { __typename?: 'applications' }
-    & { rating_in_latest_round?: Maybe<(
+    & Pick<Applications, 'id' | 'name' | 'internal_name' | 'state' | 'winner'>
+    & { files: Array<(
+      { __typename?: 'work_files' }
+      & WorkFileFragment
+    )>, elimination?: Maybe<(
+      { __typename?: 'eliminations' }
+      & EliminationFragment
+    )>, rating_in_latest_round?: Maybe<(
       { __typename?: 'ratings_by_application' }
       & Pick<Ratings_By_Application, 'round_id' | 'avg' | 'avg_total' | 'count'>
     )>, ratings_aggregate: (
@@ -8291,8 +8313,6 @@ export type GetAdminApplicationsByEditionQuery = (
         )> }
       )> }
     ) }
-    & ApplicationFragment
-    & AdminApplicationFragment
   )>, applications_aggregate: (
     { __typename?: 'applications_aggregate' }
     & { aggregate?: Maybe<(
@@ -9397,9 +9417,6 @@ export const JuryApplicationsFragmentDoc = gql`
   statement
   internal_name
   rated_by_user
-  locked
-  ready
-  state
   winner
   elimination {
     ...Elimination
@@ -9805,8 +9822,17 @@ export const GetAdminApplicationsByEditionDocument = gql`
     where: {edition_id: {_eq: $edition_id}}
     order_by: {created_at: asc_nulls_first, rating_in_latest_round: {avg: desc_nulls_first, count: desc_nulls_first}, ratings_aggregate: {stddev_samp: {value: desc_nulls_first}}, elimination: {created_at: asc_nulls_first}}
   ) {
-    ...Application
-    ...AdminApplication
+    id
+    name
+    internal_name
+    state
+    winner
+    files(limit: 1, order_by: {order: asc_nulls_last}) {
+      ...WorkFile
+    }
+    elimination {
+      ...Elimination
+    }
     rating_in_latest_round {
       round_id
       avg
@@ -9834,8 +9860,8 @@ export const GetAdminApplicationsByEditionDocument = gql`
     }
   }
 }
-    ${ApplicationFragmentDoc}
-${AdminApplicationFragmentDoc}`;
+    ${WorkFileFragmentDoc}
+${EliminationFragmentDoc}`;
 
   @Injectable({
     providedIn: 'root'
@@ -10629,7 +10655,7 @@ export const GetCurrentRoundDocument = gql`
 export const GetApplicationsToEliminateDocument = gql`
     query GetApplicationsToEliminate($round_id: Int!) {
   applications(
-    where: {ratings: {rating_round: {id: {_eq: $round_id}}}, rating_in_latest_round: {round_id: {_eq: $round_id}, avg: {_lt: 5}}, _not: {elimination: {}}}
+    where: {_or: [{state: {_eq: "pristine"}}, {state: {_eq: "no-works"}}, {state: {_eq: "no-files"}}, {_and: {ratings: {rating_round: {id: {_eq: $round_id}}}, rating_in_latest_round: {round_id: {_eq: $round_id}, avg: {_lt: 5}}}}], _not: {elimination: {}}}
   ) {
     id
     state

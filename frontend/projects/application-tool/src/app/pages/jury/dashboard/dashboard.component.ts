@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { from, Observable, switchMap, withLatestFrom } from 'rxjs';
 import { AuthService } from '../../../shared/services/auth.service';
 import { HasuraService } from '../../../shared/services/hasura.service';
 import { JuryService } from '../jury.service';
+import {
+  GetJuryStatisticGQL,
+  GetJuryStatisticSubscription,
+} from 'generated/types.graphql-gen';
+import { SubscriptionResult } from 'apollo-angular';
 
 @Component({
   selector: 'app-jury-dashboard',
@@ -13,19 +18,36 @@ export class DashboardComponent implements OnInit {
   user$;
   state$;
   currentRound$;
+  roundStatistic$;
 
   applications$;
+
+  juryMembers$?: Observable<SubscriptionResult<GetJuryStatisticSubscription>>;
 
   constructor(
     private authService: AuthService,
     private hasuraService: HasuraService,
-    private juryService: JuryService
+    private juryService: JuryService,
+    private getJuryStatisticGQL: GetJuryStatisticGQL
   ) {
     this.user$ = this.authService.authState;
     this.currentRound$ = this.hasuraService.getCurrentRound();
+    this.roundStatistic$ = this.hasuraService.getRoundStatistics();
 
     this.state$ = this.juryService.getEditionState();
     this.applications$ = this.juryService.getApplications();
+
+    this.authService.currentUser.then((user) => {
+      this.juryMembers$ = this.roundStatistic$.pipe(
+        switchMap((roundStatistic) => {
+          console.log(user?.uid);
+          return this.getJuryStatisticGQL.subscribe({
+            round_id: roundStatistic.data.rating_rounds_by_pk?.id || 0,
+            _in: [user?.uid || ''],
+          });
+        })
+      );
+    });
   }
 
   showIntroduction: boolean = false;

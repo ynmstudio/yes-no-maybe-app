@@ -1,5 +1,16 @@
+const plugin = require("tailwindcss/plugin");
+const backfaceVisibility = plugin(function ({ addUtilities }) {
+  addUtilities({
+    ".backface-visible": {
+      "backface-visibility": "visible",
+    },
+    ".backface-hidden": {
+      "backface-visibility": "hidden",
+    },
+  });
+});
+
 module.exports = {
-  prefix: "",
   content: ["./projects/application-tool/src/**/*.{html,ts,scss}"],
   darkMode: "class", // or 'media' or 'false'
   theme: {
@@ -198,6 +209,15 @@ module.exports = {
           900: "#7d3013",
         },
       },
+      keyframes: {
+        rotation: {
+          "0%": { transform: "rotate(-360deg) rotateY(-90deg)" },
+          "100%": { transform: "rotate(360deg) rotateY(90deg)" },
+        },
+      },
+      animation: {
+        rotation: "rotation 15s linear infinite",
+      },
     },
   },
   corePlugins: {
@@ -205,6 +225,7 @@ module.exports = {
     prose: false,
   },
   plugins: [
+    backfaceVisibility,
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),
     require("@tailwindcss/line-clamp"),

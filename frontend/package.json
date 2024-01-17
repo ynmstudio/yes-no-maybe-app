@@ -1,13 +1,13 @@
 {
   "name": "frontend",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "scripts": {
     "postinstall": "ngcc",
     "ng": "ng",
     "config": "ts-node set-env.ts",
     "start": "npm run config && npm run gql:update-schema && run-p run:tool gql:codegen:watch",
     "run:tool": "ng serve --project application-tool",
-    "build:prod": "npm run config && cross-env NODE_ENV=production ng build --configuration production --project application-tool ",
+    "build:prod": "npm run config && cross-env NODE_ENV=production ng build --configuration production --project application-tool",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

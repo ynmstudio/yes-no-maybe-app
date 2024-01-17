@@ -186,7 +186,7 @@ export class FullscreenComponent implements OnInit, OnDestroy {
     try {
       if (screenfull.isEnabled) {
         const realScreenFull = screenfull;
-        realScreenFull.request(this.elRef.nativeElement, {
+        realScreenFull.request(undefined, {
           navigationUI: 'hide',
         });
       }
