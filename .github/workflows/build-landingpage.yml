@@ -37,6 +37,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20.x
+      - name: Install dependencies
+        run: |
+          cd landingpage/
+          npm ci
+      - name: Test Landingpage App
+        run: |
+          cd landingpage/
+          npm run build
       - name: Save to GitHub Pages branch 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
