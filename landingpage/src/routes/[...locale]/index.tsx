@@ -111,7 +111,7 @@ export default component$(() => {
           <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
           <div class="container relative mx-auto px-4 md:px-6">
             <div class="flex max-w-6xl flex-col  items-center space-y-24">
-              <div class="text-balance w-full space-y-2">
+              <div class="w-full space-y-2 text-balance">
                 <h1 class="flex w-full flex-col justify-between text-4xl font-medium tracking-tighter  md:text-6xl lg:text-7xl/none xl:text-8xl">
                   <div class="self-start whitespace-pre">{$localize`From application\nto Jury voting.`}</div>
                   <div class="self-end whitespace-pre">
@@ -120,7 +120,7 @@ export default component$(() => {
                 </h1>
               </div>
               <div class="flex w-full flex-col items-baseline gap-4 space-x-4 text-white/80 lg:flex-row">
-                <p class="text-balance max-w-prose md:text-xl">
+                <p class="max-w-prose text-balance md:text-xl">
                   {$localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`}
                 </p>
                 <a
@@ -151,7 +151,7 @@ export default component$(() => {
                   <h2 class="text-3xl font-bold tracking-tighter sm:text-5xl">
                     {$localize`Simplify Your Art Prize Process`}
                   </h2>
-                  <p class="text-pretty max-w-2xl text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  <p class="max-w-2xl text-pretty text-gray-500 dark:text-gray-400 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                     {$localize`From application to voting, our tool makes the art prize
                     process seamless and efficient.`}
                   </p>
@@ -199,11 +199,11 @@ export default component$(() => {
               </div>
               <div class="w-full max-w-2xl">
                 <iframe
-                  class="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                  class="mx-auto aspect-video w-full overflow-hidden rounded-xl object-cover object-center sm:w-full"
                   width="560"
                   height="315"
                   src="https://www.youtube.com/embed/izJ1rc2MF9E?si=_FKc81vCDJozWYlS"
-                  title="YouTube video player"
+                  title="Walkthrough Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullscreen
                 ></iframe>
@@ -307,7 +307,7 @@ export default component$(() => {
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   // example of loading params for this use case
   // every implementation will be different
-  const locales = ["en", "de"];
+  const locales = ["en", "de", ""];
 
   return {
     params: locales.map((locale) => {
