@@ -199,7 +199,7 @@ export default component$(() => {
               </div>
               <div class="w-full max-w-2xl">
                 <iframe
-                  class="mx-auto aspect-video w-full overflow-hidden rounded-xl object-cover object-center sm:w-full"
+                  class="mx-auto aspect-video h-auto w-full overflow-hidden rounded-xl object-cover object-center sm:w-full"
                   width="560"
                   height="315"
                   src="https://www.youtube.com/embed/izJ1rc2MF9E?si=_FKc81vCDJozWYlS"
@@ -231,10 +231,12 @@ export default component$(() => {
                         {...props}
                         type="text"
                         class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full max-w-lg flex-1 rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder={$localize`Your Name`}
+                        placeholder={$localize`Your Name` + "*"}
                         value={field.value}
                       />
-                      {field.error && <div>{field.error}</div>}
+                      {field.error && (
+                        <div class="text-xs text-red-500">{field.error}</div>
+                      )}
                     </>
                   )}
                 </Field>
@@ -245,10 +247,12 @@ export default component$(() => {
                         {...props}
                         type="email"
                         class="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-10 w-full max-w-lg flex-1 rounded-md border px-3 py-2 text-sm file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                        placeholder={$localize`Your Email`}
+                        placeholder={$localize`Your Email` + "*"}
                         value={field.value}
                       />
-                      {field.error && <div>{field.error}</div>}
+                      {field.error && (
+                        <div class="text-xs text-red-500">{field.error}</div>
+                      )}
                     </>
                   )}
                 </Field>
