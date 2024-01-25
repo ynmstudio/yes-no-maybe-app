@@ -55,7 +55,7 @@
     "fast-fuzzy": "^1.11.1",
     "firebase": "^9.4.0",
     "graphql": "^15.8.0",
-    "graphql-cli": "^3.0.14",
+    "graphql-cli": "^4.1.0",
     "ng-connection-service": "^1.0.4",
     "ng2-pdf-viewer": "^7.0.2",
     "ngx-chips": "^3.0.0",
