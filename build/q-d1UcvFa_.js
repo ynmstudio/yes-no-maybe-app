@@ -1,0 +1,1 @@
+import{h as m}from"./q-zoI747Cb.js";const e=o=>{window.location.href="mailto:mail@ynm.studio?subject=YesNoMaybeApp Request by "+o.name+" ("+o.email+")&body="+o.message};export{m as _hW,e as s_l7xgUlGsZnc};
