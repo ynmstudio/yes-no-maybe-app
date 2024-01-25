@@ -1,0 +1,59 @@
+{
+  "name": "yes-no-maybe-app-landingpage",
+  "description": "Landingpage for YesNoMaybe App",
+  "engines": {
+    "node": ">=15.0.0"
+  },
+  "private": true,
+  "trustedDependencies": [
+    "sharp"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "qwik build",
+    "build.client": "vite build && npm run i18n-translate",
+    "build.preview": "vite build --ssr src/entry.preview.tsx",
+    "build.server": "vite build -c adapters/static/vite.config.ts",
+    "build.types": "tsc --incremental --noEmit",
+    "deploy": "echo 'Run \"npm run qwik add\" to install a server adapter'",
+    "dev": "vite --mode ssr",
+    "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
+    "fmt": "prettier --write .",
+    "fmt.check": "prettier --check .",
+    "i18n-extract": "node_modules/.bin/localize-extract -s \"dist/build/*.js\" -f json -o src/locales/message.en.json",
+    "i18n-translate": "node_modules/.bin/localize-translate -s \"*.js\" -t src/locales/message.*.json -o dist/build/{{LOCALE}} -r ./dist/build",
+    "lint": "eslint \"src/**/*.ts*\"",
+    "prei18n-extract": "vite build",
+    "preview": "qwik build preview && vite preview --open",
+    "start": "vite --open --mode ssr",
+    "qwik": "qwik"
+  },
+  "devDependencies": {
+    "@angular/compiler": "^16.2.2",
+    "@angular/compiler-cli": "^16.2.2",
+    "@builder.io/qwik": "^1.4.1",
+    "@builder.io/qwik-city": "^1.4.1",
+    "@types/eslint": "^8.56.2",
+    "@types/node": "^20.11.6",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.56.0",
+    "eslint-plugin-qwik": "^1.4.1",
+    "postcss": "^8.4.31",
+    "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.4",
+    "tailwindcss": "^3.4.1",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.0.0",
+    "undici": "*",
+    "valibot": "^0.27.0",
+    "vite": "^5.0.12",
+    "vite-tsconfig-paths": "^4.2.1"
+  },
+  "dependencies": {
+    "@angular/localize": "^16.2.2",
+    "@modular-forms/qwik": "^0.23.1",
+    "sharp": "^0.33.2"
+  }
+}
