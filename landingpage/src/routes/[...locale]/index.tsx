@@ -77,7 +77,7 @@ export default component$(() => {
           ]}
         />
         <div class="absolute inset-0  bg-gradient-to-b from-black/50 to-transparent"></div>
-        <header class="relative flex flex-wrap items-baseline gap-2  px-4 py-4 text-white lg:flex-nowrap lg:items-center lg:px-6">
+        <header class="relative flex items-baseline gap-2  px-4 py-4 text-white lg:items-center lg:px-6">
           <Link
             class="flex flex-col items-start justify-center font-mono lg:flex-row"
             href=""
@@ -95,13 +95,13 @@ export default component$(() => {
                 {$localize`Features`}
               </a>
               <a
-                class="py-1 text-sm underline-offset-4 hover:underline"
+                class="hidden py-1 text-sm underline-offset-4 hover:underline sm:block"
                 href="#usecase"
               >
                 {$localize`For Artists`}
               </a>
               <a
-                class="py-1 text-sm underline-offset-4 hover:underline"
+                class="hidden py-1 text-sm underline-offset-4 hover:underline sm:block"
                 href="#usecase"
               >
                 {$localize`For Jury`}
@@ -142,12 +142,12 @@ export default component$(() => {
                   </div>
                 </h1>
               </div>
-              <div class="flex w-full flex-col items-baseline gap-4 space-x-4 text-white/80 lg:flex-row">
+              <div class="flex w-full flex-col items-baseline gap-6  text-white/80 lg:flex-row ">
                 <p class="max-w-prose text-balance md:text-xl">
                   {$localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`}
                 </p>
                 <a
-                  class="inline-flex  items-center justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                  class="inline-flex w-full items-center  justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
                   href="#contact"
                 >
                   {$localize`Request a Demo`}
