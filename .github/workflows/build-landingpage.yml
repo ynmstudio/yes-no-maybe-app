@@ -44,6 +44,8 @@ jobs:
       - name: Test Landingpage App
         run: |
           cd landingpage/
+          npm run i18n-extract
+          npm run i18n-translate
           npm run build
       - name: Save to GitHub Pages branch 🚀
         uses: JamesIves/github-pages-deploy-action@v4
