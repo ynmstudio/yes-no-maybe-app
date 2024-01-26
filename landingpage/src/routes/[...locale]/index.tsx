@@ -64,6 +64,7 @@ export default component$(() => {
   });
 
   const showContent = useSignal<boolean>(false);
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     showContent.value = true;
   });
@@ -340,6 +341,16 @@ export default component$(() => {
 export const head: DocumentHead = ({ resolveValue }) => {
   return {
     title: "[Yes][No][Maybe].App",
+    meta: [
+      {
+        key: "description",
+        content: $localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`,
+      },
+      {
+        property: "og:image",
+        content: "~/media/ynm-app-on-ipad.jpg",
+      },
+    ],
   };
 };
 

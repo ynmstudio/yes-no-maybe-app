@@ -1,9 +1,6 @@
 {
   "locale": "en",
   "translations": {
-    "8018332913706815417": "Please enter your name.",
-    "7831445970207123903": "Please enter your email.",
-    "2661441261152211391": "The email address is badly formatted.",
     "6599364831830861985": "Features",
     "6313620391447460034": "For Artists",
     "2306067667418713736": "For Jury",
@@ -26,6 +23,9 @@
     "3901848700381049273": "Your Message",
     "3034336396298740052": "Inquire now!",
     "7661634014629826139": "Supported by:",
-    "5891707175321515013": "Imprint"
+    "5891707175321515013": "Imprint",
+    "8018332913706815417": "Please enter your name.",
+    "7831445970207123903": "Please enter your email.",
+    "2661441261152211391": "The email address is badly formatted."
   }
 }
