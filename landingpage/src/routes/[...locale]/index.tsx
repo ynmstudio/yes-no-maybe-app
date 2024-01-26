@@ -132,27 +132,25 @@ export default component$(() => {
               : "translate-y-4 opacity-0",
           ]}
         >
-          <div class="container relative mx-auto px-4 md:px-6">
-            <div class="flex max-w-6xl flex-col  items-center space-y-24">
-              <div class="w-full space-y-2 text-balance">
-                <h1 class="flex w-full flex-col justify-between text-4xl font-medium tracking-tighter  md:text-6xl lg:text-7xl/none xl:text-8xl">
-                  <div class="self-start whitespace-pre">{$localize`From application\nto Jury voting.`}</div>
-                  <div class="self-end whitespace-pre">
-                    {$localize`Digitally and easily\nmanage art awards.`}
-                  </div>
-                </h1>
-              </div>
-              <div class="flex w-full flex-col items-baseline gap-6  text-white/80 lg:flex-row ">
-                <p class="max-w-prose text-balance md:text-xl">
-                  {$localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`}
-                </p>
-                <a
-                  class="inline-flex w-full items-center  justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
-                  href="#contact"
-                >
-                  {$localize`Request a Demo`}
-                </a>
-              </div>
+          <div class="container relative mx-auto flex flex-col items-center gap-24 px-4 transition-all md:px-6">
+            <div class="w-full space-y-2 text-balance">
+              <h1 class="flex w-full flex-col justify-between text-4xl font-medium tracking-tighter  md:text-6xl lg:text-8xl/none 2xl:text-9xl">
+                <div class="self-start whitespace-pre">{$localize`From application\nto Jury voting.`}</div>
+                <div class="self-end whitespace-pre">
+                  {$localize`Digitally and easily\nmanage art awards.`}
+                </div>
+              </h1>
+            </div>
+            <div class="flex w-full flex-col items-baseline gap-6  text-white/80 lg:flex-row ">
+              <p class="max-w-prose text-balance md:text-xl">
+                {$localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`}
+              </p>
+              <a
+                class="inline-flex w-full items-center  justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
+                href="#contact"
+              >
+                {$localize`Request a Demo`}
+              </a>
             </div>
           </div>
         </section>
