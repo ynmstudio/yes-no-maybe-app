@@ -1,5 +1,6 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import {
+  DocumentHead,
   Link,
   StaticGenerateHandler,
   routeLoader$,
@@ -63,6 +64,7 @@ export default component$(() => {
   });
 
   const showContent = useSignal<boolean>(false);
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     showContent.value = true;
   });
@@ -141,12 +143,19 @@ export default component$(() => {
                 </div>
               </h1>
             </div>
-            <div class="flex w-full flex-col items-baseline gap-6  text-white/80 lg:flex-row ">
+            <div
+              class={[
+                "flex w-full flex-col items-baseline gap-6  text-white/80 transition delay-500 duration-700 lg:flex-row ",
+                showContent.value
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-2 opacity-0",
+              ]}
+            >
               <p class="max-w-prose text-balance md:text-xl">
                 {$localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`}
               </p>
               <a
-                class="inline-flex w-full items-center  justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
+                class="relative inline-flex w-full items-center justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow  transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
                 href="#contact"
               >
                 {$localize`Request a Demo`}
@@ -328,6 +337,22 @@ export default component$(() => {
     </div>
   );
 });
+
+export const head: DocumentHead = ({ resolveValue }) => {
+  return {
+    title: "[Yes][No][Maybe].App",
+    meta: [
+      {
+        key: "description",
+        content: $localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`,
+      },
+      {
+        property: "og:image",
+        content: "~/media/ynm-app-on-ipad.jpg",
+      },
+    ],
+  };
+};
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   // example of loading params for this use case

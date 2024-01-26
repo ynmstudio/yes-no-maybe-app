@@ -7,7 +7,7 @@ import {
 import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.scss";
-import "./../public/fonts/ibm-plex/css/ibm-plex.css";
+import "/fonts/ibm-plex/css/ibm-plex.css?url";
 
 export default component$(() => {
   /**
