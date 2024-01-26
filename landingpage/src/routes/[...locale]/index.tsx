@@ -338,7 +338,7 @@ export default component$(() => {
   );
 });
 
-export const head: DocumentHead = ({ resolveValue }) => {
+export const head: DocumentHead = () => {
   return {
     title: "[Yes][No][Maybe].App",
     meta: [
