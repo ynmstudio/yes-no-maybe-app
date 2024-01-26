@@ -1,4 +1,4 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import {
   Link,
   StaticGenerateHandler,
@@ -51,8 +51,6 @@ export const sendEmail = $((values: ContactForm) => {
 });
 
 export default component$(() => {
-  const name = "[Yes][No][Maybe].App";
-
   const [, { Form, Field }] = useForm<ContactForm>({
     loader: useFormLoader(),
     //  action: useFormAction(),
@@ -63,38 +61,58 @@ export default component$(() => {
     console.log(values);
     sendEmail(values);
   });
+
+  const showContent = useSignal<boolean>(false);
+  useVisibleTask$(() => {
+    showContent.value = true;
+  });
+
   return (
     <div class="flex min-h-screen flex-col">
-      <div class="flex min-h-screen flex-col">
-        <header class="flex flex-wrap items-center gap-2 bg-black px-4 py-4 text-white lg:flex-nowrap lg:px-6">
-          <Link class="flex items-center justify-center font-mono" href="">
-            <span>{name}</span>
+      <div class="relative flex min-h-screen flex-col overflow-clip bg-black">
+        <Image
+          class={[
+            "absolute inset-0 h-full w-full object-cover opacity-40  transition duration-1000 ease-in-out",
+            showContent.value ? "scale-100" : "scale-105",
+          ]}
+        />
+        <div class="absolute inset-0  bg-gradient-to-b from-black/50 to-transparent"></div>
+        <header class="relative flex flex-wrap items-baseline gap-2  px-4 py-4 text-white lg:flex-nowrap lg:items-center lg:px-6">
+          <Link
+            class="flex flex-col items-start justify-center font-mono lg:flex-row"
+            href=""
+          >
+            <span>[Yes]</span>
+            <span>[No]</span>
+            <span>[Maybe].App</span>
           </Link>
-          <nav class="ml-auto flex gap-4 sm:gap-6">
-            <a
-              class="text-sm  underline-offset-4 hover:underline"
-              href="#features"
-            >
-              {$localize`Features`}
-            </a>
-            <a
-              class="text-sm  underline-offset-4 hover:underline"
-              href="#usecase"
-            >
-              {$localize`For Artists`}
-            </a>
-            <a
-              class="text-sm  underline-offset-4 hover:underline"
-              href="#usecase"
-            >
-              {$localize`For Jury`}
-            </a>
-            <a
-              class="text-sm  underline-offset-4 hover:underline"
-              href="#contact"
-            >
-              {$localize`Contact`}
-            </a>
+          <nav class="ml-auto flex flex-col items-end gap-x-4 sm:gap-x-6 lg:flex-row lg:items-center">
+            <span class="flex items-center gap-x-4 sm:gap-x-6">
+              <a
+                class="py-1 text-sm underline-offset-4 hover:underline"
+                href="#features"
+              >
+                {$localize`Features`}
+              </a>
+              <a
+                class="py-1 text-sm underline-offset-4 hover:underline"
+                href="#usecase"
+              >
+                {$localize`For Artists`}
+              </a>
+              <a
+                class="py-1 text-sm underline-offset-4 hover:underline"
+                href="#usecase"
+              >
+                {$localize`For Jury`}
+              </a>
+              <a
+                class="py-1 text-sm underline-offset-4 hover:underline"
+                href="#contact"
+              >
+                {$localize`Contact`}
+              </a>
+            </span>
             <div class="ml-4 flex gap-2">
               <a class="text-sm  underline-offset-4 hover:underline" href="/en">
                 EN
@@ -106,9 +124,14 @@ export default component$(() => {
             </div>
           </nav>
         </header>
-        <section class="relative flex w-full flex-auto items-center bg-black py-12 text-white">
-          <Image class="absolute inset-0 h-full w-full object-cover opacity-20 " />
-          <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
+        <section
+          class={[
+            "flex w-full flex-auto items-center py-12 text-white transition delay-300 duration-700 ease-in-out",
+            showContent.value
+              ? "translate-y-0 opacity-100"
+              : "translate-y-4 opacity-0",
+          ]}
+        >
           <div class="container relative mx-auto px-4 md:px-6">
             <div class="flex max-w-6xl flex-col  items-center space-y-24">
               <div class="w-full space-y-2 text-balance">
@@ -158,7 +181,7 @@ export default component$(() => {
                 </div>
                 <div class="flex flex-col gap-2 min-[400px]:flex-row">
                   <a
-                    class="inline-flex  items-center justify-center rounded-full bg-gray-900 px-6 py-3 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                    class="inline-flex  items-center justify-center rounded-full bg-gray-900 px-6 py-3 font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
                     href="https://www.kultur-b-digital.de/en/digitale-kultur/data-management-and-infrastructure/clear-anonymous-and-fair-a-digital-tool-for-jury-proceeding/"
                     target="_blank"
                   >
@@ -268,7 +291,7 @@ export default component$(() => {
                 </Field>
 
                 <button
-                  class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap rounded-full  bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+                  class="ring-offset-background focus-visible:ring-ring inline-flex items-center justify-center whitespace-nowrap rounded-full  bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
                   type="submit"
                 >
                   {$localize`Inquire now!`}
