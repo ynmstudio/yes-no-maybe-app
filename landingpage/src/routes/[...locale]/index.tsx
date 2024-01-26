@@ -74,11 +74,11 @@ export default component$(() => {
       <div class="relative flex min-h-screen flex-col overflow-clip bg-black">
         <Image
           class={[
-            "absolute inset-0 h-full w-full object-cover opacity-40  transition duration-1000 ease-in-out",
-            showContent.value ? "scale-100" : "scale-105",
+            "absolute inset-0 h-full w-full object-cover transition duration-1000 ease-in-out",
+            showContent.value ? "scale-100 opacity-50" : "scale-110 opacity-0",
           ]}
         />
-        <div class="absolute inset-0  bg-gradient-to-b from-black/50 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-radial from-transparent to-black/60"></div>
         <header class="relative flex items-baseline gap-2  px-4 py-4 text-white lg:items-center lg:px-6">
           <Link
             class="flex flex-col items-start justify-center font-mono lg:flex-row"
@@ -145,7 +145,7 @@ export default component$(() => {
             </div>
             <div
               class={[
-                "flex w-full flex-col items-baseline gap-6  text-white/80 transition delay-500 duration-700 lg:flex-row ",
+                "flex w-full flex-col items-baseline justify-evenly gap-6 text-white/80  transition delay-500 duration-700 lg:flex-row lg:items-center ",
                 showContent.value
                   ? "translate-y-0 opacity-100"
                   : "translate-y-2 opacity-0",
@@ -155,10 +155,10 @@ export default component$(() => {
                 {$localize`Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.`}
               </p>
               <a
-                class="relative inline-flex w-full items-center justify-center rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow  transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
+                class="relative inline-flex w-full items-center justify-center whitespace-nowrap rounded-full border border-current px-6 py-3 font-medium text-white/80 shadow  transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300 md:w-auto"
                 href="#contact"
               >
-                {$localize`Request a Demo`}
+                &darr; {$localize`Request a Demo`}
               </a>
             </div>
           </div>
