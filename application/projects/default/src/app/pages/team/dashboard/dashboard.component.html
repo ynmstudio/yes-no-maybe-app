@@ -1,0 +1,522 @@
+<div class="lg:flex max-w-full" *ngIf="state$ | async as state">
+  <ng-container [ngSwitch]="state">
+    <!-- BEFORE SUBMISSION STARTS -->
+    <div
+      id="before-application"
+      *ngSwitchCase="'open'"
+      class="container--default flex-auto w-full md:flex-shrink"
+    >
+      <div class="flex items-center justify-center bg-gray-100 h-80">
+        <div
+          class="text-gray-300"
+          [innerHtml]="'snippets.no-data' | translate"
+        ></div>
+      </div>
+    </div>
+    <!-- STATISTICS -->
+    <div
+      id="statistics"
+      *ngSwitchCase="'submission'"
+      class="container--default flex-auto w-full md:flex-shrink"
+    >
+      <div
+        class="md:grid md:grid-cols-2 xl:grid-cols-form gap-0 items-stretch"
+        *ngIf="statistic$ | async as statisticObject"
+      >
+        <ng-template
+          *ngTemplateOutlet="
+            statistics;
+            context: { $implicit: statisticObject }
+          "
+        ></ng-template>
+      </div>
+    </div>
+    <!-- RATING -->
+    <div
+      id="rating"
+      *ngSwitchCase="'rating'"
+      class="container--default flex-auto w-full md:flex-shrink"
+    >
+      <ng-container *ngIf="roundStatistic$ | async as roundStatistic">
+        <div
+          class="md:grid lg:block xl:grid md:grid-cols-2 xl:grid-cols-form gap-0 items-stretch"
+          *ngIf="roundStatistic.data.rating_rounds_by_pk; else noRounds"
+        >
+          <div class="xl:w-96 flex flex-col">
+            <div class="px-4 lg:px-6 pb-2">
+              <div class="font-mono text-xs">
+                {{
+                  (roundStatistic.data.rating_rounds_by_pk.active
+                    ? "defaults.rating-round-single"
+                    : "defaults.rating-round-result-single"
+                  ) | translate
+                }}
+                {{
+                  roundStatistic.data.rating_rounds_by_pk.level !== null
+                    ? (roundStatistic.data.rating_rounds_by_pk.level || 0) + 1
+                    : 0
+                }}
+              </div>
+            </div>
+
+            <div class="flex-auto bg-gray-100 p-4 lg:p-6">
+              <div
+                class="flex w-full justify-between items-center border-b border-black pb-4 mb-4"
+              >
+                <div
+                  class="font-mono"
+                  [innerText]="'defaults.nominated' | translate"
+                ></div>
+                <div
+                  class="text-3xl"
+                  [ngClass]="{
+                    'text-green-600':
+                      roundStatistic.data.in.aggregate?.count ===
+                      roundStatistic.data.rating_rounds_by_pk.goal,
+                    'text-red-600':
+                      (roundStatistic.data.in.aggregate?.count || 0) >
+                      (roundStatistic.data.rating_rounds_by_pk.goal || 0)
+                  }"
+                >
+                  {{ roundStatistic.data.in.aggregate?.count }}/{{
+                    roundStatistic.data.rating_rounds_by_pk.goal
+                  }}
+                </div>
+              </div>
+              <div
+                class="flex justify-between items-center border-b border-black pb-4 mb-4"
+              >
+                <div
+                  class="font-mono"
+                  [innerText]="'defaults.eliminated' | translate"
+                ></div>
+                <div class="text-3xl text-yellow-500">
+                  {{ roundStatistic.data.out.aggregate?.count }}
+                </div>
+              </div>
+              <div
+                class="flex justify-between items-center border-b border-black pb-4 mb-4"
+              >
+                <div
+                  class="font-mono"
+                  [innerText]="'defaults.unrated' | translate"
+                ></div>
+                <div class="text-3xl">
+                  {{
+                    (roundStatistic.data.total.aggregate?.count || 0) -
+                      (roundStatistic.data.rated.aggregate?.count || 0)
+                  }}
+                </div>
+              </div>
+              <div *ngIf="roundStatistic.data.rating_rounds_by_pk?.active">
+                <button
+                  (click)="
+                    showEditRoundModal(roundStatistic.data.rating_rounds_by_pk)
+                  "
+                  class="underline font-mono"
+                >
+                  {{ "snippets.edit-goals" | translate }} &rarr;
+                </button>
+              </div>
+
+              <a
+                [routerLink]="['..', 'applications']"
+                class="inline-block mt-8 mb-2 mr-2 bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
+                >{{ "snippets.go-to-applications" | translate }} &rarr;</a
+              >
+              <button
+                class="inline-block mb-2 bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+                *ngIf="!roundStatistic.data.rating_rounds_by_pk?.closed"
+                (click)="
+                  showCloseRoundModal(roundStatistic.data.rating_rounds_by_pk)
+                "
+                [innerHTML]="'snippets.close-round-short' | translate"
+              ></button>
+
+              <button
+                class="mb-2 bg-transparent text-black border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+                *ngIf="roundStatistic.data.rating_rounds_by_pk?.closed"
+                (click)="showConfirmWinnerModal()"
+              >
+                {{ "snippets.select-winner" | translate }}
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-col xl:col-span-2">
+            <div
+              class="flex justify-between px-4 lg:px-6 xl:pl-16 pb-2 mt-4 md:mt-0 lg:mt-4 xl:mt-0"
+            >
+              <div
+                class="font-mono text-xs"
+                [innerHtml]="'defaults.jury-rating-multi' | translate"
+              ></div>
+              <div
+                class="font-mono text-xs text-right"
+                [innerHtml]="'defaults.status-single' | translate"
+              ></div>
+            </div>
+            <div class="flex-auto bg-gray-100 p-4 lg:p-6 xl:pl-16">
+              <div
+                class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
+                *ngFor="let user of (juryMembers$ | async)?.data?.users"
+              >
+                <div class="flex-auto">{{ user.name }}</div>
+                <div
+                  class="ml-4 mb-3 border border-black w-24 xl:w-2/5 h-3 relative"
+                >
+                  <div
+                    class="absolute inset-0 bg-green-500 origin-top-left transform-gpu transition-transform"
+                    [style.transform]="
+                      'scaleX(' +
+                      (user.ratings_aggregate.aggregate?.count || 0) /
+                        ((roundStatistic$ | async)?.data?.total?.aggregate
+                          ?.count || 1) +
+                      ')'
+                    "
+                  ></div>
+                  <div class="absolute top-full left-0 text-xs">
+                    {{
+                      user.ratings_aggregate.aggregate?.count || 0
+                    }}&thinsp;/&thinsp;{{
+                      (roundStatistic$ | async)?.data?.total?.aggregate
+                        ?.count || 0
+                    }}
+                    <!-- {{
+                      ((user.ratings_aggregate.aggregate?.count || 0) /
+                        ((roundStatistic$ | async)?.data?.total?.aggregate
+                          ?.count || 1)) *
+                        100 | number: "1.0-0"
+                    }}% -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div
+                class="flex justify-between items-center border-b border-black pb-4 mb-4 font-mono"
+              >
+                <div class="flex-auto">Laurie Rojas</div>
+                <div
+                  class="mx-4 mb-3 border border-black w-24 xl:w-2/5 h-3 relative"
+                >
+                  <div
+                    class="absolute inset-0 transition-transform bg-green-500 origin-top-left transform-gpu scale-x-25"
+                  ></div>
+                  <div class="absolute top-full left-0 text-xs">25%</div>
+                </div>
+                <div>
+                  <svg
+                    width="30px"
+                    height="27px"
+                    viewBox="0 0 30 27"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                  >
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <path
+                        d="M27.5529429,0.333560656 C28.8853714,0.333560656 29.9700857,1.45339672 29.9700857,2.8299541 L29.9700857,2.8299541 L29.9700857,18.8051016 C29.9700857,20.181659 28.8853714,21.3014951 27.5529429,21.3014951 L27.5529429,21.3014951 L25.1362286,21.3014951 L25.1362286,26.999823 L19.6188,21.3014951 L2.41722857,21.3014951 C1.0848,21.3014951 8.57142869e-05,20.181659 8.57142869e-05,18.8051016 L8.57142869e-05,18.8051016 L8.57142869e-05,2.8299541 C8.57142869e-05,1.45339672 1.0848,0.333560656 2.41722857,0.333560656 L2.41722857,0.333560656 Z M21.0001714,15 L4.00017143,15 L4.00017143,16 L21.0001714,16 L21.0001714,15 Z M21.0001714,10 L7.00017143,10 L7.00017143,11 L21.0001714,11 L21.0001714,10 Z M21.0001714,5 L7.00017143,5 L7.00017143,6 L21.0001714,6 L21.0001714,5 Z"
+                        id="Fill-2"
+                        fill="currentColor"
+                        transform="translate(14.985086, 13.666692) scale(-1, 1) translate(-14.985086, -13.666692) "
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+              </div> -->
+              <div>
+                <a [routerLink]="['..', 'users']" class="underline font-mono">
+                  {{ "snippets.manage-jury" | translate }}
+                  &rarr;
+                </a>
+              </div>
+              <!-- <button
+                class="inline-block mt-8 bg-black text-white border-black border font-mono  text-xs sm:text-sm md:text-base  leading-none py-3 px-6 rounded-xl"
+              >
+                Nachricht an gesamte Jury
+              </button> -->
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noRounds>
+        <div
+          class="md:grid md:grid-cols-2 xl:grid-cols-form gap-0 items-stretch"
+          *ngIf="statistic$ | async as statisticObject"
+        >
+          <button
+            *ngIf="edition$ | async as edition"
+            class="col-span-3 inline-block mb-8 bg-black text-white border-black border font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30"
+            (click)="showNewRoundModal(edition.id)"
+          >
+            + {{ "snippets.add-first-round" | translate }}
+          </button>
+          <ng-template
+            *ngTemplateOutlet="
+              statistics;
+              context: { $implicit: statisticObject }
+            "
+          ></ng-template>
+        </div>
+      </ng-template>
+    </div>
+    <div
+      class="container--default flex-auto w-full md:flex-shrink"
+      *ngSwitchDefault
+    >
+      Missing layout for status
+      <span class="font-mono bg-gray-300 rounded-full py-1 px-2 text-xs">{{
+        state | uppercase
+      }}</span>
+    </div>
+  </ng-container>
+
+  <!-- STATUS AND UPDATES -->
+  <div class="container--default flex-auto max-w-full md:flex-shrink-0">
+    <!-- STATUS -->
+    <div id="status" class="md:w-80 lg:w-96 mb-16" [ngSwitch]="state">
+      <div
+        *ngSwitchCase="'open'"
+        class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerHtml]="
+            'edition.status--application-starts-in'
+              | translate
+                : { time: (edition$ | async)?.application_start | timePassed }
+          "
+        ></div>
+        <a
+          class="inline-block mt-4 font-mono text-black text-opacity-70"
+          [routerLink]="['..', 'settings']"
+          ><span class="group-hover:underline">Einstellungen</span> &rarr;</a
+        >
+        <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
+      </div>
+      <div
+        *ngSwitchCase="'submission'"
+        class="relative group cursor-pointer z-0 bg-green-500 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerHtml]="
+            'edition.status--application-ends-in'
+              | translate
+                : { time: (edition$ | async)?.application_end | timePassed }
+          "
+        ></div>
+        <a
+          class="inline-block mt-4 font-mono text-black text-opacity-70"
+          [routerLink]="['..', 'settings']"
+          ><span class="group-hover:underline">Einstellungen</span> &rarr;</a
+        >
+        <div class="absolute font-mono top-0 right-full pr-1 md:pr-2">!</div>
+      </div>
+
+      <div
+        *ngSwitchCase="'rating'"
+        class="relative group cursor-pointer z-0 bg-orange-400 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <ng-container *ngIf="roundStatistic$ | async as roundStatistic">
+          <div
+            class="text-headline"
+            *ngIf="
+              roundStatistic.data?.rating_rounds_by_pk &&
+                roundStatistic.data?.rating_rounds_by_pk?.active;
+              else noActiveRound
+            "
+            [innerHtml]="
+              'edition.status--rating--ends-in'
+                | translate
+                  : {
+                      round:
+                        (roundStatistic.data.rating_rounds_by_pk?.level || 0) +
+                        1,
+                      time:
+                        roundStatistic.data.rating_rounds_by_pk?.end_at
+                        | timePassed
+                    }
+            "
+          ></div>
+          <span
+            class="inline-block mt-4 font-mono text-black text-opacity-70"
+            [innerText]="'snippets.please-rate-applications' | translate"
+          >
+          </span>
+          <ng-template #noActiveRound>
+            <div
+              class="text-headline"
+              [innerHtml]="
+                'edition.status--rating--no-active-round' | translate
+              "
+            ></div>
+          </ng-template>
+        </ng-container>
+      </div>
+      <div
+        *ngSwitchCase="'closed'"
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div
+          class="text-headline"
+          [innerHtml]="'edition.status--closed' | translate"
+        ></div>
+      </div>
+      <div
+        *ngSwitchDefault
+        class="relative group cursor-pointer z-0 bg-gray-300 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1"
+      >
+        <div class="text-headline animate-pulse">…</div>
+      </div>
+    </div>
+    <!-- UPDATES -->
+    <div id="updates" class="md:w-80 lg:w-96">
+      <div
+        class="updates--header border-b border-gray-300 flex justify-between items-baseline pb-3 space-x-2"
+      >
+        <span>&darr;</span>
+        <h3
+          class="font-mono bg-gray-100 py-2 px-4"
+          [innerHtml]="'snippets.updates' | translate"
+        ></h3>
+        <button
+          (click)="showNewUpdateModal()"
+          class="font-mono flex-auto text-right p-2 text-xs"
+        >
+          <span class="underline" [innerHTML]="'actions.add' | translate"></span
+          >&nbsp;+
+        </button>
+      </div>
+      <div *ngIf="updates$ | async as updates" [@inOutAnimation]>
+        <!-- SINGLE UPDATE -->
+        <div class="update mt-4" *ngFor="let update of updates.data?.updates">
+          <div
+            class="relative font-mono text-xs sm:text-sm py-2 pl-3 sm:pl-5 lg:pl-7 pr-3 md:ml-1 flex justify-between"
+          >
+            <span
+              [innerHtml]="update.created_at | localizedDate : 'short'"
+            ></span>
+          </div>
+          <div
+            (click)="showEditUpdateModal(update)"
+            class="relative group bg-gray-100 hover:bg-gray-200 py-3 sm:py-5 px-3 sm:px-5 lg:px-7 md:ml-1 cursor-pointer"
+          >
+            <div class="text-headline" [innerHtml]="update.text_de"></div>
+            <div
+              class="text-headline text-gray-600"
+              [innerHtml]="update.text_en"
+            ></div>
+            <a
+              *ngIf="update.url"
+              class="inline-block mt-4 font-mono text-black text-opacity-60"
+              [href]="update.url"
+              target="_blank"
+              ><span
+                class="group-hover:underline"
+                [innerHtml]="'actions.read-more' | translate"
+              ></span>
+              &rarr;</a
+            >
+            <button
+              (click)="showDeleteUpdateModal(update.id)"
+              class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute -top-1 -right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #statistics let-statisticObject>
+  <div class="xl:w-96 flex flex-col">
+    <div class="px-4 lg:px-6 pb-2">
+      <div class="font-mono text-xs">
+        {{ statisticObject?.data?.applications_total?.aggregate?.count || 0 }}
+        {{
+          (statisticObject?.data?.applications_total?.aggregate?.count === 1
+            ? "defaults.application-single"
+            : "defaults.application-multi"
+          ) | translate
+        }}
+      </div>
+    </div>
+    <div class="flex-auto bg-gray-100 p-4 lg:p-6">
+      <div
+        class="flex w-full justify-between items-center border-b border-black pb-4 mb-4"
+      >
+        <div class="font-mono">Angelegt</div>
+        <div class="text-3xl">
+          {{ statisticObject?.data?.applications_untouched?.aggregate?.count }}
+        </div>
+      </div>
+      <div
+        class="flex justify-between items-center border-b border-black pb-4 mb-4"
+      >
+        <div class="font-mono">In Bearbeitung</div>
+        <div class="text-3xl text-yellow-500">
+          {{ statisticObject?.data?.applications_edited?.aggregate?.count }}
+        </div>
+      </div>
+      <div class="flex justify-between items-center pb-4">
+        <div class="font-mono">Abgeschlossen</div>
+        <div class="text-3xl text-green-600">
+          {{ statisticObject?.data?.applications_ready?.aggregate?.count }}
+        </div>
+      </div>
+
+      <a
+        [routerLink]="['..', 'applications']"
+        class="inline-block mt-8 mb-4 bg-black text-white font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
+        [innerHtml]="('defaults.application-multi' | translate) + ' &rarr;'"
+      ></a>
+      <!-- <div class="aspect-w-1 aspect-h-1 bg-red-50 mt-4"></div> -->
+    </div>
+  </div>
+  <div class="flex flex-col xl:col-span-2">
+    <div class="flex justify-between px-4 lg:px-6 xl:pl-16 pb-2">
+      <div
+        class="font-mono text-xs"
+        [title]="'defaults.medium-multi' | translate"
+        [innerHtml]="
+          'snippets.top-ten-type'
+            | translate : { type: ('defaults.medium-multi' | translate) }
+            | uppercase
+        "
+      ></div>
+      <div
+        class="font-mono text-xs text-right"
+        [innerHtml]="'defaults.count' | translate | uppercase"
+      ></div>
+    </div>
+    <div class="flex-auto bg-gray-100 p-4 lg:p-6 xl:pl-16">
+      <div
+        *ngFor="
+          let category of statisticObject?.data?.category_mediums_aggregate
+            ?.nodes | sortByCount
+        "
+        class="flex justify-between items-center border-b border-black pb-4 mb-4"
+      >
+        <div
+          class="font-mono"
+          [innerHtml]="
+            translateService.currentLang == 'de'
+              ? category.name_de
+              : category.name_en
+          "
+        ></div>
+        <div
+          class="text-3xl"
+          [innerText]="category.specifications_aggregate?.aggregate?.count"
+        ></div>
+      </div>
+    </div>
+  </div>
+</ng-template>

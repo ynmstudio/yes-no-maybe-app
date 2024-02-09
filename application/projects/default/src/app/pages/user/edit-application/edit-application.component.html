@@ -1,0 +1,802 @@
+<div class="min-h-screen flex flex-col">
+  <div
+    class="container--default sticky top-0 inset-x-0 flex items-center justify-between z-20 backdrop-blur bg-white bg-opacity-80 border-b border-gray-300"
+  >
+    <div class="flex items-center space-x-4">
+      <button
+        (click)="saveAndClose()"
+        class="px-4 rounded-xl h-10 leading-none bg-gray-200"
+      >
+        <span
+          class="sr-only"
+          [innerHtml]="'snippets.back-to-overview' | translate"
+        ></span>
+        <svg
+          width="11px"
+          height="17px"
+          viewBox="0 0 11 17"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g transform="translate(-49.000000, -49.000000)">
+              <g transform="translate(31.000000, 37.000000)">
+                <polyline
+                  stroke="currentColor"
+                  stroke-width="2"
+                  transform="translate(23.500000, 20.500000) rotate(-180.000000) translate(-23.500000, -20.500000) "
+                  points="19.5 13.5 27.5 20.5 19.5 27.5"
+                ></polyline>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </button>
+
+      <div
+        class="text-headline h-10 leading-10"
+        [innerHtml]="
+          ((isNew
+            ? 'application-form.new-application'
+            : 'application-form.edit-application'
+          ) | translate) + ':'
+        "
+      ></div>
+    </div>
+  </div>
+
+  <form class="flex-auto max-w-full space-y-5 lg:space-y-7" [formGroup]="form">
+    <!-- APPLICATION FORM -->
+    <div class="lg:flex xl:container container--default mx-auto">
+      <div
+        class="flex-auto font-mono text-xs sm:text-sm grid grid-cols-1 lg:grid-cols-form items-center gap-x-4 gap-y-2 lg:gap-y-3"
+      >
+        <label
+          for="name"
+          [innerHtml]="'application-form.name-of-artist-or-group' | translate"
+        ></label>
+        <input
+          id="name"
+          formControlName="name"
+          name="name"
+          type="text"
+          class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+          [ngClass]="{
+            'ring-1 ring-red-500': name?.invalid
+          }"
+        />
+      </div>
+      <div class="flex items-center ml-auto mt-3 lg:mt-0 lg:ml-4">
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <!-- On: "bg-gray-600", Off: "bg-gray-200" -->
+        <button
+          (click)="toggleGroup()"
+          type="button"
+          aria-pressed="false"
+          aria-labelledby="toggleLabel"
+          [ngClass]="group?.value ? 'bg-green-500' : 'bg-gray-300'"
+          class="relative inline-flex flex-shrink-0 h-6 w-12 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-white-400"
+        >
+          <span
+            class="sr-only"
+            [innerHtml]="'snippets.this-is-a-group' | translate"
+          ></span>
+          <!-- On: "translate-x-5", Off: "translate-x-0" -->
+          <span
+            aria-hidden="true"
+            [ngClass]="group?.value ? 'translate-x-6' : 'translate-x-0'"
+            class="inline-block h-5 w-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"
+          ></span>
+        </button>
+        <span class="ml-3" id="toggleLabel">
+          <span
+            class="font-mono text-xs uppercase text-black leading-none"
+            [innerHtml]="'application-form.application-is-by-group' | translate"
+          >
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="container--default-x py-8 lg:py-0">
+      <!-- WORKS -->
+      <div
+        class="lg:flex"
+        [ngClass]="[
+          !(portfolioWorks$ | async)?.data?.works?.length! &&
+          !(singleWorks$ | async)?.data?.works?.length!
+            ? 'flex-row lg:space-x-6 xl:space-x-8'
+            : 'flex-col items-center lg:space-y-6 xl:space-y-8'
+        ]"
+      >
+        <div
+          class="flex-auto lg:w-1/2"
+          [ngClass]="
+            (portfolioWorks$ | async)?.data?.works?.length! ||
+            (singleWorks$ | async)?.data?.works?.length!
+              ? 'lg:w-full'
+              : 'lg:w-1/2'
+          "
+        >
+          <div
+            *ngIf="
+              (portfolioWorks$ | async)?.data?.works?.length! > 0;
+              else noPortfolioWork
+            "
+          >
+            <div
+              class="sm:my-4 sm:pb-4 border-gray-200"
+              [ngClass]="{
+                'border-b': !last
+              }"
+              *ngFor="
+                let work of (portfolioWorks$ | async)?.data?.works;
+                let last = last;
+                trackBy: trackByFn
+              "
+            >
+              <app-work-portfolio
+                [files]="work.files"
+                [application_id]="application_id"
+                [work_id]="work.id"
+                (pendingUploads)="pendingUploads = $event"
+              ></app-work-portfolio>
+              <div
+                cdkDropList
+                cdkDropListOrientation="vertical"
+                (cdkDropListDropped)="
+                  dropSpecifications(work.id, work.specifications, $event)
+                "
+                [cdkDropListDisabled]="!(work?.specifications?.length! > 1)"
+              >
+                <app-work-specification
+                  cdkDrag
+                  cdkDragLockAxis="y"
+                  class="block relative mb-4 sm:pb-4 border-b border-transparent"
+                  *ngFor="
+                    let specification of work.specifications;
+                    let last = last;
+                    trackBy: trackByFn
+                  "
+                  [specification]="specification"
+                  [application_id]="application_id"
+                  [work_id]="work.id"
+                  [ngClass]="{
+                    'border-gray-100 ': !last
+                  }"
+                >
+                  <div class="absolute bottom-0 left-0 pb-4 space-y-4">
+                    <div
+                      cdkDragHandle
+                      class="cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
+                      [ngClass]="{
+                        'text-opacity-0 hover:text-opacity-0 pointer-events-none':
+                          work.specifications.length <= 1
+                      }"
+                    >
+                      <svg
+                        width="19px"
+                        height="36px"
+                        viewBox="0 0 19 36"
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                      >
+                        <g
+                          stroke="none"
+                          stroke-width="1"
+                          fill="none"
+                          fill-rule="evenodd"
+                        >
+                          <path
+                            d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
+                            id="Rectangle-Copy-3"
+                            fill="currentColor"
+                          ></path>
+                        </g>
+                      </svg>
+                    </div>
+                    <button
+                      (click)="deleteSpecification(specification.id)"
+                      class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
+                      [innerHtml]="
+                        'application-form.buttons.delete-specification'
+                          | translate
+                      "
+                    ></button>
+                  </div>
+                </app-work-specification>
+              </div>
+              <button
+                (click)="
+                  addPortfolioSpecification(work.id, work.specifications.length)
+                "
+                class="block w-full md:w-auto ml-auto border border-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
+                [innerHtml]="
+                  'application-form.buttons.add-work-specification' | translate
+                "
+              ></button>
+            </div>
+          </div>
+          <ng-template #noPortfolioWork>
+            <button
+              (click)="addWork(true)"
+              class="md:whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-4 md:px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+              [innerHtml]="
+                ((singleWorks$ | async)?.data?.works?.length!
+                  ? 'application-form.buttons.add-additional-pdf-portfolio'
+                  : 'application-form.buttons.add-pdf-portfolio'
+                ) | translate
+              "
+            ></button>
+          </ng-template>
+        </div>
+        <div
+          class="mt-4 mb-8 md:my-8 lg:my-0 flex-none bg-gray-200 relative"
+          [ngClass]="
+            !(portfolioWorks$ | async)?.data?.works?.length! &&
+            !(singleWorks$ | async)?.data?.works?.length!
+              ? 'h-px lg:h-auto lg:w-px'
+              : 'h-px w-full'
+          "
+        >
+          <span
+            *ngIf="
+              !(portfolioWorks$ | async)?.data?.works?.length! &&
+              !(singleWorks$ | async)?.data?.works?.length!
+            "
+            class="text-xs font-mono uppercase absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 bg-gray-100 px-2 py-1 rounded-xl"
+            [innerText]="'defaults.or' | translate"
+          >
+          </span>
+        </div>
+        <div
+          class="flex-auto"
+          [ngClass]="
+            (portfolioWorks$ | async)?.data?.works?.length! ||
+            (singleWorks$ | async)?.data?.works?.length!
+              ? 'lg:w-full'
+              : 'lg:w-1/2'
+          "
+        >
+          <ng-container
+            *ngIf="singleWorks$ | async as singleWorksObject; else noSingleWork"
+          >
+            <div
+              *ngIf="
+                singleWorksObject?.data?.works?.length! > 0;
+                else noSingleWork
+              "
+              cdkDropList
+              cdkDropListOrientation="vertical"
+              cdkDragLockAxis="y"
+              (cdkDropListDropped)="
+                dropWorks(singleWorksObject?.data?.works, $event)
+              "
+              [cdkDropListDisabled]="
+                !(singleWorksObject?.data?.works?.length! > 1)
+              "
+            >
+              <div
+                cdkDrag
+                cdkDragLockAxis="y"
+                class="relative mb-4 sm:my-4 sm:pb-4 border-gray-200"
+                [ngClass]="{
+                  'border-b': !last
+                }"
+                *ngFor="
+                  let work of (singleWorks$ | async)?.data?.works;
+                  let last = last;
+                  trackBy: trackByFn
+                "
+              >
+                <app-work-files
+                  [files]="work.files"
+                  [application_id]="application_id"
+                  [work_id]="work.id"
+                  (pendingUploads)="pendingUploads = $event"
+                ></app-work-files>
+                <app-work-specification
+                  *ngFor="
+                    let specification of work.specifications;
+                    trackBy: trackByFn
+                  "
+                  [specification]="specification"
+                  [application_id]="application_id"
+                  [work_id]="work.id"
+                ></app-work-specification>
+                <div class="absolute bottom-0 left-0 pb-4 space-y-4">
+                  <div
+                    cdkDragHandle
+                    class="cursor-move text-gray-300 hover:text-gray-600 transition-colors duration-75"
+                  >
+                    <svg
+                      width="19px"
+                      height="36px"
+                      viewBox="0 0 19 36"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <g
+                        stroke="none"
+                        stroke-width="1"
+                        fill="none"
+                        fill-rule="evenodd"
+                      >
+                        <path
+                          d="M19,32 L19,36 L15.2,36 L15.2,32 L19,32 Z M11.4,32 L11.4,36 L7.6,36 L7.6,32 L11.4,32 Z M3.8,32 L3.8,36 L0,36 L0,32 L3.8,32 Z M19,24 L19,28 L15.2,28 L15.2,24 L19,24 Z M11.4,24 L11.4,28 L7.6,28 L7.6,24 L11.4,24 Z M3.8,24 L3.8,28 L0,28 L0,24 L3.8,24 Z M19,16 L19,20 L15.2,20 L15.2,16 L19,16 Z M11.4,16 L11.4,20 L7.6,20 L7.6,16 L11.4,16 Z M3.8,16 L3.8,20 L0,20 L0,16 L3.8,16 Z M3.8,8 L3.8,12 L0,12 L0,8 L3.8,8 Z M11.4,8 L11.4,12 L7.6,12 L7.6,8 L11.4,8 Z M19,8 L19,12 L15.2,12 L15.2,8 L19,8 Z M19,0 L19,4 L15.2,4 L15.2,0 L19,0 Z M11.4,0 L11.4,4 L7.6,4 L7.6,0 L11.4,0 Z M3.8,0 L3.8,4 L0,4 L0,0 L3.8,0 Z"
+                          id="Rectangle-Copy-3"
+                          fill="currentColor"
+                        ></path>
+                      </g>
+                    </svg>
+                  </div>
+                  <button
+                    class="appearance-none leading-none text-xs font-mono underline text-gray-400 hover:text-gray-600"
+                    [innerHtml]="
+                      'application-form.buttons.delete-work' | translate
+                    "
+                    (click)="deleteWork(work.id)"
+                  ></button>
+                </div>
+              </div>
+              <button
+                (click)="addWork()"
+                class="block w-full md:w-auto ml-auto border border-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
+                [innerHtml]="
+                  'application-form.buttons.add-single-work' | translate
+                "
+              ></button>
+            </div>
+          </ng-container>
+        </div>
+        <ng-template #noSingleWork>
+          <button
+            (click)="addWork()"
+            class="md:whitespace-nowrap w-full sm:my-4 py-6 lg:py-12 px-4 md:px-12 mb-4 border border-transparent font-mono bg-black hover:bg-gray-900 text-white rounded-3xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+            [innerHtml]="
+              ((portfolioWorks$ | async)?.data?.works?.length!
+                ? 'application-form.buttons.add-additional-works-separately'
+                : 'application-form.buttons.add-works-separately'
+              ) | translate
+            "
+          ></button>
+        </ng-template>
+      </div>
+    </div>
+
+    <div class="xl:container container--default mx-auto">
+      <div
+        class="flex-auto font-mono text-xs sm:text-sm grid grid-cols-1 lg:grid-cols-application items-baseline gap-x-4 gap-y-3 sm:gap-y-5 lg:gap-y-7"
+      >
+        <div class="lg:text-right">!</div>
+        <div
+          class="leading-snug"
+          [innerHtml]="'hints.dont-reveal-your-name' | translate"
+        ></div>
+        <label
+          class="col-start-1"
+          for="statement"
+          [innerHtml]="'snippets.statement' | translate"
+        ></label>
+        <div class="lg:col-span-2 flex items-baseline mb-3">
+          <textarea
+            id="statement"
+            formControlName="statement"
+            name="statement"
+            rows="10"
+            class="font-sans text-xs sm:text-sm md:text-base rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+          ></textarea>
+          <div
+            class="whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
+            [ngClass]="
+              statement?.value?.length > statementMaxLength * 0.95
+                ? statement?.value?.length > statementMaxLength
+                  ? 'text-red-600'
+                  : 'text-yellow-600'
+                : (statement?.touched && statement?.value?.length) >=
+                  statementMinLenght
+                ? 'text-green-500'
+                : 'text-gray-800'
+            "
+          >
+            {{ statement?.value?.length || 0 }}/{{ statementMaxLength }}
+            {{ "defaults.characters" | translate }}
+          </div>
+        </div>
+        <!-- HIDE RESIDENCY ELEMENT -->
+        <!-- <label
+          class="col-start-1"
+          for="residency"
+          [innerHtml]="'defaults.residency-single' | translate | titlecase"
+        ></label>
+        <div
+          class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
+        >
+          <div
+            [innerHtml]="
+              '_configuration.artist.residency-confirmation' | translate
+            "
+          ></div>
+          <div class="relative flex items-start mt-3 mb-4">
+            <input
+              id="residency"
+              formControlName="residency"
+              name="residency"
+              type="checkbox"
+              class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
+            />
+            <label for="residency" class="ml-3"
+              >{{ "defaults.yes" | translate | titlecase }}
+              <span class="text-gray-500">
+                ({{
+                  "application-form.has-no-influence-on-the-jury" | translate
+                }})
+              </span>
+            </label>
+          </div>
+        </div> -->
+
+        <label
+          class="col-start-1"
+          for="database"
+          [innerHtml]="'defaults.database-single' | translate | titlecase"
+        ></label>
+        <div
+          class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
+        >
+          <div
+            [innerHtml]="
+              '_configuration.artist.archive-confirmation' | translate
+            "
+          ></div>
+          <div class="relative flex items-start mt-3 mb-4">
+            <input
+              id="database"
+              formControlName="database"
+              name="database"
+              type="checkbox"
+              class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
+            />
+            <label for="database" class="ml-3"
+              >{{ "defaults.yes" | translate | titlecase }}
+              <span class="text-gray-500">
+                ({{
+                  "application-form.has-no-influence-on-the-jury" | translate
+                }})
+              </span>
+            </label>
+          </div>
+        </div>
+        <label
+          class="col-start-1"
+          for="disclaimer"
+          [innerHtml]="'defaults.disclaimer-single' | translate | titlecase"
+        ></label>
+        <div
+          class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
+          [ngClass]="{
+            'ring-1 ring-red-500': disclaimer?.invalid
+          }"
+        >
+          <div
+            [innerHtml]="'_configuration.artist.disclaimer' | translate"
+          ></div>
+          <div class="relative flex items-start mt-3 mb-4">
+            <input
+              id="disclaimer"
+              formControlName="disclaimer"
+              name="disclaimer"
+              type="checkbox"
+              class="focus:ring-gray-500 h-5 w-5 text-green-500 border-black rounded-none"
+            />
+            <label
+              for="disclaimer"
+              class="ml-3"
+              [innerHtml]="
+                '_configuration.artist.disclaimer-confirmation' | translate
+              "
+            >
+            </label>
+          </div>
+        </div>
+        <label
+          class="col-start-1"
+          for="payment"
+          [innerHtml]="'defaults.payment-single' | translate | titlecase"
+        ></label>
+        <div class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base">
+          <p
+            class="mb-5"
+            [innerHtml]="'_configuration.payment.description' | translate"
+          ></p>
+          <p class="mb-5 pl-5">
+            {{ "defaults.amount-single" | translate | titlecase }}:
+            {{ "_configuration.payment.amount" | translate }}<br />
+          </p>
+          <p
+            class="mb-5 pl-5 whitespace-pre-wrap"
+            [innerHtml]="'_configuration.payment.bank-details' | translate"
+          ></p>
+
+          <p class="mb-5 pl-5">
+            {{ "defaults.intended-purpose-single" | translate | titlecase }}:
+            <span class="font-medium"
+              >Code {{ id?.value | uppercase | slice: 0:5 }}
+              {{ edition?.value.name }}</span
+            >
+          </p>
+        </div>
+        <div
+          dropzone
+          (hovered)="toggleHover($event)"
+          (dropped)="onPaymentDrop($event)"
+          [disabled]="payment?.valid || false"
+          [ngClass]="{
+            'ring-1 ring-green-600': payment?.valid,
+            'ring-1 ring-red-600': !payment?.valid && !isHovering,
+            'ring-2 ring-gray-800': !payment?.valid && isHovering
+          }"
+          class="bg-gray-100 text-gray-800 p-4 self-stretch flex flex-col items-center justify-center ring-0 transition-shadow"
+        >
+          <app-upload-task
+            class="flex-none flex items-center justify-center h-48 w-48"
+            *ngFor="let file of paymentFileToUpload; let index = index"
+            [file]="file"
+            [path_prefix]="payment_path_prefix"
+            [pdf]="true"
+            (uploaded)="finishPaymentTask(paymentFileToUpload, index, $event)"
+          >
+            <div class="spinner text-gray-800"></div>
+          </app-upload-task>
+
+          <div
+            *ngIf="!payment?.valid && paymentFileToUpload.length < 1"
+            (click)="fileInput.click()"
+            class="flex flex-col items-center justify-center cursor-pointer"
+          >
+            <svg
+              class="-ml-4 mt-2 mb-5"
+              width="68px"
+              height="66px"
+              viewBox="0 0 68 66"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g transform="translate(-1116.000000, -1866.000000)">
+                  <rect
+                    stroke="currentColor"
+                    fill="transparent"
+                    transform="translate(1149.000000, 1899.000000) scale(-1, 1) translate(-1149.000000, -1899.000000) "
+                    x="908.5"
+                    y="1714.5"
+                    width="481"
+                    height="369"
+                  ></rect>
+                  <g transform="translate(1116.000000, 1866.000000)">
+                    <g transform="translate(13.000000, 0.000000)">
+                      <path
+                        d="M52.6262,63.0519 L2.5852,63.0519 L2.5852,2.5859 L42.2012,2.5859 L42.2012,11.9689 C42.2012,12.5449 42.6672,13.0099 43.2432,13.0099 L52.6262,13.0099 L52.6262,63.0519 Z M44.2862,4.0599 L51.1512,10.9259 L44.2862,10.9259 L44.2862,4.0599 Z M54.4062,11.2309 L43.9802,0.8069 C43.7932,0.6179 43.5312,0.4999 43.2432,0.4999 L1.5422,0.4999 C0.9662,0.4999 0.5002,0.9669 0.5002,1.5429 L0.5002,64.0939 C0.5002,64.6709 0.9662,65.1369 1.5422,65.1369 L53.6692,65.1369 C54.2452,65.1369 54.7112,64.6709 54.7112,64.0939 L54.7112,11.9689 C54.7112,11.6799 54.5942,11.4179 54.4062,11.2309 L54.4062,11.2309 Z"
+                        id="Fill-1"
+                        fill="currentColor"
+                      ></path>
+                      <path
+                        d="M52.6262,63.0519 L2.5852,63.0519 L2.5852,2.5859 L42.2012,2.5859 L42.2012,11.9689 C42.2012,12.5449 42.6672,13.0099 43.2432,13.0099 L52.6262,13.0099 L52.6262,63.0519 Z M44.2862,4.0599 L51.1512,10.9259 L44.2862,10.9259 L44.2862,4.0599 Z M54.4062,11.2309 L43.9802,0.8069 C43.7932,0.6179 43.5312,0.4999 43.2432,0.4999 L1.5422,0.4999 C0.9662,0.4999 0.5002,0.9669 0.5002,1.5429 L0.5002,64.0939 C0.5002,64.6709 0.9662,65.1369 1.5422,65.1369 L53.6692,65.1369 C54.2452,65.1369 54.7112,64.6709 54.7112,64.0939 L54.7112,11.9689 C54.7112,11.6799 54.5942,11.4179 54.4062,11.2309 Z"
+                        id="Stroke-3"
+                        fill="currentColor"
+                      ></path>
+                    </g>
+                    <polygon
+                      fill="currentColor"
+                      points="26.4999766 22.273 24.0652265 24.708501 28.4275027 29.0720523 30.9636228 31.2028585 30.9129378 31.3549253 26.0432506 31.0509787 3.86340959e-12 31.0509787 3.86340959e-12 34.4950213 26.0432506 34.4950213 30.9129378 34.1910747 30.9636228 34.3429545 28.4275027 36.4737606 24.0652265 40.837499 26.4999766 43.273 37 32.7730935"
+                    ></polygon>
+                  </g>
+                </g>
+              </g>
+            </svg>
+            <div
+              class="text-center"
+              [innerHtml]="
+                'application-form.buttons.add-payment-screenshot' | translate
+              "
+            ></div>
+            <input
+              class="hidden"
+              type="file"
+              id="upload-file"
+              name="upload-file"
+              accept="image/*,.pdf"
+              (change)="onPaymentFileSelect($event)"
+              #fileInput
+            />
+          </div>
+          <div
+            *ngIf="payment?.valid && payment?.value"
+            class="group cursor-move relative flex p-4 items-end"
+          >
+            <div>
+              <svg
+                class="h-20 w-auto"
+                width="51px"
+                height="71px"
+                viewBox="0 0 51 71"
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <g
+                  stroke="none"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                >
+                  <polygon
+                    id="Fill-1"
+                    fill="#000000"
+                    points="15.7882114 0 15.8916148 0.106408033 0 16.4613227 0 71 51 71 51 0"
+                  ></polygon>
+                  <text
+                    id="PDF"
+                    fill="#FFFFFF"
+                    text-anchor="middle"
+                    font-size="20"
+                    alignment-baseline="central"
+                  >
+                    <tspan x="25" y="57" class="font-condensed uppercase">
+                      {{ payment?.value.originalname | getExtension }}
+                    </tspan>
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div class="ml-4">
+              <div [innerHtml]="payment?.value.originalname"></div>
+              <div
+                class="text-gray-800"
+                [innerHtml]="payment?.value.size! | filesize"
+              ></div>
+            </div>
+            <button
+              (click)="deletePayment(payment?.value.id)"
+              class="appearance-none opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+            >
+              X
+            </button>
+          </div>
+        </div>
+        <div
+          class="lg:col-start-2 lg:col-span-2 text-xs sm:text-sm md:text-base mt-24"
+        >
+          <a
+            [routerLink]="['fullscreen']"
+            class="flex group items-center justify-between px-4 md:px-12 py-4 md:py-8 rounded-3xl whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white leading-10 font-mono lg:whitespace-nowrap"
+          >
+            <span
+              class="block"
+              [innerHtml]="'application-form.buttons.show-preview' | translate"
+            ></span>
+            <svg
+              id="Ebene_1"
+              class="w-16 h-10"
+              data-name="Ebene 1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 25.93 14.4"
+            >
+              <path
+                stroke="currentColor"
+                stroke-width="1"
+                fill="none"
+                fill-rule="evenodd"
+                stroke-miterlimit="10"
+                vector-effect="non-scaling-stroke"
+                d="M1.2,13.5c1.2,1.4,6.3,6.7,12.3,6.7s11.1-5.4,12.3-6.7c-1.2-1.4-6.3-6.7-12.3-6.7S2.4,12.1,1.2,13.5Z"
+                transform="translate(-0.54 -6.3)"
+              />
+              <g
+                class="origin-center transition-transform transform-gpu scale-100 group-hover:scale-150"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-width="1"
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke-miterlimit="10"
+                  vector-effect="non-scaling-stroke"
+                  d="M13.5,9.6a3.9,3.9,0,0,0,0,7.8,4,4,0,0,0,3.9-3.9A3.84,3.84,0,0,0,13.5,9.6Z"
+                  transform="translate(-0.54 -6.3)"
+                />
+                <circle
+                  fill="currentColor"
+                  class="cls-2"
+                  cx="12.96"
+                  cy="7.2"
+                  r="1.2"
+                />
+              </g>
+            </svg>
+          </a>
+        </div>
+        <div class="lg:text-right">!</div>
+        <div
+          class="leading-snug"
+          [innerHtml]="'hints.test-your-application' | translate"
+        ></div>
+      </div>
+    </div>
+
+    <div
+      class="my-8 p-4 text-center text-gray-400"
+      *ngIf="updated_at?.value"
+      [innerHtml]="
+        'snippets.updated-some-time-ago'
+          | translate: { time: updated_at?.value | timePassed }
+      "
+    ></div>
+  </form>
+
+  <!-- <pre class="p-1 bg-red-50 text-xs overflow-hidden">
+    {{ form.value | json }}
+    {{ form.valid | json }}
+    {{ name?.errors | json }}
+  </pre> -->
+
+  <footer
+    class="container--default flex items-end md:items-baseline justify-between"
+  >
+    <div
+      class="text-headline"
+      [innerHtml]="'_configuration.title' | translate"
+    ></div>
+    <div
+      class="flex flex-col md:flex-row justify-end space-y-3 md:space-x-3 md:space-y-0 items-end"
+    >
+      <div class="space-x-16 flex mt-16 md:mt-0 md:mr-16 order-2 md:order-none">
+        <a
+          class="font-mono hover:underline"
+          tabindex="-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="'_configuration.links.terms-and-conditions.url' | translate"
+          [innerHtml]="
+            '_configuration.links.terms-and-conditions.label' | translate
+          "
+        ></a>
+
+        <a
+          class="font-mono hover:underline"
+          tabindex="-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="'_configuration.links.privacy.url' | translate"
+          [innerHtml]="'_configuration.links.privacy.label' | translate"
+        ></a>
+
+        <a
+          class="font-mono hover:underline"
+          tabindex="-1"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="'_configuration.links.imprint.url' | translate"
+          [innerHtml]="'_configuration.links.imprint.label' | translate"
+        ></a>
+      </div>
+      <button
+        (click)="saveAndClose()"
+        class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl"
+        [innerText]="'actions.save-and-close' | translate"
+      ></button>
+      <button
+        (click)="finalizeAndClose()"
+        class="bg-gray-300 text-black font-mono text-xs sm:text-sm md:text-base leading-none py-3 px-6 rounded-xl disabled:opacity-30 disabled:pointer-events-none"
+        [disabled]="!form.valid"
+        [ngClass]="{
+          'bg-green-400': form.valid
+        }"
+        [innerText]="'actions.finalize-and-send' | translate"
+      ></button>
+    </div>
+  </footer>
+</div>

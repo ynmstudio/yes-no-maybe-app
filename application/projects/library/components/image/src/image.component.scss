@@ -1,0 +1,44 @@
+:host {
+  /* stylelint-disable */
+
+  vg-player {
+    @apply bg-transparent justify-center;
+  }
+  vg-controls {
+    @apply rounded-full mb-24 lg:mb-4 h-10 max-w-sm md:max-w-xl lg:max-w-4xl xl:max-w-7xl w-11/12 transition-all duration-300 transform-gpu translate-y-0 opacity-100 backdrop-blur;
+    &.hide {
+      @apply bottom-0 translate-y-36 lg:translate-y-14 opacity-0;
+    }
+  }
+  vg-overlay-play {
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-blue-600;
+  }
+  vg-play-pause,
+  vg-playback-button,
+  vg-time-display,
+  vg-scrub-bar,
+  vg-time-display,
+  vg-mute,
+  vg-volume,
+  vg-fullscreen {
+    @apply font-condensed text-xs leading-10 h-10 focus:outline-none focus:ring-0;
+    ::ng-deep * {
+      @apply focus:outline-none focus:ring-0;
+    }
+  }
+  vg-playback-button,
+  vg-mute {
+    @apply hidden md:flex;
+  }
+
+  ::ng-deep iframe {
+    @apply absolute inset-0 w-full h-full;
+  }
+  /* stylelint-enable */
+}
+:host-context(#preview) {
+  img,
+  video {
+    @apply w-full h-full object-cover;
+  }
+}

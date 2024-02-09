@@ -1,0 +1,226 @@
+<ng-container
+  *ngIf="downloadURL | async; let url; else: loading"
+  [ngSwitch]="type"
+>
+  <pdf-viewer
+    *ngSwitchCase="'pdf'"
+    class="block h-full w-auto object-contain"
+    [src]="url"
+    [show-all]="false"
+    [page]="1"
+    [original-size]="false"
+    [autoresize]="true"
+    [zoom-scale]="'page-height'"
+  ></pdf-viewer>
+  <img
+    *ngSwitchCase="'image'"
+    class="h-full w-auto inline-block object-contain"
+    [src]="url"
+    [attr.type]="mimetype"
+  />
+
+  <ng-container *ngSwitchCase="'video'">
+    <ng-container *ngIf="!showControls">
+      <video
+        class="h-full w-auto inline-block object-contain"
+        preload="metadata"
+        [poster]="thumbnailGifURL | async"
+        [controls]="showControls"
+        [attr.type]="mimetype"
+      >
+        Your browser does not support the video tag.
+        <!-- <source
+          *ngIf="webmDownloadURL | async as webmUrl"
+          [src]="webmUrl"
+          type="video/webm"
+        /> -->
+        <source
+          *ngIf="mp4DownloadURL | async as mp4Url"
+          [src]="mp4Url"
+          type="video/mp4"
+        />
+        <source [src]="url" [attr.type]="mimetype" />
+      </video>
+
+      <svg
+        class="h-6 w-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-blue-600"
+        width="34px"
+        height="34px"
+        viewBox="0 0 34 34"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <title>Triangle</title>
+        <g
+          id="Page-1"
+          stroke="none"
+          stroke-width="1"
+          fill="none"
+          fill-rule="evenodd"
+        >
+          <polygon
+            id="Triangle"
+            fill="currentColor"
+            transform="translate(17.000000, 17.000000) rotate(-270.000000) translate(-17.000000, -17.000000) "
+            points="17 -3.77475828e-15 34 34 0 34"
+          ></polygon>
+        </g>
+      </svg>
+    </ng-container>
+
+    <vg-player
+      [id]="key"
+      *ngIf="showControls"
+      (onPlayerReady)="onPlayerReady($event)"
+    >
+      <vg-controls
+        [vgAutohide]="true"
+        [ngClass]="{ hidden: !active }"
+        [vgAutohideTime]="3"
+      >
+        <vg-play-pause></vg-play-pause>
+        <vg-playback-button></vg-playback-button>
+
+        <vg-time-display
+          vgProperty="current"
+          vgFormat="mm:ss"
+        ></vg-time-display>
+
+        <vg-scrub-bar>
+          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
+
+        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+
+        <vg-fullscreen></vg-fullscreen>
+      </vg-controls>
+      <video
+        [vgMedia]="$any(media)"
+        [poster]="thumbnailURL | async"
+        [id]="key"
+        #media
+        preload="auto"
+      >
+        <!-- <source
+          *ngIf="webmDownloadURL | async as webmUrl"
+          [src]="webmUrl"
+          type="video/webm"
+        /> -->
+        <source
+          *ngIf="mp4DownloadURL | async as mp4Url"
+          [src]="mp4Url"
+          type="video/mp4"
+        />
+        <source [src]="url" [attr.type]="mimetype" />
+      </video>
+      <vg-overlay-play></vg-overlay-play>
+    </vg-player>
+  </ng-container>
+  <ng-container *ngSwitchCase="'audio'">
+    <div
+      class="h-full w-auto flex items-center justify-center text-blue-600"
+      *ngIf="!showControls"
+    >
+      <svg
+        class="h-6 w-6 mx-4"
+        width="35px"
+        height="28px"
+        viewBox="0 0 35 28"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <title>Line Copy 9</title>
+        <g
+          id="Page-1"
+          stroke="none"
+          stroke-width="1"
+          fill="none"
+          fill-rule="evenodd"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M33.5,11.5 L33.5,16.5 M29.5,9.66666667 L29.5,18.3333333 M25.5,1.5 L25.5,26.5 M21.5,7.33333333 L21.5,20.6666667 M17.5,11.5 L17.5,16.5 M13.5,9 L13.5,19 M9.5,3.16666667 L9.5,24.8333333 M5.5,8.16666667 L5.5,19.8333333 M1.5,11.5 L1.5,16.5"
+            id="Line-Copy-9"
+            stroke="currentColor"
+            stroke-width="2"
+          ></path>
+        </g>
+      </svg>
+    </div>
+    <vg-player
+      [id]="key"
+      *ngIf="showControls"
+      (onPlayerReady)="onPlayerReady($event)"
+    >
+      <vg-controls
+        [vgAutohide]="true"
+        [ngClass]="{ hidden: !active }"
+        [vgAutohideTime]="3"
+      >
+        <vg-play-pause></vg-play-pause>
+        <vg-playback-button></vg-playback-button>
+
+        <vg-time-display
+          vgProperty="current"
+          vgFormat="mm:ss"
+        ></vg-time-display>
+
+        <vg-scrub-bar>
+          <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+          <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+        </vg-scrub-bar>
+
+        <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
+
+        <vg-mute></vg-mute>
+        <vg-volume></vg-volume>
+        <vg-fullscreen></vg-fullscreen>
+      </vg-controls>
+      <audio [vgMedia]="$any(media)" #media [id]="key" preload="auto">
+        <source [src]="url" [attr.type]="mimetype" />
+      </audio>
+      <vg-overlay-play></vg-overlay-play>
+    </vg-player>
+  </ng-container>
+
+  <div
+    class="h-full w-24 inline-block relative transform-gpu"
+    [ngClass]="[
+      showControls && active ? 'pointer-events-auto' : 'pointer-events-none',
+      showControls ? 'w-11/12' : 'w-24'
+    ]"
+    *ngSwitchCase="'iframe'"
+    [innerHtml]="active ? url : ''"
+  ></div>
+
+  <div class="h-full w-20 flex items-center justify-center" *ngSwitchDefault>
+    <div class="text-xxs font-condensed" [innerHtml]="mimetype"></div>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <div
+    class="flex transition-colors items-center justify-center relative"
+    [ngClass]="[
+      error ? 'bg-red-200 text-red-600' : 'bg-gray-300 text-gray-800',
+      type === 'video' ? 'h-20 w-28' : 'h-20 w-16'
+    ]"
+  >
+    <div
+      class="spinner transition-opacity"
+      [ngClass]="error ? 'opacity-0' : 'opacity-1'"
+    ></div>
+    <div
+      class="absolute bottom-0 right-0 p-1 text-xs sm:text-sm md:text-base font-mono transition-opacity"
+      [ngClass]="error ? 'opacity-1' : 'opacity-0'"
+    >
+      404
+    </div>
+  </div>
+</ng-template>
