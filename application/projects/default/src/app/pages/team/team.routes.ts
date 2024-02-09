@@ -22,7 +22,7 @@ export default [
       },
       {
         path: 'applications',
-        loadComponent: () => import('../applications/applications.component').then((c) => c.ApplicationsComponent),
+        loadChildren: () => import('../applications/applications.routes')
       },
       {
         path: 'settings',

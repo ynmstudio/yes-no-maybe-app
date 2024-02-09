@@ -25,7 +25,7 @@ import { GroupByPipe } from '@library/pipes/group-by';
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
-  allUsers$: Observable<any[]>;
+  allUsers$
 
   newUserForm: FormGroup;
   displayName = new FormControl('', Validators.required);
@@ -52,7 +52,7 @@ export class UsersComponent implements OnInit {
 
   async deleteUser(uid: string) {
     try {
-      const response = await this.firebaseService.deleteUser(uid).toPromise();
+      const response = await this.firebaseService.deleteUser(uid);
       this.reloadUsers();
     } catch (error: any) {
       this.alertService.error(error);
@@ -62,7 +62,6 @@ export class UsersComponent implements OnInit {
     try {
       const response = await this.firebaseService
         .toggleUserStatus(uid, disabled)
-        .toPromise();
       this.reloadUsers();
     } catch (error: any) {
       this.alertService.error(error);
@@ -72,7 +71,6 @@ export class UsersComponent implements OnInit {
     try {
       const response = await this.firebaseService
         .changeUserRole(uid, target?.value || 'user')
-        .toPromise();
       this.reloadUsers();
     } catch (error: any) {
       this.alertService.error(error);
@@ -93,13 +91,12 @@ export class UsersComponent implements OnInit {
     try {
       const response = await this.firebaseService
         .createUser(this.displayName.value ?? '', this.email.value ?? '', this.role.value ?? '')
-        .toPromise();
 
       this.newUsers.push({
         displayName: this.displayName.value,
         email: this.email.value,
         role: this.role.value,
-        password: response.password,
+        password: response.data.password,
       });
       this.newUserForm.reset();
       this.role.setValue('jury');

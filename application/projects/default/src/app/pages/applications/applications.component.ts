@@ -3,14 +3,12 @@ import { TeamService } from '../../../../../library/services/team/src/team.servi
 import { Observable } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedModule } from '../../shared/shared.module';
-import { ROUTES, RouterModule } from '@angular/router';
-import { routes } from './applications.routes';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-applications',
   imports: [SharedModule, RouterModule],
-  providers: [{ provide: ROUTES, useValue: routes }],
   templateUrl: './applications.component.html',
   styleUrls: ['./applications.component.scss'],
   animations: [

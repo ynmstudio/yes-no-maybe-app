@@ -24,8 +24,7 @@ export class NewEditionComponent implements OnInit {
   constructor(
     private hasuraService: HasuraService,
     private alertService: AlertService
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void { }
 

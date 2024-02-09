@@ -5,7 +5,7 @@ import {
   RoundFragment,
 } from 'generated/types.graphql-gen';
 import { first, switchMap, withLatestFrom } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { SubscriptionResult } from 'apollo-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { type EditRoundComponent as EditRoundComponentType, ModalService, type NewRoundComponent as NewRoundComponentType } from '@library/components/modal';
@@ -13,11 +13,24 @@ import { HasuraService, FirebaseService } from '@library/services';
 import { TeamService } from '@library/services/team';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   standalone: true,
   selector: 'app-team-dashboard',
   imports: [SharedModule, RouterModule],
+  animations: [
+    trigger('inOutAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-out', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate('500ms ease-in', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
@@ -48,12 +61,12 @@ export class DashboardComponent implements OnInit {
 
     this.updates$ = this.teamService.getSelectedEditionUpdates();
 
-    this.juryMembers$ = this.firebaseService.getUsers('jury').pipe(
-      withLatestFrom(this.roundStatistic$),
-      switchMap(([users, statistics]) => {
+    this.juryMembers$ = this.roundStatistic$.pipe(
+      withLatestFrom(from(this.firebaseService.getUsers('jury'))),
+      switchMap(([statistics, users]) => {
         return this.getJuryStatisticGQL.subscribe({
           round_id: statistics.data.rating_rounds_by_pk?.id || 0,
-          _in: [...users.map((user: any) => user.uid)],
+          _in: [...users.data.map((user: any) => user.uid)],
         });
       })
     );

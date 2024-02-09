@@ -2,13 +2,14 @@
   dropzone
   (hovered)="toggleHover($event)"
   (dropped)="onDrop($event)"
-  [disabled]="(files.length || 0) >= maxFiles"
+  [disabled]="files && (files.length || 0) >= maxFiles"
   [ngClass]="{
     'ring-2 ring-gray-800': isHovering
   }"
   class="h-24 lg:h-28 bg-gray-100 relative ring-transparent ring-0 transition-shadow"
 >
   <div
+    *ngIf="files"
     class="absolute inset-0 p-2 lg:p-4 space-x-2 flex flex-row overflow-x-scroll"
     cdkDropList
     cdkDropListOrientation="horizontal"
@@ -81,10 +82,10 @@
   <div
     class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors"
     [ngClass]="
-      (files.length || 0) > maxFiles ? 'text-red-600' : 'text-gray-800'
+      files && (files.length || 0) > maxFiles ? 'text-red-600' : 'text-gray-800'
     "
   >
-    {{ files.length || 0 }}/{{ maxFiles }}
+    {{ files ? files.length || 0 : 0 }}/{{ maxFiles }}
     {{ "defaults.file-multi" | translate }}
   </div>
 </div>

@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ActivatedRoute, ROUTES, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ApolloQueryResult } from '@apollo/client/core';
 import {
   GetAdminApplicationLiveQuery,
@@ -29,13 +29,12 @@ import { HasuraService } from '@library/services';
 import { ModalService, RateApplicationComponent } from '@library/components/modal';
 import { AlertService } from '@library/components/alert';
 import { SharedModule } from '../../../shared/shared.module';
-import { routes } from './fullscreen.routes';
+
 
 @Component({
   standalone: true,
   selector: 'app-fullscreen.dark',
   imports: [SharedModule, RouterModule],
-  providers: [{ provide: ROUTES, useValue: routes }],
   templateUrl: './fullscreen.component.html',
   styleUrls: ['./fullscreen.component.scss'],
 })

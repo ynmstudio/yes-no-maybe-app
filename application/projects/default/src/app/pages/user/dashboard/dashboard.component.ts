@@ -11,7 +11,7 @@ import {
   GetUpdatesSubscription,
   EditionStateSubscription,
 } from 'generated/types.graphql-gen';
-import { Observable } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -80,20 +80,15 @@ export class DashboardComponent implements OnInit {
   }
 
   async addApplication() {
-    const newApplication = await this.edition$
-      .pipe(
-        first(),
-        switchMap((edition) => {
-          return this.addApplicationGQL.mutate({ edition_id: edition.id });
-        })
-      )
-      .toPromise();
+
+    const edition = await firstValueFrom(this.edition$);
+    const newApplication = await firstValueFrom(this.addApplicationGQL.mutate({ edition_id: edition.id }));
 
     if (newApplication?.data?.insert_applications_one?.id) {
       this.router.navigate(
         ['u', 'applications', newApplication.data.insert_applications_one?.id],
         {
-          state: { new: true },
+          info: { new: true },
         }
       );
     }

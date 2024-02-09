@@ -5,11 +5,12 @@ import {
 } from 'generated/types.graphql-gen';
 import { UserService } from '@library/services/user';
 import { SharedModule } from 'projects/default/src/app/shared/shared.module';
+import { UploadTaskComponent } from '@library/components/upload-task';
 
 @Component({
   standalone: true,
   selector: 'app-work-portfolio',
-  imports: [SharedModule],
+  imports: [SharedModule, UploadTaskComponent],
   templateUrl: './work-portfolio.component.html',
   styleUrls: ['./work-portfolio.component.scss'],
 })

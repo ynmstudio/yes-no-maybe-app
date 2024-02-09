@@ -54,8 +54,6 @@ const authCtx = (auth: Auth) =>
         );
       }
       // Return the headers as usual
-
-      console.debug(auth.currentUser)
       return {
         headers: {
           ...headers,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ROUTES, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   WorkFragment,
   WorkSpecificationFragment,
@@ -8,13 +8,11 @@ import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { TeamService } from '../../../../../../library/services/team/src/team.service';
 import { SharedModule } from '../../../shared/shared.module';
-import { routes } from './detail.routes';
 
 @Component({
   standalone: true,
   selector: 'app-detail',
   imports: [SharedModule, RouterModule],
-  providers: [{ provide: ROUTES, useValue: routes }],
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss'],
 })

@@ -11,7 +11,6 @@ import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fir
 import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
 import { environment } from '../environments/environment';
 import { provideGraphQL } from './graphql.module';
-import { REGION } from '@angular/fire/compat/functions';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
 import { SharedModule } from './shared/shared.module';
 import { MissingTranslationHandler, MissingTranslationHandlerParams, TranslateLoader, TranslateModule } from '@ngx-translate/core';
@@ -80,6 +79,7 @@ export const appConfig: ApplicationConfig = {
     })),
     importProvidersFrom(provideFunctions(() => {
       const functions = getFunctions();
+      functions.region = 'europe-west3';
       if (!environment.production && environment.useEmulators) {
         connectFunctionsEmulator(functions, 'localhost', 5001);
       }
@@ -138,7 +138,6 @@ export const appConfig: ApplicationConfig = {
     //   provide: STORAGE_EMULATOR,
     //   useValue: environment.production ? undefined : ['localhost', 9199],
     // },
-    { provide: REGION, useValue: 'europe-west3' },
     { provide: DateAdapter, useClass: CustomDatePickerAdapter },
   ],
 };

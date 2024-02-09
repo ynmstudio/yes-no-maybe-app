@@ -1,12 +1,9 @@
 <ng-content></ng-content>
 <div class="group">
-  <div
-    class="absolute bottom-0 inset-x-0 p-1"
-    *ngIf="percentage | async as pct"
-  >
+  <div class="absolute bottom-0 inset-x-0 p-1">
     <div class="overflow-hidden h-1 text-xs flex bg-gray-50">
       <div
-        [style.width]="(pct || 0) + '%'"
+        [style.width]="(percentage || 0) + '%'"
         class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-800"
       ></div>
     </div>

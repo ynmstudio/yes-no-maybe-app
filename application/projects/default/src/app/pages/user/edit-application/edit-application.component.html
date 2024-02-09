@@ -523,7 +523,7 @@
           <p class="mb-5 pl-5">
             {{ "defaults.intended-purpose-single" | translate | titlecase }}:
             <span class="font-medium"
-              >Code {{ id?.value | uppercase | slice: 0:5 }}
+              >Code {{ id?.value | uppercase | slice : 0 : 5 }}
               {{ edition?.value.name }}</span
             >
           </p>
@@ -732,7 +732,7 @@
       *ngIf="updated_at?.value"
       [innerHtml]="
         'snippets.updated-some-time-ago'
-          | translate: { time: updated_at?.value | timePassed }
+          | translate : { time: updated_at?.value | timePassed }
       "
     ></div>
   </form>

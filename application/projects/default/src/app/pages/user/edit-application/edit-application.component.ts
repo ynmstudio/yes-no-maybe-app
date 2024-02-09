@@ -127,21 +127,22 @@ export class EditApplicationComponent implements OnInit {
     private authService: AuthService
   ) {
     // If navigation extra is set by dashboard on addApplication() show "New Application" headline
-    this.isNew = this.router.getCurrentNavigation()?.extras.state!['new'] || false;
+    this.isNew = (this.router.getCurrentNavigation()!.extras.info) ? (this.router.getCurrentNavigation()!.extras.info as any)['new'] || false : false;
 
     this.singleWorks$ = this.getSingleWorksGQL.watch(
       { application_id: this.application_id },
       {
         fetchPolicy: 'cache-and-network',
       }
-    ).valueChanges;
+    ).valueChanges
+
 
     this.portfolioWorks$ = this.getPortfolioWorksGQL.watch(
       { application_id: this.application_id },
       {
         fetchPolicy: 'cache-and-network',
       }
-    ).valueChanges;
+    ).valueChanges
 
     this.form = this.fb.group({
       name: new FormControl('', {
@@ -270,7 +271,7 @@ export class EditApplicationComponent implements OnInit {
               variables,
             });
             // Filter array by deleted producer id
-            data.works = [...data.works, newWork];
+            data.works = [...data.works, newWork.insert_works_one];
             // Write our data back to the cache.
             store.writeQuery({
               query: portfolio
@@ -306,7 +307,7 @@ export class EditApplicationComponent implements OnInit {
 
             data = {
               ...data,
-              specifications: [...data.specifications, newSpecification],
+              specifications: [...data.specifications, newSpecification.insert_work_specifications_one],
             };
 
             // Write our data back to the cache.

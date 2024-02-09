@@ -117,7 +117,7 @@ export class UserService {
             // Filter array by deleted producer id
             data = {
               ...data,
-              files: [...data.files, addedFile],
+              files: [...data.files, addedFile.insert_work_files_one],
             };
             // Write our data back to the cache.
             store.writeFragment({

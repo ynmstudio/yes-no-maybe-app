@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import {
-  AngularFireStorage,
-  AngularFireUploadTask,
-} from '@angular/fire/compat/storage';
+import { Storage, UploadResult, UploadTask, getDownloadURL, getMetadata, ref, uploadBytesResumable } from '@angular/fire/storage';
+
 import { FileFragment, GetEditionGQL } from 'generated/types.graphql-gen';
 
 import { Observable } from 'rxjs';
@@ -31,17 +29,16 @@ export class UploadTaskComponent implements OnInit {
     FileFragment | undefined
   >();
 
-  task!: AngularFireUploadTask;
 
-  percentage!: Observable<number | undefined>;
+
+  percentage: number | undefined;
   snapshot!: Observable<any>;
   downloadURL!: string;
 
   private auth = inject(Auth)
+  private storage = inject(Storage);
 
-  constructor(
-    private storage: AngularFireStorage,
-  ) { }
+  task?: UploadTask;
 
   ngOnInit() {
     try {
@@ -84,32 +81,33 @@ export class UploadTaskComponent implements OnInit {
       `/${this.path_prefix}/${uuid}`;
 
     // Reference to storage bucket
-    const ref = this.storage.ref(path);
+    const storageRef = ref(this.storage, path);
 
     // The main task
-    this.task = this.storage.upload(path, this.file, {
+    this.task = uploadBytesResumable(storageRef, this.file, {
       customMetadata: { originalname: this.file.name },
     });
 
     // Progress monitoring
-    this.percentage = this.task.percentageChanges();
+    this.task.on(
+      'state_changed',
+      (snapshot) => {
+        this.percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+      },
+      (error) => console.error(error),
+      async () => {
 
-    this.snapshot = this.task.snapshotChanges().pipe(
-      // The file's download URL
-      finalize(async () => {
-        this.downloadURL = await ref.getDownloadURL().toPromise();
+        this.downloadURL = await getDownloadURL(storageRef)
 
-        const metaData = await ref.getMetadata().toPromise();
-
+        const metaData = await getMetadata(storageRef);
         this.asset.next({
           id: metaData.name,
           key: path,
-          mimetype: metaData.contentType,
-          originalname: metaData.customMetadata.originalname,
+          mimetype: metaData.contentType || '',
+          originalname: metaData.customMetadata ? metaData.customMetadata['originalname'] : this.file.name,
           size: metaData.size,
         });
       })
-    );
   }
 
   isActive(snapshot: any) {
@@ -119,7 +117,7 @@ export class UploadTaskComponent implements OnInit {
     );
   }
   cancel() {
-    this.task.cancel();
+    this.task?.cancel();
     this.asset.next(undefined);
   }
 }

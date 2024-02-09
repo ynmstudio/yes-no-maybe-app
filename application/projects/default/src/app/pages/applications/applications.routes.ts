@@ -1,7 +1,7 @@
-import { Routes, } from '@angular/router';
+import { Route, Routes, } from '@angular/router';
 import { ApplicationsComponent } from './applications.component';
 
-export const routes: Routes = [
+export default [
   {
     path: '',
     component: ApplicationsComponent,
@@ -16,4 +16,4 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./fullscreen/fullscreen.component').then((c) => c.FullscreenComponent),
   },
-];
+] satisfies Route[];
