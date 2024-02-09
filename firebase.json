@@ -26,7 +26,7 @@
       "enabled": true
     },
     "hosting": {
-      "port": 5000
+      "port": 5002
     },
     "storage": {
       "port": 9199
@@ -35,11 +35,7 @@
   },
   "hosting": {
     "public": "frontend/dist/application-tool",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
         "source": "*.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].+(css|js)",
