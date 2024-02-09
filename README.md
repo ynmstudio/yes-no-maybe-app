@@ -62,10 +62,11 @@ Other authentication/storage/hosting providers may be added at a later stage.
 1. duplicate `.env.example` and rename to `.env` and adapt accordingly. please adapt firebase env accordingly (see firebase section)
 2. `docker-compose up -d`
 3. `cd database`
-4. `hasura metadata apply --admin-secret myadminsecretkey --envfile .env`
-5. `hasura migrate apply --admin-secret myadminsecretkey --envfile .env`
-6. `hasura metadata reload --admin-secret myadminsecretkey --envfile .env`
-7. `hasura console --admin-secret myadminsecretkey`
+4. First time: `hasura migrate apply --admin-secret myadminsecretkey --envfile .env`
+5. `hasura metadata apply --admin-secret myadminsecretkey --envfile .env`
+6. `hasura migrate apply --admin-secret myadminsecretkey --envfile .env`
+7. `hasura metadata reload --admin-secret myadminsecretkey --envfile .env`
+8. `hasura console --admin-secret myadminsecretkey`
 
 #### Local Development
 
@@ -144,7 +145,10 @@ Firebase config data will be extracted via REST-API before publishing the projec
 5. Set admin secret key for synchronization from Firebase back to Hasura with `firebase functions:config:set hasura.endpoint="http://localhost:8080/v1/graphql"`
 6. Set admin secret key for synchronization from Firebase back to Hasura with `firebase functions:config:set hasura.admin_secret="myadminsecretkey"`
 7. Set shared secret key so hasura is able to interact with firebase storage with `firebase functions:config:set hasura.shared_secret="somesecuresecretkey"`
-8. To be able to download PDF files and show them inside the application tool, you need to configure CORS for Firebase Storage with `gsutil cors set cors.json gs://<your-cloud-storage-bucket>`. For more information check the [documentation](https://firebase.google.com/docs/storage/web/download-files#cors_configuration).
+
+To be able to download PDF files and show them inside the application tool, you need to configure CORS for Firebase Storage
+
+8. Run `gsutil cors set cors.json gs://<your-cloud-storage-bucket>` in the root folder. For more information check the [documentation](https://firebase.google.com/docs/storage/web/download-files#cors_configuration).
 
 #### Local Development
 

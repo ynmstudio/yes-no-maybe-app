@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import { HttpsError } from "firebase-functions/lib/providers/https";
+// eslint-disable-next-line import/no-unresolved
+import { HttpsError } from "firebase-functions/v1/auth";
 
 const axios = require("axios").default;
 // const coconut = require("coconutjs");
@@ -314,7 +315,7 @@ exports.createUser = functions
       return {
         password,
       };
-    } catch (error) {
+    } catch (error: any) {
       functions.logger.error(error);
       throw new HttpsError("already-exists", error);
     }
@@ -345,7 +346,7 @@ exports.deleteUser = functions
       return {
         message: "success",
       };
-    } catch (error) {
+    } catch (error: any) {
       functions.logger.error(error);
       throw new HttpsError("unknown", error);
     }
@@ -377,7 +378,7 @@ exports.toggleUserStatus = functions
       return {
         message: "success",
       };
-    } catch (error) {
+    } catch (error: any) {
       functions.logger.error(error);
       throw new HttpsError("unknown", error);
     }
@@ -444,7 +445,7 @@ exports.changeUserRole = functions
       return {
         message: "success",
       };
-    } catch (error) {
+    } catch (error: any) {
       functions.logger.error(error);
       throw new HttpsError("unknown", error);
     }
@@ -570,7 +571,7 @@ exports.convertVideos = functions
         //     return functions.logger.log(`Job ${job.id} started at ${job.created_at}`);
         //   }
         // );
-      } catch (error) {
+      } catch (error: any) {
         functions.logger.error(error.response.data);
         functions.logger.error(error.response.status);
         functions.logger.error(error.response.headers);
