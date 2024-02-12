@@ -22,6 +22,8 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthService, HasuraService } from '@library/services';
 import { ApolloModule } from 'apollo-angular';
+import { provideServiceWorker } from '@angular/service-worker';
+import { providePromptUpdateService } from '@library/services/pwa';
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'de');
 
@@ -136,5 +138,9 @@ export const appConfig: ApplicationConfig = {
     //   useValue: environment.production ? undefined : ['localhost', 9199],
     // },
     { provide: DateAdapter, useClass: CustomDatePickerAdapter },
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
 };
