@@ -1,4 +1,4 @@
-import { Provider } from '@angular/core';
+import { Provider, isDevMode } from '@angular/core';
 import { APOLLO_OPTIONS, Apollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { ApolloLink, InMemoryCache, split } from '@apollo/client/core';
@@ -46,7 +46,7 @@ const authCtx = (auth: Auth) =>
 
     if (token) {
       let devHeaders = {};
-      if (!environment.production && auth.currentUser) {
+      if (isDevMode() && auth.currentUser) {
         const tokenResult = await getIdTokenResult(auth.currentUser, true) as any;
         devHeaders = localHeaders(
           tokenResult?.claims['role'],
@@ -65,7 +65,7 @@ const authCtx = (auth: Auth) =>
       return {
         headers: {
           ...headers,
-          ...(environment.production ? {} : localHeaders()),
+          ...(isDevMode() ? localHeaders() : {}),
         },
       };
     }
@@ -95,7 +95,7 @@ export function createApollo(
         const token = await idToken(auth).pipe(take(1)).toPromise();
         if (token) {
           let devHeaders = {};
-          if (!environment.production && auth.currentUser) {
+          if (isDevMode() && auth.currentUser) {
             const tokenResult = await getIdTokenResult(auth.currentUser, true) as any;
             devHeaders = localHeaders(
               tokenResult?.claims['role'],
@@ -112,7 +112,7 @@ export function createApollo(
         } else {
           return {
             headers: {
-              ...(environment.production ? {} : localHeaders()),
+              ...(isDevMode() ? localHeaders() : {}),
             },
           };
         }
@@ -152,7 +152,7 @@ export function createApollo(
                 const token = await idToken(auth).pipe(take(1)).toPromise();
                 if (token) {
                   let devHeaders = {};
-                  if (!environment.production && auth.currentUser) {
+                  if (isDevMode() && auth.currentUser) {
                     const tokenResult = await getIdTokenResult(auth.currentUser, true) as any;
                     devHeaders = localHeaders(
                       tokenResult?.claims['role'],
@@ -171,7 +171,7 @@ export function createApollo(
                   return {
                     headers: {
                       ...oldHeaders,
-                      ...(environment.production ? {} : localHeaders()),
+                      ...(isDevMode() ? localHeaders() : {}),
                     },
                   };
                 }
@@ -186,7 +186,7 @@ export function createApollo(
                 const token = await idToken(auth).pipe(take(1)).toPromise();
                 if (token) {
                   let devHeaders = {};
-                  if (!environment.production && auth.currentUser) {
+                  if (isDevMode() && auth.currentUser) {
                     const tokenResult = await getIdTokenResult(auth.currentUser, true) as any;
                     devHeaders = localHeaders(
                       tokenResult?.claims['role'],
@@ -205,7 +205,7 @@ export function createApollo(
                   return {
                     headers: {
                       ...oldHeaders,
-                      ...(environment.production ? {} : localHeaders()),
+                      ...(isDevMode() ? localHeaders() : {}),
                     },
                   };
                 }
@@ -253,7 +253,7 @@ export function createApollo(
   const persistor = new CachePersistor({
     cache,
     storage: localStorage,
-    debug: environment.production ? false : true,
+    debug: isDevMode() ? true : false,
   });
 
   if (currentVersion === SCHEMA_VERSION) {

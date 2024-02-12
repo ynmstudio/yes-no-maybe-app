@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter, withRouterConfig } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -58,21 +58,22 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withRouterConfig({
       onSameUrlNavigation: 'reload',
       // paramsInheritanceStrategy: 'always'
-    }),),
+    })),
     provideAnimationsAsync(),
     provideGraphQL(),
+    providePromptUpdateService(),
     provideHttpClient(),
     importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebase))),
     importProvidersFrom(provideAuth(() => {
       const auth = getAuth();
-      if (!environment.production && environment.useEmulators) {
+      if (isDevMode() && environment.useEmulators) {
         connectAuthEmulator(auth, 'http://localhost:9099');
       }
       return auth;
     })),
     importProvidersFrom(provideDatabase(() => {
       const database = getDatabase();
-      if (!environment.production && environment.useEmulators) {
+      if (isDevMode() && environment.useEmulators) {
         connectDatabaseEmulator(database, 'localhost', 9000);
       }
       return database;
@@ -80,14 +81,14 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(provideFunctions(() => {
       const functions = getFunctions();
       functions.region = 'europe-west3';
-      if (!environment.production && environment.useEmulators) {
+      if (isDevMode() && environment.useEmulators) {
         connectFunctionsEmulator(functions, 'localhost', 5001);
       }
       return functions;
     })),
     importProvidersFrom(provideStorage(() => {
       const storage = getStorage();
-      if (!environment.production && environment.useEmulators) {
+      if (isDevMode() && environment.useEmulators) {
         connectStorageEmulator(storage, 'localhost', 9199);
       }
       return storage;
@@ -107,11 +108,7 @@ export const appConfig: ApplicationConfig = {
         loader: {
           provide: TranslateLoader,
           useFactory: (http: HttpClient) => {
-            return new TranslateHttpLoader(
-              http,
-              './assets/i18n/',
-              '.json?v=' + environment.version
-            );
+            return new TranslateHttpLoader(http, './assets/i18n/', '.json?v=' + environment.version);
           },
           deps: [HttpClient],
         },

@@ -62,7 +62,6 @@ export class AppComponent {
         }
       }
     });
-    console.log(this.router.config)
   }
 
   sendVerification() {
