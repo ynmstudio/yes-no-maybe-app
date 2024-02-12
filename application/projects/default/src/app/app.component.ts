@@ -6,8 +6,8 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, HostListener, Inject, Renderer2 } from '@angular/core';
-import { Event, NavigationEnd, NavigationStart, Router, RouterModule } from '@angular/router';
+import { Component, Inject, Renderer2 } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { AlertComponent } from '@library/components/alert';
 import { AuthService, MultilangService } from '@library/services';
 import { TranslateModule } from '@ngx-translate/core';
@@ -37,12 +37,6 @@ import { SharedModule } from './shared/shared.module';
   ],
 })
 export class AppComponent {
-  @HostListener('window:beforeunload', ['$event'])
-  unloadHandler(event: Event) {
-    // Your logic on beforeunload
-    this.renderer.addClass(this.document.body, 'fade-out');
-  }
-  initialized: boolean = false;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -51,17 +45,7 @@ export class AppComponent {
     public authService: AuthService,
     public multilangService: MultilangService
   ) {
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationStart) {
-        // console.warn("event instanceof NavigationStart");
-      }
-      if (event instanceof NavigationEnd) {
-        if (!this.initialized) {
-          this.renderer.removeClass(this.document.body, 'fade-out');
-          this.initialized = true;
-        }
-      }
-    });
+
   }
 
   sendVerification() {

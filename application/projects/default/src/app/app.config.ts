@@ -1,5 +1,5 @@
 import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
-import { provideRouter, withRouterConfig } from '@angular/router';
+import { provideRouter, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -57,10 +57,14 @@ export class CustomDatePickerAdapter extends NativeDateAdapter {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withRouterConfig({
-      onSameUrlNavigation: 'reload',
-      // paramsInheritanceStrategy: 'always'
-    })),
+    provideRouter(
+      routes,
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
+        // paramsInheritanceStrategy: 'always'
+      }),
+      withViewTransitions()
+    ),
     provideAnimationsAsync(),
     provideGraphQL(),
     providePromptUpdateService(),
