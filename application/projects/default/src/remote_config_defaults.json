@@ -1,0 +1,6 @@
+{
+  "EnableResidencyFeature": "false",
+  "EnablePaymentFeature": "false",
+  "EnforceNoNameInApplication": "false",
+  "ApplicantDetails": "{}"
+}

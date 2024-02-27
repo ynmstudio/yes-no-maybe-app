@@ -366,7 +366,7 @@ CREATE OR REPLACE VIEW public.ratings_by_application AS
   WHERE ((e.current IS TRUE) AND (a.eliminated IS NOT TRUE))
   GROUP BY a.id, r.round_id
   ORDER BY r.round_id DESC, (count(DISTINCT r.id)), (abs(((5)::numeric - avg(r.value)))), (random());
-  CREATE FUNCTION public.application_is_ready(application_row public.applications) RETURNS boolean
+CREATE FUNCTION public.application_is_ready(application_row public.applications) RETURNS boolean
     LANGUAGE sql STABLE
     AS $$
     SELECT (application_row.disclaimer IS NOT FALSE AND

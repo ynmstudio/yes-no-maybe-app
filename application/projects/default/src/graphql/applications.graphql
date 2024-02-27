@@ -20,6 +20,8 @@ fragment Application on applications {
   locked
   ready
   state
+  applicant_details
+  applicant_details_valid
   payment {
     ...Payment
   }

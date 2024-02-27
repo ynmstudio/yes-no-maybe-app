@@ -1,10 +1,12 @@
-import { CdkDragDrop, CdkDropList, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   Component,
   HostListener,
   OnInit,
   QueryList,
   ViewChildren,
+  inject,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -39,6 +41,8 @@ import { UserService } from '@library/services/user';
 import { WorkPortfolioComponent } from './work-portfolio/work-portfolio.component';
 import { WorkFilesComponent } from './work-files/work-files.component';
 import { SharedModule } from '../../../shared/shared.module';
+import { RemoteConfig, getBoolean, getString } from '@angular/fire/remote-config';
+
 @Component({
   standalone: true,
   selector: 'app-edit-application',
@@ -59,13 +63,28 @@ export class EditApplicationComponent implements OnInit {
     return !this.form.dirty && !this.pendingUploads;
   }
 
-  form: FormGroup;
+  remoteConfig = inject(RemoteConfig);
+  get enforceNoNameInApplication() {
+    return getBoolean(this.remoteConfig, 'EnforceNoNameInApplication');
+  }
+  get enableResidencyFeature() {
+    return getBoolean(this.remoteConfig, 'EnableResidencyFeature');
+  }
+  get enablePaymentFeature() {
+    return getBoolean(this.remoteConfig, 'EnablePaymentFeature');
+  }
+
+  form: FormGroup<any>
 
   isNew: boolean = false;
 
   get name() {
     return this.form.get('name');
   }
+
+  applicantDetailsConfig: { [key: string]: boolean } = {};
+  applicantDetails = new FormGroup({});
+
   get group() {
     return this.form.get('group');
   }
@@ -105,7 +124,7 @@ export class EditApplicationComponent implements OnInit {
 
   singleWorks$;
   portfolioWorks$;
-  applicationQueryRef$;
+  applicationQueryRef$
 
   @ViewChildren(WorkSpecificationComponent)
   specificationComponents!: QueryList<WorkSpecificationComponent>;
@@ -127,6 +146,7 @@ export class EditApplicationComponent implements OnInit {
     private updateWorksOrderGQL: UpdateWorksOrderGQL,
     private authService: AuthService
   ) {
+
     // If navigation extra is set by dashboard on addApplication() show "New Application" headline
     this.isNew = (this.router.getCurrentNavigation()!.extras.info) ? (this.router.getCurrentNavigation()!.extras.info as any)['new'] || false : false;
 
@@ -145,16 +165,20 @@ export class EditApplicationComponent implements OnInit {
       }
     ).valueChanges
 
+
+    this.setupApplicantDetailsFormGroup()
+
     this.form = this.fb.group({
       name: new FormControl('', {
         validators: [Validators.required, Validators.maxLength(100)],
       }),
+      applicant_details: this.applicantDetails,
       group: new FormControl(false),
       works: new FormControl(0, { validators: Validators.min(1) }),
       statement: new FormControl('', {
-        validators: Validators.maxLength(this.statementMaxLength * 1.05),
+        validators: [Validators.required, Validators.maxLength(this.statementMaxLength * 1.05)],
         asyncValidators: Validators.composeAsync([
-          this.authService.checkRevealedUsername(),
+          this.enforceNoNameInApplication ? this.authService.checkRevealedUsername() : null,
         ]),
       }),
       residency: new FormControl(false),
@@ -163,10 +187,13 @@ export class EditApplicationComponent implements OnInit {
         validators: Validators.requiredTrue,
       }),
       payment: new FormControl(null, {
-        validators: Validators.required,
+        validators: this.enablePaymentFeature ? Validators.required : null,
       }),
     });
+
     this.form.disable();
+
+
 
     this.applicationQueryRef$ = this.getApplicationGQL
       .watch(
@@ -175,14 +202,22 @@ export class EditApplicationComponent implements OnInit {
           fetchPolicy: 'cache-and-network',
         }
       )
-    this.applicationQueryRef$.valueChanges.subscribe((resp) => {
+
+
+    this.applicationQueryRef$.valueChanges.pipe(takeUntilDestroyed()).subscribe((resp: any) => {
       const application = resp.data.applications_by_pk as any;
 
       for (const key in application) {
         if (application.hasOwnProperty(key)) {
           let control = this.form.get(key);
           if (control) {
-            control.setValue(application[key]);
+            if (key === 'applicant_details') {
+              console.log(control, application[key])
+              this.updateApplicantDetailsFormGroup(application[key])
+
+            } else {
+              control.setValue(application[key]);
+            }
           } else {
             this.form.addControl(key, new FormControl(application[key]));
           }
@@ -197,13 +232,50 @@ export class EditApplicationComponent implements OnInit {
     });
 
     this.form.valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(2000))
+      .pipe(takeUntilDestroyed(), distinctUntilChanged(), debounceTime(2000))
       .subscribe((changes) => {
         this.saveApplication();
       });
+
+
   }
 
   ngOnInit(): void { }
+
+  setupApplicantDetailsFormGroup() {
+    try {
+      this.applicantDetailsConfig = JSON.parse(getString(this.remoteConfig, 'ApplicantDetails'));
+      console.log(this.applicantDetailsConfig)
+    } catch (error) {
+      console.error(error)
+    }
+    if (Object.keys(this.applicantDetailsConfig).length > 0) {
+      for (const key in this.applicantDetailsConfig) {
+        if (this.applicantDetailsConfig.hasOwnProperty(key)) {
+          this.applicantDetails.addControl(key, new FormControl('', {
+            validators: this.applicantDetailsConfig[key] ? [Validators.required] : [],
+          }))
+        }
+      }
+    }
+  }
+
+  updateApplicantDetailsFormGroup(data: { [key: string]: string }) {
+    if (Object.keys(Object.keys(data)).length > 0) {
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          let control = this.applicantDetails.get(key);
+          if (control) {
+            control.setValue(data[key]);
+          } else {
+            this.applicantDetailsConfig[key] = false;
+            this.applicantDetails.addControl(key, new FormControl(data[key]));
+          }
+        }
+      }
+    }
+  }
+
 
   async toggleGroup() {
     this.form.get('group')?.setValue(!this.form.get('group')?.value);
@@ -232,6 +304,8 @@ export class EditApplicationComponent implements OnInit {
     let data = {
       name: this.form.get('name')?.value || '',
       group: this.form.get('group')?.value || false,
+      applicant_details: this.form.get('applicant_details')?.value || {},
+      applicant_details_valid: this.form.get('applicant_details')?.valid || false,
       statement: this.form.get('statement')?.value || '',
       residency: this.form.get('residency')?.value || false,
       database: this.form.get('database')?.value || false,

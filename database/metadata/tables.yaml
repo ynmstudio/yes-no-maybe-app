@@ -140,6 +140,8 @@
     - role: team
       permission:
         columns:
+          - applicant_details
+          - applicant_details_valid
           - created_at
           - created_by
           - database
@@ -163,6 +165,8 @@
     - role: user
       permission:
         columns:
+          - applicant_details
+          - applicant_details_valid
           - created_at
           - created_by
           - database
@@ -196,6 +200,8 @@
     - role: user
       permission:
         columns:
+          - applicant_details
+          - applicant_details_valid
           - database
           - disclaimer
           - group

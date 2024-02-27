@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppService } from './app.service';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import {
   AbstractControl,

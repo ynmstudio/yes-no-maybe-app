@@ -650,6 +650,101 @@
 						</children>
 					</folder_node>
 					<folder_node>
+						<name>applicant-details</name>
+						<children>
+							<concept_node>
+								<name>address</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>dateOfBirth</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>email</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>phone</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>social</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>web</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+						</children>
+					</folder_node>
+					<folder_node>
 						<name>application</name>
 						<children>
 							<concept_node>
@@ -964,6 +1059,21 @@
 									<translation>
 										<language>en-GB</language>
 										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>invalid-details</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
 									</translation>
 								</translations>
 							</concept_node>

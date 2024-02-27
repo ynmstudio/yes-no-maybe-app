@@ -16,6 +16,7 @@ export type Scalars = {
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
   bigint: { input: any; output: any; }
+  jsonb: { input: any; output: any; }
   numeric: { input: any; output: any; }
   timestamp: { input: any; output: any; }
   timestamptz: { input: any; output: any; }
@@ -84,6 +85,8 @@ export type String_Comparison_Exp = {
 /** columns and relationships of "applications" */
 export type Applications = {
   __typename?: 'applications';
+  applicant_details?: Maybe<Scalars['jsonb']['output']>;
+  applicant_details_valid?: Maybe<Scalars['Boolean']['output']>;
   created_at: Scalars['timestamptz']['output'];
   created_by: Scalars['String']['output'];
   database: Scalars['Boolean']['output'];
@@ -132,6 +135,12 @@ export type Applications = {
   works: Array<Works>;
   /** An aggregate relationship */
   works_aggregate: Works_Aggregate;
+};
+
+
+/** columns and relationships of "applications" */
+export type ApplicationsApplicant_DetailsArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -306,6 +315,11 @@ export type Applications_Aggregate_Order_By = {
   variance?: InputMaybe<Applications_Variance_Order_By>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Applications_Append_Input = {
+  applicant_details?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** input type for inserting array relation for remote table "applications" */
 export type Applications_Arr_Rel_Insert_Input = {
   data: Array<Applications_Insert_Input>;
@@ -329,6 +343,8 @@ export type Applications_Bool_Exp = {
   _and?: InputMaybe<Array<Applications_Bool_Exp>>;
   _not?: InputMaybe<Applications_Bool_Exp>;
   _or?: InputMaybe<Array<Applications_Bool_Exp>>;
+  applicant_details?: InputMaybe<Jsonb_Comparison_Exp>;
+  applicant_details_valid?: InputMaybe<Boolean_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   created_by?: InputMaybe<String_Comparison_Exp>;
   database?: InputMaybe<Boolean_Comparison_Exp>;
@@ -371,6 +387,21 @@ export enum Applications_Constraint {
   ApplicationsPkey = 'applications_pkey'
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Applications_Delete_At_Path_Input = {
+  applicant_details?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Applications_Delete_Elem_Input = {
+  applicant_details?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Applications_Delete_Key_Input = {
+  applicant_details?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** input type for incrementing numeric columns in table "applications" */
 export type Applications_Inc_Input = {
   edition_id?: InputMaybe<Scalars['Int']['input']>;
@@ -378,6 +409,8 @@ export type Applications_Inc_Input = {
 
 /** input type for inserting data into table "applications" */
 export type Applications_Insert_Input = {
+  applicant_details?: InputMaybe<Scalars['jsonb']['input']>;
+  applicant_details_valid?: InputMaybe<Scalars['Boolean']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['String']['input']>;
   database?: InputMaybe<Scalars['Boolean']['input']>;
@@ -480,6 +513,8 @@ export type Applications_On_Conflict = {
 
 /** Ordering options when selecting data from "applications". */
 export type Applications_Order_By = {
+  applicant_details?: InputMaybe<Order_By>;
+  applicant_details_valid?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   created_by?: InputMaybe<Order_By>;
   database?: InputMaybe<Order_By>;
@@ -514,8 +549,17 @@ export type Applications_Pk_Columns_Input = {
   id: Scalars['uuid']['input'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Applications_Prepend_Input = {
+  applicant_details?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** select columns of table "applications" */
 export enum Applications_Select_Column {
+  /** column name */
+  ApplicantDetails = 'applicant_details',
+  /** column name */
+  ApplicantDetailsValid = 'applicant_details_valid',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -547,6 +591,8 @@ export enum Applications_Select_Column {
 /** select "applications_aggregate_bool_exp_bool_and_arguments_columns" columns of table "applications" */
 export enum Applications_Select_Column_Applications_Aggregate_Bool_Exp_Bool_And_Arguments_Columns {
   /** column name */
+  ApplicantDetailsValid = 'applicant_details_valid',
+  /** column name */
   Database = 'database',
   /** column name */
   Disclaimer = 'disclaimer',
@@ -561,6 +607,8 @@ export enum Applications_Select_Column_Applications_Aggregate_Bool_Exp_Bool_And_
 /** select "applications_aggregate_bool_exp_bool_or_arguments_columns" columns of table "applications" */
 export enum Applications_Select_Column_Applications_Aggregate_Bool_Exp_Bool_Or_Arguments_Columns {
   /** column name */
+  ApplicantDetailsValid = 'applicant_details_valid',
+  /** column name */
   Database = 'database',
   /** column name */
   Disclaimer = 'disclaimer',
@@ -574,6 +622,8 @@ export enum Applications_Select_Column_Applications_Aggregate_Bool_Exp_Bool_Or_A
 
 /** input type for updating data in table "applications" */
 export type Applications_Set_Input = {
+  applicant_details?: InputMaybe<Scalars['jsonb']['input']>;
+  applicant_details_valid?: InputMaybe<Scalars['Boolean']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['String']['input']>;
   database?: InputMaybe<Scalars['Boolean']['input']>;
@@ -632,6 +682,8 @@ export type Applications_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Applications_Stream_Cursor_Value_Input = {
+  applicant_details?: InputMaybe<Scalars['jsonb']['input']>;
+  applicant_details_valid?: InputMaybe<Scalars['Boolean']['input']>;
   created_at?: InputMaybe<Scalars['timestamptz']['input']>;
   created_by?: InputMaybe<Scalars['String']['input']>;
   database?: InputMaybe<Scalars['Boolean']['input']>;
@@ -661,6 +713,10 @@ export type Applications_Sum_Order_By = {
 /** update columns of table "applications" */
 export enum Applications_Update_Column {
   /** column name */
+  ApplicantDetails = 'applicant_details',
+  /** column name */
+  ApplicantDetailsValid = 'applicant_details_valid',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CreatedBy = 'created_by',
@@ -689,8 +745,18 @@ export enum Applications_Update_Column {
 }
 
 export type Applications_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Applications_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Applications_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Applications_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Applications_Delete_Key_Input>;
   /** increments the numeric columns with given value of the filtered values */
   _inc?: InputMaybe<Applications_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Applications_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Applications_Set_Input>;
   /** filter the rows which have to be updated */
@@ -1827,6 +1893,34 @@ export type Eliminations_Variance_Order_By = {
   round_id?: InputMaybe<Order_By>;
 };
 
+export type Jsonb_Cast_Exp = {
+  String?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type Jsonb_Comparison_Exp = {
+  _cast?: InputMaybe<Jsonb_Cast_Exp>;
+  /** is the column contained in the given json value */
+  _contained_in?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']['input']>;
+  _eq?: InputMaybe<Scalars['jsonb']['input']>;
+  _gt?: InputMaybe<Scalars['jsonb']['input']>;
+  _gte?: InputMaybe<Scalars['jsonb']['input']>;
+  /** does the string exist as a top-level key in the column */
+  _has_key?: InputMaybe<Scalars['String']['input']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: InputMaybe<Array<Scalars['String']['input']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _lt?: InputMaybe<Scalars['jsonb']['input']>;
+  _lte?: InputMaybe<Scalars['jsonb']['input']>;
+  _neq?: InputMaybe<Scalars['jsonb']['input']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']['input']>>;
+};
+
 /** columns and relationships of "messages" */
 export type Messages = {
   __typename?: 'messages';
@@ -2927,7 +3021,12 @@ export type Mutation_RootInsert_Works_OneArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_ApplicationsArgs = {
+  _append?: InputMaybe<Applications_Append_Input>;
+  _delete_at_path?: InputMaybe<Applications_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Applications_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Applications_Delete_Key_Input>;
   _inc?: InputMaybe<Applications_Inc_Input>;
+  _prepend?: InputMaybe<Applications_Prepend_Input>;
   _set?: InputMaybe<Applications_Set_Input>;
   where: Applications_Bool_Exp;
 };
@@ -2935,7 +3034,12 @@ export type Mutation_RootUpdate_ApplicationsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Applications_By_PkArgs = {
+  _append?: InputMaybe<Applications_Append_Input>;
+  _delete_at_path?: InputMaybe<Applications_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Applications_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Applications_Delete_Key_Input>;
   _inc?: InputMaybe<Applications_Inc_Input>;
+  _prepend?: InputMaybe<Applications_Prepend_Input>;
   _set?: InputMaybe<Applications_Set_Input>;
   pk_columns: Applications_Pk_Columns_Input;
 };
@@ -3143,6 +3247,11 @@ export type Mutation_RootUpdate_Updates_ManyArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_UsersArgs = {
+  _append?: InputMaybe<Users_Append_Input>;
+  _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Users_Delete_Key_Input>;
+  _prepend?: InputMaybe<Users_Prepend_Input>;
   _set?: InputMaybe<Users_Set_Input>;
   where: Users_Bool_Exp;
 };
@@ -3150,6 +3259,11 @@ export type Mutation_RootUpdate_UsersArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _append?: InputMaybe<Users_Append_Input>;
+  _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<Users_Delete_Key_Input>;
+  _prepend?: InputMaybe<Users_Prepend_Input>;
   _set?: InputMaybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
 };
@@ -6792,6 +6906,7 @@ export type Users = {
   applications: Array<Applications>;
   /** An aggregate relationship */
   applications_aggregate: Applications_Aggregate;
+  details?: Maybe<Scalars['jsonb']['output']>;
   id: Scalars['String']['output'];
   last_seen?: Maybe<Scalars['timestamptz']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -6820,6 +6935,12 @@ export type UsersApplications_AggregateArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   order_by?: InputMaybe<Array<Applications_Order_By>>;
   where?: InputMaybe<Applications_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersDetailsArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -6864,6 +6985,11 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Users_Append_Input = {
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
 export type Users_Bool_Exp = {
   _and?: InputMaybe<Array<Users_Bool_Exp>>;
@@ -6871,6 +6997,7 @@ export type Users_Bool_Exp = {
   _or?: InputMaybe<Array<Users_Bool_Exp>>;
   applications?: InputMaybe<Applications_Bool_Exp>;
   applications_aggregate?: InputMaybe<Applications_Aggregate_Bool_Exp>;
+  details?: InputMaybe<Jsonb_Comparison_Exp>;
   id?: InputMaybe<String_Comparison_Exp>;
   last_seen?: InputMaybe<Timestamptz_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
@@ -6885,9 +7012,25 @@ export enum Users_Constraint {
   UsersPkey = 'users_pkey'
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Users_Delete_At_Path_Input = {
+  details?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Users_Delete_Elem_Input = {
+  details?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Users_Delete_Key_Input = {
+  details?: InputMaybe<Scalars['String']['input']>;
+};
+
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
   applications?: InputMaybe<Applications_Arr_Rel_Insert_Input>;
+  details?: InputMaybe<Scalars['jsonb']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   last_seen?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -7067,6 +7210,7 @@ export type Users_Online_Updates = {
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
   applications_aggregate?: InputMaybe<Applications_Aggregate_Order_By>;
+  details?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   last_seen?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -7079,8 +7223,15 @@ export type Users_Pk_Columns_Input = {
   id: Scalars['String']['input'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Users_Prepend_Input = {
+  details?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
 /** select columns of table "users" */
 export enum Users_Select_Column {
+  /** column name */
+  Details = 'details',
   /** column name */
   Id = 'id',
   /** column name */
@@ -7093,6 +7244,7 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  details?: InputMaybe<Scalars['jsonb']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   last_seen?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -7109,6 +7261,7 @@ export type Users_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Users_Stream_Cursor_Value_Input = {
+  details?: InputMaybe<Scalars['jsonb']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   last_seen?: InputMaybe<Scalars['timestamptz']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -7117,6 +7270,8 @@ export type Users_Stream_Cursor_Value_Input = {
 
 /** update columns of table "users" */
 export enum Users_Update_Column {
+  /** column name */
+  Details = 'details',
   /** column name */
   Id = 'id',
   /** column name */
@@ -7128,6 +7283,16 @@ export enum Users_Update_Column {
 }
 
 export type Users_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<Users_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<Users_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<Users_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<Users_Delete_Key_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<Users_Prepend_Input>;
   /** sets the columns of the filtered rows to the given values */
   _set?: InputMaybe<Users_Set_Input>;
   /** filter the rows which have to be updated */
@@ -9117,7 +9282,7 @@ export type Works_Variance_Order_By = {
 
 export type PaymentFragment = { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any };
 
-export type ApplicationFragment = { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } };
+export type ApplicationFragment = { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, applicant_details?: any | null, applicant_details_valid?: boolean | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } };
 
 export type AdminApplicationFragment = { __typename?: 'applications', internal_name?: string | null, rated_by_user?: boolean | null, winner?: boolean | null, elimination?: { __typename?: 'eliminations', application_id: any, created_at: any, round_id?: number | null, reason?: string | null, eliminated_by: { __typename?: 'users', name?: string | null }, rating_round?: { __typename?: 'rating_rounds', level?: number | null } | null } | null, files: Array<{ __typename?: 'work_files', work_id: any, application_id: any, order: number, id: any, mimetype: string, key: string, originalname: string, size: any, password?: string | null }> };
 
@@ -9128,14 +9293,14 @@ export type EliminationFragment = { __typename?: 'eliminations', application_id:
 export type GetApplicationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetApplicationsQuery = { __typename?: 'query_root', applications: Array<{ __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } }>, applications_aggregate: { __typename?: 'applications_aggregate', aggregate?: { __typename?: 'applications_aggregate_fields', count: number } | null } };
+export type GetApplicationsQuery = { __typename?: 'query_root', applications: Array<{ __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, applicant_details?: any | null, applicant_details_valid?: boolean | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } }>, applications_aggregate: { __typename?: 'applications_aggregate', aggregate?: { __typename?: 'applications_aggregate_fields', count: number } | null } };
 
 export type GetApplicationQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetApplicationQuery = { __typename?: 'query_root', applications_by_pk?: { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } } | null };
+export type GetApplicationQuery = { __typename?: 'query_root', applications_by_pk?: { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, applicant_details?: any | null, applicant_details_valid?: boolean | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } } | null };
 
 export type AddApplicationMutationVariables = Exact<{
   edition_id: Scalars['Int']['input'];
@@ -9150,7 +9315,7 @@ export type UpdateApplicationMutationVariables = Exact<{
 }>;
 
 
-export type UpdateApplicationMutation = { __typename?: 'mutation_root', update_applications_by_pk?: { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } } | null };
+export type UpdateApplicationMutation = { __typename?: 'mutation_root', update_applications_by_pk?: { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, applicant_details?: any | null, applicant_details_valid?: boolean | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null } } | null };
 
 export type LockApplicationMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -9217,7 +9382,7 @@ export type GetAdminApplicationQueryVariables = Exact<{
 }>;
 
 
-export type GetAdminApplicationQuery = { __typename?: 'query_root', applications_by_pk?: { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, internal_name?: string | null, rated_by_user?: boolean | null, winner?: boolean | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null }, elimination?: { __typename?: 'eliminations', application_id: any, created_at: any, round_id?: number | null, reason?: string | null, eliminated_by: { __typename?: 'users', name?: string | null }, rating_round?: { __typename?: 'rating_rounds', level?: number | null } | null } | null, files: Array<{ __typename?: 'work_files', work_id: any, application_id: any, order: number, id: any, mimetype: string, key: string, originalname: string, size: any, password?: string | null }> } | null };
+export type GetAdminApplicationQuery = { __typename?: 'query_root', applications_by_pk?: { __typename?: 'applications', id: any, name?: string | null, group: boolean, created_at: any, updated_at: any, statement?: string | null, residency: boolean, database: boolean, disclaimer: boolean, locked: boolean, ready?: boolean | null, state?: string | null, applicant_details?: any | null, applicant_details_valid?: boolean | null, internal_name?: string | null, rated_by_user?: boolean | null, winner?: boolean | null, payment?: { __typename?: 'payments', id: any, mimetype: string, key: string, originalname: string, size: any, application_id: any } | null, edition: { __typename?: 'editions', id: number, name: string }, files_aggregate: { __typename?: 'work_files_aggregate', aggregate?: { __typename?: 'work_files_aggregate_fields', count: number, sum?: { __typename?: 'work_files_sum_fields', size?: any | null } | null } | null }, works_aggregate: { __typename?: 'works_aggregate', aggregate?: { __typename?: 'works_aggregate_fields', count: number } | null }, elimination?: { __typename?: 'eliminations', application_id: any, created_at: any, round_id?: number | null, reason?: string | null, eliminated_by: { __typename?: 'users', name?: string | null }, rating_round?: { __typename?: 'rating_rounds', level?: number | null } | null } | null, files: Array<{ __typename?: 'work_files', work_id: any, application_id: any, order: number, id: any, mimetype: string, key: string, originalname: string, size: any, password?: string | null }> } | null };
 
 export type GetAdminApplicationLiveQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
@@ -9662,6 +9827,8 @@ export const ApplicationFragmentDoc = gql`
   locked
   ready
   state
+  applicant_details
+  applicant_details_valid
   payment {
     ...Payment
   }

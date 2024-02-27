@@ -1,14 +1,14 @@
-import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { FirebaseApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectDatabaseEmulator, getDatabase, provideDatabase } from '@angular/fire/database';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
+import { ensureInitialized, fetchAndActivate, getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
 import { environment } from '../environments/environment';
 import { provideGraphQL } from './graphql.module';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
@@ -22,8 +22,8 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthService, HasuraService } from '@library/services';
 import { ApolloModule } from 'apollo-angular';
-import { provideServiceWorker } from '@angular/service-worker';
-import { providePromptUpdateService } from '@library/services/pwa';
+// import { provideServiceWorker } from '@angular/service-worker';
+// import { providePromptUpdateService } from '@library/services/pwa';
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'de');
 
@@ -99,7 +99,21 @@ export const appConfig: ApplicationConfig = {
       }
       return storage;
     })),
-    importProvidersFrom(provideRemoteConfig(() => getRemoteConfig())),
+    importProvidersFrom(provideRemoteConfig(() => {
+      const remoteConfig = getRemoteConfig();
+      remoteConfig.settings.minimumFetchIntervalMillis = isDevMode() ? 3600000 : 43200000;
+      const rcDefaults = require('./../remote_config_defaults.json');
+      remoteConfig.defaultConfig = rcDefaults;
+      console.log(remoteConfig.lastFetchStatus, remoteConfig.fetchTimeMillis)
+      fetchAndActivate(remoteConfig);
+      return remoteConfig;
+    })),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (app: FirebaseApp) => () => ensureInitialized(getRemoteConfig(app)),
+      deps: [FirebaseApp],
+      multi: true,
+    },
     importProvidersFrom([
       SharedModule.forRoot(),
       ApolloModule,
@@ -120,6 +134,7 @@ export const appConfig: ApplicationConfig = {
         },
       }),
     ]),
+
     // check firebase.json for matching ports
     // {
     //   provide: BUCKET,

@@ -14,7 +14,7 @@
       type="text"
       class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
       [ngClass]="{
-        'ring-1 ring-red-500': title?.invalid
+        'ring-1 !ring-red-500': title?.invalid
       }"
     />
     <div
@@ -40,7 +40,7 @@
     type="text"
     class="col-span-2 md:col-auto appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
     [ngClass]="{
-      'ring-1 ring-red-500': year?.invalid
+      'ring-1 !ring-red-500': year?.invalid
     }"
   />
   <label
@@ -141,7 +141,7 @@
       rows="6"
       class="font-sans text-xs sm:text-sm md:text-base rounded-none block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
       [ngClass]="{
-        'ring-1 ring-red-500': description?.invalid
+        'ring-1 !ring-red-500': description?.invalid
       }"
     ></textarea>
     <div

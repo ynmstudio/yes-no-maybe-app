@@ -63,7 +63,7 @@
           type="text"
           class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
           [ngClass]="{
-            'ring-1 ring-red-500': name?.invalid
+            'ring-1 !ring-red-500': name?.invalid
           }"
         />
       </div>
@@ -98,6 +98,7 @@
         </span>
       </div>
     </div>
+
     <div class="container--default-x py-8 lg:py-0">
       <!-- WORKS -->
       <div
@@ -370,15 +371,17 @@
       <div
         class="flex-auto font-mono text-xs sm:text-sm grid grid-cols-1 lg:grid-cols-application items-baseline gap-x-4 gap-y-3 sm:gap-y-5 lg:gap-y-7"
       >
+        @if (enforceNoNameInApplication) {
         <div class="lg:text-right">!</div>
         <div
           class="leading-snug"
           [innerHtml]="'hints.dont-reveal-your-name' | translate"
         ></div>
+        }
         <label
           class="col-start-1"
           for="statement"
-          [innerHtml]="'snippets.statement' | translate"
+          [innerHtml]="('snippets.statement' | translate) + '&thinsp;*'"
         ></label>
         <div class="lg:col-span-2 flex items-baseline mb-3">
           <textarea
@@ -387,10 +390,13 @@
             name="statement"
             rows="10"
             class="font-sans text-xs sm:text-sm md:text-base rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+            [ngClass]="{
+              'ring-1 !ring-red-500':statement?.invalid || statement?.hasError('nameRevealed') || statement?.value?.length > statementMaxLength,
+            }"
           ></textarea>
           <div
             class="whitespace-nowrap pl-3 text-xs text-gray-800 transition-colors"
-            [ngClass]="
+            [ngClass]="[
               statement?.value?.length > statementMaxLength * 0.95
                 ? statement?.value?.length > statementMaxLength
                   ? 'text-red-600'
@@ -399,14 +405,53 @@
                   statementMinLenght
                 ? 'text-green-500'
                 : 'text-gray-800'
-            "
+            ]"
           >
             {{ statement?.value?.length || 0 }}/{{ statementMaxLength }}
             {{ "defaults.characters" | translate }}
+            @if(statement?.hasError('nameRevealed')) {
+            <div
+              class="z-0 pt-px text-red-600"
+              [innerHtml]="'snippets.dont-reveal-name' | translate"
+            ></div>
+            }
           </div>
         </div>
-        <!-- HIDE RESIDENCY ELEMENT -->
-        <!-- <label
+        <!-- APPLICANT DETAILS -->
+        @if( (applicantDetailsConfig|keyvalue).length) {
+        <div>Details</div>
+        <div
+          class="bg-gray-100 p-4 flex-auto grid grid-cols-1 lg:grid-cols-form items-center gap-x-4 gap-y-2 lg:gap-y-3"
+          formGroupName="applicant_details"
+        >
+          @for (detail of applicantDetailsConfig|keyvalue; track detail.key) {
+
+          <label
+            [for]="detail.key"
+            [innerHtml]="
+              ('applicant-details.' + detail.key | translate) +
+              (detail.value ? ':&thinsp;*' : ':')
+            "
+          ></label>
+          <input
+            formGroupName="applicant_details"
+            [id]="detail.key"
+            [formControlName]="detail.key"
+            [name]="detail.key"
+            [type]="detail.key"
+            class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-white border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+            [ngClass]="{
+              'ring-1 !ring-red-500': applicantDetails.get(detail.key)?.invalid
+            }"
+          />
+
+          }
+        </div>
+        }
+
+        <!-- Residency Feature -->
+        @if(enableResidencyFeature) {
+        <label
           class="col-start-1"
           for="residency"
           [innerHtml]="'defaults.residency-single' | translate | titlecase"
@@ -436,7 +481,10 @@
               </span>
             </label>
           </div>
-        </div> -->
+        </div>
+        } @else {
+        <!-- disabled -->
+        }
 
         <label
           class="col-start-1"
@@ -472,12 +520,14 @@
         <label
           class="col-start-1"
           for="disclaimer"
-          [innerHtml]="'defaults.disclaimer-single' | translate | titlecase"
+          [innerHtml]="
+            ('defaults.disclaimer-single' | translate | titlecase) + '&thinsp;*'
+          "
         ></label>
         <div
           class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
           [ngClass]="{
-            'ring-1 ring-red-500': disclaimer?.invalid
+            'ring-1 !ring-red-500': disclaimer?.invalid
           }"
         >
           <div
@@ -501,10 +551,15 @@
             </label>
           </div>
         </div>
+
+        <!-- Payment Feature -->
+        @if(enablePaymentFeature) {
         <label
           class="col-start-1"
           for="payment"
-          [innerHtml]="'defaults.payment-single' | translate | titlecase"
+          [innerHtml]="
+            ('defaults.payment-single' | translate | titlecase) + '*'
+          "
         ></label>
         <div class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base">
           <p
@@ -667,6 +722,9 @@
             </button>
           </div>
         </div>
+        } @else {
+        <!-- disabled -->
+        }
         <div
           class="lg:col-start-2 lg:col-span-2 text-xs sm:text-sm md:text-base mt-24"
         >
