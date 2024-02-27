@@ -1,0 +1,126 @@
+// // Custom Theming for Angular Material
+// // For more information: https://material.angular.io/guide/theming
+// @use '@angular/material' as mat;
+// // Plus imports for other components in your app.
+
+// // Include the common styles for Angular Material. We include this here so that you only
+// // have to load a single css file for Angular Material in your app.
+// // Be sure that you only ever include this mixin once!
+// @include mat.core();
+
+// // Define the palettes for your theme using the Material Design palettes available in palette.scss
+// // (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// // hue. Available color palettes: https://material.io/design/color/
+// $default-primary: mat.define-palette(mat.$indigo-palette);
+// $default-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// // The warn palette is optional (defaults to red).
+// $default-warn: mat.define-palette(mat.$red-palette);
+
+// // Create the theme object. A theme consists of configurations for individual
+// // theming systems such as "color" or "typography".
+// $default-theme: mat.define-light-theme((
+//   color: (
+//     primary: $default-primary,
+//     accent: $default-accent,
+//     warn: $default-warn,
+//   )
+// ));
+
+// // Include theme styles for core and each component used in your app.
+// // Alternatively, you can import and @include the theme mixins for each component
+// // that you are using.
+// @include mat.all-component-themes($default-theme);
+
+// /* You can add global styles to this file, and also import other style files */
+
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// @apply py-8 px-4 sm:px-6 lg:px-8;
+// @apply p-4 sm:p-6 lg:p-8;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  .container--default {
+    @apply px-4 sm:px-6 lg:px-8 py-3 sm:py-5 lg:py-7;
+  }
+  .container--default-x {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  .container--default-y {
+    @apply py-4 sm:py-6 lg:py-8;
+  }
+  .container--default-margin {
+    @apply mx-4 sm:mx-6 lg:mx-8 my-3 sm:my-5 lg:my-7;
+  }
+  .container--default-x-margin {
+    @apply mx-4 sm:mx-6 lg:mx-8;
+  }
+  .container--default-y-margin {
+    @apply my-4 sm:my-6 lg:my-8;
+  }
+  .box-padding {
+    @apply py-3 sm:py-5 px-3 sm:px-5 lg:px-7;
+  }
+  .box-padding-x {
+    @apply px-3 sm:px-5 lg:px-7;
+  }
+  .box-padding-y {
+    @apply py-3 sm:py-5;
+  }
+
+  // Drag & Drop
+
+  .cdk-drag-animating {
+    @apply transition-transform duration-200;
+  }
+  .cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    @apply transition-transform duration-200;
+  }
+  .cdk-drag {
+    @apply transition-drag duration-500 delay-100 bg-transparent ring-transparent ring-0 shadow-none;
+  }
+  // .cdk-drag:active {
+  //   @apply bg-white ring-white ring-8 shadow-drag;
+  // }
+  .cdk-drag-preview {
+    @apply bg-white ring-white ring-8 shadow-drag;
+  }
+  .cdk-drag-placeholder {
+    @apply transition-transform opacity-25;
+  }
+
+  pre {
+    @apply overflow-hidden;
+  }
+}
+
+@layer components {
+  .text-headline {
+    @apply text-2xl md:text-3xl;
+  }
+  .spinner {
+    @apply w-4 h-4 rounded-full border-current border animate-spin;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .no-scrollbar {
+    /* Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}

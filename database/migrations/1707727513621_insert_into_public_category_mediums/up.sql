@@ -1,0 +1,16 @@
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Fotografie', E'Photography');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Film / Video', E'Film / Video');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Performance', E'Performance');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Digital / Web basiert', E'Digital / Web Based');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Mixed Media', E'Mixed Media');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Installation', E'Installation');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Malerei', E'Painting');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Konzeptkunst', E'Conceptual');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Bildhauerei', E'Sculpture');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Keramik', E'Ceramics');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Sound', E'Sound');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Site Specific', E'Site Specific');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Literatur / Gedichte / Text', E'Literature / Poetry / Text');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Arbeiten auf Papier', E'Works on Paper');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Sonstiges', E'Other');
+INSERT INTO "public"."category_mediums"("name_de", "name_en") VALUES (E'Architektur', E'Architecture');

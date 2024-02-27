@@ -1,0 +1,20 @@
+<ng-content></ng-content>
+<div class="group">
+  <div class="absolute bottom-0 inset-x-0 p-1">
+    <div class="overflow-hidden h-1 text-xs flex bg-gray-50">
+      <div
+        [style.width]="(percentage || 0) + '%'"
+        class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gray-800"
+      ></div>
+    </div>
+  </div>
+  <ng-container *ngIf="snapshot | async as snap">
+    <button
+      (click)="cancel()"
+      [disabled]="!isActive(snap)"
+      class="opacity-0 group-hover:opacity-100 transition-all absolute top-1 right-1 text-xs font-mono bg-black hover:bg-red-600 cursor-pointer text-white w-5 h-5 leading-5 rounded-full text-center"
+    >
+      X
+    </button>
+  </ng-container>
+</div>

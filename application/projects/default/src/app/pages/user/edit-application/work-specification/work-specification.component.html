@@ -1,0 +1,177 @@
+<form
+  [formGroup]="form"
+  class="relative font-mono text-xs sm:text-sm grid grid-cols-specifications items-center gap-x-4 gap-y-3 lg:gap-y-2"
+>
+  <label
+    for="title-{{ specification?.id }}"
+    [innerHtml]="('defaults.title-single' | translate | titlecase) + ':'"
+  ></label>
+  <div class="relative col-span-4 md:col-span-3">
+    <input
+      id="title-{{ specification?.id }}"
+      formControlName="title"
+      name="title"
+      type="text"
+      class="appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+      [ngClass]="{
+        'ring-1 !ring-red-500': title?.invalid
+      }"
+    />
+    <div
+      class="opacity-0 absolute z-0 bottom-px right-px p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap text-xs font-mono leading-none text-red-600 transition-opacity delay-75"
+      [ngClass]="{
+        'opacity-100': title?.hasError('nameRevealed')
+      }"
+      [innerHtml]="'snippets.dont-reveal-name' | translate | uppercase"
+    ></div>
+  </div>
+
+  <label
+    class="col-span-2 md:col-auto"
+    for="year-{{ specification?.id }}"
+    [innerHtml]="
+      ('defaults.year-of-creating-single' | translate | titlecase) + ':'
+    "
+  ></label>
+  <input
+    id="year-{{ specification?.id }}"
+    formControlName="year"
+    name="year"
+    type="text"
+    class="col-span-2 md:col-auto appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    [ngClass]="{
+      'ring-1 !ring-red-500': year?.invalid
+    }"
+  />
+  <label
+    for="number_of_editions-{{ specification?.id }}"
+    class="col-span-2 md:col-auto md:text-right"
+    >{{ "defaults.edition-multi" | translate | titlecase }} ({{
+      "defaults.optional" | translate
+    }}):</label
+  >
+  <input
+    id="number_of_editions-{{ specification?.id }}"
+    formControlName="number_of_editions"
+    name="number_of_editions"
+    type="number"
+    min="0"
+    class="col-span-2 md:col-auto appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+  />
+  <!-- @TODO Add Medium Tag List -->
+
+  <label
+    for="mediums-{{ specification?.id }}"
+    [innerHtml]="('defaults.medium-multi' | translate | titlecase) + ':'"
+  ></label>
+  <app-medium-selector
+    class="col-span-4 md:col-span-3"
+    [specification]="specification"
+    [application_id]="application_id"
+    [work_id]="work_id"
+  ></app-medium-selector>
+
+  <label
+    [innerHtml]="('defaults.dimensions' | translate | titlecase) + ':'"
+  ></label>
+  <div class="col-span-4 md:col-span-3 flex items-center space-x-2">
+    <label
+      for="dimensions_width-{{ specification?.id }}"
+      [innerHtml]="'defaults.dimensions-width' | translate | uppercase"
+    ></label>
+    <input
+      id="dimensions_width-{{ specification?.id }}"
+      formControlName="dimensions_width"
+      name="dimensions_width"
+      type="number"
+      min="0"
+      class="flex-1 w-4 appearance-none rounded-none p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    />
+    <label for="dimensions_height-{{ specification?.id }}"
+      >&times;&nbsp;{{
+        "defaults.dimensions-height" | translate | uppercase
+      }}</label
+    >
+    <input
+      id="dimensions_height-{{ specification?.id }}"
+      formControlName="dimensions_height"
+      name="dimensions_height"
+      type="number"
+      min="0"
+      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    />
+    <label for="dimensions_depth-{{ specification?.id }}"
+      >&times;&nbsp;{{
+        "defaults.dimensions-depth" | translate | uppercase
+      }}</label
+    >
+    <input
+      id="dimensions_depth-{{ specification?.id }}"
+      formControlName="dimensions_depth"
+      name="dimensions_depth"
+      type="number"
+      min="0"
+      class="flex-1 w-4 appearance-none rounded-none relative block p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+    />
+    <span>cm/px</span>
+  </div>
+  <label
+    for="material-{{ specification?.id }}"
+    [innerHtml]="('defaults.material-single' | translate | titlecase) + ':'"
+  ></label>
+  <input
+    id="material-{{ specification?.id }}"
+    formControlName="material"
+    name="material"
+    type="text"
+    class="col-span-4 md:col-span-3 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
+  />
+  <label for="description-{{ specification?.id }}" class="self-stretch pt-1">
+    <div
+      [innerHtml]="
+        ('defaults.description-single' | translate | titlecase) + ':'
+      "
+    ></div>
+  </label>
+  <div class="relative col-span-3">
+    <textarea
+      id="description-{{ specification?.id }}"
+      formControlName="description"
+      name="description"
+      rows="6"
+      class="font-sans text-xs sm:text-sm md:text-base rounded-none block w-full p-2 pb-6 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10"
+      [ngClass]="{
+        'ring-1 !ring-red-500': description?.invalid
+      }"
+    ></textarea>
+    <div
+      class="absolute z-0 bottom-px right-px p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap text-xs font-mono leading-none text-gray-800 transition-colors"
+      [ngClass]="[
+        description?.value?.length > descriptionMaxLength * 0.95
+          ? description?.value?.length > descriptionMaxLength
+            ? 'text-red-600'
+            : 'text-yellow-600'
+          : 'text-gray-800'
+      ]"
+    >
+      {{ description?.value?.length || 0 }}/{{ descriptionMaxLength }}
+      {{ "defaults.characters" | translate }}
+    </div>
+    <div
+      class="opacity-0 absolute z-0 bottom-px left-px p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap text-xs font-mono leading-none text-red-600 transition-opacity delay-75"
+      [ngClass]="{
+        'opacity-100': description?.hasError('nameRevealed')
+      }"
+      [innerHtml]="'snippets.dont-reveal-name' | translate | uppercase"
+    ></div>
+  </div>
+  <!-- <pre class="col-span-4 p-1 bg-red-50 text-xs overflow-hidden">
+    {{ form.value | json }}
+    {{ form.valid | json }}
+    {{ form.errors | json }}
+    {{ description?.value | json }}
+    {{ description?.valid | json }}
+    {{ description?.errors | json }}
+  </pre> -->
+</form>
+<ng-content></ng-content>

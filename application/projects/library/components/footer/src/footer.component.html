@@ -1,0 +1,26 @@
+<footer class="container--default flex items-end justify-between space-x-8">
+  <div
+    class="text-headline whitespace-pre"
+    [innerHtml]="'_configuration.title' | translate"
+  ></div>
+  <div
+    class="flex-auto space-y-2 lg:space-y-0 space-x-8 flex justify-end lg:justify-between items-baseline flex-wrap lg:flex-nowrap"
+  >
+    <div class="space-x-8 flex">
+      <ng-content></ng-content>
+    </div>
+    <div class="space-x-8 flex">
+      <a
+        [routerLink]="['/', 'profile']"
+        routerLinkActive="router-link-active"
+        class="font-mono underline hover:text-gray-800"
+        [innerHtml]="'defaults.profile-single' | translate | titlecase"
+      ></a>
+      <button
+        (click)="logout()"
+        class="appearance-none font-mono underline hover:text-gray-800"
+        [innerHtml]="'actions.logout' | translate | titlecase"
+      ></button>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,10 @@
+<div
+  *ngFor="
+    let alert of alerts | slice: (alerts.length > 6 ? alerts.length - 6 : 0)
+  "
+  class="pointer-events-auto w-max min-w-full flex justify-between transition-opacity duration-200 uppercase p-3 mb-1 font-condensed text-xs sm:text-sm leading-none rounded-sm"
+  [ngClass]="[alert.fade ? 'opacity-0' : 'opacity-100', cssClass(alert)]"
+>
+  <span [innerHtml]="alert.message"></span>
+  <button class="ml-4" (click)="removeAlert(alert)">&times;</button>
+</div>

@@ -1,0 +1,261 @@
+<div class="container--default-x" (mouseleave)="visiblePreview = ''">
+  <div
+    class="container--default-x py-4 bg-white flex items-center relative z-10 space-x-4 md:space-x-8"
+  >
+    <div class="flex items-center">
+      <input
+        id="toggle_previews"
+        type="checkbox"
+        [checked]="previews"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="togglePreviews()"
+      />
+      <label
+        for="toggle_previews"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.preview' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center">
+      <input
+        id="toggle_anonymity"
+        type="checkbox"
+        [checked]="anonymous"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleAnonymity()"
+      />
+      <label
+        for="toggle_anonymity"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none"
+        [innerHtml]="'defaults.anonymous' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center overflow-hidden">
+      <input
+        id="toggle_show_eliminated"
+        type="checkbox"
+        [checked]="showEliminated"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleShowEliminated()"
+      />
+      <label
+        for="toggle_show_eliminated"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none whitespace-nowrap overflow-ellipsis overflow-hidden"
+        [innerHtml]="'snippets.show-eliminated' | translate | uppercase"
+      ></label>
+    </div>
+    <div class="flex items-center overflow-hidden">
+      <input
+        id="toggle_hide_unedited"
+        type="checkbox"
+        [checked]="showUnedited"
+        class="bg-white hover:bg-gray-200 checked:bg-black checked:border-black checked:hover:bg-gray-900 focus:bg-gray-300 checked:focus:bg-gray-800 focus:ring-0 focus:outline-none rounded-full"
+        (click)="toggleShowUnedited()"
+      />
+      <label
+        for="toggle_hide_unedited"
+        class="ml-2 text-xs font-mono text-gray-800 leading-none whitespace-nowrap overflow-ellipsis overflow-hidden"
+        [innerHtml]="'snippets.show-unedited' | translate | uppercase"
+      ></label>
+    </div>
+  </div>
+  <ng-container
+    *ngIf="
+      (applications$ | async)?.data?.applications?.length > 0;
+      else noApplications
+    "
+  >
+    <div
+      id="preview"
+      *ngIf="previews"
+      class="container--default-margin fixed inset-0 pointer-events-none"
+    >
+      <ng-container
+        *ngFor="
+          let application of (applications$ | async)?.data.applications;
+          trackBy: trackById
+        "
+      >
+        <ng-container
+          *ngFor="let file of application?.files; let index = index"
+        >
+          <app-image
+            class="absolute inset-0 transform-gpu"
+            *ngIf="application.id === visiblePreview"
+            [@inOutAnimation]
+            [key]="file.key"
+            [mimetype]="file.mimetype"
+            [width]="1440"
+            [height]="1200"
+          ></app-image>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div
+      class="container--default-x flex items-center py-2 space-x-8 border-b leading-none bg-white border-black border-opacity-30 relative z-10 text-xxs uppercase font-mono"
+    >
+      <div
+        class="flex-auto"
+        [innerHtml]="'defaults.application-alias-single' | translate"
+      ></div>
+      <div [innerHtml]="'defaults.rating-multi' | translate | uppercase">
+        Bewertungen
+      </div>
+      <div>Stimmen</div>
+      <div class="w-10 text-right">Notizen</div>
+    </div>
+    <div
+      *ngFor="
+        let application of (applications$ | async)?.data.applications
+          | showEliminated : showEliminated
+          | hideByStatus : showUnedited : 'pristine';
+        trackBy: trackById
+      "
+      class="container--default-x flex items-center py-4 space-x-8 border-b border-gray-500 border-opacity-30 even:bg-gray-500 even:bg-opacity-5 hover:bg-gray-50 hover:bg-opacity-100 relative"
+      [ngClass]="[
+        application.elimination
+          ? 'text-black text-opacity-30 hover:text-opacity-100 transition-colors'
+          : ''
+      ]"
+    >
+      <div
+        class="flex-auto font-mono"
+        [ngClass]="{ capitalize: anonymous }"
+        [innerHtml]="
+          anonymous
+            ? application.internal_name
+            : application.name || 'Untitled Application'
+        "
+      ></div>
+      <div
+        *ngIf="application.winner"
+        class="text-xxs bg-blue-700 text-white pl-1 pr-2 py-1 whitespace-nowrap overflow-ellipsis overflow-hidden rounded-full leading-none font-condensed font-medium uppercase"
+      >
+        &#11088;&nbsp;&nbsp;winner
+      </div>
+      <div
+        class="text-xxs bg-red-600 text-white px-2 rounded-full font-condensed font-medium uppercase"
+        *ngIf="application.elimination as elimination; else showState"
+        title="Eliminated
+        {{ elimination.created_at | timePassed }} ago by
+        {{ elimination.eliminated_by.name }}"
+      >
+        {{ "snippets.application-eliminated" | translate }}
+        <span *ngIf="elimination.reason">: {{ elimination.reason }}</span>
+      </div>
+      <div
+        class="text-center"
+        [ngSwitch]="true"
+        [ngClass]="[
+          application.ratings_aggregate?.aggregate?.stddev_samp?.value > 5
+            ? 'text-red-800'
+            : 'text-gray-800'
+        ]"
+      >
+        <div
+          *ngSwitchCase="
+            application.ratings_aggregate?.aggregate?.avg?.value > 5
+          "
+          class="text-blue-700"
+        >
+          [Yes]
+        </div>
+        <div
+          *ngSwitchCase="
+            application.ratings_aggregate?.aggregate?.avg?.value === 5
+          "
+        >
+          [Maybe]
+        </div>
+        <div
+          *ngSwitchCase="
+            application.ratings_aggregate?.aggregate?.avg?.value !== null &&
+            application.ratings_aggregate?.aggregate?.avg?.value < 5
+          "
+        >
+          [No]
+        </div>
+        <div *ngSwitchDefault>–</div>
+      </div>
+      <ng-template #showState>
+        <div
+          *ngIf="application.state !== 'complete'"
+          class="text-xxs bg-yellow-200 text-yellow-900 px-2 py-1 whitespace-nowrap overflow-ellipsis overflow-hidden rounded-full leading-none font-condensed font-medium uppercase"
+          [title]="
+            'application-state.' + (application.state || 'unknown') | translate
+          "
+          [innerHtml]="
+            'application-state.' + (application.state || 'unknown') | translate
+          "
+        ></div>
+      </ng-template>
+
+      <div
+        class="text-center font-mono py-1 px-4 rounded-lg bg-gray-200 hover:bg-blue-600 hover:text-white"
+        [innerHtml]="application.ratings_aggregate?.aggregate?.count || 0"
+      ></div>
+      <button
+        class="w-10 text-right hover:text-blue-600 relative z-10 focus:outline-none focus:ring-0"
+        [ngClass]="{
+          'text-blue-600': application.id === visibleChat
+        }"
+        (click)="toggleChat(application.id, $event)"
+      >
+        <svg
+          class="inline-block"
+          width="25px"
+          height="21px"
+          viewBox="0 0 25 21"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            id="Page-1"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+          >
+            <path
+              d="M1,2.87232347 L1,14.8541978 C1,15.8862995 1.83211783,16.7261893 2.85499785,16.7261893 L4.70966681,16.7261893 L4.70966681,21 L8.94392964,16.7261893 L22.1450021,16.7261893 C23.1675533,16.7261893 24,15.8862995 24,14.8541978 L24,2.87232347 C24,1.84022176 23.1675533,1 22.1450021,1 L2.85499785,1 C1.83211783,1 1,1.84022176 1,2.87232347 Z M18,9 L7,9 M18,6 L7,6 M15,12 L7,12"
+              id="Stroke-2"
+              stroke="currentColor"
+            ></path>
+          </g>
+        </svg>
+      </button>
+      <div
+        *ngIf="application.id === visibleChat"
+        class="absolute z-30 top-12 right-6 w-5/6 md:w-80 h-screen max-h-96 bg-white shadow-md rounded-2xl"
+      >
+        <app-chat
+          [application_id]="application.id"
+          [readOnly]="true"
+          class="absolute inset-0 flex flex-col"
+        ></app-chat>
+        <!-- <div
+          class="absolute -top-2 -right-2 h-6 w-6 flex justify-center items-center bg-black text-white rounded-full"
+          (click)="toggleChat(application.id, $event)"
+        >
+          <span>X</span>
+        </div> -->
+      </div>
+
+      <a
+        (mouseenter)="visiblePreview = application.id"
+        class="absolute inset-0 z-0"
+        [routerLink]="[application.id]"
+        routerLinkActive="router-link-active"
+      ></a>
+    </div>
+  </ng-container>
+  <ng-template #noApplications>
+    <div class="my-1 h-80 flex items-center justify-center relative z-10">
+      <span
+        class="text-gray-300"
+        [innerHtml]="'snippets.no-applications' | translate"
+      ></span>
+    </div>
+  </ng-template>
+</div>

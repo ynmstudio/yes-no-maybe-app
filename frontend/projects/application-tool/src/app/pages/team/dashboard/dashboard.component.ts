@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   async showNewRoundModal(edition_id: number, prev_round_id?: number | null) {
     const { NewRoundComponent } = await import(
@@ -83,7 +83,6 @@ export class DashboardComponent implements OnInit {
     });
   }
   showCloseRoundModal(rating_round?: RoundFragment | null) {
-    alert(rating_round);
     if (!rating_round) return;
 
     this.hasuraService.showCloseRoundModal(

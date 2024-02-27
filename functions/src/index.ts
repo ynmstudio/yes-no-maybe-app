@@ -163,7 +163,7 @@ interface GetAllUsersDataObject {
  */
 exports.getAllUsers = functions
   .region("europe-west3")
-  .https.onCall(async (data: GetAllUsersDataObject, context) => {
+  .https.onCall(async (data: GetAllUsersDataObject, context): Promise<Array<any>> => {
     // verify Firebase Auth ID token
     if (!context.auth) {
       throw new HttpsError("unauthenticated", "Authentication Required!", {
@@ -222,6 +222,7 @@ interface CreateUserDataObject {
   email: string;
   role: string;
 }
+interface CreateUserResponse { password: string }
 interface DeleteUserDataObject {
   uid: string;
 }
@@ -236,7 +237,7 @@ interface ChangeUserRoleDataObject {
 
 exports.createUser = functions
   .region("europe-west3")
-  .https.onCall(async (data: CreateUserDataObject, context) => {
+  .https.onCall(async (data: CreateUserDataObject, context): Promise<CreateUserResponse> => {
     // verify Firebase Auth ID token
     if (!context.auth) {
       throw new HttpsError("unauthenticated", "Authentication Required!", {
