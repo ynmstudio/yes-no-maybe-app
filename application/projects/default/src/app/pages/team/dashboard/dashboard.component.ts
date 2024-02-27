@@ -96,7 +96,6 @@ export class DashboardComponent implements OnInit {
     });
   }
   showCloseRoundModal(rating_round?: RoundFragment | null) {
-    alert(rating_round);
     if (!rating_round) return;
 
     this.hasuraService.showCloseRoundModal(

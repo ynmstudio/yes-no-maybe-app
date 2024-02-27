@@ -109,7 +109,7 @@ export class HasuraService {
     edition_id: number,
     end_at: Date,
     goal: number,
-    prev_round_id: number
+    prev_round_id?: number
   ) {
     return this.createRoundGQL.mutate(
       {

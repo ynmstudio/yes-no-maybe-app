@@ -193,7 +193,7 @@
 
       <a
         [routerLink]="['/', 't', 'settings']"
-        class="flex items-center justify-center px-3 h-10 group"
+        class="flex items-center justify-center px-3 h-10 group last:rounded-tr-xl last:rounded-br-xl"
         routerLinkActive
         #settings="routerLinkActive"
         [ngClass]="[
@@ -232,9 +232,9 @@
         </svg>
       </a>
 
-      <a
+      <!-- <a
         [routerLink]="['/', 't', 'search']"
-        class="flex items-center justify-center px-3 h-10 rounded-tr-xl rounded-br-xl p-3"
+        class="flex items-center justify-center px-3 h-10 last:rounded-tr-xl last:rounded-br-xl p-3"
         routerLinkActive
         #search="routerLinkActive"
         [ngClass]="[
@@ -267,7 +267,7 @@
             ></path>
           </g>
         </svg>
-      </a>
+      </a> -->
     </nav>
     <div></div>
   </div>

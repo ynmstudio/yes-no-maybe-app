@@ -13,3 +13,5 @@ node_modules/
 .runtimeconfig.json
 
 firebase-export-*
+
+data-path/

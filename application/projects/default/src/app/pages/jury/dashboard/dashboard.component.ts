@@ -44,7 +44,6 @@ export class DashboardComponent implements OnInit {
     if (user) {
       this.juryMembers$ = this.roundStatistic$.pipe(
         switchMap((roundStatistic) => {
-          console.log(user?.uid);
           return this.getJuryStatisticGQL.subscribe({
             round_id: roundStatistic.data.rating_rounds_by_pk?.id || 0,
             _in: [user?.uid || ''],

@@ -1,6 +1,6 @@
 - table:
-    schema: public
     name: applications
+    schema: public
   object_relationships:
     - name: edition
       using:
@@ -8,30 +8,30 @@
     - name: elimination
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: eliminations
-          insertion_order: null
           column_mapping:
             id: application_id
+          insertion_order: null
+          remote_table:
+            name: eliminations
+            schema: public
     - name: payment
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: payments
-          insertion_order: null
           column_mapping:
             id: application_id
+          insertion_order: null
+          remote_table:
+            name: payments
+            schema: public
     - name: rating_in_latest_round
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: ratings_by_application
-          insertion_order: null
           column_mapping:
             id: id
+          insertion_order: null
+          remote_table:
+            name: ratings_by_application
+            schema: public
     - name: user
       using:
         foreign_key_constraint_on: created_by
@@ -41,61 +41,61 @@
         foreign_key_constraint_on:
           column: application_id
           table:
-            schema: public
             name: work_files
+            schema: public
     - name: messages
       using:
         foreign_key_constraint_on:
           column: application_id
           table:
-            schema: public
             name: messages
+            schema: public
     - name: ratings
       using:
         foreign_key_constraint_on:
           column: application_id
           table:
-            schema: public
             name: ratings
+            schema: public
     - name: specifications
       using:
         foreign_key_constraint_on:
           column: application_id
           table:
-            schema: public
             name: work_specifications
+            schema: public
     - name: works
       using:
         foreign_key_constraint_on:
           column: application_id
           table:
-            schema: public
             name: works
+            schema: public
   computed_fields:
     - name: rated_by_user
       definition:
         function:
-          schema: public
           name: application_rated_by_user
+          schema: public
         session_argument: hasura_session
         table_argument: application_row
     - name: ready
       definition:
         function:
-          schema: public
           name: application_is_ready
+          schema: public
       comment: ""
     - name: state
       definition:
         function:
-          schema: public
           name: application_state
+          schema: public
       comment: ""
     - name: winner
       definition:
         function:
-          schema: public
           name: application_is_winner
+          schema: public
       comment: ""
   insert_permissions:
     - role: user
@@ -114,7 +114,6 @@
         columns:
           - edition_id
           - name
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -234,16 +233,16 @@
             - locked:
                 _eq: false
 - table:
-    schema: public
     name: category_mediums
+    schema: public
   array_relationships:
     - name: specifications
       using:
         foreign_key_constraint_on:
           column: medium_id
           table:
-            schema: public
             name: work_specification_mediums
+            schema: public
   insert_permissions:
     - role: team
       permission:
@@ -251,7 +250,6 @@
         columns:
           - name_de
           - name_en
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -289,14 +287,13 @@
       permission:
         filter: {}
 - table:
-    schema: public
     name: category_tags
+    schema: public
   insert_permissions:
     - role: team
       permission:
         check: {}
         columns: []
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -332,8 +329,8 @@
       permission:
         filter: {}
 - table:
-    schema: public
     name: editions
+    schema: public
   object_relationships:
     - name: winner
       using:
@@ -344,28 +341,28 @@
         foreign_key_constraint_on:
           column: edition_id
           table:
-            schema: public
             name: applications
+            schema: public
     - name: rating_rounds
       using:
         foreign_key_constraint_on:
           column: edition_id
           table:
-            schema: public
             name: rating_rounds
+            schema: public
     - name: updates
       using:
         foreign_key_constraint_on:
           column: edition_id
           table:
-            schema: public
             name: updates
+            schema: public
   computed_fields:
     - name: state
       definition:
         function:
-          schema: public
           name: edition_state
+          schema: public
       comment: ""
   insert_permissions:
     - role: team
@@ -376,7 +373,6 @@
           - application_start
           - current
           - name
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -450,8 +446,8 @@
       permission:
         filter: {}
 - table:
-    schema: public
     name: eliminations
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -477,7 +473,6 @@
           - application_id
           - reason
           - round_id
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -509,8 +504,8 @@
                   current:
                     _eq: true
 - table:
-    schema: public
     name: messages
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -518,12 +513,12 @@
     - name: rating
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: ratings
-          insertion_order: null
           column_mapping:
             id: message_id
+          insertion_order: null
+          remote_table:
+            name: ratings
+            schema: public
     - name: rating_round
       using:
         foreign_key_constraint_on: round_id
@@ -540,7 +535,6 @@
           - application_id
           - round_id
           - text
-        backend_only: false
     - role: team
       permission:
         check: {}
@@ -550,7 +544,6 @@
           - application_id
           - round_id
           - text
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -588,8 +581,8 @@
           created_by:
             _eq: X-Hasura-User-Id
 - table:
-    schema: public
     name: payments
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -608,7 +601,6 @@
           - mimetype
           - originalname
           - size
-        backend_only: false
   select_permissions:
     - role: team
       permission:
@@ -651,20 +643,20 @@
   event_triggers:
     - name: delete_firebase_storage_payment_file
       definition:
-        enable_manual: false
         delete:
           columns: '*'
+        enable_manual: false
       retry_conf:
-        num_retries: 0
         interval_sec: 10
+        num_retries: 0
         timeout_sec: 60
       webhook: '{{FIREBASE_FUNCTION_ENDPOINT}}/deleteFile'
       headers:
         - name: x-hasura-shared-secret
           value_from_env: FIREBASE_SHARED_SECRET
 - table:
-    schema: public
     name: rating_rounds
+    schema: public
   object_relationships:
     - name: edition
       using:
@@ -672,12 +664,12 @@
     - name: next_round
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: rating_rounds
-          insertion_order: null
           column_mapping:
             id: prev_round_id
+          insertion_order: null
+          remote_table:
+            name: rating_rounds
+            schema: public
     - name: prev_round
       using:
         foreign_key_constraint_on: prev_round_id
@@ -687,27 +679,27 @@
         foreign_key_constraint_on:
           column: round_id
           table:
-            schema: public
             name: eliminations
+            schema: public
     - name: ratings
       using:
         foreign_key_constraint_on:
           column: round_id
           table:
-            schema: public
             name: ratings
+            schema: public
   computed_fields:
     - name: active
       definition:
         function:
-          schema: public
           name: rating_round_state
+          schema: public
       comment: ""
     - name: level
       definition:
         function:
-          schema: public
           name: get_rating_round_level
+          schema: public
   insert_permissions:
     - role: team
       permission:
@@ -732,7 +724,6 @@
           - end_at
           - goal
           - prev_round_id
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -801,18 +792,18 @@
             - _not:
                 next_round: {}
 - table:
-    schema: public
     name: rating_rounds_sorted
+    schema: public
   object_relationships:
     - name: edition
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: editions
-          insertion_order: null
           column_mapping:
             edition_id: id
+          insertion_order: null
+          remote_table:
+            name: editions
+            schema: public
   select_permissions:
     - role: team
       permission:
@@ -828,8 +819,8 @@
         filter: {}
         allow_aggregations: true
 - table:
-    schema: public
     name: ratings
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -858,7 +849,6 @@
           - application_id
           - round_id
           - value
-        backend_only: false
     - role: team
       permission:
         check: {}
@@ -868,7 +858,6 @@
           - application_id
           - round_id
           - value
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -897,36 +886,36 @@
         filter: {}
         allow_aggregations: true
 - table:
-    schema: public
     name: ratings_by_application
+    schema: public
   object_relationships:
     - name: application
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: applications
-          insertion_order: null
           column_mapping:
             id: id
+          insertion_order: null
+          remote_table:
+            name: applications
+            schema: public
     - name: edition
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: editions
-          insertion_order: null
           column_mapping:
             edition_id: id
+          insertion_order: null
+          remote_table:
+            name: editions
+            schema: public
     - name: rating_round
       using:
         manual_configuration:
-          remote_table:
-            schema: public
-            name: rating_rounds
-          insertion_order: null
           column_mapping:
             round_id: id
+          insertion_order: null
+          remote_table:
+            name: rating_rounds
+            schema: public
   select_permissions:
     - role: jury
       permission:
@@ -963,8 +952,8 @@
                 current:
                   _eq: true
 - table:
-    schema: public
     name: updates
+    schema: public
   object_relationships:
     - name: edition
       using:
@@ -978,7 +967,6 @@
           - text_de
           - text_en
           - url
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -1030,23 +1018,23 @@
       permission:
         filter: {}
 - table:
-    schema: public
     name: users
+    schema: public
   array_relationships:
     - name: applications
       using:
         foreign_key_constraint_on:
           column: created_by
           table:
-            schema: public
             name: applications
+            schema: public
     - name: ratings
       using:
         foreign_key_constraint_on:
           column: created_by
           table:
-            schema: public
             name: ratings
+            schema: public
   insert_permissions:
     - role: jury
       permission:
@@ -1056,7 +1044,6 @@
           type: x-hasura-role
         columns:
           - name
-        backend_only: false
     - role: team
       permission:
         check: {}
@@ -1065,7 +1052,6 @@
           type: x-hasura-role
         columns:
           - name
-        backend_only: false
     - role: user
       permission:
         check: {}
@@ -1075,7 +1061,6 @@
         columns:
           - last_seen
           - name
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -1142,14 +1127,14 @@
           id:
             _eq: X-Hasura-User-Id
 - table:
-    schema: public
     name: users_online
-- table:
     schema: public
+- table:
     name: wordlist
-- table:
     schema: public
+- table:
     name: work_files
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -1188,7 +1173,6 @@
           - originalname
           - size
           - work_id
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -1295,20 +1279,20 @@
   event_triggers:
     - name: delete_firebase_storage_file
       definition:
-        enable_manual: false
         delete:
           columns: '*'
+        enable_manual: false
       retry_conf:
-        num_retries: 0
         interval_sec: 10
+        num_retries: 0
         timeout_sec: 60
       webhook: '{{FIREBASE_FUNCTION_ENDPOINT}}/deleteFile'
       headers:
         - name: x-hasura-shared-secret
           value_from_env: FIREBASE_SHARED_SECRET
 - table:
-    schema: public
     name: work_specification_mediums
+    schema: public
   object_relationships:
     - name: category_medium
       using:
@@ -1336,7 +1320,6 @@
         columns:
           - specification_id
           - medium_id
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -1380,8 +1363,8 @@
                       - application_end:
                           _gte: now()
 - table:
-    schema: public
     name: work_specification_tags
+    schema: public
   insert_permissions:
     - role: team
       permission:
@@ -1389,7 +1372,6 @@
         columns:
           - specification_id
           - tag_id
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -1410,8 +1392,8 @@
       permission:
         filter: {}
 - table:
-    schema: public
     name: work_specifications
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -1425,8 +1407,8 @@
         foreign_key_constraint_on:
           column: specification_id
           table:
-            schema: public
             name: work_specification_mediums
+            schema: public
   insert_permissions:
     - role: user
       permission:
@@ -1461,7 +1443,6 @@
           - title
           - work_id
           - year
-        backend_only: false
   select_permissions:
     - role: jury
       permission:
@@ -1586,8 +1567,8 @@
                   created_by:
                     _eq: X-Hasura-User-Id
 - table:
-    schema: public
     name: works
+    schema: public
   object_relationships:
     - name: application
       using:
@@ -1598,15 +1579,15 @@
         foreign_key_constraint_on:
           column: work_id
           table:
-            schema: public
             name: work_files
+            schema: public
     - name: specifications
       using:
         foreign_key_constraint_on:
           column: work_id
           table:
-            schema: public
             name: work_specifications
+            schema: public
   insert_permissions:
     - role: user
       permission:
@@ -1628,7 +1609,6 @@
           - id
           - order
           - portfolio
-        backend_only: false
   select_permissions:
     - role: jury
       permission:

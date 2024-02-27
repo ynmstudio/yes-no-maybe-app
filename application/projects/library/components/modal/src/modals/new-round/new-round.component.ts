@@ -71,7 +71,8 @@ export class NewRoundComponent implements OnInit {
   async createNewRound() {
     if (this.form.invalid) return;
 
-    if (!this.edition_id.value || !this.end_at.value || !this.goal.value || !this.prev_round_id.value) {
+
+    if (!this.edition_id.value || !this.end_at.value || !this.goal.value) {
       console.error('Invalid form data');
       return;
     }
@@ -82,7 +83,7 @@ export class NewRoundComponent implements OnInit {
           this.edition_id.value,
           new Date(this.end_at.value),
           this.goal.value,
-          this.prev_round_id.value
+          this.prev_round_id.value ?? undefined
         )
         .toPromise();
     } catch (error: any) {

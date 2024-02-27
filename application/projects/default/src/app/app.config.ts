@@ -67,7 +67,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     provideGraphQL(),
-    providePromptUpdateService(),
+
     provideHttpClient(),
     importProvidersFrom(provideFirebaseApp(() => initializeApp(environment.firebase))),
     importProvidersFrom(provideAuth(() => {
@@ -142,9 +142,10 @@ export const appConfig: ApplicationConfig = {
     //   useValue: environment.production ? undefined : ['localhost', 9199],
     // },
     { provide: DateAdapter, useClass: CustomDatePickerAdapter },
-    provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      registrationStrategy: 'registerWhenStable:30000'
-    })
+    // provideServiceWorker('ngsw-worker.js', {
+    //   enabled: !isDevMode(),
+    //   registrationStrategy: 'registerWhenStable:30000'
+    // }),
+    // providePromptUpdateService(),
   ],
 };

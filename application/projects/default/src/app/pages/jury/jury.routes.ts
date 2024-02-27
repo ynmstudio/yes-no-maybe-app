@@ -9,12 +9,19 @@ export default [
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full',
+        pathMatch: 'full'
       },
       {
         path: 'dashboard',
         loadComponent: () =>
           import('./dashboard/dashboard.component').then((c) => c.DashboardComponent),
+      },
+      {
+        path: 'dashboard/:id/fullscreen',
+        loadComponent: () =>
+          import('./../applications/fullscreen/fullscreen.component').then(
+            (c) => c.FullscreenComponent
+          ),
       },
       {
         path: 'search',

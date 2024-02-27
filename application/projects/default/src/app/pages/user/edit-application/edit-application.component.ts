@@ -105,6 +105,7 @@ export class EditApplicationComponent implements OnInit {
 
   singleWorks$;
   portfolioWorks$;
+  applicationQueryRef$;
 
   @ViewChildren(WorkSpecificationComponent)
   specificationComponents!: QueryList<WorkSpecificationComponent>;
@@ -167,33 +168,33 @@ export class EditApplicationComponent implements OnInit {
     });
     this.form.disable();
 
-    this.getApplicationGQL
+    this.applicationQueryRef$ = this.getApplicationGQL
       .watch(
         { id: this.application_id },
         {
           fetchPolicy: 'cache-and-network',
         }
       )
-      .valueChanges.subscribe((resp) => {
-        const application = resp.data.applications_by_pk as any;
+    this.applicationQueryRef$.valueChanges.subscribe((resp) => {
+      const application = resp.data.applications_by_pk as any;
 
-        for (const key in application) {
-          if (application.hasOwnProperty(key)) {
-            let control = this.form.get(key);
-            if (control) {
-              control.setValue(application[key]);
-            } else {
-              this.form.addControl(key, new FormControl(application[key]));
-            }
+      for (const key in application) {
+        if (application.hasOwnProperty(key)) {
+          let control = this.form.get(key);
+          if (control) {
+            control.setValue(application[key]);
+          } else {
+            this.form.addControl(key, new FormControl(application[key]));
           }
         }
-        if (application)
-          this.form
-            .get('works')
-            ?.setValue(application.works_aggregate.aggregate.count);
+      }
+      if (application)
+        this.form
+          .get('works')
+          ?.setValue(application.works_aggregate.aggregate.count);
 
-        this.form.enable();
-      });
+      this.form.enable();
+    });
 
     this.form.valueChanges
       .pipe(distinctUntilChanged(), debounceTime(2000))
@@ -374,6 +375,8 @@ export class EditApplicationComponent implements OnInit {
     if (asset) await this.userService.addPayment(asset, this.application_id);
 
     paymentFileToUpload.splice(index, 1);
+
+    this.applicationQueryRef$.refetch();
   }
 
   async deletePayment(id: string) {

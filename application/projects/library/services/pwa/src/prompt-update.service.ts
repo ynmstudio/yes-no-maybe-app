@@ -1,12 +1,13 @@
 import { Injectable, Provider } from "@angular/core";
 import { SwUpdate, VersionReadyEvent } from "@angular/service-worker";
-import { filter } from "rxjs";
+import { filter, tap } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class PromptUpdateService {
     constructor(swUpdate: SwUpdate) {
+        console.log('PromptUpdateService', swUpdate)
         swUpdate.versionUpdates
-            .pipe(filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
+            .pipe(tap(evt => console.log(evt)), filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'))
             .subscribe(evt => {
                 if (this.promptUser(evt)) {
                     // Reload the page to update to the latest version.
@@ -16,7 +17,7 @@ export class PromptUpdateService {
     }
 
     promptUser(evt: VersionReadyEvent) {
-        return confirm(`New version available. Please confirm to update to the latest version.`);
+        return confirm(`New version available. Reload now?`);
     }
 }
 
