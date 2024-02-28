@@ -23,7 +23,7 @@ import {
   useForm,
   valiForm$,
 } from "@modular-forms/qwik";
-import { MatomoContext, useMatomo } from "~/providers/matomo";
+import { MatomoContext } from "~/providers/matomo";
 
 const ContactSchema = object({
   name: string([minLength(1, $localize`Please enter your name.`)]),
@@ -47,8 +47,8 @@ export const useFormLoader = routeLoader$<InitialValues<ContactForm>>(() => ({
 //   // Runs on server
 //   const { Client } = await import("node-mailjet");
 //   const mailjet = Client.apiConnect(
-//     process.env.MJ_APIKEY_PUBLIC ?? "76f4a9a03bb481c4f0ffbfab16b3c79b",
-//     process.env.MJ_APIKEY_PRIVATE ?? "afaa7a584eb54bf52c5452639d67524f",
+//     process.env.MJ_APIKEY_PUBLIC ?? "xxx",
+//     process.env.MJ_APIKEY_PRIVATE ?? "xxx",
 //   );
 //   const request = mailjet.post("send", { version: "v3.1" }).request({
 //     Messages: [
