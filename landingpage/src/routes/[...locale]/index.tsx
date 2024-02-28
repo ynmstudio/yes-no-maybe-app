@@ -88,10 +88,6 @@ export const sendEmail = $((values: ContactForm) => {
 
 export default component$(() => {
   const { trackPageView, trackEvent } = useMatomo();
-  // eslint-disable-next-line qwik/no-use-visible-task
-  useVisibleTask$(() => {
-    trackPageView();
-  });
 
   const [, { Form, Field }] = useForm<ContactForm>({
     loader: useFormLoader(),
@@ -109,6 +105,7 @@ export default component$(() => {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     showContent.value = true;
+    trackPageView();
   });
 
   return (
