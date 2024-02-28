@@ -36,7 +36,6 @@ export const MatomoProvider = component$(() => {
           disableCookies: true,
           setSecureCookie: true,
           setRequestMethod: "POST",
-          setDoNotTrack: true,
         },
       }),
     );
