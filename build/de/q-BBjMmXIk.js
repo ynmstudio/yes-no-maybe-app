@@ -1,1 +1,0 @@
-import{l as t}from"./q-8an7--bk.js";const e=s=>{const[r]=t();return s&&!/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(s)?r:""};export{e as s_WNtBdMWIifo};
