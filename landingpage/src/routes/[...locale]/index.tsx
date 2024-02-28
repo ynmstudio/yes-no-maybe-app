@@ -1,4 +1,10 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useContext,
+  useSignal,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import {
   DocumentHead,
   Link,
@@ -17,7 +23,7 @@ import {
   useForm,
   valiForm$,
 } from "@modular-forms/qwik";
-import { useMatomo } from "~/providers/matomo";
+import { MatomoContext, useMatomo } from "~/providers/matomo";
 
 const ContactSchema = object({
   name: string([minLength(1, $localize`Please enter your name.`)]),
@@ -41,8 +47,8 @@ export const useFormLoader = routeLoader$<InitialValues<ContactForm>>(() => ({
 //   // Runs on server
 //   const { Client } = await import("node-mailjet");
 //   const mailjet = Client.apiConnect(
-//     process.env.MJ_APIKEY_PUBLIC ?? "xxx",
-//     process.env.MJ_APIKEY_PRIVATE ?? "xxx",
+//     process.env.MJ_APIKEY_PUBLIC ?? "76f4a9a03bb481c4f0ffbfab16b3c79b",
+//     process.env.MJ_APIKEY_PRIVATE ?? "afaa7a584eb54bf52c5452639d67524f",
 //   );
 //   const request = mailjet.post("send", { version: "v3.1" }).request({
 //     Messages: [
@@ -87,7 +93,14 @@ export const sendEmail = $((values: ContactForm) => {
 });
 
 export default component$(() => {
-  const { trackPageView, trackEvent } = useMatomo();
+  const { matomo } = useContext(MatomoContext);
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(
+    () => {
+      matomo?.trackPageView();
+    },
+    { strategy: "document-idle" },
+  );
 
   const [, { Form, Field }] = useForm<ContactForm>({
     loader: useFormLoader(),
@@ -97,7 +110,11 @@ export default component$(() => {
 
   const handleSubmit = $<SubmitHandler<ContactForm>>((values) => {
     // console.log(values);
-    trackEvent({ action: "submit", name: "contact-form", category: "form" });
+    matomo?.trackEvent({
+      action: "submit",
+      name: "contact-form",
+      category: "form",
+    });
     sendEmail(values);
   });
 
@@ -105,7 +122,6 @@ export default component$(() => {
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
     showContent.value = true;
-    trackPageView();
   });
 
   return (

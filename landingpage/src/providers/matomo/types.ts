@@ -22,5 +22,5 @@ export type TrackSiteSearchParams = types.TrackSiteSearchParams
 export type TrackLinkParams = types.TrackLinkParams
 
 export interface MatomoInstanceState {
-  instance: NoSerialize<MatomoInstance>;
+  matomo: NoSerialize<MatomoInstance>;
 }

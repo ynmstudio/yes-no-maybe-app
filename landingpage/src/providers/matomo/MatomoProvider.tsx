@@ -12,8 +12,9 @@ import MatomoTracker from "@jonkoops/matomo-tracker";
 
 export const MatomoProvider = component$(() => {
   const matomoState = useStore<MatomoInstanceState>({
-    instance: noSerialize(undefined),
+    matomo: noSerialize(undefined),
   });
+  useContextProvider(MatomoContext, matomoState);
 
   // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(() => {
@@ -39,9 +40,8 @@ export const MatomoProvider = component$(() => {
         },
       }),
     );
-    matomoState.instance = _instance;
+    matomoState.matomo = noSerialize(_instance);
   });
-  useContextProvider(MatomoContext, matomoState);
   return <Slot />;
 });
 
