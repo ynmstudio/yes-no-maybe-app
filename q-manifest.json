@@ -1,5 +1,5 @@
 {
-  "manifestHash": "uudqkf",
+  "manifestHash": "g17cz3",
   "symbols": {
     "s_02wMImzEAbk": {
       "origin": "../node_modules/@builder.io/qwik-city/index.qwik.mjs",
@@ -26,7 +26,7 @@
       "parent": "s_RT3QmZofaK8",
       "loc": [
         500,
-        1545
+        1514
       ]
     },
     "s_IBo0VbainSs": {
@@ -146,7 +146,7 @@
       "captures": false,
       "loc": [
         320,
-        1618
+        1587
       ]
     },
     "s_TxCFOy819ag": {
@@ -875,16 +875,16 @@
   },
   "mapping": {
     "s_02wMImzEAbk": "q-zVAfIOxW.js",
-    "s_I7v8kEFT6Kg": "q-agcCjHPq.js",
+    "s_I7v8kEFT6Kg": "q-owanzxCt.js",
     "s_IBo0VbainSs": "q-8oC86eE_.js",
     "s_LcO2OGTEA00": "q-hPumMf_a.js",
     "s_aPGLbzcugag": "q-8oC86eE_.js",
     "s_02mdohNGg2E": "q-n8lSpEmO.js",
     "s_8gdLBszqbaM": "q-BaVhF8qM.js",
-    "s_E0D2OHN1rsw": "q-2rCcLshc.js",
+    "s_E0D2OHN1rsw": "q-6QDt6BPI.js",
     "s_LcgdeaGSby0": "q-o_BcP_fh.js",
     "s_Nk9PlpjQm9Y": "q-5BPlYwdE.js",
-    "s_RT3QmZofaK8": "q-agcCjHPq.js",
+    "s_RT3QmZofaK8": "q-owanzxCt.js",
     "s_TxCFOy819ag": "q-zVAfIOxW.js",
     "s_WXp3VenH04I": "q-8oC86eE_.js",
     "s_WmYC5H00wtI": "q-MkHdyD1C.js",
@@ -956,27 +956,6 @@
         "s_e0ssiDXoeAM"
       ]
     },
-    "q-2rCcLshc.js": {
-      "size": 846,
-      "imports": [
-        "q-8an7--bk.js",
-        "q-vibaL3AQ.js",
-        "q-Vs8zAXMn.js"
-      ],
-      "dynamicImports": [
-        "q-agcCjHPq.js",
-        "q-n8lSpEmO.js"
-      ],
-      "origins": [
-        "src/components/router-head/router-head.tsx",
-        "src/entry_root.js",
-        "src/providers/matomo/MatomoProvider.tsx",
-        "src/s_e0d2ohn1rsw.js"
-      ],
-      "symbols": [
-        "s_E0D2OHN1rsw"
-      ]
-    },
     "q-3_e8ssYW.js": {
       "size": 159,
       "imports": [
@@ -1019,18 +998,25 @@
         "s_p9MSze0ojs4"
       ]
     },
-    "q-7cAjyuJa.js": {
-      "size": 339,
+    "q-6QDt6BPI.js": {
+      "size": 846,
       "imports": [
-        "q-8an7--bk.js"
+        "q-8an7--bk.js",
+        "q-vibaL3AQ.js",
+        "q-Vs8zAXMn.js"
       ],
       "dynamicImports": [
-        "q-2rCcLshc.js"
+        "q-n8lSpEmO.js",
+        "q-owanzxCt.js"
       ],
       "origins": [
-        "public/fonts/ibm-plex/css/ibm-plex.css",
-        "src/global.scss",
-        "src/root.tsx"
+        "src/components/router-head/router-head.tsx",
+        "src/entry_root.js",
+        "src/providers/matomo/MatomoProvider.tsx",
+        "src/s_e0d2ohn1rsw.js"
+      ],
+      "symbols": [
+        "s_E0D2OHN1rsw"
       ]
     },
     "q-7NPM7GZZ.js": {
@@ -1103,24 +1089,6 @@
       ],
       "symbols": [
         "s_A5bZC7WO00A"
-      ]
-    },
-    "q-agcCjHPq.js": {
-      "size": 5311,
-      "imports": [
-        "q-8an7--bk.js",
-        "q-Vs8zAXMn.js"
-      ],
-      "origins": [
-        "node_modules/@jonkoops/matomo-tracker/es/MatomoTracker.js",
-        "node_modules/@jonkoops/matomo-tracker/es/constants.js",
-        "src/entry_MatomoProvider.js",
-        "src/s_i7v8keft6kg.js",
-        "src/s_rt3qmzofak8.js"
-      ],
-      "symbols": [
-        "s_I7v8kEFT6Kg",
-        "s_RT3QmZofaK8"
       ]
     },
     "q-BaVhF8qM.js": {
@@ -1251,6 +1219,20 @@
       ],
       "symbols": [
         "s_s760ZT1A33E"
+      ]
+    },
+    "q-gkRVsVCS.js": {
+      "size": 339,
+      "imports": [
+        "q-8an7--bk.js"
+      ],
+      "dynamicImports": [
+        "q-6QDt6BPI.js"
+      ],
+      "origins": [
+        "public/fonts/ibm-plex/css/ibm-plex.css",
+        "src/global.scss",
+        "src/root.tsx"
       ]
     },
     "q-h5RzmzKq.js": {
@@ -1506,6 +1488,24 @@
       "symbols": [
         "s_LcgdeaGSby0",
         "s_oO8eDiRNWLI"
+      ]
+    },
+    "q-owanzxCt.js": {
+      "size": 5294,
+      "imports": [
+        "q-8an7--bk.js",
+        "q-Vs8zAXMn.js"
+      ],
+      "origins": [
+        "node_modules/@jonkoops/matomo-tracker/es/MatomoTracker.js",
+        "node_modules/@jonkoops/matomo-tracker/es/constants.js",
+        "src/entry_MatomoProvider.js",
+        "src/s_i7v8keft6kg.js",
+        "src/s_rt3qmzofak8.js"
+      ],
+      "symbols": [
+        "s_I7v8kEFT6Kg",
+        "s_RT3QmZofaK8"
       ]
     },
     "q-pmcgMK-u.js": {
