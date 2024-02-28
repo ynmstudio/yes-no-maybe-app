@@ -12,6 +12,7 @@ import { AlertComponent } from '@library/components/alert';
 import { AuthService, MultilangService } from '@library/services';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from './shared/shared.module';
+import { fetchAndActivate, getRemoteConfig } from '@angular/fire/remote-config';
 
 
 @Component({
@@ -45,7 +46,7 @@ export class AppComponent {
     public authService: AuthService,
     public multilangService: MultilangService
   ) {
-
+    fetchAndActivate(getRemoteConfig());
   }
 
   sendVerification() {

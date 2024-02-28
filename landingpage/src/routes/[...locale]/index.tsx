@@ -17,6 +17,7 @@ import {
   useForm,
   valiForm$,
 } from "@modular-forms/qwik";
+import { useMatomo } from "~/providers/matomo";
 
 const ContactSchema = object({
   name: string([minLength(1, $localize`Please enter your name.`)]),
@@ -35,12 +36,46 @@ export const useFormLoader = routeLoader$<InitialValues<ContactForm>>(() => ({
   message: "",
 }));
 
-// export const useFormAction = formAction$<ContactForm>((values) => {
+// export const useFormAction = formAction$<ContactForm>(async (values) => {
+//   console.log(values);
 //   // Runs on server
-//   sendEmail(values);
+//   const { Client } = await import("node-mailjet");
+//   const mailjet = Client.apiConnect(
+//     process.env.MJ_APIKEY_PUBLIC ?? "xxx",
+//     process.env.MJ_APIKEY_PRIVATE ?? "xxx",
+//   );
+//   const request = mailjet.post("send", { version: "v3.1" }).request({
+//     Messages: [
+//       {
+//         From: {
+//           Email: "denis@ynm.studio",
+//           Name: "Mailjet Pilot",
+//         },
+//         To: [
+//           {
+//             Email: "denis@ynm.studio",
+//             Name: "passenger 1",
+//           },
+//         ],
+//         Subject: "Your email flight plan!",
+//         TextPart:
+//           "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+//         HTMLPart:
+//           '<h3>Dear passenger 1, welcome to <a href="https://www.mailjet.com/">Mailjet</a>!</h3><br />May the delivery force be with you!',
+//       },
+//     ],
+//   });
+//   request
+//     .then((result) => {
+//       console.log(result.body);
+//     })
+//     .catch((err) => {
+//       console.log(err.statusCode);
+//     });
 // }, valiForm$(ContactSchema));
 
 export const sendEmail = $((values: ContactForm) => {
+  console.log(values);
   window.location.href =
     "mailto:mail@ynm.studio?subject=YesNoMaybeApp Request by " +
     values.name +
@@ -52,14 +87,21 @@ export const sendEmail = $((values: ContactForm) => {
 });
 
 export default component$(() => {
+  const { trackPageView, trackEvent } = useMatomo();
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(() => {
+    trackPageView();
+  });
+
   const [, { Form, Field }] = useForm<ContactForm>({
     loader: useFormLoader(),
-    //  action: useFormAction(),
+    // action: useFormAction(),
     validate: valiForm$(ContactSchema),
   });
 
   const handleSubmit = $<SubmitHandler<ContactForm>>((values) => {
-    console.log(values);
+    // console.log(values);
+    trackEvent({ action: "submit", name: "contact-form", category: "form" });
     sendEmail(values);
   });
 
@@ -232,7 +274,7 @@ export default component$(() => {
                   class="mx-auto aspect-video h-auto w-full overflow-hidden rounded-xl object-cover object-center sm:w-full"
                   width="560"
                   height="315"
-                  src="https://www.youtube.com/embed/izJ1rc2MF9E?si=_FKc81vCDJozWYlS"
+                  src="https://www.youtube-nocookie.com/embed/izJ1rc2MF9E?si=_FKc81vCDJozWYlS"
                   title="Walkthrough Video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullscreen

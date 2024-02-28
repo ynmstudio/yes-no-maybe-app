@@ -8,6 +8,7 @@ import { RouterHead } from "./components/router-head/router-head";
 
 import "./global.scss";
 import "./../public/fonts/ibm-plex/css/ibm-plex.css";
+import { MatomoProvider } from "./providers/matomo";
 
 export default component$(() => {
   /**
@@ -18,15 +19,17 @@ export default component$(() => {
    */
 
   return (
-    <QwikCityProvider>
+    <QwikCityProvider viewTransition={true}>
       <head>
         <meta charSet="utf-8" />
         <link rel="manifest" href="/manifest.json" />
         <RouterHead />
       </head>
       <body>
-        <RouterOutlet />
-        <ServiceWorkerRegister />
+        <MatomoProvider>
+          <RouterOutlet />
+          <ServiceWorkerRegister />
+        </MatomoProvider>
       </body>
     </QwikCityProvider>
   );
