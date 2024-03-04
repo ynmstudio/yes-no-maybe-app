@@ -1,5 +1,5 @@
 import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -17,6 +17,7 @@ import { UserService } from '@library/services/user';
 import { v4 as uuidv4 } from 'uuid';
 import { SharedModule } from 'projects/default/src/app/shared/shared.module';
 import { DropzoneDirective } from '@library/directives/dropzone';
+import { RemoteConfig, getBoolean, getNumber } from '@angular/fire/remote-config';
 
 @Component({
   standalone: true,
@@ -34,13 +35,20 @@ export class WorkFilesComponent implements OnInit {
 
   form: FormGroup;
 
-  maxFiles: number = 5;
+  remoteConfig = inject(RemoteConfig);
+
+  maxFiles: number = getNumber(this.remoteConfig, 'MaxFiles') || 5;
 
   get path_prefix() {
     return `applications/${this.application_id}/works/${this.work_id}`;
   }
   get video_url() {
     return this.form.get('video_url');
+  }
+
+
+  get allowVideo() {
+    return getBoolean(this.remoteConfig, 'AllowVideo')
   }
 
   constructor(
@@ -83,7 +91,9 @@ export class WorkFilesComponent implements OnInit {
       this.onDrop(fileInput.target.files);
     }
   }
-  async finishTask(filesToUpload: File[], index: number, asset?: FileFragment) {
+  async finishTask(index: number, asset?: FileFragment) {
+    this.filesToUpload.splice(index, 1);
+    this.pendingUploads.next(this.filesToUpload.length > 0);
     if (asset) {
       await this.userService.addWorkFile(
         asset,
@@ -92,9 +102,6 @@ export class WorkFilesComponent implements OnInit {
         this.application_id
       );
     }
-
-    filesToUpload.splice(index, 1);
-    this.pendingUploads.next(filesToUpload.length > 0);
   }
 
   async deleteFile(id: string) {
@@ -244,3 +251,5 @@ export class WorkFilesComponent implements OnInit {
     }
   }
 }
+
+

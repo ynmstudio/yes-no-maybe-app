@@ -41,7 +41,7 @@ import { UserService } from '@library/services/user';
 import { WorkPortfolioComponent } from './work-portfolio/work-portfolio.component';
 import { WorkFilesComponent } from './work-files/work-files.component';
 import { SharedModule } from '../../../shared/shared.module';
-import { RemoteConfig, getBoolean, getString } from '@angular/fire/remote-config';
+import { RemoteConfig, getBoolean, getNumber, getString } from '@angular/fire/remote-config';
 
 @Component({
   standalone: true,
@@ -73,6 +73,12 @@ export class EditApplicationComponent implements OnInit {
   get enablePaymentFeature() {
     return getBoolean(this.remoteConfig, 'EnablePaymentFeature');
   }
+  get enablePortfolioFeature() {
+    return getBoolean(this.remoteConfig, 'EnablePortfolioFeature');
+  }
+  get enableSingleWorksFeature() {
+    return getBoolean(this.remoteConfig, 'EnableSingleWorksFeature');
+  }
   get configTitle() {
     return getString(this.remoteConfig, 'Title');
   }
@@ -102,7 +108,7 @@ export class EditApplicationComponent implements OnInit {
   }
 
   statementMinLenght = 250;
-  statementMaxLength = 1000;
+  statementMaxLength = getNumber(this.remoteConfig, 'StatementMaxLength') || 1000;
   get statement() {
     return this.form.get('statement');
   }

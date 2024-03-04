@@ -65,7 +65,11 @@ export class ImageComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['active'] && this.videoApi) {
-      if (!changes['active'].currentValue) this.videoApi.pause();
+      if (changes['active'].currentValue) {
+        this.videoApi.play();
+      } else {
+        this.videoApi.pause();
+      }
     }
   }
 

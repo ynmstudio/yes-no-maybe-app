@@ -11,5 +11,7 @@
   "EnableResidencyFeature": "false",
   "AllowAudio": "true",
   "AllowVideo": "true",
-  "ImprintUrl": "https://www.ynm.studio/en/imprint"
+  "ImprintUrl": "https://www.ynm.studio/en/imprint",
+  "MaxFiles": 50,
+  "StatementMaxLength": 1000
 }

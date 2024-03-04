@@ -218,8 +218,8 @@ export function createApollo(
           }
         });
       if (networkError) {
-        console.debug(`[Network error]: ${networkError.message}`);
-        alertService.warn(networkError.message);
+        console.error(`[Network error]: ${networkError.message}`);
+        // alertService.warn(networkError.message);
       }
       return forward(operation);
     }),

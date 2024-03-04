@@ -58,7 +58,6 @@
     "@graphql-codegen/typescript": "^4.0.4",
     "@graphql-codegen/typescript-apollo-angular": "^4.0.0",
     "@graphql-codegen/typescript-operations": "^4.1.2",
-    "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@types/jasmine": "~5.1.4",

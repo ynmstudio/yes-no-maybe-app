@@ -4,7 +4,7 @@
 >
   <pdf-viewer
     *ngSwitchCase="'pdf'"
-    class="block h-full w-auto object-contain"
+    class="!inline-block h-full w-auto object-contain aspect-square bg-gray-500/20"
     [src]="url"
     [show-all]="false"
     [page]="1"

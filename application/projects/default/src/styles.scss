@@ -123,4 +123,10 @@
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
+
+  // to be align with img, svg, video, canvas, audio, iframe, embed, object default of tailwind css
+  pdf-viewer {
+    display: block;
+    vertical-align: middle;
+  }
 }
