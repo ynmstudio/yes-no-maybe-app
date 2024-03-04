@@ -1,11 +1,15 @@
 {
-  "EnforceNoNameInApplication": "false",
-  "ApplicantDetails": "{}",
-  "EnablePaymentFeature": "false",
-  "EnableResidencyFeature": "false",
-  "Title": "[Yes][No][Maybe] Demo",
+  "PrivacyUrl": "https://www.ynm.studio/en/imprint",
   "Email": "mail@ynm.studio",
-  "ImprintUrl": "https://www.ynm.studio/",
-  "PrivacyUrl": "https://www.ynm.studio/",
-  "TermsUrl": "https://www.ynm.studio/"
+  "Title": "[Yes][No][Maybe] Demo",
+  "ApplicantDetails": "",
+  "TermsUrl": "https://www.ynm.studio/en/imprint",
+  "EnablePaymentFeature": "false",
+  "EnablePortfolioFeature": "true",
+  "EnableSingleWorksFeature": "true",
+  "EnforceNoNameInApplication": "true",
+  "EnableResidencyFeature": "false",
+  "AllowAudio": "true",
+  "AllowVideo": "true",
+  "ImprintUrl": "https://www.ynm.studio/en/imprint"
 }
