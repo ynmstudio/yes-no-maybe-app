@@ -56,6 +56,7 @@
           for="name"
           [innerHtml]="'application-form.name-of-artist-or-group' | translate"
         ></label>
+
         <input
           id="name"
           formControlName="name"
@@ -63,7 +64,8 @@
           type="text"
           class="col-span-2 appearance-none rounded-none relative block w-full p-2 border-solid bg-gray-100 border-b border-t-0 border-r-0 border-l-0 border-transparent font-mono placeholder-gray-500 text-black focus:outline-none focus:ring-gray-500 focus:border-gray-500 focus:z-10 text-xs sm:text-sm"
           [ngClass]="{
-            'ring-1 !ring-red-500': name?.invalid
+            'ring-1 !ring-red-500': name?.pristine && name?.invalid,
+            'ring-1 !ring-blue-500': !name?.touched && name?.invalid
           }"
         />
       </div>
@@ -434,7 +436,6 @@
             "
           ></label>
           <input
-            formGroupName="applicant_details"
             [id]="detail.key"
             [formControlName]="detail.key"
             [name]="detail.key"
@@ -526,7 +527,11 @@
             'ring-1 !ring-red-500': disclaimer?.invalid
           }"
         >
-          <div [innerHtml]="'_configuration.disclaimer' | translate"></div>
+          <div
+            [innerHtml]="
+              '_configuration.disclaimer' | translate : { url: termsUrl }
+            "
+          ></div>
           <div class="relative flex items-start mt-3 mb-4">
             <input
               id="disclaimer"
