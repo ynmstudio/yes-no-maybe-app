@@ -527,6 +527,7 @@
           </button>
         </div>
         <div *ngIf="!anonymous" class="bg-gray-50 mt-8 p-4">
+          @if(enablePaymentFeature) {
           <ng-container
             *ngIf="
               applicationObject.data.applications_by_pk?.payment;
@@ -554,6 +555,28 @@
           <ng-template #noPayment>
             <div class="p-4">No payment</div>
           </ng-template>
+          } @if(applicationObject.data.applications_by_pk?.applicant_details) {
+          <div>
+            <h2
+              class="text-xs font-mono uppercase"
+              [innerHtml]="'defaults.name-single' | translate"
+            ></h2>
+            <div
+              class="mb-4"
+              [innerHTML]="applicationObject.data.applications_by_pk?.name"
+            ></div>
+            @for (detail of
+            applicationObject.data.applications_by_pk?.applicant_details|keyvalue;
+            track detail.key) {
+
+            <h2
+              class="text-xs font-mono uppercase"
+              [innerHtml]="'applicant-details.' + detail.key | translate"
+            ></h2>
+            <div class="mb-4" [innerHTML]="detail.value || '&mdash;'"></div>
+            }
+          </div>
+          }
         </div>
       </div>
       <div

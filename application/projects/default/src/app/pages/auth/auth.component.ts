@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -12,6 +12,7 @@ import { ActivatedRoute, ROUTES, RouterModule } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { routes } from './auth.routes';
 import { AuthService, passwordsMustMatch } from '@library/services';
+import { RemoteConfig, getString } from '@angular/fire/remote-config';
 
 
 export type AuthMode = 'login' | 'register' | 'forgot';
@@ -26,6 +27,18 @@ export type AuthMode = 'login' | 'register' | 'forgot';
 })
 export class AuthComponent implements OnInit {
   mode: AuthMode = 'login';
+
+  remoteConfig = inject(RemoteConfig);
+
+  get configEmail() {
+    return getString(this.remoteConfig, 'Email');
+  }
+  get configTitle() {
+    return getString(this.remoteConfig, 'Title');
+  }
+  get privacyUrl() {
+    return getString(this.remoteConfig, 'PrivacyUrl');
+  }
 
   form: FormGroup;
   displayName = new FormControl('');

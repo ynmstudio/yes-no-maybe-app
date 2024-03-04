@@ -73,6 +73,18 @@ export class EditApplicationComponent implements OnInit {
   get enablePaymentFeature() {
     return getBoolean(this.remoteConfig, 'EnablePaymentFeature');
   }
+  get configTitle() {
+    return getString(this.remoteConfig, 'Title');
+  }
+  get imprintUrl() {
+    return getString(this.remoteConfig, 'ImprintUrl');
+  }
+  get privacyUrl() {
+    return getString(this.remoteConfig, 'PrivacyUrl');
+  }
+  get termsUrl() {
+    return getString(this.remoteConfig, 'TermsUrl');
+  }
 
   form: FormGroup<any>
 
@@ -212,7 +224,6 @@ export class EditApplicationComponent implements OnInit {
           let control = this.form.get(key);
           if (control) {
             if (key === 'applicant_details') {
-              console.log(control, application[key])
               this.updateApplicantDetailsFormGroup(application[key])
 
             } else {

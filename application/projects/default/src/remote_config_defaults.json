@@ -1,6 +1,11 @@
 {
-  "EnableResidencyFeature": "false",
-  "EnablePaymentFeature": "false",
   "EnforceNoNameInApplication": "false",
-  "ApplicantDetails": "{}"
+  "ApplicantDetails": "{}",
+  "EnablePaymentFeature": "false",
+  "EnableResidencyFeature": "false",
+  "Title": "[Yes][No][Maybe] Demo",
+  "Email": "mail@ynm.studio",
+  "ImprintUrl": "https://www.ynm.studio/",
+  "PrivacyUrl": "https://www.ynm.studio/",
+  "TermsUrl": "https://www.ynm.studio/"
 }

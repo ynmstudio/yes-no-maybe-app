@@ -13,6 +13,7 @@ import { HasuraService } from './hasura.service';
 import { AlertService } from '../../components/alert/src/alert.service';
 import { Auth, authState, createUserWithEmailAndPassword, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, updateEmail, updatePassword, updateProfile, user } from '@angular/fire/auth';
 import { Database, object, query, ref } from '@angular/fire/database';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface User {
   loginName: string;
@@ -24,6 +25,7 @@ export interface User {
 })
 export class AuthService {
   private auth: Auth = inject(Auth);
+  private translateService = inject(TranslateService);
   private database: Database = inject(Database);
   public authState$ = authState(this.auth);
   public emailVerified = new BehaviorSubject<boolean>(true);
@@ -117,11 +119,11 @@ export class AuthService {
         const subscription = metadataRef
           .subscribe(async (data: any) => {
             if (!data) return;
-            console.log(data)
 
             // Force refresh to pick up the latest custom claims changes.
             const idTokenResult = await user?.getIdTokenResult(true);
-            console.log(idTokenResult)
+            const role = idTokenResult?.claims['role'] as string;
+
             if (!role) return;
 
             await this.hasuraService.updateUsername(displayName);
@@ -137,7 +139,8 @@ export class AuthService {
       console.error(error);
 
       if (errorCode == 'auth/weak-password') {
-        this.alertService.info('The password is too weak.');
+        const message = this.translateService.instant(`firebase.${errorCode}`) || 'The password is too weak.';
+        this.alertService.info(message);
       } else {
         this.alertService.error(error);
       }

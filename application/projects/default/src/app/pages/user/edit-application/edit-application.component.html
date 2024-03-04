@@ -460,9 +460,7 @@
           class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
         >
           <div
-            [innerHtml]="
-              '_configuration.artist.residency-confirmation' | translate
-            "
+            [innerHtml]="'_configuration.residency-confirmation' | translate"
           ></div>
           <div class="relative flex items-start mt-3 mb-4">
             <input
@@ -495,9 +493,7 @@
           class="bg-gray-100 p-4 font-sans text-xs sm:text-sm md:text-base mb-3"
         >
           <div
-            [innerHtml]="
-              '_configuration.artist.archive-confirmation' | translate
-            "
+            [innerHtml]="'application.archive-confirmation' | translate"
           ></div>
           <div class="relative flex items-start mt-3 mb-4">
             <input
@@ -530,9 +526,7 @@
             'ring-1 !ring-red-500': disclaimer?.invalid
           }"
         >
-          <div
-            [innerHtml]="'_configuration.artist.disclaimer' | translate"
-          ></div>
+          <div [innerHtml]="'_configuration.disclaimer' | translate"></div>
           <div class="relative flex items-start mt-3 mb-4">
             <input
               id="disclaimer"
@@ -544,9 +538,7 @@
             <label
               for="disclaimer"
               class="ml-3"
-              [innerHtml]="
-                '_configuration.artist.disclaimer-confirmation' | translate
-              "
+              [innerHtml]="'application.disclaimer-confirmation' | translate"
             >
             </label>
           </div>
@@ -804,10 +796,7 @@
   <footer
     class="container--default flex items-end md:items-baseline justify-between"
   >
-    <div
-      class="text-headline"
-      [innerHtml]="'_configuration.title' | translate"
-    ></div>
+    <div class="text-headline" [innerHtml]="configTitle"></div>
     <div
       class="flex flex-col md:flex-row justify-end space-y-3 md:space-x-3 md:space-y-0 items-end"
     >
@@ -817,10 +806,8 @@
           tabindex="-1"
           target="_blank"
           rel="noopener noreferrer"
-          [href]="'_configuration.links.terms-and-conditions.url' | translate"
-          [innerHtml]="
-            '_configuration.links.terms-and-conditions.label' | translate
-          "
+          [href]="termsUrl"
+          [innerHtml]="'defaults.terms-and-conditions' | translate"
         ></a>
 
         <a
@@ -828,8 +815,8 @@
           tabindex="-1"
           target="_blank"
           rel="noopener noreferrer"
-          [href]="'_configuration.links.privacy.url' | translate"
-          [innerHtml]="'_configuration.links.privacy.label' | translate"
+          [href]="privacyUrl"
+          [innerHtml]="'defaults.privacy' | translate"
         ></a>
 
         <a
@@ -837,8 +824,8 @@
           tabindex="-1"
           target="_blank"
           rel="noopener noreferrer"
-          [href]="'_configuration.links.imprint.url' | translate"
-          [innerHtml]="'_configuration.links.imprint.label' | translate"
+          [href]="imprintUrl"
+          [innerHtml]="'defaults.imprint' | translate"
         ></a>
       </div>
       <button

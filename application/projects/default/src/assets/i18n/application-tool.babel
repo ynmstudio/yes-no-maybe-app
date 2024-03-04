@@ -22,88 +22,8 @@
 					<folder_node>
 						<name>_configuration</name>
 						<children>
-							<folder_node>
-								<name>artist</name>
-								<children>
-									<concept_node>
-										<name>archive-confirmation</name>
-										<description/>
-										<comment/>
-										<translations>
-											<translation>
-												<language>de-DE</language>
-												<approved>true</approved>
-											</translation>
-											<translation>
-												<language>en-GB</language>
-												<approved>true</approved>
-											</translation>
-										</translations>
-									</concept_node>
-									<concept_node>
-										<name>disclaimer</name>
-										<description/>
-										<comment/>
-										<translations>
-											<translation>
-												<language>de-DE</language>
-												<approved>true</approved>
-											</translation>
-											<translation>
-												<language>en-GB</language>
-												<approved>true</approved>
-											</translation>
-										</translations>
-									</concept_node>
-									<concept_node>
-										<name>disclaimer-confirmation</name>
-										<description/>
-										<comment/>
-										<translations>
-											<translation>
-												<language>de-DE</language>
-												<approved>true</approved>
-											</translation>
-											<translation>
-												<language>en-GB</language>
-												<approved>true</approved>
-											</translation>
-										</translations>
-									</concept_node>
-									<concept_node>
-										<name>residency-confirmation</name>
-										<description/>
-										<comment/>
-										<translations>
-											<translation>
-												<language>de-DE</language>
-												<approved>true</approved>
-											</translation>
-											<translation>
-												<language>en-GB</language>
-												<approved>true</approved>
-											</translation>
-										</translations>
-									</concept_node>
-								</children>
-							</folder_node>
 							<concept_node>
-								<name>email</name>
-								<description/>
-								<comment/>
-								<translations>
-									<translation>
-										<language>de-DE</language>
-										<approved>true</approved>
-									</translation>
-									<translation>
-										<language>en-GB</language>
-										<approved>true</approved>
-									</translation>
-								</translations>
-							</concept_node>
-							<concept_node>
-								<name>full-name</name>
+								<name>disclaimer</name>
 								<description/>
 								<comment/>
 								<translations>
@@ -135,116 +55,6 @@
 											</translation>
 										</translations>
 									</concept_node>
-								</children>
-							</folder_node>
-							<folder_node>
-								<name>links</name>
-								<children>
-									<folder_node>
-										<name>imprint</name>
-										<children>
-											<concept_node>
-												<name>label</name>
-												<description/>
-												<comment/>
-												<translations>
-													<translation>
-														<language>de-DE</language>
-														<approved>true</approved>
-													</translation>
-													<translation>
-														<language>en-GB</language>
-														<approved>true</approved>
-													</translation>
-												</translations>
-											</concept_node>
-											<concept_node>
-												<name>url</name>
-												<description/>
-												<comment/>
-												<translations>
-													<translation>
-														<language>de-DE</language>
-														<approved>true</approved>
-													</translation>
-													<translation>
-														<language>en-GB</language>
-														<approved>true</approved>
-													</translation>
-												</translations>
-											</concept_node>
-										</children>
-									</folder_node>
-									<folder_node>
-										<name>privacy</name>
-										<children>
-											<concept_node>
-												<name>label</name>
-												<description/>
-												<comment/>
-												<translations>
-													<translation>
-														<language>de-DE</language>
-														<approved>true</approved>
-													</translation>
-													<translation>
-														<language>en-GB</language>
-														<approved>true</approved>
-													</translation>
-												</translations>
-											</concept_node>
-											<concept_node>
-												<name>url</name>
-												<description/>
-												<comment/>
-												<translations>
-													<translation>
-														<language>de-DE</language>
-														<approved>true</approved>
-													</translation>
-													<translation>
-														<language>en-GB</language>
-														<approved>true</approved>
-													</translation>
-												</translations>
-											</concept_node>
-										</children>
-									</folder_node>
-									<folder_node>
-										<name>terms-and-conditions</name>
-										<children>
-											<concept_node>
-												<name>label</name>
-												<description/>
-												<comment/>
-												<translations>
-													<translation>
-														<language>de-DE</language>
-														<approved>true</approved>
-													</translation>
-													<translation>
-														<language>en-GB</language>
-														<approved>true</approved>
-													</translation>
-												</translations>
-											</concept_node>
-											<concept_node>
-												<name>url</name>
-												<description/>
-												<comment/>
-												<translations>
-													<translation>
-														<language>de-DE</language>
-														<approved>true</approved>
-													</translation>
-													<translation>
-														<language>en-GB</language>
-														<approved>true</approved>
-													</translation>
-												</translations>
-											</concept_node>
-										</children>
-									</folder_node>
 								</children>
 							</folder_node>
 							<folder_node>
@@ -298,7 +108,7 @@
 								</children>
 							</folder_node>
 							<concept_node>
-								<name>title</name>
+								<name>residency-confirmation</name>
 								<description/>
 								<comment/>
 								<translations>
@@ -747,6 +557,36 @@
 					<folder_node>
 						<name>application</name>
 						<children>
+							<concept_node>
+								<name>archive-confirmation</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>disclaimer-confirmation</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
 							<concept_node>
 								<name>group_application</name>
 								<description/>
@@ -1548,6 +1388,21 @@
 								</translations>
 							</concept_node>
 							<concept_node>
+								<name>imprint</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
 								<name>intended-purpose-single</name>
 								<description/>
 								<comment/>
@@ -1794,6 +1649,21 @@
 							</concept_node>
 							<concept_node>
 								<name>preview</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>privacy</name>
 								<description/>
 								<comment/>
 								<translations>
@@ -2063,6 +1933,21 @@
 								</translations>
 							</concept_node>
 							<concept_node>
+								<name>terms-and-conditions</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>true</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
 								<name>title-single</name>
 								<description/>
 								<comment/>
@@ -2309,6 +2194,101 @@
 									<translation>
 										<language>en-GB</language>
 										<approved>true</approved>
+									</translation>
+								</translations>
+							</concept_node>
+						</children>
+					</folder_node>
+					<folder_node>
+						<name>firebase</name>
+						<children>
+							<concept_node>
+								<name>auth/claims-too-large</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>auth/email-already-exists</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>auth/invalid-password</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>auth/user-not-found</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>auth/weak-password</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
+									</translation>
+								</translations>
+							</concept_node>
+							<concept_node>
+								<name>unknown-error</name>
+								<description/>
+								<comment/>
+								<translations>
+									<translation>
+										<language>de-DE</language>
+										<approved>false</approved>
+									</translation>
+									<translation>
+										<language>en-GB</language>
+										<approved>false</approved>
 									</translation>
 								</translations>
 							</concept_node>

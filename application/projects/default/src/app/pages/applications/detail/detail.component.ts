@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   WorkFragment,
@@ -8,6 +8,7 @@ import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { TeamService } from '../../../../../../library/services/team/src/team.service';
 import { SharedModule } from '../../../shared/shared.module';
+import { RemoteConfig, getBoolean } from '@angular/fire/remote-config';
 
 @Component({
   standalone: true,
@@ -22,6 +23,17 @@ export class DetailComponent implements OnInit {
 
   get application_id() {
     return this.route.snapshot.params['id'];
+  }
+
+  remoteConfig = inject(RemoteConfig);
+  get enforceNoNameInApplication() {
+    return getBoolean(this.remoteConfig, 'EnforceNoNameInApplication');
+  }
+  get enableResidencyFeature() {
+    return getBoolean(this.remoteConfig, 'EnableResidencyFeature');
+  }
+  get enablePaymentFeature() {
+    return getBoolean(this.remoteConfig, 'EnablePaymentFeature');
   }
 
   private _currentWorkIndex: BehaviorSubject<number> = new BehaviorSubject(0);

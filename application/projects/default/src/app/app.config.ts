@@ -1,14 +1,14 @@
-import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { FirebaseApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectDatabaseEmulator, getDatabase, provideDatabase } from '@angular/fire/database';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { ensureInitialized, fetchAndActivate, getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
+import { fetchAndActivate, getRemoteConfig, provideRemoteConfig } from '@angular/fire/remote-config';
 import { environment } from '../environments/environment';
 import { provideGraphQL } from './graphql.module';
 import { DateAdapter, NativeDateAdapter } from '@angular/material/core';
@@ -108,12 +108,6 @@ export const appConfig: ApplicationConfig = {
       fetchAndActivate(remoteConfig);
       return remoteConfig;
     })),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: (app: FirebaseApp) => () => ensureInitialized(getRemoteConfig(app)),
-      deps: [FirebaseApp],
-      multi: true,
-    },
     importProvidersFrom([
       SharedModule.forRoot(),
       ApolloModule,

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '@library/services';
+import { RemoteConfig, getString } from '@angular/fire/remote-config';
 
 @Component({
   standalone: true,
@@ -12,6 +13,13 @@ import { AuthService } from '@library/services';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent implements OnInit {
+
+  remoteConfig = inject(RemoteConfig);
+
+  get configTitle() {
+    return getString(this.remoteConfig, 'Title');
+  }
+
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void { }
