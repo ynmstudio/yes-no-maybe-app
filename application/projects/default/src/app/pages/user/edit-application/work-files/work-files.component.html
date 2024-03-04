@@ -54,7 +54,7 @@
       *ngFor="let file of filesToUpload; let index = index"
       [file]="file"
       [path_prefix]="path_prefix"
-      (uploaded)="finishTask(filesToUpload, index, $event)"
+      (uploaded)="finishTask(index, $event)"
     >
       <div class="spinner text-gray-800"></div>
     </app-upload-task>
@@ -71,7 +71,7 @@
       type="file"
       id="upload-file"
       name="upload-file"
-      accept="image/*,video/*"
+      accept="image/*,video/*,.pdf"
       multiple
       (change)="onFileSelect($event)"
       #fileInput
@@ -80,16 +80,22 @@
     <div class="flex-none w-2"></div>
   </div>
   <div
-    class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors"
-    [ngClass]="
-      files && (files.length || 0) > maxFiles ? 'text-red-600' : 'text-gray-800'
-    "
+    class="absolute z-0 bottom-0 right-0 p-1 bg-gray-100 bg-opacity-75 backdrop-blur pointer-events-none select-none whitespace-nowrap pl-3 text-xs font-mono leading-none text-gray-800 transition-colors text-right"
   >
-    {{ files ? files.length || 0 : 0 }}/{{ maxFiles }}
-    {{ "defaults.file-multi" | translate }}
+    <div
+      [ngClass]="
+        files && (files.length || 0) > maxFiles
+          ? 'text-red-600'
+          : 'text-gray-800'
+      "
+    >
+      {{ files ? files.length || 0 : 0 }}/{{ maxFiles }}
+      {{ "defaults.file-multi" | translate }}
+    </div>
+    <div class="mt-2" [innerHtml]="'hints.file-requirements' | translate"></div>
   </div>
 </div>
-
+@if(allowVideo) {
 <form
   [formGroup]="form"
   (ngSubmit)="addVideo()"
@@ -164,3 +170,4 @@
     </button>
   </div>
 </form>
+}

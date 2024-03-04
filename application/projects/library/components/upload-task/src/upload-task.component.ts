@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input, Output, EventEmitter, inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { Storage, UploadResult, UploadTask, getDownloadURL, getMetadata, ref, uploadBytesResumable } from '@angular/fire/storage';
+import { Storage, UploadTask, getDownloadURL, getMetadata, ref, uploadBytesResumable } from '@angular/fire/storage';
+import { RemoteConfig, getBoolean, getString, getValue } from '@angular/fire/remote-config';
 
-import { FileFragment, GetEditionGQL } from 'generated/types.graphql-gen';
+import { FileFragment, } from 'generated/types.graphql-gen';
 
 import { Observable } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -37,6 +37,7 @@ export class UploadTaskComponent implements OnInit {
 
   private auth = inject(Auth)
   private storage = inject(Storage);
+  private remoteConfig = inject(RemoteConfig);
 
   task?: UploadTask;
 
@@ -51,7 +52,37 @@ export class UploadTaskComponent implements OnInit {
   async startUpload() {
     if (!this.file) alert('Keine Datei gefunden');
 
-    // Client-side validation example
+    const allowVideo = getBoolean(this.remoteConfig, 'AllowVideo');
+    const allowAudio = getBoolean(this.remoteConfig, 'AllowAudio');
+
+
+    const allowedPDFPortfolioFormats = ["image", 'application/pdf'];
+    const allowedPDFPortfolioFormatsMessage = "eine einzelne PDF Datei oder Screenshot";
+
+    let allowedArtworkFormats = ["image", 'application/pdf'];
+    let allowedArtworkFormatsMessage = "PDF-Dateien oder Bilder";
+    if (allowVideo) {
+      allowedArtworkFormats.push('video/mp4', 'video/quicktime');
+      allowedArtworkFormatsMessage = "Videos (.mp4/.mov), " + allowedArtworkFormatsMessage;
+    }
+    if (allowAudio) {
+      allowedArtworkFormats.push('audio');
+      allowedArtworkFormatsMessage = "Audio (.mp3/.wav), " + allowedArtworkFormatsMessage;
+    }
+
+    const acceptedFileFormats = this.pdf ? allowedPDFPortfolioFormats : allowedArtworkFormats;
+
+    if (!acceptedFileFormats.includes(this.file.type.split('/')[0]) && !acceptedFileFormats.includes(this.file.type)) {
+      this.asset.next(undefined);
+      alert(
+        `Dieser Dateityp wird nicht unterstützt. Bitte nur ${this.pdf
+          ? allowedPDFPortfolioFormatsMessage
+          : allowedArtworkFormatsMessage
+        } hochladen.`
+      );
+      return;
+    }
+
     if (
       this.pdf
         ? this.file.type.split('/')[0] !== 'image' &&
@@ -61,14 +92,7 @@ export class UploadTaskComponent implements OnInit {
         this.file.type !== 'video/quicktime' &&
         this.file.type.split('/')[0] !== 'audio'
     ) {
-      this.asset.next(undefined);
-      alert(
-        `Dieser Dateityp wird nicht unterstützt. Bitte nur ${this.pdf
-          ? 'eine einzelne PDF Datei oder Screenshot'
-          : 'Videos (.mp4/.mov), Audio (.mp3/.wav) oder Bilder'
-        } hochladen.`
-      );
-      return;
+
     }
 
     const user = this.auth.currentUser;

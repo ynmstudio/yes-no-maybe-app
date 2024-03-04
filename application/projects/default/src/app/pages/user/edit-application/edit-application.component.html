@@ -112,6 +112,9 @@
             : 'flex-col items-center lg:space-y-6 xl:space-y-8'
         ]"
       >
+        <!-- PDF-Portfolio  -->
+        @if (enablePortfolioFeature) {
+
         <div
           class="flex-auto lg:w-1/2"
           [ngClass]="
@@ -234,6 +237,10 @@
             ></button>
           </ng-template>
         </div>
+        }
+        <!-- PDF-Portfolio & Single Works Feature -->
+        @if (enablePortfolioFeature && enableSingleWorksFeature) {
+
         <div
           class="mt-4 mb-8 md:my-8 lg:my-0 flex-none bg-gray-200 relative"
           [ngClass]="
@@ -253,6 +260,9 @@
           >
           </span>
         </div>
+        }
+        <!--  Single Works Feature -->
+        @if(enableSingleWorksFeature) {
         <div
           class="flex-auto"
           [ngClass]="
@@ -354,6 +364,7 @@
             </div>
           </ng-container>
         </div>
+        }
         <ng-template #noSingleWork>
           <button
             (click)="addWork()"
@@ -361,7 +372,9 @@
             [innerHtml]="
               ((portfolioWorks$ | async)?.data?.works?.length!
                 ? 'application-form.buttons.add-additional-works-separately'
-                : 'application-form.buttons.add-works-separately'
+                : enablePortfolioFeature
+                ? 'application-form.buttons.add-works-separately'
+                : 'application-form.buttons.add-works'
               ) | translate
             "
           ></button>

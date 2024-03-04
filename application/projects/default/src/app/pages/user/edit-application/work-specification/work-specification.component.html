@@ -47,7 +47,7 @@
     for="number_of_editions-{{ specification?.id }}"
     class="col-span-2 md:col-auto md:text-right"
     >{{ "defaults.edition-multi" | translate | titlecase }} ({{
-      "defaults.optional" | translate
+      "defaults.optional" | translate | lowercase
     }}):</label
   >
   <input
