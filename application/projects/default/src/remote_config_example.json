@@ -1,0 +1,94 @@
+{
+  "parameters": {
+    "PrivacyUrl": {
+      "defaultValue": {
+        "value": "https://www.ynm.studio/en/imprint"
+      },
+      "valueType": "STRING"
+    },
+    "Email": {
+      "defaultValue": {
+        "value": "mail@ynm.studio"
+      },
+      "valueType": "STRING"
+    },
+    "Title": {
+      "defaultValue": {
+        "value": "[Yes][No][Maybe] Demo"
+      },
+      "valueType": "STRING"
+    },
+    "ApplicantDetails": {
+      "defaultValue": {
+        "value": "{}"
+      },
+      "valueType": "JSON"
+    },
+    "TermsUrl": {
+      "defaultValue": {
+        "value": "https://www.yesnomaybe.app/"
+      },
+      "valueType": "STRING"
+    },
+    "EnablePaymentFeature": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "EnablePortfolioFeature": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "EnableSingleWorksFeature": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "EnforceNoNameInApplication": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "EnableResidencyFeature": {
+      "defaultValue": {
+        "value": "false"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "AllowAudio": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "AllowVideo": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN"
+    },
+    "MaxFiles": {
+      "defaultValue": {
+        "value": 5
+      },
+      "valueType": "NUMBER"
+    },
+    "StatementMaxLength": {
+      "defaultValue": {
+        "value": 1000
+      },
+      "valueType": "NUMBER"
+    },
+    "ImprintUrl": {
+      "defaultValue": {
+        "value": "https://www.ynm.studio/en/imprint"
+      },
+      "valueType": "STRING"
+    }
+  }
+}
