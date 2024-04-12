@@ -41,7 +41,11 @@
   },
   "hosting": {
     "public": "application/dist/default/browser",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "headers": [
       {
         "source": "*.[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f].+(css|js)",
@@ -59,5 +63,8 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "extensions": {
+    "storage-resize-images": "firebase/storage-resize-images@0.2.3"
   }
 }

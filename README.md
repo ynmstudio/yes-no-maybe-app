@@ -181,9 +181,9 @@ The Hasura database and GraphQL engine can be deployed either via Hasura's own [
 ### App
 
 The app can be deployed using **Firebase Hosting**, but any other static file server should work as well (for example Netlify, GitHub Pages or your own server).
-For deploying the application, the build script needs to run inside the frontend folder `npm run build:prod`.
+For deploying the application, the build script needs to run inside the application folder `npm run build:prod`.
 
-Firebase Hosting example: `cd frontend && npm run build:prod && cd .. && firebase deploy --only hosting`
+Firebase Hosting example: `cd application && npm run build:prod && cd .. && firebase deploy --only hosting`
 
 # Upcoming Features
 
