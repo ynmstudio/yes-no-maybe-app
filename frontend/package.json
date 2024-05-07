@@ -60,7 +60,7 @@
     "ng2-pdf-viewer": "^7.0.2",
     "ngx-chips": "^3.0.0",
     "ngx-filesize": "^2.0.16",
-    "pdfjs-dist": "^2.12.313",
+    "pdfjs-dist": "^4.2.67",
     "rxfire": "^6.0.3",
     "rxjs": "^7.5.2",
     "screenfull": "^6.0.1",
