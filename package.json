@@ -1,6 +1,6 @@
 {
   "name": "yes-no-maybe-app",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "private": true,
   "displayName": "Effortlessly manage complex, multimedia portfolios, encourage collaborative discussions among jury members with an elegant, integrated chat feature, and ensure impartial and transparent art evaluations.",
   "dependencies": {
